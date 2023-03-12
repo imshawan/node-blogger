@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { StatusCodesWithError, StatusCodesWithMessage } from "@src/constants";
 
-const handleApiResponse = function (code: number, response: Response, data: any) {
+const handleApiResponse = function (code: number, response: Response, data?: any) {
 	const {req} = response;
 	const payload = {
 		status: {},
