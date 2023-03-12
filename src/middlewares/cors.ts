@@ -15,9 +15,9 @@ var corsOptionsDelegate = (req: Request, callback: Function) => {
     callback(null, corsOptions);
 };
 
-const CORS = cors();
+const initializeCors = cors();
 const corsWithOptions = cors(corsOptionsDelegate);
 
 export {
-    CORS, corsWithOptions
+    initializeCors, corsWithOptions
 };
