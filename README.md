@@ -1,6 +1,6 @@
 ## About
 
-Node Blogger - A open-source blogging software powered by Node.js
+Node Blogger - A simple open-source blogging application powered by NodeJS
 
 
 ## Available Scripts
