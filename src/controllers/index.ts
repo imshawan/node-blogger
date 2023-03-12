@@ -1,11 +1,6 @@
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
-import { Request, Response } from 'express';
-
-async function home(req: Request, res: Response) {
-  res.render('index');
-  // return res.status(HttpStatusCodes.OK).json({message: 'string'});
-}
+import blog from './blog';
+import api from './api';
 
 export default {
-  home,
+  blog, api
 } as const;

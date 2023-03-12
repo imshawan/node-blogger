@@ -11,13 +11,13 @@ import logger from 'jet-logger';
 
 import 'express-async-errors';
 
-import {baseRouter} from '@src/routes/api';
+import baseRouter from '@src/routes';
 
 import EnvVars from '@src/constants/EnvVars';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
-
 import {NodeEnvs} from '@src/constants/misc';
 import {RouteError} from '@src/other/classes';
+import { handleApiResponse } from '@src/helpers';
 
 const app = express();
 
@@ -59,6 +59,11 @@ app.use((err: Error, _: Request, res: Response,
   if (err instanceof RouteError) {
     status = err.status;
   }
+  
+  if (res && res.req) {
+    return handleApiResponse(status, res, err);
+  }
+  
   return res.status(status).json({
     error: err.message,
   });
