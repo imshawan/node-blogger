@@ -18,6 +18,7 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import {NodeEnvs} from '@src/constants/misc';
 import {RouteError} from '@src/other/classes';
 import { handleApiResponse } from '@src/helpers';
+import { overrideRender } from '@src/middlewares';
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use(express.static(staticDir));
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({extended: true, limit: '50mb'}));
 app.use(cookieParser(EnvVars.CookieProps.Secret));
+app.use(overrideRender);
 
 // Show routes called in console during development
 if (EnvVars.NodeEnv === NodeEnvs.Dev) {

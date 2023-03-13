@@ -1,324 +1,279 @@
-<%- include('./partials/header'); -%>
-
-<body data-bs-spy="scroll" data-bs-target="#navbar-example" data-bs-offset="82">
-    <header id="home">
-      <nav id="#navbar" class="navbar navbar-expand-lg position-fixed top-0 w-100">
-        <div class="container">
-          <a class="navbar-brand" href="index.html">
-            <!-- Logo comes here -->
-            <img src="img/logo-blog.png" alt="">
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav ms-auto">
-              <a class="nav-link active" href="index.html">home</a>
-              <a class="nav-link" href="about.html">about</a>
-              <a class="nav-link" href="contact.html">contact</a>
-              <a class="nav-link" href="blog.html">Blog</a>
-            </div>
+<main>
+  <section class="main-slider">
+    <div class="hero-img">
+      <div class="hero-bg"></div>
+      <div class="container">
+        <div class="hero-text">
+          <div class="welcome-text"><span class="big-text">WELCOME</span><span class="small-text">TO OUR BLOG</span>
           </div>
+          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
         </div>
-      </nav>
-    </header>
-    <main>
-      <section class="main-slider">
-        <div class="hero-img">
-          <div class="hero-bg"></div>
-          <div class="container">
-            <div class="hero-text">
-              <div class="welcome-text"><span class="big-text">WELCOME</span><span class="small-text">TO OUR BLOG</span>
-              </div>
-              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-            </div>
-          </div>
-          <a href="#about"><i class="fas fa-chevron-down"></i></a>
-        </div>
-      </section>
-      <section id="about" class="aboutus">
-        <div class="container">
-          <div class="row">
-            <div class="right col-md-6">
-              <div class="text-right">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam</p>
-              </div>
-            </div>
-            <div class="left col-md-6">
-              <div class="text-left">
-                <h2 class="underscore">about us</h2>
-                <p class="sup-header">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex
-                  ipsam similique blanditiis. Culpa hic quia, repellendus corrupti </p>
-                <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam
-                  similique blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium necessitatibus alias
-                  illo quidem. Repudiandae expedita illum aspernatur magni?
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam similique
-                  blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium necessitatibus alias illo
-                  quidem. Repudiandae expedita illum aspernatur magni?</p>
-              </div>
-              <a href="contact.html" class="main-button">Let’s work together</a>
-            </div>
-          </div>
-        </div>
-        <div class="black-div"></div>
-      </section>
-      <section id="contact" class="social-media">
-        <div class="container">
-          <h2 class="underscore">Popular and Trending blogs</h2>
-        </div>
-      </section>
-      <section class="new-articles owl-main-content mt-5">
-        <div class="d-flex w-100 owl-carousel owl-theme justify-content-around">
-  
-          <div class="card col-12 col-md-6 col-lg-4 overflow-hidden mx-auto bg-dark text-white">
-            <img src="img/architecture-1857175_1920.jpg" class="card-img" alt="...">
-            <div class="card-img-overlay p-3">
-              <div class="text-overlay">
-                <h5 class="card-title text-uppercase">Lorem, ipsum dolor sit amet consectetur </h5>
-                <div class="line"></div>
-                <div class="card-text autor-data d-flex pb-3">
-                  <p class="post-author text-uppercase">Posted by someone&nbsp;</p>
-                  <p class="post-data post-author text-uppercase">| 30 07 2021</p>
-                </div>
-                <a href="" class="card-button">Read article</a>
-              </div>
-            </div>
-          </div>
-  
-          <div class="card col-12 col-md-6 col-lg-4 overflow-hidden mx-auto bg-dark text-white">
-            <img src="img/staircase-274614_1920.jpg" class="card-img" alt="...">
-            <div class="card-img-overlay p-3">
-              <div class="text-overlay">
-                <h5 class="card-title text-uppercase">Lorem, ipsum dolor sit amet consectetur </h5>
-                <div class="line"></div>
-                <div class="card-text autor-data d-flex pb-3">
-                  <p class="post-author text-uppercase">Posted by someone&nbsp;</p>
-                  <p class="post-data post-author text-uppercase">| 30 07 2021</p>
-                </div>
-                <a href="" class="card-button">Read article</a>
-              </div>
-            </div>
-          </div>
-  
-          <div class="card col-12 col-md-6 col-lg-4 overflow-hidden mx-auto bg-dark text-white">
-            <img src="img/staircase-274614_1920.jpg" class="card-img" alt="...">
-            <div class="card-img-overlay p-3">
-              <div class="text-overlay">
-                <h5 class="card-title text-uppercase">Lorem, ipsum dolor sit amet consectetur </h5>
-                <div class="line"></div>
-                <div class="card-text autor-data d-flex pb-3">
-                  <p class="post-author text-uppercase">Posted by someone&nbsp;</p>
-                  <p class="post-data post-author text-uppercase">| 30 07 2021</p>
-                </div>
-                <a href="" class="card-button">Read article</a>
-              </div>
-            </div>
-          </div>
-  
-          <div class="card col-12 col-md-6 col-lg-4 overflow-hidden mx-auto bg-dark text-white">
-            <img src="img/staircase-274614_1920.jpg" class="card-img" alt="...">
-            <div class="card-img-overlay p-3">
-              <div class="text-overlay">
-                <h5 class="card-title text-uppercase">Lorem, ipsum dolor sit amet consectetur </h5>
-                <div class="line"></div>
-                <div class="card-text autor-data d-flex pb-3">
-                  <p class="post-author text-uppercase">Posted by someone&nbsp;</p>
-                  <p class="post-data post-author text-uppercase">| 30 07 2021</p>
-                </div>
-                <a href="" class="card-button">Read article</a>
-              </div>
-            </div>
-          </div>
-  
-        </div>
-        <div class="owl-theme">
-          <div class="owl-controls">
-            <div class="custom-nav owl-nav"></div>
-          </div>
-        </div>
-      </section>
-      <section id="posts" class="recent-posts">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 col-md-8">
-              <h2 class="underscore">RECENT POSTS</h2>
-              <p class="sup-header">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex
-                ipsam
-                similique blanditiis. Culpa hic quia, repellendus corrupti </p>
-              <div class="posts-wrapper posts-container">
-  
-                <div class="post-item bg-light p-3">
-                  <img src="img/staircase-274614_1920.jpg" class="card-img" alt="...">
-                  <div class="post-meta">
-                    <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
-                      2021</span>
-                  </div>
-                  <a href="single-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit.</a>
-                  <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
-                    ex
-                    ipsam similique blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
-                    necessitatibus
-                    alias illo quidem. Repudiandae expedita illum aspernatur magni?</p>
-                  <div class="post-meta d-flex justify-content-between">
-                    <div>
-                      <span><i class="fa fa-comment-alt"></i> 20</span>
-                      <span><i class="fa fa-eye"></i> 200</span>
-                    </div>
-                    <div>
-                      <a class="read-more">Read more</a>
-                    </div>
-                  </div>
-                </div>
-  
-                <div class="post-item">
-                  <div class="post-meta">
-                    <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
-                      2021</span>
-                  </div>
-                  <a href="single-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit.</a>
-                  <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
-                    ex
-                    ipsam similique blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
-                    necessitatibus
-                    alias illo quidem. Repudiandae expedita illum aspernatur magni?</p>
-                  <div class="post-meta">
-                    <span><i class="far fa-comment-alt"></i> 20 comments</span>
-                  </div>
-                </div>
-  
-                <div class="post-item">
-                  <div class="post-meta">
-                    <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
-                      2021</span>
-                  </div>
-                  <a href="single-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit.</a>
-                  <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
-                    ex
-                    ipsam similique blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
-                    necessitatibus
-                    alias illo quidem. Repudiandae expedita illum aspernatur magni?</p>
-                  <div class="post-meta">
-                    <span><i class="far fa-comment-alt"></i> 20 comments</span>
-                  </div>
-                </div>
-                
-                <div class="d-flex justify-content-center">
-                  <a href="blog.html" class="main-button">View all posts</a>
-                </div>
-              </div>
-            </div>
-  
-            <div class="sidebar col-md-4">
-              <div class="input-group">
-                <div class="form-outline">
-                  <input id="search-input" type="search" id="form1" class="form-control" placeholder="search" />
-                </div>
-                <button id="search-button" type="button" class="btn dark">
-                  <i class="fas fa-search"></i>
-                </button>
-              </div>
-              <div class="recent-posts pt-5">
-                <h4 class="mb-4 border-bottom pb-3">Posts you might like</h4>
-                <div class="post-item">
-                  <a href="simple-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit.</a>
-                  <div class="post-meta">
-                    <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
-                      2021</span><span><i class="far fa-comment-alt"></i> 0 comments</span>
-                  </div>
-                  <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
-                    ex ipsam similique blanditiis. Culpa hic quia...</p>
-                </div>
-                <div class="post-item">
-                  <a href="simple-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit.</a>
-                  <div class="post-meta">
-                    <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
-                      2021</span><span><i class="far fa-comment-alt"></i> 0 comments</span>
-                  </div>
-                  <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
-                    ex ipsam similique blanditiis. Culpa hic quia...</p>
-                </div>
-                <div class="post-item">
-                  <a href="simple-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit.</a>
-                  <div class="post-meta">
-                    <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
-                      2021</span><span><i class="far fa-comment-alt"></i> 0 comments</span>
-                  </div>
-                  <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
-                    ex ipsam similique blanditiis. Culpa hic quia...</p>
-                </div>
-  
-                <div class="categories pt-5">
-                  <h4 class="mb-4 border-bottom pb-3">Categories</h4>
-                  <ul class="list-group">
-                    <li class="d-flex align-items-center">
-                      <a href="" class="category-item">Awesome Layouts</a>
-                      <span class="badge mx-3 bg-dark badge-primary badge-pill">14</span>
-                    </li>
-                    <li class="d-flex align-items-center">
-                      <a href="" class="category-item">HTML5 / CSS3 Templates</a>
-                      <span class="badge mx-3 bg-dark badge-primary badge-pill">2</span>
-                    </li>
-                    <li class="d-flex align-items-center">
-                      <a href="" class="category-item">Creative & Unique</a>
-                      <span class="badge mx-3 bg-dark badge-primary badge-pill">1</span>
-                    </li>
-                  </ul>
-                </div>
-  
-                <div class="tags pt-5">
-                  <h4 class="mb-4 border-bottom pb-3">Tag clouds</h4>
-                  <a href="#" class="badge text-black badge-light">Primary</a>
-                  <a href="#" class="badge text-black badge-light">Secondary</a>
-                  <a href="#" class="badge text-black badge-light">Success</a>
-                  <a href="#" class="badge text-black badge-light">Danger</a>
-                  <a href="#" class="badge text-black badge-light">Warning</a>
-                  <a href="#" class="badge text-black badge-light">Info</a>
-                  <a href="#" class="badge text-black badge-light">Light</a>
-                </div>
-  
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section id="subscribe" class="subscribe">
-        <div class="container">
-          <h2>Subscribe & Don’t Miss Out</h2>
-          <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam similique
-            blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
-          </p>
-          <form>
-            <input type="email" class="email text-uppercase" id="exampleInputEmail1 aria-describedby=" emailHelp"
-              placeholder="Enter your email"><button type="submit"
-              class="button-subscribe text-uppercase">subscribe</button>
-          </form>
-        </div>
-      </section>
-    </main>
-    <footer class="text-center  text-uppercase py-5">
-      <div class="footer-icons ">
-        <a href=""><img src="img/facebook-footer.svg" alt=""></a>
-        <a href=""><img src="img/instagramm-footer.svg" alt=""></a>
-        <a href=""><img src="img/pinterest-footer.svg" alt=""></a>
       </div>
-      <div class="copyright pt-4 text-muted text-center">
-        <p>&copy; 2023 Node Blogger | Created by <a
-            href="https://www.imshawan.dev" title=""
-            target="_blank">Shawan Mandal</a> </p>
-        <!--
-            This template is licenced under Attribution 3.0 (CC BY 3.0 PL),
-            You are free to: Share and Adapt. You must give appropriate credit, you may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-            -->
+      <a href="#about"><i class="fas fa-chevron-down"></i></a>
+    </div>
+  </section>
+  <section id="about" class="aboutus">
+    <div class="container">
+      <div class="row">
+        <div class="right col-md-6">
+          <div class="text-right">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam</p>
+          </div>
+        </div>
+        <div class="left col-md-6">
+          <div class="text-left">
+            <h2 class="underscore">about us</h2>
+            <p class="sup-header">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex
+              ipsam similique blanditiis. Culpa hic quia, repellendus corrupti </p>
+            <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam
+              similique blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium necessitatibus alias
+              illo quidem. Repudiandae expedita illum aspernatur magni?
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam similique
+              blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium necessitatibus alias illo
+              quidem. Repudiandae expedita illum aspernatur magni?</p>
+          </div>
+          <a href="contact.html" class="main-button">Let’s work together</a>
+        </div>
       </div>
-    </footer>
-    <div class="fb2022-copy">Node Blogger 2023 copyright</div>
-  </body>
+    </div>
+    <div class="black-div"></div>
+  </section>
+  <section id="contact" class="social-media">
+    <div class="container">
+      <h2 class="underscore">Popular and Trending blogs</h2>
+    </div>
+  </section>
+  <section class="new-articles owl-main-content mt-5">
+    <div class="d-flex w-100 owl-carousel owl-theme justify-content-around">
 
-  <%- include('./partials/footer'); -%>
+      <div class="card col-12 col-md-6 col-lg-4 overflow-hidden mx-auto bg-dark text-white">
+        <img src="img/architecture-1857175_1920.jpg" class="card-img" alt="...">
+        <div class="card-img-overlay p-3">
+          <div class="text-overlay">
+            <h5 class="card-title text-uppercase">Lorem, ipsum dolor sit amet consectetur </h5>
+            <div class="line"></div>
+            <div class="card-text autor-data d-flex pb-3">
+              <p class="post-author text-uppercase">Posted by someone&nbsp;</p>
+              <p class="post-data post-author text-uppercase">| 30 07 2021</p>
+            </div>
+            <a href="" class="card-button">Read article</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card col-12 col-md-6 col-lg-4 overflow-hidden mx-auto bg-dark text-white">
+        <img src="img/staircase-274614_1920.jpg" class="card-img" alt="...">
+        <div class="card-img-overlay p-3">
+          <div class="text-overlay">
+            <h5 class="card-title text-uppercase">Lorem, ipsum dolor sit amet consectetur </h5>
+            <div class="line"></div>
+            <div class="card-text autor-data d-flex pb-3">
+              <p class="post-author text-uppercase">Posted by someone&nbsp;</p>
+              <p class="post-data post-author text-uppercase">| 30 07 2021</p>
+            </div>
+            <a href="" class="card-button">Read article</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card col-12 col-md-6 col-lg-4 overflow-hidden mx-auto bg-dark text-white">
+        <img src="img/staircase-274614_1920.jpg" class="card-img" alt="...">
+        <div class="card-img-overlay p-3">
+          <div class="text-overlay">
+            <h5 class="card-title text-uppercase">Lorem, ipsum dolor sit amet consectetur </h5>
+            <div class="line"></div>
+            <div class="card-text autor-data d-flex pb-3">
+              <p class="post-author text-uppercase">Posted by someone&nbsp;</p>
+              <p class="post-data post-author text-uppercase">| 30 07 2021</p>
+            </div>
+            <a href="" class="card-button">Read article</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card col-12 col-md-6 col-lg-4 overflow-hidden mx-auto bg-dark text-white">
+        <img src="img/staircase-274614_1920.jpg" class="card-img" alt="...">
+        <div class="card-img-overlay p-3">
+          <div class="text-overlay">
+            <h5 class="card-title text-uppercase">Lorem, ipsum dolor sit amet consectetur </h5>
+            <div class="line"></div>
+            <div class="card-text autor-data d-flex pb-3">
+              <p class="post-author text-uppercase">Posted by someone&nbsp;</p>
+              <p class="post-data post-author text-uppercase">| 30 07 2021</p>
+            </div>
+            <a href="" class="card-button">Read article</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="owl-theme">
+      <div class="owl-controls">
+        <div class="custom-nav owl-nav"></div>
+      </div>
+    </div>
+  </section>
+  <section id="posts" class="recent-posts">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-8">
+          <h2 class="underscore">RECENT POSTS</h2>
+          <p class="sup-header">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex
+            ipsam
+            similique blanditiis. Culpa hic quia, repellendus corrupti </p>
+          <div class="posts-wrapper posts-container">
+
+            <div class="post-item bg-light p-3">
+              <img src="img/staircase-274614_1920.jpg" class="card-img" alt="...">
+              <div class="post-meta">
+                <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
+                  2021</span>
+              </div>
+              <a href="single-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
+                elit.</a>
+              <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
+                ex
+                ipsam similique blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
+                necessitatibus
+                alias illo quidem. Repudiandae expedita illum aspernatur magni?</p>
+              <div class="post-meta d-flex justify-content-between">
+                <div>
+                  <span><i class="fa fa-comment-alt"></i> 20</span>
+                  <span><i class="fa fa-eye"></i> 200</span>
+                </div>
+                <div>
+                  <a class="read-more">Read more</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="post-item">
+              <div class="post-meta">
+                <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
+                  2021</span>
+              </div>
+              <a href="single-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
+                elit.</a>
+              <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
+                ex
+                ipsam similique blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
+                necessitatibus
+                alias illo quidem. Repudiandae expedita illum aspernatur magni?</p>
+              <div class="post-meta">
+                <span><i class="far fa-comment-alt"></i> 20 comments</span>
+              </div>
+            </div>
+
+            <div class="post-item">
+              <div class="post-meta">
+                <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
+                  2021</span>
+              </div>
+              <a href="single-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
+                elit.</a>
+              <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
+                ex
+                ipsam similique blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
+                necessitatibus
+                alias illo quidem. Repudiandae expedita illum aspernatur magni?</p>
+              <div class="post-meta">
+                <span><i class="far fa-comment-alt"></i> 20 comments</span>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+              <a href="blog.html" class="main-button">View all posts</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar col-md-4">
+          <div class="input-group">
+            <div class="form-outline">
+              <input id="search-input" type="search" id="form1" class="form-control" placeholder="search" />
+            </div>
+            <button id="search-button" type="button" class="btn dark">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <div class="recent-posts pt-5">
+            <h4 class="mb-4 border-bottom pb-3">Posts you might like</h4>
+            <div class="post-item">
+              <a href="simple-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
+                elit.</a>
+              <div class="post-meta">
+                <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
+                  2021</span><span><i class="far fa-comment-alt"></i> 0 comments</span>
+              </div>
+              <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
+                ex ipsam similique blanditiis. Culpa hic quia...</p>
+            </div>
+            <div class="post-item">
+              <a href="simple-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
+                elit.</a>
+              <div class="post-meta">
+                <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
+                  2021</span><span><i class="far fa-comment-alt"></i> 0 comments</span>
+              </div>
+              <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
+                ex ipsam similique blanditiis. Culpa hic quia...</p>
+            </div>
+            <div class="post-item">
+              <a href="simple-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
+                elit.</a>
+              <div class="post-meta">
+                <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
+                  2021</span><span><i class="far fa-comment-alt"></i> 0 comments</span>
+              </div>
+              <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
+                ex ipsam similique blanditiis. Culpa hic quia...</p>
+            </div>
+
+            <div class="categories pt-5">
+              <h4 class="mb-4 border-bottom pb-3">Categories</h4>
+              <ul class="list-group">
+                <li class="d-flex align-items-center">
+                  <a href="" class="category-item">Awesome Layouts</a>
+                  <span class="badge mx-3 bg-dark badge-primary badge-pill">14</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <a href="" class="category-item">HTML5 / CSS3 Templates</a>
+                  <span class="badge mx-3 bg-dark badge-primary badge-pill">2</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <a href="" class="category-item">Creative & Unique</a>
+                  <span class="badge mx-3 bg-dark badge-primary badge-pill">1</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="tags pt-5">
+              <h4 class="mb-4 border-bottom pb-3">Tag clouds</h4>
+              <a href="#" class="badge text-black badge-light">Primary</a>
+              <a href="#" class="badge text-black badge-light">Secondary</a>
+              <a href="#" class="badge text-black badge-light">Success</a>
+              <a href="#" class="badge text-black badge-light">Danger</a>
+              <a href="#" class="badge text-black badge-light">Warning</a>
+              <a href="#" class="badge text-black badge-light">Info</a>
+              <a href="#" class="badge text-black badge-light">Light</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="subscribe" class="subscribe">
+    <div class="container">
+      <h2>Subscribe & Don’t Miss Out</h2>
+      <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam similique
+        blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
+      </p>
+      <form>
+        <input type="email" class="email text-uppercase" id="exampleInputEmail1 aria-describedby=" emailHelp"
+          placeholder="Enter your email"><button type="submit"
+          class="button-subscribe text-uppercase">subscribe</button>
+      </form>
+    </div>
+  </section>
+</main>

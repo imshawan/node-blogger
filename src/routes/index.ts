@@ -11,9 +11,14 @@ router.options('/*', corsWithOptions, (req: Request, res: Response) => { res.sen
 router.use('/', initializeCors, pageRouter);
 router.use('/api/v1', initializeCors, apiRouter);
 
-// 404 handling
-router.use('/*', (req: Request, res: Response) => {
+// 404 handling for APIs
+router.use('/api/*', (req: Request, res: Response) => {
     handleApiResponse(404, res);
+});
+
+// 404 handling for normal routes
+router.use('/*', (req: Request, res: Response) => {
+    res.render('404')
 });
 
 export default router;
