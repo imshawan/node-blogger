@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { handleApiResponse } from "@src/helpers";
+import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import api from "@src/api";
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
-    handleApiResponse(200, res, await api.blog.get(req));
+    handleApiResponse(HttpStatusCodes.OK, res, await api.blog.get(req));
 }
 
 export default {

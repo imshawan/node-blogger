@@ -7,14 +7,14 @@ import pageRouter from './pageRoutes';
 
 const router = Router();
 
-router.options('/*', corsWithOptions, (req: Request, res: Response) => { res.sendStatus(200); })
+router.options('/*', corsWithOptions, (req: Request, res: Response) => { res.sendStatus(HttpStatusCodes.OK); })
 
 router.use('/', initializeCors, pageRouter);
 router.use('/api/v1', initializeCors, apiRouter);
 
 // 404 handling for APIs
 router.use('/api/*', (req: Request, res: Response) => {
-    handleApiResponse(404, res);
+    handleApiResponse(HttpStatusCodes.NOT_FOUND, res);
 });
 
 // 404 handling for normal routes
