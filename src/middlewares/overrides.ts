@@ -13,28 +13,31 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
     res.render = async function renderOverride(template: string, options: any, callback: Function) {
         const self = this;
         const req = this.req;
+
+        if (!template) return next();
         
         const pageOptions = options || {};
-        const individualPageScript = ['/javascripts/', template, '.js'].join('');
+        const individualPageScript = ['/scripts/client/', template, '.js'].join('');
         const templatePath = [paths.templatesDir, '/', template, '.ejs'].join('');
         const headerPath = [paths.templatePartialsDir, '/', 'header.ejs'].join('');
         const footerPath = [paths.templatePartialsDir, '/', 'footer.ejs'].join('');
         const script = path.join(paths.baseDir, 'public', individualPageScript);
         const pageClass = generatePageClass(req, res);
 
-        if (fs.existsSync(script)) {
-            pageOptions.scripts = modules.concat([individualPageScript]);
-        } else {
-            pageOptions.scripts = modules;
-        }
-
         pageOptions.title = [pageOptions.title, ' | ', siteName].join('');
         pageOptions.pageClass = pageClass;
+        pageOptions.modules = modules;
+
+        pageOptions.scripts = [];
+        
+        if (fs.existsSync(script)) {
+            pageOptions.scripts = modules.concat([individualPageScript]);
+        }
 
         const [header, body, footer] = await Promise.all([
-            renderTemplateTohtml(headerPath, {pageClass}),
+            renderTemplateTohtml(headerPath, pageOptions),
             renderTemplateTohtml(templatePath, pageOptions),
-            renderTemplateTohtml(footerPath)
+            renderTemplateTohtml(footerPath, pageOptions)
         ]);
 
         const pageData = generatePageDataScript(pageOptions);

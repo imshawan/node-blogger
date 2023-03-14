@@ -6,6 +6,7 @@ export const paths = {
     uploadsDirString: ['uploads'].join('/'),
     templatesDir: path.join(__dirname, 'src', 'views'),
     templatePartialsDir: path.join(__dirname, 'src', 'views', 'partials'),
+    assetsDir: path.join(__dirname, 'public'),
 };
 
 export const siteName = 'Node Blogger';

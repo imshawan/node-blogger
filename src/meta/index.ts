@@ -1,3 +1,9 @@
+import {paths} from '../../constants';
+
+export const {assetsDir} = paths;
+
 export const modules = [
-    "/modules/app.js",
-]
+    "/scripts/require.js",
+    "/scripts/modules/app.js",
+    "/scripts/modules/http.js",
+];
