@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { modules } from "@src/meta";
-import HttpStatusCodes from "@src/constants/HttpStatusCodes";
+import { modules, baseScripts } from "@src/meta";
 import {siteName, paths} from '../../constants';
-import path from "path";
 import fs from 'fs';
 import ejs from 'ejs';
 
@@ -17,11 +15,9 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         if (!template) return next();
         
         const pageOptions = options || {};
-        const individualPageScript = ['/scripts/client/', template, '.js'].join('');
         const templatePath = [paths.templatesDir, '/', template, '.ejs'].join('');
         const headerPath = [paths.templatePartialsDir, '/', 'header.ejs'].join('');
         const footerPath = [paths.templatePartialsDir, '/', 'footer.ejs'].join('');
-        const script = path.join(paths.baseDir, 'public', individualPageScript);
         const pageClass = generatePageClass(req, res);
 
         pageOptions.title = [pageOptions.title, ' | ', siteName].join('');
@@ -29,10 +25,8 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         pageOptions.modules = modules;
 
         pageOptions.scripts = [];
-        
-        if (fs.existsSync(script)) {
-            pageOptions.scripts = modules.concat([individualPageScript]);
-        }
+        pageOptions.baseScripts = baseScripts;
+        pageOptions.pageScript = ['client/', template].join('');
 
         const [header, body, footer] = await Promise.all([
             renderTemplateTohtml(headerPath, pageOptions),
@@ -46,7 +40,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         const str = [header, pageData, body, footer].join('\n');
 
         if (typeof callback !== 'function') {            
-            self.status(HttpStatusCodes.OK).send(str);
+            self.send(str);
         } else {
             callback(null, str);
         }

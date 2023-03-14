@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { handleApiResponse } from '@src/helpers';
 import { initializeCors, corsWithOptions } from '@src/middlewares';
+import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import apiRouter from './api/blog';
 import pageRouter from './pageRoutes';
 
@@ -18,7 +19,7 @@ router.use('/api/*', (req: Request, res: Response) => {
 
 // 404 handling for normal routes
 router.use('/*', (req: Request, res: Response) => {
-    res.render('404')
+    res.status(HttpStatusCodes.NOT_FOUND).render('404')
 });
 
 export default router;
