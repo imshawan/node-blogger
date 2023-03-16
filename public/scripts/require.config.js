@@ -3,5 +3,6 @@ requirejs.config({
     waitSeconds: 0,
     paths: {
         client: '../client',
+        modules: '../modules',
     }
 });

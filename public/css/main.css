@@ -7,6 +7,20 @@
   padding: 0;
 }
 :root {
+  --color-white: #ffffff;
+  --color-light: #f1f5f9;
+  --color-black: #121212;
+  --color-night: #001632;
+  --color-red: #f44336;
+  --color-blue: #1a73e8;
+  --color-gray: #80868b;
+  --color-grayish: #dadce0;
+  --shadow-normal: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+  	0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  	0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  	0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --highlighting-color: #f8cb33;
 }
 
@@ -120,6 +134,22 @@ label {
 .main-button:hover {
   background-color: black;
   color: white;
+}
+
+.button-black {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  background-color: var(--color-black);
+  border: 2px solid var(--color-black);
+  padding: 10px 30px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-top: 50px;
+  cursor: pointer;
+}
+
+.button-black:hover {
+  background-color: rgb(77, 77, 77);
 }
 
 .main-button-black {
@@ -871,6 +901,242 @@ a.badge-light:focus, a.badge-light:hover {
   color: var(--highlighting-color);
 }
 
+/* 404 page Styles */
+
+#notfound {
+  position: relative;
+  height: 100vh;
+}
+
+#notfound .notfound {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.notfound {
+  max-width: 560px;
+  width: 100%;
+  padding-left: 160px;
+  line-height: 1.1;
+}
+
+.notfound .notfound-404 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-block;
+  width: 140px;
+  height: 140px;
+  background-image: url('../img/emoji.png');
+  background-size: cover;
+}
+
+.notfound .notfound-404:before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-transform: scale(2.4);
+      -ms-transform: scale(2.4);
+          transform: scale(2.4);
+  border-radius: 50%;
+  background-color: #f2f5f8;
+  z-index: -1;
+}
+
+.notfound h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 65px;
+  font-weight: 700;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  color: #151723;
+  text-transform: uppercase;
+}
+
+.notfound h2 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 21px;
+  font-weight: 400;
+  margin: 0;
+  text-transform: uppercase;
+  color: #151723;
+}
+
+.notfound p {
+  color: #999fa5;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+
+/* Signin page CSS */
+
+
+.signin-page a {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  text-decoration: none;
+}
+
+.signin-page .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 80rem;
+  min-height: 100vh;
+  width: 100%;
+  padding: 0 2rem;
+  margin: 0 auto;
+}
+.signin-page .ion-logo-apple {
+  font-size: 1.65rem;
+  line-height: inherit;
+  margin-right: 0.5rem;
+  color: var(--color-black);
+}
+.signin-page .ion-logo-google {
+  font-size: 1.65rem;
+  line-height: inherit;
+  margin-right: 0.5rem;
+  color: var(--color-red);
+}
+.signin-page .ion-logo-facebook {
+  font-size: 1.65rem;
+  line-height: inherit;
+  margin-right: 0.5rem;
+  color: var(--color-blue);
+}
+.signin-page .text {
+  font-family: inherit;
+  line-height: inherit;
+  text-transform: unset;
+  text-rendering: optimizeLegibility;
+}
+.signin-page .text-large {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-black);
+}
+.signin-page .text-normal {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-black);
+}
+.signin-page .text-links {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-blue);
+}
+.signin-page .text-links:hover {
+  text-decoration: underline;
+}
+.signin-page .main .wrapper {
+  margin: 2rem auto;
+  padding: 2rem 2.5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.25rem;
+  color: var(--color-black);
+  background: var(--color-white);
+  box-shadow: var(--shadow-large);
+}
+.signin-page .main .wrapper .form {
+  width: 100%;
+  height: auto;
+  margin-top: 2rem;
+}
+.signin-page .main .wrapper .form .input-control {
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  font-size: 14px;
+}
+.signin-page .main .wrapper .form .input-field {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: inherit;
+  width: 100%;
+  height: auto;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  outline: none;
+  /* border-radius: 2rem; */
+  border: 2px solid var(--color-black);
+  color: var(--color-black);
+  background: var(--color-light);
+  text-transform: unset;
+  text-rendering: optimizeLegibility;
+}
+.signin-page .main .wrapper .form .input-submit {
+  box-shadow: var(--shadow-medium);
+  text-transform: capitalize;
+}
+.signin-page .main .wrapper .striped {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+.signin-page .main .wrapper .striped-line {
+  flex: auto;
+  flex-basis: auto;
+  border: none;
+  outline: none;
+  height: 2px;
+  background: var(--color-grayish);
+}
+.signin-page .main .wrapper .striped-text {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: inherit;
+  color: var(--color-black);
+  margin: 0 1rem;
+}
+.signin-page .main .wrapper .method-control {
+  margin-bottom: 1rem;
+}
+.signin-page .main .wrapper .method-action {
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  padding: 0.35rem 1.25rem;
+  outline: none;
+  border: 2px solid var(--color-grayish);
+  border-radius: 2rem;
+  color: var(--color-black);
+  background: var(--color-white);
+  text-transform: capitalize;
+  text-rendering: optimizeLegibility;
+  transition: all 0.35s ease;
+}
+.signin-page .main .wrapper .method-action:hover {
+  background: var(--color-light);
+}
+
+.password-show-toggle {
+  font-size: 18px;
+  cursor: pointer;
+  right: 12px;
+}
+
 @media (max-width: 650px) {
   #posts .posts-container .post-content {
     font-size: 14px;
@@ -882,6 +1148,17 @@ a.badge-light:focus, a.badge-light:hover {
 
   #posts .posts-container .post-title {
     font-size: 20px!important;
+  }
+
+  .signin-page .container {
+    padding: 0px!important;
+    min-height: auto;
+    margin-top: 2rem;
+  }
+  
+  .signin-page .main .wrapper {
+    padding: 2rem 1.8rem;
+    box-shadow: none;
   }
 }
 
@@ -1058,76 +1335,6 @@ a.badge-light:focus, a.badge-light:hover {
   .card {
     width: 400px;
   }
-}
-
-#notfound {
-  position: relative;
-  height: 100vh;
-}
-
-#notfound .notfound {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-}
-
-.notfound {
-  max-width: 560px;
-  width: 100%;
-  padding-left: 160px;
-  line-height: 1.1;
-}
-
-.notfound .notfound-404 {
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: inline-block;
-  width: 140px;
-  height: 140px;
-  background-image: url('../img/emoji.png');
-  background-size: cover;
-}
-
-.notfound .notfound-404:before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-transform: scale(2.4);
-      -ms-transform: scale(2.4);
-          transform: scale(2.4);
-  border-radius: 50%;
-  background-color: #f2f5f8;
-  z-index: -1;
-}
-
-.notfound h1 {
-  font-family: 'Nunito', sans-serif;
-  font-size: 65px;
-  font-weight: 700;
-  margin-top: 0px;
-  margin-bottom: 10px;
-  color: #151723;
-  text-transform: uppercase;
-}
-
-.notfound h2 {
-  font-family: 'Nunito', sans-serif;
-  font-size: 21px;
-  font-weight: 400;
-  margin: 0;
-  text-transform: uppercase;
-  color: #151723;
-}
-
-.notfound p {
-  color: #999fa5;
-  font-weight: 400;
-  line-height: 1.5rem;
 }
 
 @media only screen and (max-width: 767px) {

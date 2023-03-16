@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { modules, baseScripts } from "@src/meta";
+import meta from "@src/meta";
 import {siteName, paths} from '../../constants';
 import fs from 'fs';
 import ejs from 'ejs';
@@ -11,6 +11,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
     res.render = async function renderOverride(template: string, options: any, callback: Function) {
         const self = this;
         const req = this.req;
+        const { baseScripts, vendorScripts } = meta;
 
         if (!template) return next();
         
@@ -22,7 +23,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
 
         pageOptions.title = [pageOptions.title, ' | ', siteName].join('');
         pageOptions.pageClass = pageClass;
-        pageOptions.modules = modules;
+        pageOptions.modules = vendorScripts;
 
         pageOptions.scripts = [];
         pageOptions.baseScripts = baseScripts;

@@ -1,0 +1,63 @@
+<div class="signin-page">
+    <main class="main">
+        <div class="container">
+            <section class="col-12 col-md-6 col-lg-5 wrapper">
+                <div class="heading">
+                    <h1 class="text text-large">Sign In</h1>
+                    <p class="text text-normal">New user? <span><a href="#" class="text text-links">Create an account</a></span>
+                    </p>
+                </div>
+                <form id="signin-form" name="signin" action="/signin" method="post" class="form">
+                    <div class="input-control">
+                        <label for="usernameOrEmail" class="input-label">Username or email address</label>
+                        <input name="username" id="usernameOrEmail" class="input-field" placeholder="Username or email address">
+                    </div>
+                    <div class="input-control position-relative">
+                        <label for="password-input" class="input-label">Password</label>
+                        <div class="d-flex position-relative">
+                            <input type="password" name="password" id="password-input" class="input-field" placeholder="Password">
+                            <div class="h-100 position-absolute d-flex password-show-toggle">
+                                <i class="fa fa-eye align-self-center" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-control d-flex justify-content-start">
+                        <input type="checkbox" name="rememberme" id="rememberme" class="">
+                        <label for="rememberme" class="input-label mx-2">Remember me for a longer duration</label>
+                    </div>
+                    <div class="input-control">
+                        <a href="#" class="text">Forgot Password</a>
+                    </div>
+                    <div class="input-control">
+                    </div>
+                    <button type="submit" class="input-submit mt-0 w-100 button-black">Sign In</button>
+                </form>
+                <!-- <div class="striped">
+                    <span class="striped-line"></span>
+                    <span class="striped-text">Or</span>
+                    <span class="striped-line"></span>
+                </div>
+                <div class="method">
+                    <div class="method-control">
+                        <a href="#" class="method-action">
+                            <i class="ion ion-logo-google"></i>
+                            <span>Sign in with Google</span>
+                        </a>
+                    </div>
+                    <div class="method-control">
+                        <a href="#" class="method-action">
+                            <i class="ion ion-logo-facebook"></i>
+                            <span>Sign in with Facebook</span>
+                        </a>
+                    </div>
+                    <div class="method-control">
+                        <a href="#" class="method-action">
+                            <i class="ion ion-logo-apple"></i>
+                            <span>Sign in with Apple</span>
+                        </a>
+                    </div>
+                </div> -->
+            </section>
+        </div>
+    </main>
+</div>

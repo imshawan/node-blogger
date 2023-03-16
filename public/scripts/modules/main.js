@@ -22,7 +22,6 @@ function loadScripts (scripts, callback) {
         }
         if (typeof script === 'string') {
             return function (next) {    
-                console.log(script);
                 require([script], function (script) {
                     if (script && script.initialize) {
                         script.initialize();

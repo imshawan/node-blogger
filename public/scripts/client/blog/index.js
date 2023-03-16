@@ -1,4 +1,4 @@
-define([], function () {
+define('client/blog/index', [], function () {
     const index = {};
 
     index.initialize = function () {

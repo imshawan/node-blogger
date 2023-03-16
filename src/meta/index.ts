@@ -1,13 +1,24 @@
+import fs from 'fs';
+import path from 'path';
 import {paths} from '../../constants';
 
-export const {assetsDir} = paths;
+const {assetsDir} = paths;
 
-export const baseScripts = [
+const baseScripts = [
     "/scripts/require.js",
     "/scripts/require.config.js",
     "/scripts/modules/main.js",
 ];
 
-export const modules = [
-    "/scripts/modules/http.js",
-];
+const vendors = path.join(paths.javaScriptsDir, 'vendors');
+let vendorScripts: Array<string> = [];
+
+if (fs.existsSync(vendors)) {
+    vendorScripts = fs.readdirSync(vendors).map(e => ['/scripts/vendors/', e].join(''));
+}
+
+
+export default {
+    vendorScripts, assetsDir, baseScripts
+  } as const;
+
