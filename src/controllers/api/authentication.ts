@@ -6,10 +6,16 @@ import api from "@src/api";
 const signIn = async (req: Request, res: Response, next: NextFunction) => {
     console.log(req.body);
     
-    res.redirect('signin?complete=true');
+    handleApiResponse(HttpStatusCodes.OK, res, {});
+}
+
+const register = async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
+    
+    res.redirect('register?complete=true');
     // handleApiResponse(HttpStatusCodes.OK, res, {});
 }
 
 export default {
-    signIn,
+    signIn, register
   } as const;

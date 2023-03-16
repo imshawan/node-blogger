@@ -1,0 +1,35 @@
+<div class="signin-page">
+    <main class="main">
+        <div class="container">
+            <section class="col-12 col-md-6 col-lg-5 wrapper">
+                <div class="heading">
+                    <h1 class="text text-large">Create account</h1>
+                    <p class="text text-normal">Already registered? <span><a href="/signin" class="text text-links">Sign in</a></span>
+                    </p>
+                </div>
+                
+                <form id="signin-form" name="signin" action="/register" method="post" class="form">
+                    <div class="input-control">
+                        <label for="usernameOrEmail" class="input-label">Username or email address</label>
+                        <input name="username" id="usernameOrEmail" class="input-field" placeholder="Create an username or use email address">
+                        <div class="mt-1" id="username-status-text" style="display: none;"></div>
+                    </div>
+                    <div class="input-control position-relative">
+                        <label for="password-input" class="input-label">Password</label>
+                        <input type="password" name="password" id="password-input" class="input-field" placeholder="Create a password">
+                        <div class="mt-1" id="password-status-text" style="display: none;"></div>
+                    </div>
+                    <div class="input-control position-relative">
+                        <label for="password-input" class="input-label">Confirm password</label>
+                        <input type="password" name="password" id="password-input" class="input-field" placeholder="Confirm password">
+                        <div class="mt-1" id="confirm-password-status-text" style="display: none;"></div>
+                    </div>
+                    <div class="input-control">
+                    </div>
+                    <button type="submit" class="input-submit mt-0 w-100 button-black">Register now</button>
+                </form>
+                
+            </section>
+        </div>
+    </main>
+</div>

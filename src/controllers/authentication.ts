@@ -9,6 +9,14 @@ const signIn = async function (req: Request, res: Response) {
     res.render('signin', page);
 }
 
+const register = async function (req: Request, res: Response) {
+    const page = {
+        title: 'Register'
+    };
+
+    res.render('register', page);
+}
+
 export default {
-    signIn,
+    signIn, register
   } as const;
