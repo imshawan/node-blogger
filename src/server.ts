@@ -19,6 +19,8 @@ import {NodeEnvs} from '@src/constants/misc';
 import {RouteError} from '@src/other/classes';
 import { handleApiResponse } from '@src/helpers';
 import { overrideRender } from '@src/middlewares';
+import {initializeMongoConnection} from './database';
+import config from '../config.json';
 
 const app = express();
 
@@ -40,6 +42,9 @@ app.use(overrideRender);
 if (EnvVars.NodeEnv === NodeEnvs.Dev) {
   app.use(morgan('dev'));
 }
+
+// Database init
+initializeMongoConnection(config.mongodb);
 
 // Security
 if (EnvVars.NodeEnv === NodeEnvs.Production) {
