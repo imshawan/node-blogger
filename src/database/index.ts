@@ -1,8 +1,9 @@
 import {connect} from './connection';
+import { initializeSessionStore } from './database';
 
-export const database: {client?: any, connection?: any} = {};
+export const database: {client?: any, connection?: any, sessionStore?: any} = {};
 
-export const initializeMongoConnection = async function (mongodb: any) {
+export const initializeDbConnection = async function (mongodb: any) {
     if (!Object.keys(mongodb).length) {
         throw new Error('Database configuration could not be loaded');
     }
@@ -21,10 +22,12 @@ export const initializeMongoConnection = async function (mongodb: any) {
         console.warn('username and password missing from the connection URI');
     }
 
-    const {client, connection} = await connect(uri, {database: db}); 
-    
+    const {client, connection, dbName} = await connect(uri, {database: db}); 
+    const sessionStore = await initializeSessionStore(connection, dbName);
+
     database.client = client;
     database.connection = connection;
+    database.sessionStore = sessionStore;
 }
 
 export const closeConnection = async function (callback?: Function) {

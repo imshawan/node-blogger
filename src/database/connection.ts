@@ -42,5 +42,5 @@ export const connect = async function (connectionString: string, options: object
     await db.command({ ping: 1 });
     console.log("Pinged your database. You have successfully connected to the database!");
 
-    return {client: db, connection};
+    return {client: db, connection, dbName: database};
 }

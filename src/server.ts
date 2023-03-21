@@ -6,77 +6,123 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import path from 'path';
 import helmet from 'helmet';
-import express, {Request, Response, NextFunction} from 'express';
+import express, {Request, Response, NextFunction, Application} from 'express';
+import http from 'http';
 import logger from 'jet-logger';
+import useragent from 'express-useragent';
+import expressSession from 'express-session';
 
 import 'express-async-errors';
 
 import baseRouter from '@src/routes';
-
 import EnvVars from '@src/constants/EnvVars';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import {NodeEnvs} from '@src/constants/misc';
 import {RouteError} from '@src/other/classes';
-import { handleApiResponse } from '@src/helpers';
+import { handleApiResponse, validateConfiguration } from '@src/helpers';
 import { overrideRender } from '@src/middlewares';
-import {initializeMongoConnection} from './database';
+import {initializeDbConnection, database} from './database';
+import { cookies } from './meta';
 import config from '../config.json';
+import _ from 'lodash';
 
 const app = express();
+const httpServer = http.createServer(app);
+const start = async function (port: Number, callback: Function) {
 
-// View engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+  validateConfiguration(config)
+  await initializeDbConnection(config.mongodb);
+  await setupExpressServer(app);
 
-// Set static directory (js and css).
-const staticDir = path.join('public');
-app.use(express.static(staticDir));
-
-// Basic middleware
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({extended: true, limit: '50mb'}));
-app.use(cookieParser(EnvVars.CookieProps.Secret));
-app.use(overrideRender);
-
-// Show routes called in console during development
-if (EnvVars.NodeEnv === NodeEnvs.Dev) {
-  app.use(morgan('dev'));
-}
-
-// Database init
-initializeMongoConnection(config.mongodb);
-
-// Security
-if (EnvVars.NodeEnv === NodeEnvs.Production) {
-  app.use(helmet());
-}
-
-// Add APIs, must be after middleware
-app.use('/', baseRouter);
-
-// Add error handler
-app.use((err: Error, _: Request, res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  next: NextFunction,
-) => {
-  if (EnvVars.NodeEnv !== NodeEnvs.Test) {
-    logger.err(err, true);
+  // Show routes called in console during development
+  if (EnvVars.NodeEnv === NodeEnvs.Dev) {
+      app.use(morgan('dev'));
   }
-  let status = HttpStatusCodes.BAD_REQUEST;
-  if (err instanceof RouteError) {
-    status = err.status;
+
+  // Security
+  if (EnvVars.NodeEnv === NodeEnvs.Production) {
+      app.use(helmet());
   }
-  
-  if (res && res.req) {
-    return handleApiResponse(status, res, err);
-  }
-  
-  return res.status(status).json({
-    error: err.message,
+
+  // Add APIs, must be after middleware
+  app.use('/', baseRouter);
+
+  // Add error handler
+  app.use((err: Error, _: Request, res: Response,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      next: NextFunction,
+  ) => {
+      if (EnvVars.NodeEnv !== NodeEnvs.Test) {
+          logger.err(err, true);
+      }
+      let status = HttpStatusCodes.BAD_REQUEST;
+      if (err instanceof RouteError) {
+          status = err.status;
+      }
+
+      if (res && res.req) {
+          return handleApiResponse(status, res, err);
+      }
+
+      return res.status(status).json({
+          error: err.message,
+      });
   });
-});
 
+  app.listen(port, () => {
+      if (callback && typeof callback == 'function') {
+          callback()
+      }
+  });
+}
 
-// **** Export default **** //
+const destroy = (callback: Function) => {
+  httpServer.close(() => {
+      if (callback && typeof callback == 'function') {
+          callback();
+      }
+  });
+}
 
-export default app;
+async function setupExpressServer(app: Application) {
+  const expressUserAgent = useragent.express();
+  const secret = _.get(config, 'secret') || '';
+
+  // View engine setup
+  app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'ejs');
+
+  // Set static directory (js and css).
+  const staticDir = path.join('public');
+  app.use(express.static(staticDir));
+
+  // Basic middleware
+  app.use(express.json({
+      limit: '50mb'
+  }));
+  app.use(express.urlencoded({
+      extended: true,
+      limit: '50mb'
+  }));
+  app.use(cookieParser(EnvVars.CookieProps.Secret));
+  app.use(overrideRender);
+  app.use(function userAgent(req, res, next) {
+      expressUserAgent(req, res, next);
+  });
+
+  app.use(expressSession({
+      store: database.sessionStore,
+      secret: secret,
+      // key: 'express.sid',
+      cookie: cookies.setupCookie(),
+      resave: false,
+      saveUninitialized: false,
+  }));
+}
+
+export default {
+  app,
+  httpServer,
+  start,
+  destroy
+};

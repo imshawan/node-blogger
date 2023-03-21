@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import meta from "@src/meta";
+import { baseScripts, vendorScripts } from "@src/meta";
 import {siteName, paths} from '../../constants';
 import fs from 'fs';
 import ejs from 'ejs';
@@ -11,7 +11,6 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
     res.render = async function renderOverride(template: string, options: any, callback: Function) {
         const self = this;
         const req = this.req;
-        const { baseScripts, vendorScripts } = meta;
 
         if (!template) return next();
         
