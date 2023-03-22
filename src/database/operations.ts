@@ -77,7 +77,7 @@ const paginateObjects = async function (key: object, paginate: IMongoPaginateOpt
 
     options = getObjectOptions(options || {});
 
-    if (!Object.keys(order)) {
+    if (!Object.keys(order).length) {
         order = {$natural: -1}
     }
 
@@ -140,7 +140,7 @@ function getObjectOptions (options: IParamOptions): IParamOptions {
 
 function validateCollection(name: string) {
     name = name.trim();
-    
+
     if (!name) {
         throw new Error('A valid collection name is require');
     }
