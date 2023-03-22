@@ -1,6 +1,8 @@
-define('client/register', [], function () {
+define('client/register', ['modules/http'], function (http) {
     const register = {};
     const MIN_PASSWORD_LENGTH = 6;
+
+    var isUsernameValid = false;
 
     register.initialize = function () {
 
@@ -10,11 +12,26 @@ define('client/register', [], function () {
             if (form.attr('verified') == 'false') {
                 e.preventDefault();
                 if (register.validatePassword(form)) {
-                    form.attr('verified', true);
-                    form.trigger('submit');
+                    if (isUsernameValid) {
+                        form.attr('verified', true);
+                        form.trigger('submit');
+                    }
                 }
             }
         });
+
+        $('#usernameInput').on('keyup', $.debounce(400, function () {
+            const username = $(this).val();
+            http.GET('/user/validate/username/' + username , {})
+                .then(res => {
+                    isUsernameValid = true;
+                    $('#username-status-text').text(`Cool! People can now mention you with @${username}`).show();
+                })
+                .catch(err => {
+                    $('#username-status-text').text(err.message)
+                        .css({color: 'red'}).show();
+                });
+        }));
     }
 
     register.validatePassword = function (form) {

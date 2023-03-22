@@ -1041,7 +1041,7 @@ a.badge-light:focus, a.badge-light:hover {
   text-decoration: underline;
 }
 .signin-page .main .wrapper {
-  margin: 2rem auto;
+  /* margin: 2rem auto; */
   padding: 2rem 2.5rem;
   border: none;
   outline: none;
@@ -1153,6 +1153,7 @@ a.badge-light:focus, a.badge-light:hover {
   color: var(--color-red);
 }
 
+
 @media (max-width: 650px) {
   #posts .posts-container .post-content {
     font-size: 14px;
@@ -1173,6 +1174,7 @@ a.badge-light:focus, a.badge-light:hover {
   }
   
   .signin-page .main .wrapper {
+    margin: 2rem auto;
     padding: 2rem 1.8rem;
     box-shadow: none;
   }

@@ -4,23 +4,23 @@ define('modules/http', () => {
 	const http = {};
 	const baseUrl = '/api/v1';
 
-	http.GET = (route, payload, options={}, onSuccess) => {
+	http.GET = async (route, payload, options={}, onSuccess) => {
 		if (!Object.keys(options).length) {
 			options = {};
 		}
 
-		callAjax({
+		return await callAjax({
 			url: route + (Object.keys(payload).length ? ('?' + $.param(payload)) : ''),
 			...options,
 		}, onSuccess);
 	}
 
-	http.POST = (route, payload, options={}, onSuccess) => {
+	http.POST = async (route, payload, options={}, onSuccess) => {
 		if (!Object.keys(options).length) {
 			options = {};
 		}
 
-		callAjax({
+		return await callAjax({
 			url: route,
 			method: 'post',
 			data: payload,
@@ -31,12 +31,12 @@ define('modules/http', () => {
 		}, onSuccess);
 	}
 
-	http.PUT = (route, payload, options={}, onSuccess) => {
+	http.PUT = async (route, payload, options={}, onSuccess) => {
 		if (!Object.keys(options).length) {
 			options = {};
 		}
 
-		callAjax({
+		return await callAjax({
 			url: route,
 			method: 'put',
 			data: payload,
@@ -47,12 +47,12 @@ define('modules/http', () => {
 		}, onSuccess);
 	}
 
-	http.DELETE = (route, payload, options={}, onSuccess) => {
+	http.DELETE = async (route, payload, options={}, onSuccess) => {
 		if (!Object.keys(options).length) {
 			options = {};
 		}
 
-		callAjax({
+		return await callAjax({
 			url: route,
 			method: 'delete',
 			data: payload,

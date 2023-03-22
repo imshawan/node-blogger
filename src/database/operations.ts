@@ -93,9 +93,8 @@ const aggregateObjects = async function (pipeline: object, options?: IParamOptio
 }
 
 function filterObjectFields(object: any, fields?: Array<string>) {
-    if (!object) return {};
-    if (!Object.keys(object).length) {
-        return {};
+    if (!object || !Object.keys(object).length) {
+        return object;
     }
 
     if (fields && Array.isArray(fields) && fields.length) {
@@ -142,7 +141,7 @@ function validateCollection(name: string) {
     name = name.trim();
 
     if (!name) {
-        throw new Error('A valid collection name is require');
+        throw new Error('A valid collection name is required');
     }
 
     if (!Object.keys(Collections).includes(name)) {
