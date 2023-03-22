@@ -155,6 +155,4 @@ const operations = {
     paginateObjects, aggregateObjects,
 };
 
-export default {
-    operations
-} as const;
+export {operations};

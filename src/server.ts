@@ -20,8 +20,8 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import {NodeEnvs} from '@src/constants/misc';
 import {RouteError} from '@src/other/classes';
 import { handleApiResponse, validateConfiguration } from '@src/helpers';
-import { overrideRender } from '@src/middlewares';
-import {initializeDbConnection, database} from './database';
+import { overrideRender, authentication } from '@src/middlewares';
+import {initializeDbConnection, database, operations} from './database';
 import { cookies } from './meta';
 import config from '../config.json';
 import _ from 'lodash';
@@ -124,15 +124,8 @@ async function setupExpressServer(app: Application) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    // passport.serializeUser(function(user: any, done) {
-    //     done(null, user._id);
-    // });
-    
-    // passport.deserializeUser(async function(id, done) {
-    //     User.findById(id, function (err, user) {
-    //         done(err, user);
-    //         });
-    // });
+    passport.serializeUser(authentication.serializeUser);
+    passport.deserializeUser(authentication.deserializeUser);
 }
 
 export default {
