@@ -1,7 +1,10 @@
 import zxcvbn from 'zxcvbn';
+import { getUserByUsername } from './data';
 
 const MINIMUM_PASS_LENGTH = 6;
+const MINIMUM_USERNAME_LENGTH = 3;
 const MAXIMUM_PASS_LENGTH = 256;
+const MAXIMUM_USERNAME_LENGTH = 100;
 const MIN_STRENGTH = 2;
 
 interface IPasswordStrength {
@@ -47,9 +50,25 @@ function checkPasswordStrength(password: string): IPasswordStrength {
     return {score, warning, suggestions, weak};
 }
 
+async function validateUsername(username: string) {
+    username = username.trim();
+    if (username.length < MINIMUM_USERNAME_LENGTH) {
+        throw new Error('Username too short');
+    }
+
+    if (username.length > MAXIMUM_USERNAME_LENGTH) {
+        throw new Error('Username too long');
+    }
+
+    const user = await getUserByUsername(username);
+    if (user) {
+        throw new Error('Username already taken')
+    }
+}
+
 
 const utils = {
-    validatePassword, checkPasswordStrength, isValidEmail
+    validatePassword, checkPasswordStrength, isValidEmail, validateUsername
 }
 
 export {utils};

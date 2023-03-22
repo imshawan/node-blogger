@@ -14,11 +14,15 @@ const register = async (req: Request, res: Response) => {
     const userData: IUserRegisteration = req.body;
     let {username, email, password, confirmpassword} = userData;
 
+    utils.validatePassword(password);
+    await utils.validateUsername(username);
+    
     if (utils.isValidEmail(email)) {
         throw new Error('Invalid email id');
     }
-    
-    utils.validatePassword(password)
+    if (password != confirmpassword) {
+        throw new Error('Passwords do not match');
+    }
     
     
     // res.redirect('register?complete=true');
