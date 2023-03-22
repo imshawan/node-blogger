@@ -16,7 +16,8 @@ const register = async (req: Request, res: Response) => {
 
     utils.validatePassword(password);
     await utils.validateUsername(username);
-    
+    await utils.checkEmailAvailability(email);
+
     if (utils.isValidEmail(email)) {
         throw new Error('Invalid email id');
     }

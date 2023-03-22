@@ -66,9 +66,13 @@ async function validateUsername(username: string) {
     }
 }
 
+async function checkEmailAvailability(email: string): Promise<void> {
+    // TODO
+    // Need to implement the functionality
+}
 
 const utils = {
-    validatePassword, checkPasswordStrength, isValidEmail, validateUsername
+    validatePassword, checkPasswordStrength, isValidEmail, validateUsername, checkEmailAvailability
 }
 
 export {utils};
