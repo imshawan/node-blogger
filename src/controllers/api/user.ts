@@ -7,10 +7,10 @@ const checkUsername = async (req: Request, res: Response) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.user.checkUsername(req));
 }
 
-const checkEmail = async (req: Request, res: Response) => {
-    handleApiResponse(HttpStatusCodes.OK, res, await api.user.checkEmail(req));
+const checkPassword = async (req: Request, res: Response) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.user.checkPassword(req));
 }
 
 export default {
-    checkUsername, checkEmail
+    checkUsername, checkPassword
   } as const;

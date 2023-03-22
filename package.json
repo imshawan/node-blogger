@@ -22,7 +22,7 @@
     ],
     "ext": "ts, html",
     "ignore": [
-      "src/public"
+      "/public"
     ],
     "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src"
   },

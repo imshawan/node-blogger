@@ -7,6 +7,11 @@
                     <p class="text text-normal">Already registered? <span><a href="/signin" class="text text-links">Sign in</a></span>
                     </p>
                 </div>
+
+                <div id="errors-area" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+                    <span></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 
                 <form id="registeration-form" verified="false" action="/register" method="post" class="form needs-validation" novalidate>
                     <div class="input-control">
@@ -32,6 +37,7 @@
                             Please create a password
                         </div>
                         <div id="password-status-text" class="show-input-status color-red"></div>
+                        <div id="password-strength-text" class="show-input-status" style="color: #626262; display: none;"></div>
                     </div>
                     <div class="input-control position-relative">
                         <label for="confirm-password-input" class="input-label">Confirm password</label>

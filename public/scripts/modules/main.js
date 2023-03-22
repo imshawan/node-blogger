@@ -63,3 +63,21 @@ function loadScripts (scripts, callback) {
       });
     }, false);
   })();
+
+  /**
+   * @date 22-03-2023
+   * @author imshawan <hello@imshawan.dev>
+   * @function scrollToTop
+   * @description Scrolls back to document's (DOM) begining position
+   */
+  function scrollToTop () {
+    try {
+        // For Chrome, Firefox, IE, Opera, etc.
+        document.documentElement.scrollTop = 0; 
+    } catch (e) {
+        try {
+            // For Mac (safari) support
+            document.body.scrollTop = 0;
+        } catch (er) {}
+    }
+  }

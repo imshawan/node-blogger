@@ -14,14 +14,14 @@ const register = async (req: Request, res: Response) => {
     const userData: IUserRegisteration = req.body;
     let {username, email, password, confirmpassword} = userData;
 
-    if (!utils.isValidEmail(email)) {
+    if (utils.isValidEmail(email)) {
         throw new Error('Invalid email id');
     }
     
     utils.validatePassword(password)
     
     
-    res.redirect('register?complete=true');
+    // res.redirect('register?complete=true');
     // handleApiResponse(HttpStatusCodes.OK, res, {});
 }
 

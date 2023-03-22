@@ -3,24 +3,52 @@ define('client/register', ['modules/http'], function (http) {
     const MIN_PASSWORD_LENGTH = 6;
 
     var isUsernameValid = false;
+    var isPasswordValid = false;
 
     register.initialize = function () {
 
         $('#registeration-form').on('submit', function (e) {
-            const form = $(this);
+            e.preventDefault();
 
-            if (form.attr('verified') == 'false') {
-                e.preventDefault();
-                if (register.validatePassword(form)) {
-                    if (isUsernameValid) {
-                        form.attr('verified', true);
-                        form.trigger('submit');
-                    }
-                }
+            const form = $(this);
+            let errors = 0;
+    
+            if (!register.validatePassword(form)) {
+                errors++;
             }
+            if (!isUsernameValid) {
+                errors++;
+            }
+            if (!isPasswordValid) {
+                errors++;
+            }
+            if (errors) return;
+
+            const formdata = form.serializeObject();
+            $.ajax({
+                url: '/register',
+                method: 'post',
+                data: formdata,
+            }).then(res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    let errMessage;
+					if (err.responseJSON) {
+						errMessage = err.responseJSON.status && err.responseJSON.status.message ?
+							err.responseJSON.status.message :
+							err.responseJSON.error;
+					}
+
+                    $('#errors-area > span').text(errMessage);
+                    $('#errors-area').show();
+
+                    scrollToTop();
+                });
+
         });
 
-        $('#usernameInput').on('keyup', $.debounce(400, function () {
+        $('#usernameInput').on('keyup', $.debounce(500, function () {
             const username = $(this).val();
             http.GET('/user/validate/username/' + username , {})
                 .then(res => {
@@ -29,6 +57,26 @@ define('client/register', ['modules/http'], function (http) {
                 })
                 .catch(err => {
                     $('#username-status-text').text(err.message)
+                        .css({color: 'red'}).show();
+                });
+        }));
+
+        $('#password-input').on('keyup', $.debounce(500, function () {
+            const password = $(this).val();
+            http.POST('/user/validate/password', {password})
+                .then(res => {
+                    const {suggestions} = res;
+                    isPasswordValid = true;
+                    $('#password-status-text').hide();
+
+                    if (suggestions && suggestions.length) {
+                        let html = `Suggestions: `;
+                        html += suggestions.join('<br />');
+                        $('#password-strength-text').html(html).show();
+                    }
+                })
+                .catch(err => {
+                    $('#password-status-text').text(err.message)
                         .css({color: 'red'}).show();
                 });
         }));

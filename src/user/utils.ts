@@ -4,6 +4,13 @@ const MINIMUM_PASS_LENGTH = 6;
 const MAXIMUM_PASS_LENGTH = 256;
 const MIN_STRENGTH = 2;
 
+interface IPasswordStrength {
+    warning: string
+    suggestions: Array<string>
+    score: number
+    weak: boolean
+}
+
 function isValidEmail (email: string): boolean {
     const isValid = String(email)
       .toLowerCase()
@@ -29,15 +36,15 @@ function validatePassword(password: string): void {
     }
 }
 
-function checkPasswordStrength(password: string): object {
-    let score=0, feedback={}, weak=false;
+function checkPasswordStrength(password: string): IPasswordStrength {
+    let score=0, weak=false;
     const strength = zxcvbn(password);
 
     score = strength.score;
-    feedback = strength.feedback;
     weak = score < MIN_STRENGTH;
+    const {warning, suggestions} = strength.feedback;
 
-    return {score, feedback, weak};
+    return {score, warning, suggestions, weak};
 }
 
 
