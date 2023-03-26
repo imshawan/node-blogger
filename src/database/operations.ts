@@ -92,6 +92,28 @@ const aggregateObjects = async function (pipeline: object, options?: IParamOptio
     return await mongo.client.collection(options.collection).aggregate(pipeline).toArray();
 }
 
+const incrementFieldCount = async function (field: string, key: string = 'global:counters') {
+    return await incrementObjectFieldValueBy(key, field, 1);
+}
+
+const decrementFieldCount = async function (field: string, key: string = 'global:counters') {
+    return await incrementObjectFieldValueBy(key, field, -1);
+}
+
+async function incrementObjectFieldValueBy (key: string, field: string, value: number) {
+    if (!key || isNaN(value)) {
+        return null;
+    }
+    const options = getObjectOptions();
+    const increment = {
+        [field]: value
+    };
+    const operationOptions = { returnOriginal: false, new: true, upsert: true, returnDocument : "after" }
+
+    const result = await mongo.client.collection(options.collection).findOneAndUpdate({ _key: key }, { $inc: increment }, operationOptions);
+    return result && result.value ? result.value[field] : null;
+};
+
 function filterObjectFields(object: any, fields?: Array<string>) {
     if (!object || !Object.keys(object).length) {
         return object;
@@ -111,7 +133,11 @@ function filterObjectFields(object: any, fields?: Array<string>) {
     }
 }
 
-function getObjectOptions (options: IParamOptions): IParamOptions {
+function getObjectOptions (options?: IParamOptions): IParamOptions {
+    if (!options) {
+        options = {};
+    }
+
     if (options && Object.keys(options).length) {
         if (!options.hasOwnProperty('multi')) {
             options.multi = false;
@@ -151,7 +177,7 @@ function validateCollection(name: string) {
 
 const operations = {
     getObjects, setObjects, getObjectsCount, updateObjects, deleteObjects,
-    paginateObjects, aggregateObjects,
+    paginateObjects, aggregateObjects, incrementFieldCount, decrementFieldCount
 };
 
 export {operations as database};

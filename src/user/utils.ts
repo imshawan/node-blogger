@@ -1,5 +1,6 @@
 import zxcvbn from 'zxcvbn';
 import { getUserByUsername } from './data';
+import { database } from '@src/database';
 
 const MINIMUM_PASS_LENGTH = 6;
 const MINIMUM_USERNAME_LENGTH = 3;
@@ -71,8 +72,13 @@ async function checkEmailAvailability(email: string): Promise<void> {
     // Need to implement the functionality
 }
 
+async function generateNextUserId() {
+    return await database.incrementFieldCount('user');
+}
+
 const utils = {
-    validatePassword, checkPasswordStrength, isValidEmail, validateUsername, checkEmailAvailability
+    validatePassword, checkPasswordStrength, isValidEmail, validateUsername, checkEmailAvailability,
+    generateNextUserId
 }
 
 export {utils};
