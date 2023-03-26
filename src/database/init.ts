@@ -1,7 +1,7 @@
 import {connect} from './connection';
 import { initializeSessionStore } from './database';
 
-export const database: {client?: any, connection?: any, sessionStore?: any} = {};
+export const mongo: {client?: any, connection?: any, sessionStore?: any} = {};
 
 export const initializeDbConnection = async function (mongodb: any) {
     if (!Object.keys(mongodb).length) {
@@ -25,9 +25,9 @@ export const initializeDbConnection = async function (mongodb: any) {
     const {client, connection, dbName} = await connect(uri, {database: db}); 
     const sessionStore = await initializeSessionStore(connection, dbName);
 
-    database.client = client;
-    database.connection = connection;
-    database.sessionStore = sessionStore;
+    mongo.client = client;
+    mongo.connection = connection;
+    mongo.sessionStore = sessionStore;
 }
 
 export const closeConnection = async function (callback?: Function) {
@@ -37,12 +37,12 @@ export const closeConnection = async function (callback?: Function) {
         }
     }
 
-    if (!database.connection) {
+    if (!mongo.connection) {
         throw new Error('Cannot close connection as it does not exists');
     }
 
     try {
-        database.connection.close();
+        mongo.connection.close();
     } catch (err) {
         callback(err);
     }

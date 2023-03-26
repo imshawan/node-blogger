@@ -1,5 +1,5 @@
 import { Collections } from "@src/constants";
-import { database } from "./init";
+import { mongo } from "./init";
 import { IParamOptions, IMongoInsertOptions, IMongoDeleteOptions, IMongoUpdateOptions, 
     IMongoPaginateOptions } from "@src/types";
 
@@ -8,7 +8,7 @@ const getObjects = async function (key: object, fields?: Array<string>, options?
     options = getObjectOptions(options || {});
 
     if (options.multi) {
-        const data = await database.client.collection(options.collection).find(key);
+        const data = await mongo.client.collection(options.collection).find(key);
         if (Array.isArray(fields) && fields.length) {
             return data.map((elem: any) => filterObjectFields(elem, fields));
         } else {
@@ -16,14 +16,14 @@ const getObjects = async function (key: object, fields?: Array<string>, options?
         }
     }
     
-    const data = await database.client.collection(options.collection).findOne(key);
+    const data = await mongo.client.collection(options.collection).findOne(key);
     return filterObjectFields(data, fields)
 }
 
 const getObjectsCount = async function (key: object, options?: IParamOptions) {
     options = getObjectOptions(options || {});
     
-    return await database.client.collection(options.collection).find(key).count();
+    return await mongo.client.collection(options.collection).find(key).count();
 }
 
 const setObjects = async function (data: any, options?: IParamOptions) {
@@ -35,10 +35,10 @@ const setObjects = async function (data: any, options?: IParamOptions) {
     }
 
     if (Array.isArray(data) && data.length) {
-        return await database.client.collection(options.collection).insertMany(data, mongoOptions);
+        return await mongo.client.collection(options.collection).insertMany(data, mongoOptions);
     }
 
-    return await database.client.collection(options.collection).insertOne(data, mongoOptions);
+    return await mongo.client.collection(options.collection).insertOne(data, mongoOptions);
 }
 
 const updateObjects = async function (key: object, data: any, options?: IParamOptions) {
@@ -53,7 +53,7 @@ const updateObjects = async function (key: object, data: any, options?: IParamOp
         mongoOptions.multi = true;
     }
 
-    return await database.client.collection(options.collection).update(key, data, mongoOptions);
+    return await mongo.client.collection(options.collection).update(key, data, mongoOptions);
 }
 
 const deleteObjects = async function (key: object, options?: IParamOptions) {
@@ -68,7 +68,7 @@ const deleteObjects = async function (key: object, options?: IParamOptions) {
         mongoOptions.justOne = true;
     }
 
-    return await database.client.collection(options.collection).remove(key, mongoOptions);
+    return await mongo.client.collection(options.collection).remove(key, mongoOptions);
 }
 
 const paginateObjects = async function (key: object, paginate: IMongoPaginateOptions, options?: IParamOptions) {
@@ -81,7 +81,7 @@ const paginateObjects = async function (key: object, paginate: IMongoPaginateOpt
         order = {$natural: -1}
     }
 
-    return await database.client.collection(options.collection).find(key).sort(order).limit(limit)
+    return await mongo.client.collection(options.collection).find(key).sort(order).limit(limit)
     .skip(page * limit)
     .toArray();
 }
@@ -89,7 +89,7 @@ const paginateObjects = async function (key: object, paginate: IMongoPaginateOpt
 const aggregateObjects = async function (pipeline: object, options?: IParamOptions) {
     options = getObjectOptions(options || {});
 
-    return await database.client.collection(options.collection).aggregate(pipeline).toArray();
+    return await mongo.client.collection(options.collection).aggregate(pipeline).toArray();
 }
 
 function filterObjectFields(object: any, fields?: Array<string>) {
@@ -154,4 +154,4 @@ const operations = {
     paginateObjects, aggregateObjects,
 };
 
-export {operations};
+export {operations as database};

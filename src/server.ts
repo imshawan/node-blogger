@@ -21,7 +21,7 @@ import {NodeEnvs} from '@src/constants/misc';
 import {RouteError} from '@src/other/classes';
 import { handleApiResponse, validateConfiguration } from '@src/helpers';
 import { overrideRender, authentication } from '@src/middlewares';
-import {initializeDbConnection, database, operations} from './database';
+import {initializeDbConnection, mongo, database} from './database';
 import { cookies } from './meta';
 import config from '../config.json';
 import _ from 'lodash';
@@ -113,7 +113,7 @@ async function setupExpressServer(app: Application) {
     });
 
     app.use(expressSession({
-        store: database.sessionStore,
+        store: mongo.sessionStore,
         secret: secret,
         // key: 'express.sid',
         cookie: cookies.setupCookie(),
