@@ -5,13 +5,12 @@ interface IOptions {
     rounds?: number|string
     password?: string
     hash?: string
-    shaWrapped?: boolean
 }
 
 var randomHashCache: string;
 
 const hash = async function (options: IOptions) {
-    let {rounds='10', password=''} = options;
+    let {rounds=10, password=''} = options;
     if (!password) {
         throw new Error('password is required and cannot be null');
     }
@@ -22,16 +21,15 @@ const hash = async function (options: IOptions) {
 };
 
 const compare = async function (options: IOptions) {
-    let {hash='', password='', shaWrapped} = options;
+    let {hash='', password=''} = options;
     if (!password) {
         throw new Error('password is required and cannot be null');
     }
     if (!hash) {
         hash = await generateRandomHash();
     }
-	if (shaWrapped) {
-		password = crypto.createHash('sha512').update(password).digest('hex');
-	}
+
+    password = crypto.createHash('sha512').update(password).digest('hex');
 
     return await compareHashWithPassword({password, hash});
 };
@@ -49,7 +47,7 @@ async function generateRandomHash() {
 }
 
 async function hashPassword(options: IOptions) {
-    let {rounds='10', password=''} = options;
+    let {rounds=10, password=''} = options;
 
     rounds = typeof rounds === 'string' ? parseInt(rounds, 10) : rounds;
 
