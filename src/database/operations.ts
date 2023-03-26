@@ -2,6 +2,8 @@ import { Collections } from "@src/constants";
 import { mongo } from "./init";
 import { IParamOptions, IMongoInsertOptions, IMongoDeleteOptions, IMongoUpdateOptions, 
     IMongoPaginateOptions } from "@src/types";
+import _ from "lodash";
+import { ObjectId } from "bson";
 
 
 const getObjects = async function (key: object, fields?: Array<string>, options?: IParamOptions) {
@@ -36,9 +38,12 @@ const setObjects = async function (data: any, options?: IParamOptions) {
 
     if (Array.isArray(data) && data.length) {
         return await mongo.client.collection(options.collection).insertMany(data, mongoOptions);
+    } else {
+        mongoOptions = _.merge(mongoOptions, {upsert: true, returnDocument: 'after', returnOriginal: false})
     }
 
-    return await mongo.client.collection(options.collection).insertOne(data, mongoOptions);
+    const response = await mongo.client.collection(options.collection).findOneAndUpdate({_id: new ObjectId()}, {$set: data}, mongoOptions);
+    return response && response.value ? response.value : response;
 }
 
 const updateObjects = async function (key: object, data: any, options?: IParamOptions) {

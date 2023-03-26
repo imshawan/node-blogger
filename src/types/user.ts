@@ -1,22 +1,25 @@
-import { ObjectId } from "bson"
+import { ObjectId } from "bson";
 
 export interface IUser {
-    _id: ObjectId
-    userId: Number
-    name?: string
-    slug: string
-    username: string
-    email: string
+    _id?: ObjectId
+    _key?: string
+    userid?: Number
+    firstname?: string
+    lastname?: string
+    slug?: string
+    username?: string
+    email?: string
     emailConfirmed?: boolean
+    password?: string
     passwordHash?: string
-    birthday?: Date
+    birthday?: string
     picture?: string
     location?: string
     bio?: string
     about?: string
-    joiningDate?: Date
-    status?: string
-    lastOnline?: Date
+    joiningDate?: string
+    isOnline?: boolean
+    lastOnline?: string
     gdprConsent?: boolean
     acceptedTnC?: boolean
 }

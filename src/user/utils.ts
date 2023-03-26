@@ -1,6 +1,7 @@
 import zxcvbn from 'zxcvbn';
 import { getUserByUsername } from './data';
 import { database } from '@src/database';
+import { slugify } from '@src/utilities';
 
 const MINIMUM_PASS_LENGTH = 6;
 const MINIMUM_USERNAME_LENGTH = 3;
@@ -26,6 +27,10 @@ function isValidEmail (email: string): boolean {
 };
 
 function validatePassword(password: string): void {
+    if (!password || !password.length) {
+        throw new Error('Password is required');
+    }
+
     if (password.length < MINIMUM_PASS_LENGTH) {
         throw new Error('Password too short');
     }
@@ -70,6 +75,27 @@ async function validateUsername(username: string) {
 async function checkEmailAvailability(email: string): Promise<void> {
     // TODO
     // Need to implement the functionality
+    const found = await database.getObjects({email, _key: 'user'});
+    if (found && Object.keys(found)) {
+        throw new Error('An account with the email already exists');
+    }
+}
+
+async function generateUserslug(username: string): Promise<string> {
+    let index = 0;
+
+    return slugify(username);
+    // while (true) {
+    //     let slug = slugify(username);
+    //     slug = index < 0 ? String(slug + '-' + index) : slug;
+
+    //     const found = await database.getObjects({slug, _key: 'user'});
+    //     if (found) {
+    //         index++;
+    //     } else {
+    //         return slug;
+    //     }
+    // }
 }
 
 async function generateNextUserId() {
@@ -78,7 +104,7 @@ async function generateNextUserId() {
 
 const utils = {
     validatePassword, checkPasswordStrength, isValidEmail, validateUsername, checkEmailAvailability,
-    generateNextUserId
+    generateNextUserId, generateUserslug,
 }
 
 export {utils};
