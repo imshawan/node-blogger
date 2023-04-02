@@ -31,10 +31,10 @@ const register = async (req: Request, res: Response) => {
         throw new Error('Passwords do not match');
     }
     
-    await RegisterUser(userData);
+    const data = await RegisterUser(userData);
 
     // TODO introduce the token mechanism for consents (per user)
-    handleApiResponse(HttpStatusCodes.OK, res, {next: `${req.url}/complete/token=`});
+    handleApiResponse(HttpStatusCodes.OK, res, {next: `${req.url}/complete/token=${data.token}`});
 }
 
 export default {

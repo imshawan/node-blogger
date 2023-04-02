@@ -1,6 +1,6 @@
 import { IUser } from "@src/types/user";
 import {utils as Utils} from './utils';
-import { password as Passwords, getISOTimestamp } from "@src/utilities";
+import { password as Passwords, getISOTimestamp, generateUUID } from "@src/utilities";
 import _ from "lodash";
 import { database } from "@src/database";
 
@@ -70,6 +70,18 @@ export const register = async function register(userdata: IUser) {
     user.joiningDate = timestamp;
     user.isOnline = true;
 
-    const data = await database.setObjects(user);
-    return data;
+    const uniqueUUID = generateUUID();
+    const newUserRegData = {
+        _key: 'user:' + userid + ':registeration',
+        token: uniqueUUID,
+        consentStage: false,
+        userid: userid,
+        createdAt: timestamp,
+    };
+
+    const [data] = await Promise.all([
+        database.setObjects(user),
+        database.setObjects(newUserRegData),
+    ])
+    return _.merge(data, {token: uniqueUUID});
 }
