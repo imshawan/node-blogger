@@ -11,7 +11,6 @@ const signIn = async function (req: Request, res: Response) {
 
 const consent = async function (req: Request, res: Response) {
     const {token} = req.query;
-    console.log(token, '-');
 
     const page = {
         title: 'consent'

@@ -22,9 +22,6 @@ const loginUser = async function loginUser (req: Request, u: string, e: string, 
         [UserUtils.isValidEmail(username) ? 'email' : 'username']: username,
     };
 
-    console.log(searchkeys);
-    
-
     const user: IUser = await database.getObjects(searchkeys);
     if (!user || !Object.keys(user).length) {
         return done(new Error('could not find any user associated with such credentials'));
