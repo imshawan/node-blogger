@@ -12,7 +12,12 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
             return handleApiResponse(HttpStatusCodes.UNAUTHORIZED, res, new Error(err.message));
         }
 
-        handleApiResponse(HttpStatusCodes.OK, res, {user: userData, ...info});
+        if (req.body.rememberme) {
+            // TODO
+        }
+        
+        // handleApiResponse(HttpStatusCodes.OK, res, {next: '/'});
+        res.redirect('/');
     })(req, res, next);
 }
 
