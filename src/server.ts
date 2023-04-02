@@ -20,13 +20,13 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import {NodeEnvs} from '@src/constants/misc';
 import {RouteError} from '@src/other/classes';
 import { handleApiResponse, validateConfiguration } from '@src/helpers';
-import { overrideRender, authentication } from '@src/middlewares';
+import { overrideRender, user, authentication } from '@src/middlewares';
 import {initializeDbConnection, mongo, database} from './database';
 import { cookies } from './meta';
 import config from '../config.json';
 import _ from 'lodash';
 import passport from 'passport';
-import passportLocal from 'passport-local';
+import {Strategy as LocalStrategy} from 'passport-local';
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -124,8 +124,9 @@ async function setupExpressServer(app: Application) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    passport.serializeUser(authentication.serializeUser);
-    passport.deserializeUser(authentication.deserializeUser);
+    passport.serializeUser(user.serializeUser);
+    passport.deserializeUser(user.deserializeUser);
+    passport.use(new LocalStrategy({ passReqToCallback: true }, authentication.loginUser));
 }
 
 export default {

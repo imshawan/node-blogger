@@ -3,7 +3,7 @@ import { ObjectId } from "bson";
 export interface IUser {
     _id?: ObjectId
     _key?: string
-    userid?: Number
+    userid?: number
     firstname?: string
     lastname?: string
     slug?: string

@@ -20,7 +20,8 @@ const handleApiResponse = function (code: number, response: Response, data?: any
         
     } else if (data instanceof Error) {
         message = data.message;
-		error = StatusCodesWithError['_400'];
+		// @ts-ignore 
+		error = StatusCodesWithError[`_${code}`];
 
 		payload.status = {
 			success: false,

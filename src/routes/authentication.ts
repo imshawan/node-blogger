@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import controllers from '../controllers';
 import { mountPageRoute, mountApiRoute } from '@src/helpers';
+import { checkRequiredFields } from '@src/middlewares';
 
 const router = Router();
 
 mountPageRoute(router, '/signin', [], controllers.authentication.signIn);
 mountPageRoute(router, '/register', [], controllers.authentication.register);
+mountPageRoute(router, '/register/complete', [], controllers.authentication.consent);
 
 /**
  * @date 17-03-2023
@@ -17,7 +19,7 @@ mountPageRoute(router, '/register', [], controllers.authentication.register);
  * performing API calls
  */
 
-mountApiRoute(router, 'post', '/signin', [], controllers.api.authentication.signIn);
+mountApiRoute(router, 'post', '/signin', [checkRequiredFields.bind(null, ['username', 'password'])], controllers.api.authentication.signIn);
 mountApiRoute(router, 'post', '/register', [], controllers.api.authentication.register);
 
 export default router

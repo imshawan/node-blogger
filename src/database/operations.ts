@@ -127,7 +127,7 @@ function filterObjectFields(object: any, fields?: Array<string>) {
     if (fields && Array.isArray(fields) && fields.length) {
         const obj = {};
         fields.forEach(el => {
-            if (object[el]) {
+            if (object.hasOwnProperty(el)) {
                 // @ts-ignore
                 obj[el] = object[el];
             }

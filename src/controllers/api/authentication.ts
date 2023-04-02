@@ -1,13 +1,19 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { handleApiResponse } from "@src/helpers";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
-import { utils } from "@src/user";
+import { utils, register as RegisterUser } from "@src/user";
 import { IUserRegisteration } from "@src/types";
+import passport from "passport";
 
-const signIn = async (req: Request, res: Response) => {
-    console.log(req.body);
-    
-    handleApiResponse(HttpStatusCodes.OK, res, {});
+const signIn = async (req: Request, res: Response, next: NextFunction) => {
+
+    passport.authenticate('local', async function (err?: Error, userData?: any, info?: object) {
+        if (err) {
+            return handleApiResponse(HttpStatusCodes.UNAUTHORIZED, res, new Error(err.message));
+        }
+
+        handleApiResponse(HttpStatusCodes.OK, res, {user: userData, ...info});
+    })(req, res, next);
 }
 
 const register = async (req: Request, res: Response) => {
@@ -18,16 +24,17 @@ const register = async (req: Request, res: Response) => {
     await utils.validateUsername(username);
     await utils.checkEmailAvailability(email);
 
-    if (utils.isValidEmail(email)) {
+    if (!utils.isValidEmail(email)) {
         throw new Error('Invalid email id');
     }
     if (password != confirmpassword) {
         throw new Error('Passwords do not match');
     }
     
-    
-    // res.redirect('register?complete=true');
-    // handleApiResponse(HttpStatusCodes.OK, res, {});
+    await RegisterUser(userData);
+
+    // TODO introduce the token mechanism for consents (per user)
+    handleApiResponse(HttpStatusCodes.OK, res, {next: `${req.url}/complete/token=`});
 }
 
 export default {
