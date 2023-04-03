@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-const get = async function (req: Request, res: Response) {
+const get = async function (req: Request, res: Response) {  
   const page = {
     title: 'Home'
   };

@@ -27,6 +27,7 @@ import config from '../config.json';
 import _ from 'lodash';
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
+import flash from 'express-flash';
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -112,6 +113,7 @@ async function setupExpressServer(app: Application) {
         expressUserAgent(req, res, next);
     });
 
+    app.use(flash());
     app.use(expressSession({
         store: mongo.sessionStore,
         secret: secret,
@@ -121,12 +123,12 @@ async function setupExpressServer(app: Application) {
         saveUninitialized: false,
     }));
 
-    app.use(passport.initialize());
-    app.use(passport.session());
-
     passport.serializeUser(user.serializeUser);
     passport.deserializeUser(user.deserializeUser);
     passport.use(new LocalStrategy({ passReqToCallback: true }, authentication.loginUser));
+
+    app.use(passport.initialize());
+    app.use(passport.session());
 }
 
 export default {

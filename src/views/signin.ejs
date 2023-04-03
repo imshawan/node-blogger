@@ -7,7 +7,11 @@
                     <p class="text text-normal">New user? <span><a href="/register" class="text text-links">Create an account</a></span>
                     </p>
                 </div>
-                <form id="signin-form" name="signin" action="/signin" method="post" class="form">
+                <div id="errors-area" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+                    <span></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <form id="signin-form" name="signin" class="form">
                     <div class="input-control">
                         <label for="usernameOrEmail" class="input-label">Username or email address</label>
                         <input name="username" id="usernameOrEmail" class="input-field" placeholder="Username or email address">

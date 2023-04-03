@@ -23,7 +23,7 @@ const loginUser = async function loginUser (req: Request, u: string, e: string, 
     };
 
     const user: IUser = await database.getObjects(searchkeys);
-    if (!user || !Object.keys(user).length) {
+    if (!user) {
         return done(new Error('could not find any user associated with such credentials'));
     }
 
@@ -31,7 +31,8 @@ const loginUser = async function loginUser (req: Request, u: string, e: string, 
         return done(new Error('Something went wrong while creating your account, please re-try registeration'));
     }
     
-    if (!UserMiddleware.comparePassword(user.userid, user.passwordHash)) {
+    const isPasswordCorrect = await UserMiddleware.comparePassword(user.userid, password);
+    if (!isPasswordCorrect) {
         return done(new Error('Invalid credentials, please try again'));
     }
 

@@ -8,7 +8,7 @@ export const cookies = {
     get: function (): object {
         const cookie = {
             domain: 'localhost',
-            secure: true,
+            secure: false,
             path: '/',
             sameSite: 'Lax'
         };

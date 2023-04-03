@@ -16,8 +16,10 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
             // TODO
         }
         
-        // handleApiResponse(HttpStatusCodes.OK, res, {next: '/'});
-        res.redirect('/');
+        req.logIn(userData, function(err) {
+            if (err) { return next(err); }
+            return res.json({next: '/'});
+        });
     })(req, res, next);
 }
 

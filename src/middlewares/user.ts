@@ -1,14 +1,15 @@
 import { NextFunction, Response, Request } from 'express';
 import { database } from "@src/database";
 import { password as Passwords } from "@src/utilities";
+import { getUserByUserId } from '@src/user';
 
-const serializeUser = async function serializeUser(user: any, done: Function) {
-    done(null, user._id);
+const serializeUser = async function serializeUser(user: any, done: Function) {    
+    done(null, user.userid);
 }
 
 const deserializeUser = async function deserializeUser(id: any, done: Function) {
     try {
-        const user = await database.getObjects({_id: id});
+        const user = await getUserByUserId(id);
         if (user) {
             done(null, user)
         } else done(new Error('Count not find user'), {})
