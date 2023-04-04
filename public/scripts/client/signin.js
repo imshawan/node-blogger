@@ -2,6 +2,7 @@ define([], function () {
     const signIn = {};
 
     signIn.initialize = function () {
+        const {redirect} = pagePayload;
 
         $('.password-show-toggle').on('click', function () {
             $(this).find('i').toggleClass('fa-eye-slash');
@@ -16,6 +17,8 @@ define([], function () {
             $('#errors-area').hide();
 
             const form = $(this).serializeObject();
+            form.redirect = redirect;
+
             $.ajax({
                 url: '/signin',
                 method: 'post',

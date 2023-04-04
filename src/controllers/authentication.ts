@@ -2,8 +2,10 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { Request, Response } from 'express';
 
 const signIn = async function (req: Request, res: Response) {
+    const {redirect} = req.query;
     const page = {
-        title: 'Sign in'
+        title: 'Sign in',
+        redirect,
     };
 
     res.render('signin', page);

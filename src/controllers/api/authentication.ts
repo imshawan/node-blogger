@@ -6,6 +6,7 @@ import { IUserRegisteration } from "@src/types";
 import passport from "passport";
 
 const signIn = async (req: Request, res: Response, next: NextFunction) => {
+    const {redirect} = req.body;
 
     passport.authenticate('local', async function (err?: Error, userData?: any, info?: object) {
         if (err) {
@@ -18,9 +19,16 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
         
         req.logIn(userData, function(err) {
             if (err) { return next(err); }
-            return res.json({next: '/'});
+            return res.json({next: redirect || '/'});
         });
     })(req, res, next);
+}
+
+const signout = async (req: Request, res: Response) => {
+    req.logOut((err) => {
+        res.clearCookie('connect.sid');
+        res.redirect('/');
+    });
 }
 
 const register = async (req: Request, res: Response) => {
@@ -45,5 +53,5 @@ const register = async (req: Request, res: Response) => {
 }
 
 export default {
-    signIn, register
+    signIn, register, signout
   } as const;

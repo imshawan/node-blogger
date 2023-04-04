@@ -250,7 +250,7 @@ nav {
 
 }
 
-nav a, nav .nav-link {
+nav a, nav .nav-link, nav .nav-btn {
   color: white;
   position: relative;
   padding: 10px 0px !important;

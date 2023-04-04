@@ -24,3 +24,15 @@ export const checkRequiredFields = function (fields: Array<string>, req: Request
         return handleApiResponse(400, res, new Error('Required fields were missing from the API call: ' + missingFields.join(', ')));
     } else next();
 }
+
+export const requireLogin = async function (req: Request, res: Response, next: NextFunction) {
+    if (!req.isAuthenticated() || !req.user) {
+        return res.redirect('/signin?redirect=' + req.url);
+    }
+
+    next();
+}
+
+export const checkAuthentication = async function (req: Request, res: Response, next: NextFunction) {
+    
+}

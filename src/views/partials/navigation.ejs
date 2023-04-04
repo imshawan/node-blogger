@@ -15,7 +15,13 @@
                     <a class="nav-link" href="/about">about</a>
                     <a class="nav-link" href="/contact">contact</a>
                     <a class="nav-link" href="/blog">Blog</a>
-                    <a class="nav-link" href="/signin">Sign in</a>
+                    <% if (!_meta.authenticated) { %>
+                        <a class="nav-link" href="/signin">Sign in</a>
+                    <% } else { %>
+                        <form action="/signout" method="post">
+                            <button type="submit" class="nav-link nav-btn bg-transparent border-0">Log out</button>
+                        </form>
+                    <% } %>
                 </div>
             </div>
         </div>

@@ -27,6 +27,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         pageOptions.scripts = [];
         pageOptions.baseScripts = baseScripts;
         pageOptions.pageScript = ['client/', template].join('');
+        pageOptions._meta = parseMetaInformation(req);
 
         const [header, body, footer] = await Promise.all([
             renderTemplateTohtml(headerPath, pageOptions),
@@ -97,4 +98,12 @@ function generatePageDataScript(options: object): string {
     return `<script id="page-data">
                 var pagePayload = ${JSON.stringify(options).replace(/<\//g, '<\\/')}
             </script>`
+}
+
+function parseMetaInformation(req: Request) {
+    const obj = {
+        authenticated: req.isAuthenticated(),
+    };
+
+    return obj;
 }
