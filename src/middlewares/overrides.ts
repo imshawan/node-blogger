@@ -3,6 +3,7 @@ import { baseScripts, vendorScripts } from "@src/meta";
 import {siteName, paths} from '../../constants';
 import fs from 'fs';
 import ejs from 'ejs';
+import { meta } from "@src/meta";
 
 export const overrideRender = (req: Request, res: Response, next: NextFunction) => {
     const render = res.render;
@@ -49,6 +50,12 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
 
     next();
 };
+
+export const overrideHeaders = async function (req: Request, res: Response, next: NextFunction) {
+    const xPoweredBy = meta.configurationStore?.xPoweredByHeaders || 'NodeBlogger';
+    res.setHeader('X-Powered-By', xPoweredBy);
+    next();
+}
 
 function renderTemplateTohtml(templatePath: string, payload?: object): Promise<string> {
     if (!payload) {

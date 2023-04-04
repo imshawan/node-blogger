@@ -20,9 +20,9 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import {NodeEnvs} from '@src/constants/misc';
 import {RouteError} from '@src/other/classes';
 import { handleApiResponse, validateConfiguration } from '@src/helpers';
-import { overrideRender, user, authentication } from '@src/middlewares';
+import { overrideRender, user, authentication, overrideHeaders } from '@src/middlewares';
 import {initializeDbConnection, mongo, database} from './database';
-import { cookies } from './meta';
+import { cookies, meta, initialize as initializeMeta } from './meta';
 import config from '../config.json';
 import _ from 'lodash';
 import passport from 'passport';
@@ -35,6 +35,7 @@ const start = async function (port: Number, callback: Function) {
 
     validateConfiguration(config)
     await initializeDbConnection(config.mongodb);
+    await initializeMeta();
     await setupExpressServer(app);
 
     // Show routes called in console during development
@@ -91,6 +92,8 @@ async function setupExpressServer(app: Application) {
     const expressUserAgent = useragent.express();
     const secret = _.get(config, 'secret') || '';
 
+    app.use(overrideHeaders);
+    
     // View engine setup
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'ejs');
@@ -101,11 +104,11 @@ async function setupExpressServer(app: Application) {
 
     // Basic middleware
     app.use(express.json({
-        limit: '50mb'
+        limit: meta.configurationStore?.maximumRequestBodySize || '100kb'
     }));
     app.use(express.urlencoded({
         extended: true,
-        limit: '50mb'
+        limit: meta.configurationStore?.maximumRequestBodySize || '100kb'
     }));
     app.use(cookieParser(secret));
     app.use(overrideRender);
@@ -117,10 +120,10 @@ async function setupExpressServer(app: Application) {
     app.use(expressSession({
         store: mongo.sessionStore,
         secret: secret,
-        // key: 'express.sid',
+        name: meta.configurationStore?.session.name,
         cookie: cookies.setupCookie(),
-        resave: false,
-        saveUninitialized: false,
+        resave: meta.configurationStore?.session.resave || false,
+        saveUninitialized: meta.configurationStore?.session.saveUninitialized || false,
     }));
 
     passport.serializeUser(user.serializeUser);

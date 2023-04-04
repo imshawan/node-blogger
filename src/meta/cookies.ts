@@ -1,7 +1,13 @@
 import _ from 'lodash';
+import { meta } from './init';
 
 export const getTTLSessionSeconds = () => {
-    return (60000 * 60 * 60) * 24 * 14;
+    var maxTTLDays = meta.configurationStore?.cookie.maxTTLDays;
+    if (!maxTTLDays) {
+        maxTTLDays = 12;
+    }
+    
+    return (60000 * 60 * 60) * 24 * maxTTLDays;
 }
 
 export const cookies = {

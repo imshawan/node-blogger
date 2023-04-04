@@ -2,12 +2,7 @@ import zxcvbn from 'zxcvbn';
 import { getUserByUsername } from './data';
 import { database } from '@src/database';
 import { slugify } from '@src/utilities';
-
-const MINIMUM_PASS_LENGTH = 6;
-const MINIMUM_USERNAME_LENGTH = 3;
-const MAXIMUM_PASS_LENGTH = 256;
-const MAXIMUM_USERNAME_LENGTH = 100;
-const MIN_STRENGTH = 2;
+import { meta } from '@src/meta';
 
 interface IPasswordStrength {
     warning: string
@@ -27,6 +22,10 @@ function isValidEmail (email: string): boolean {
 };
 
 function validatePassword(password: string): void {
+    const MINIMUM_PASS_LENGTH = meta.configurationStore?.minPasswordLength || 6;
+    const MAXIMUM_PASS_LENGTH = meta.configurationStore?.maxPasswordLength || 256;
+    const MIN_STRENGTH = meta.configurationStore?.minPasswordStrength || 2;
+    
     if (!password || !password.length) {
         throw new Error('Password is required');
     }
@@ -46,8 +45,9 @@ function validatePassword(password: string): void {
 }
 
 function checkPasswordStrength(password: string): IPasswordStrength {
-    let score=0, weak=false;
+    const MIN_STRENGTH = meta.configurationStore?.minPasswordStrength || 2;
     const strength = zxcvbn(password);
+    let score=0, weak=false;
 
     score = strength.score;
     weak = score < MIN_STRENGTH;
@@ -57,6 +57,9 @@ function checkPasswordStrength(password: string): IPasswordStrength {
 }
 
 async function validateUsername(username: string) {
+    const MINIMUM_USERNAME_LENGTH = meta.configurationStore?.minUsernameLength || 3;
+    const MAXIMUM_USERNAME_LENGTH = meta.configurationStore?.maxUsernameLength || 100;
+
     username = username.trim();
     if (username.length < MINIMUM_USERNAME_LENGTH) {
         throw new Error('Username too short');

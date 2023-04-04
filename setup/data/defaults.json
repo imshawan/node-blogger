@@ -1,0 +1,21 @@
+{
+    "siteName": "NodeBlogger",
+    "description": "A simple open-source blogging application powered by MongoDB & NodeJS",
+    "session": {
+        "name": "session.sid",
+        "saveUninitialized": false,
+        "resave": false
+    },
+    "cookie": {
+        "maxTTLDays": 14
+    },
+    "xPoweredByHeaders": "NodeBlogger",
+    "maximumRequestBodySize": "50mb",
+    "maxPasswordLength": 128,
+    "maxUsernameLength": 128,
+    "maxEmailLength": 128,
+    "minPasswordLength": 6,
+    "minUsernameLength": 4,
+    "minEmailLength": 8,
+    "minPasswordStrength": 2
+}
