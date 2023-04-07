@@ -1,0 +1,23 @@
+<div class="ms-md-5 loggedin-user-dropdown dropdown">
+    <a href="#"
+        class="d-flex align-items-center justify-content-center px-3 link-dark text-decoration-none dropdown-toggle"
+        id="dropdown-user" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="https://github.com/mdo.png" alt="mdo" width="30" height="30" class="rounded-circle">
+    </a>
+    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdown-user">
+        <li>
+            <a class="dropdown-item" href="#">Profile</a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="#">Settings</a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <form action="/signout" method="post">
+                <button type="submit" class="dropdown-item">Sign out</button>
+            </form>
+        </li>
+    </ul>
+</div>

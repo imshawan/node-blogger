@@ -19,9 +19,7 @@
                     <% if (!_meta.authenticated) { %>
                         <a class="nav-link" href="/signin">Sign in</a>
                     <% } else { %>
-                        <form action="/signout" method="post">
-                            <button type="submit" class="nav-link nav-btn bg-transparent border-0">Log out</button>
-                        </form>
+                        <%- include('/partials/loggedin_usernav'); -%>
                     <% } %>
                 </div>
             </div>

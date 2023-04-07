@@ -1200,6 +1200,16 @@ a.badge-light:focus, a.badge-light:hover {
   color: #6c757d!important;
 }
 
+.dropdown-toggle::after {
+  color: var(--color-white);
+}
+
+.loggedin-user-dropdown ul a {
+  padding: 0.25rem 1rem!important;
+  font-weight: 400;
+  text-transform: none;
+}
+
 @media (max-width: 650px) {
   #posts .posts-container .post-content {
     font-size: 14px;
