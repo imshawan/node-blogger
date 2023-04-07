@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { handleApiResponse } from "./response";
+import { breadcrumbs } from "@src/middlewares";
 
 const mountPageRoute = function (router: any, route: string, middlewares: Array<Function>, controller: Function) {
+	const defaults = [breadcrumbs];
+	middlewares = [...middlewares].concat(defaults);
+
 	if (typeof controller != 'function') {
 		throw new Error(`'controller' must be a function, found ${typeof controller} instead`);
 	}

@@ -4,6 +4,7 @@ import {siteName, paths} from '../../constants';
 import fs from 'fs';
 import ejs from 'ejs';
 import { meta } from "@src/meta";
+import { log } from "console";
 
 export const overrideRender = (req: Request, res: Response, next: NextFunction) => {
     const render = res.render;
@@ -29,6 +30,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         pageOptions.baseScripts = baseScripts;
         pageOptions.pageScript = ['client/', template].join('');
         pageOptions._meta = parseMetaInformation(req);
+        pageOptions._breadcrumb = res.locals.breadcrumb;
 
         const [header, body, footer] = await Promise.all([
             renderTemplateTohtml(headerPath, pageOptions),

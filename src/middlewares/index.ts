@@ -5,6 +5,7 @@ export * from './cors';
 export * from './overrides';
 export * from './authentication';
 export * from './user';
+export * from './breadcrumb';
 
 export const checkRequiredFields = function (fields: Array<string>, req: Request, res: Response, next: NextFunction) {
     if (fields && !Array.isArray(fields)) {
