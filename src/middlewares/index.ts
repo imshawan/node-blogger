@@ -1,5 +1,6 @@
 import { NextFunction, Response, Request } from 'express';
 import { handleApiResponse } from '@src/helpers';
+import csurf from 'csurf';
 
 export * from './cors';
 export * from './overrides';
@@ -36,4 +37,18 @@ export const requireLogin = async function (req: Request, res: Response, next: N
 
 export const checkAuthentication = async function (req: Request, res: Response, next: NextFunction) {
     
+}
+
+export const applyCSRFMiddleware = async function (req: Request, res: Response, next: NextFunction) {
+    // TODO
+    // Need to implement cookie options based on the config (https or not and etc)
+    const csurfOptions = {
+        cookie: true,
+    };
+
+    if (req.user) {
+        csurf(csurfOptions)(req, res, next);
+    } else {
+        next();
+    }
 }

@@ -31,6 +31,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         pageOptions.pageScript = ['client/', template].join('');
         pageOptions._meta = parseMetaInformation(req);
         pageOptions._breadcrumb = res.locals.breadcrumb;
+        pageOptions._csrf_token = req.user && req.csrfToken && req.csrfToken();
 
         const [header, body, footer] = await Promise.all([
             renderTemplateTohtml(headerPath, pageOptions),
