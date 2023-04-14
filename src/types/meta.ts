@@ -8,6 +8,7 @@ export interface IMeta {
   maxPasswordLength: number
   maxUsernameLength: number
   maxEmailLength: number
+  maxCategoryBlurbLength: number
   minPasswordLength: number
   minUsernameLength: number
   minEmailLength: number

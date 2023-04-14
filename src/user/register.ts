@@ -1,4 +1,4 @@
-import { IUser } from "@src/types/user";
+import { IUser } from "@src/types";
 import {utils as Utils} from './utils';
 import { password as Passwords, getISOTimestamp, generateUUID } from "@src/utilities";
 import _ from "lodash";
