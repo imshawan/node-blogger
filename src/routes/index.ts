@@ -5,6 +5,7 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import apiRouter from './api';
 import pageRouter from './pageRoutes';
 import authentication from './authentication';
+import adminPageRouter from './admin';
 
 const router = Router();
 
@@ -13,6 +14,9 @@ router.options('/*', corsWithOptions, (req: Request, res: Response) => { res.sen
 // Mounting the page routers
 router.use('/', initializeCors, pageRouter);
 router.use('/', initializeCors, authentication);
+
+// Mounting the admin page routers
+router.use('/admin', initializeCors, adminPageRouter);
 
 // Mounting the API router
 router.use('/api/v1', initializeCors, apiRouter);

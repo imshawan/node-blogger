@@ -1,7 +1,8 @@
 $(document).ready(function () {
     const {modules, pageScript} = pagePayload;
-    loadScripts(modules)
-    loadScripts(pageScript)
+    loadScripts(modules);
+    loadScripts(pageScript);
+    attachGlobalEvents();
 });
 
 function loadScripts (scripts, callback) {
@@ -80,4 +81,34 @@ function loadScripts (scripts, callback) {
             document.body.scrollTop = 0;
         } catch (er) {}
     }
+  }
+
+  function attachGlobalEvents() {
+    // Override signout form event so that csrf tokens can be added to the headers
+    $('body').on('submit', '#signout-form', function(e) {
+        e.preventDefault();
+
+        const csrfToken = String($('form#csrf_token > input').val());
+        console.log(csrfToken);
+
+        $.ajax({
+            url: '/signout',
+            method: 'post',
+            data: {},
+            headers: {
+                'csrf-token': csrfToken
+            }
+        }).then(res => {
+                location.href = '/';
+            })
+            .catch(err => {
+                let errMessage;
+                if (err.responseJSON) {
+                    errMessage = err.responseJSON.status && err.responseJSON.status.message ?
+                        err.responseJSON.status.message :
+                        err.responseJSON.error;
+                }
+                console.log(errMessage);
+            });
+    });
   }

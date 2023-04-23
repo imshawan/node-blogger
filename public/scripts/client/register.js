@@ -11,6 +11,7 @@ define('client/register', ['modules/http'], function (http) {
             e.preventDefault();
 
             const form = $(this);
+            const csrfToken = String($('form#csrf_token > input').val());
             let errors = 0;
     
             if (!register.validatePassword(form)) {
@@ -29,6 +30,9 @@ define('client/register', ['modules/http'], function (http) {
                 url: '/register',
                 method: 'post',
                 data: formdata,
+                headers: {
+                    'csrf-token': csrfToken
+                }
             }).then(res => {
                     console.log(res);
                 })
