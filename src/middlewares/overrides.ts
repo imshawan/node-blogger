@@ -3,8 +3,9 @@ import { baseScripts, vendorScripts } from "@src/meta";
 import {siteName, paths} from '../../constants';
 import fs from 'fs';
 import ejs from 'ejs';
-import { meta } from "@src/meta";
+import { meta, styleSheets } from "@src/meta";
 import { log } from "console";
+import path from "path";
 
 export const overrideRender = (req: Request, res: Response, next: NextFunction) => {
     const render = res.render;
@@ -13,13 +14,15 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
     res.render = async function renderOverride(template: string, options: any, callback: Function) {
         const self = this;
         const req = this.req;
+        const {isAdminRoute} = res.locals;
+        const partialsDir = paths[isAdminRoute ? 'adminTemplatePartialsDir' : 'templatePartialsDir'];
 
         if (!template) return next();
         
         const pageOptions = options || {};
-        const templatePath = [paths.templatesDir, '/', template, '.ejs'].join('');
-        const headerPath = [paths.templatePartialsDir, '/', 'header.ejs'].join('');
-        const footerPath = [paths.templatePartialsDir, '/', 'footer.ejs'].join('');
+        const templatePath = [paths[isAdminRoute ? 'adminTemplatesDir' : 'templatesDir'], '/', template, '.ejs'].join('');
+        const headerPath = path.join(partialsDir, 'header.ejs');
+        const footerPath = path.join(partialsDir, 'footer.ejs');
         const pageClass = generatePageClass(req, res);
         const csrfToken = req.user && req.csrfToken && req.csrfToken();
 
@@ -29,7 +32,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
 
         pageOptions.scripts = [];
         pageOptions.baseScripts = baseScripts;
-        pageOptions.pageScript = ['client/', template].join('');
+        pageOptions.pageScript = ['client/', (isAdminRoute ? 'admin' + template : template)].join('');
         pageOptions._meta = parseMetaInformation(req);
         pageOptions._breadcrumb = res.locals.breadcrumb;
         pageOptions._csrf_token = csrfToken
@@ -69,8 +72,12 @@ function renderTemplateTohtml(templatePath: string, payload?: object): Promise<s
 
     return new Promise((resolve, reject) => {
         fs.readFile(templatePath, 'utf8', function (err, rawTemplate) {
-            if (err) {
-                reject(err.message)
+            if (err) {                     
+                if (err.code == 'ENOENT') {
+                    return resolve('');
+                } else {
+                    return reject(err.message);
+                }
             }
     
             const ejs_string = rawTemplate,

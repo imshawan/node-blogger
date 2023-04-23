@@ -1,8 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 
-const BASE = 'admin/categories';
+const BASE = '/categories';
 const create = async function create(req:Request, res: Response, next: NextFunction) {
-    res.render(BASE + '/create');
+    const pageData = {
+        title: 'Categories'
+    }
+    res.render(BASE + '/create', pageData);
 }
 
 
