@@ -3,10 +3,25 @@
 define('modules/http', () => {
 	const http = {};
 	const baseUrl = '/api/v1';
+	const csrfToken = {
+		get: () => String($('form#csrf_token > input').val())
+	};
 
 	http.GET = async (route, payload, options={}, onSuccess) => {
 		if (!Object.keys(options).length) {
 			options = {};
+		}
+
+		if (options.hasOwnProperty('headers')) {
+			if (!options.headers.hasOwnProperty('csrf-token')) {
+				options.headers = $.extend(options.headers, {
+					'csrf-token': csrfToken.get()
+				});
+			}
+		} else {
+			options.headers = {
+				'csrf-token': csrfToken.get()
+			};
 		}
 
 		return await callAjax({
@@ -25,7 +40,7 @@ define('modules/http', () => {
 			method: 'post',
 			data: payload,
 			headers: {
-				
+				'csrf-token': csrfToken.get()
 			},
 			...options,
 		}, onSuccess);
@@ -41,7 +56,7 @@ define('modules/http', () => {
 			method: 'put',
 			data: payload,
 			headers: {
-				
+				'csrf-token': csrfToken.get()
 			},
 			...options,
 		}, onSuccess);
@@ -57,7 +72,7 @@ define('modules/http', () => {
 			method: 'delete',
 			data: payload,
 			headers: {
-				
+				'csrf-token': csrfToken.get()
 			},
 			...options,
 		}, onSuccess);
