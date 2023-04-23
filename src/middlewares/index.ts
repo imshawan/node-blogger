@@ -1,5 +1,6 @@
 import { NextFunction, Response, Request } from 'express';
 import { handleApiResponse } from '@src/helpers';
+import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import csurf from 'csurf';
 
 export * from './cors';
@@ -23,7 +24,7 @@ export const checkRequiredFields = function (fields: Array<string>, req: Request
     }
 
     if (missingFields.length) {
-        return handleApiResponse(400, res, new Error('Required fields were missing from the API call: ' + missingFields.join(', ')));
+        return handleApiResponse(HttpStatusCodes.BAD_REQUEST, res, new Error('Required fields were missing from the API call: ' + missingFields.join(', ')));
     } else next();
 }
 
@@ -35,8 +36,12 @@ export const requireLogin = async function (req: Request, res: Response, next: N
     next();
 }
 
-export const checkAuthentication = async function (req: Request, res: Response, next: NextFunction) {
-    
+export const requireAuthentication = async function (req: Request, res: Response, next: NextFunction) {    
+    if (!req.isAuthenticated() || !req.user) {
+        return handleApiResponse(HttpStatusCodes.UNAUTHORIZED, res, new Error('A valid session key or token was not found with this API call'));
+    }
+
+    next();
 }
 
 export const applyCSRFMiddleware = async function (req: Request, res: Response, next: NextFunction) {
@@ -47,8 +52,20 @@ export const applyCSRFMiddleware = async function (req: Request, res: Response, 
     };
 
     if (req.user) {
-        csurf(csurfOptions)(req, res, next);
+        csurf(csurfOptions)(req, res, function(err) {
+            if (err) {
+                switch (err.code) {
+                    case 'EBADCSRFTOKEN':
+                        return handleApiResponse(HttpStatusCodes.FORBIDDEN, res);
+                    
+                    default:
+                        return handleApiResponse(HttpStatusCodes.FORBIDDEN, res, new Error('Invalid csrf token'));
+                }
+            } else {
+                return next();
+            }
+        });
     } else {
-        next();
+        return next();
     }
 }

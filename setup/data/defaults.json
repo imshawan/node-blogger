@@ -9,6 +9,11 @@
     "cookie": {
         "maxTTLDays": 14
     },
+    "cors": {
+        "allowedHeaders": "Origin, X-Requested-With, Cookie, Content-Type, Accept, X-Access-Token, Authorization",
+        "whitelistOrigins": "*",
+        "credentials": true
+    },
     "xPoweredByHeaders": "NodeBlogger",
     "maximumRequestBodySize": "50mb",
     "maxPasswordLength": 128,

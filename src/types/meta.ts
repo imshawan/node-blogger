@@ -3,6 +3,7 @@ export interface IMeta {
   description: string
   session: Session
   cookie: Cookie
+  cors: CorsOptions
   xPoweredByHeaders: string
   maximumRequestBodySize: string
   maxPasswordLength: number
@@ -23,4 +24,10 @@ export interface Session {
 
 export interface Cookie {
   maxTTLDays: number
+}
+
+export interface CorsOptions {
+  allowedHeaders: string | string[] | undefined
+  whitelistOrigins?: string | undefined
+  credentials?: boolean | undefined
 }

@@ -3,8 +3,8 @@ import { handleApiResponse } from "./response";
 import { breadcrumbs, applyCSRFMiddleware } from "@src/middlewares";
 
 const mountPageRoute = function (router: any, route: string, middlewares: Array<Function>, controller: Function) {
-	const defaults = [breadcrumbs, applyCSRFMiddleware];
-	middlewares = [...middlewares].concat(defaults);
+	const defaults: Array<Function> = [breadcrumbs, applyCSRFMiddleware];
+	middlewares = [...defaults].concat([...middlewares]);
 
 	if (typeof controller != 'function') {
 		throw new Error(`'controller' must be a function, found ${typeof controller} instead`);
@@ -18,7 +18,7 @@ const mountApiRoute = function (router: any, method: string, route: string, midd
 		throw new Error(`'controller' must be a function, found ${typeof controller} instead`);
 	}
 
-	const defaults = [applyCSRFMiddleware];
+	const defaults: Array<Function> = [applyCSRFMiddleware];
 	middlewares = [...middlewares].concat(defaults);
 
     router[method](route, middlewares, tryRoute(controller, (err: Error, res: Response) => {

@@ -1,21 +1,43 @@
 import cors from 'cors';
-import { Request } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import _ from 'lodash';
+import { meta } from '@src/meta';
+import { CorsOptions } from '@src/types';
 
-const whitelist = ['http://localhost:3000'];
-var corsOptionsDelegate = (req: Request, callback: Function) => {
+const getCorsOptions = function getCorsOptions() {
+    const corsOps: CorsOptions = meta.configurationStore?.cors || {
+        allowedHeaders: undefined,
+        credentials: true
+        ,
+    };
+    return {
+        allowedHeaders: corsOps.allowedHeaders,
+        credentials: corsOps.credentials,
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        preflightContinue: false,
+    };
+}
+
+const corsOptionsDelegate = (req: Request, callback: Function) => {
+    const whitelist = (meta.configurationStore?.cors.whitelistOrigins || "*").split(',').map(e => e.trim());
     const origin = req.header('Origin');
-    var corsOptions;
+    var corsOriginOptions = { origin: true };
 
     if(origin && whitelist.indexOf(origin) !== -1) {
-        corsOptions = { origin: true };
+        corsOriginOptions = { origin: true };
     }
     else {
-        corsOptions = { origin: false };
+        corsOriginOptions = { origin: false };
     }
-    callback(null, corsOptions);
+
+    const options = _.merge(corsOriginOptions, getCorsOptions());
+    callback(null, options);
 };
 
-const initializeCors = cors();
+const initializeCors = async function initializeCors(req:Request, res: Response, next: NextFunction) {
+    const corsOptions = {}
+    cors(corsOptions)(req, res, next);
+}
 const corsWithOptions = cors(corsOptionsDelegate);
 
 export {

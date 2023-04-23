@@ -21,6 +21,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         const headerPath = [paths.templatePartialsDir, '/', 'header.ejs'].join('');
         const footerPath = [paths.templatePartialsDir, '/', 'footer.ejs'].join('');
         const pageClass = generatePageClass(req, res);
+        const csrfToken = req.user && req.csrfToken && req.csrfToken();
 
         pageOptions.title = [pageOptions.title, ' | ', siteName].join('');
         pageOptions.pageClass = pageClass;
@@ -31,7 +32,8 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         pageOptions.pageScript = ['client/', template].join('');
         pageOptions._meta = parseMetaInformation(req);
         pageOptions._breadcrumb = res.locals.breadcrumb;
-        pageOptions._csrf_token = req.user && req.csrfToken && req.csrfToken();
+        pageOptions._csrf_token = csrfToken
+        res.locals.csrftoken = csrfToken;
 
         const [header, body, footer] = await Promise.all([
             renderTemplateTohtml(headerPath, pageOptions),
