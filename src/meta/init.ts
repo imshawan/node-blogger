@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import { IMeta } from '@src/types';
 import { database } from '@src/database';
-import defaults from '../../setup/data/defaults.json';
 
 export const meta: {configurationStore?: IMeta} = {};
 
 export const initialize = async function initialize() {
     const _key = 'global:meta';
+    const defaults =  require('../../setup/data/defaults.json');
     const metaExists = await database.getObjects({_key});
     if (!metaExists) {
         const metaInfo = _.merge({_key}, defaults);
