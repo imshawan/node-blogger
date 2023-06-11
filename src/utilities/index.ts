@@ -2,6 +2,7 @@ import crypto from 'crypto';
 
 export * from './password';
 export * from './slugify';
+export * from './logger';
 
 export const getISOTimestamp = () => new Date().toISOString();
 

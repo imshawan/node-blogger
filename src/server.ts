@@ -28,7 +28,9 @@ import _ from 'lodash';
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
 import flash from 'express-flash';
+import { Logger } from './utilities';
 
+const {info} = new Logger();
 const app = express();
 const httpServer = http.createServer(app);
 const start = async function (port: Number, callback: Function) {

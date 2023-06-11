@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import { IMeta } from '@src/types';
 import { database } from '@src/database';
+import { Logger } from '@src/utilities';
 
+const {info} = new Logger();
 export const meta: {configurationStore?: IMeta} = {};
 
 export const initialize = async function initialize() {
@@ -16,7 +18,7 @@ export const initialize = async function initialize() {
         meta.configurationStore = metaExists;
     }
 
-    console.info('Meta configuration store loaded');
+    info('Meta configuration store loaded');
 }
 
 export const reInitialize = async function reInitialize() {

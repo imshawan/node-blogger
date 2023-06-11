@@ -1,4 +1,5 @@
 import {MongoClient, ServerApiVersion} from 'mongodb';
+import { Logger } from '@src/utilities';
 import _ from 'lodash';
 
 const connectionOptions = {
@@ -12,6 +13,8 @@ const serverApi = {
     strict: true,
     deprecationErrors: true,
 }
+
+const {info} = new Logger();
 
 export const connect = async function (connectionString: string, options: object) {
     if (!connectionString) {
@@ -31,16 +34,16 @@ export const connect = async function (connectionString: string, options: object
     const {database} = options;
     const client = new MongoClient(connectionString, _.merge(connectionOptions, {serverApi}));
 
-    console.log('Trying to establish connection with MongoDB');
+    info('Trying to establish connection with MongoDB');
     
     const connection = await client.connect();  
     var db = client.db(database);    
 
-    console.log('Established connection with MongoDB');
+    info('Established connection with MongoDB');
 
     // Send a ping to confirm a successful connection to databases
     await db.command({ ping: 1 });
-    console.log("Pinged your database. You have successfully connected to the database!");
+    info("Pinged your database. Connected successfuly!");
 
     return {client: db, connection, dbName: database};
 }
