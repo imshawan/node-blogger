@@ -28,6 +28,7 @@ import _ from 'lodash';
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
 import flash from 'express-flash';
+import nconf from 'nconf';
 import { Logger } from './utilities';
 
 const {info} = new Logger();
@@ -75,9 +76,11 @@ const start = async function (port: Number, callback: Function) {
         });
     });
 
+    app.set('port', port);
+    app.set('address', nconf.get('host'));
     app.listen(port, () => {
         if (callback && typeof callback == 'function') {
-            callback()
+            callback(httpServer);
         }
     });
 }
