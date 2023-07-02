@@ -161,8 +161,18 @@ function generateAvatarFromName(canvasId, name='Unknown name') {
     
     context.fillStyle = colours[colourIndex];
     context.fillRect (0, 0, canvas.width, canvas.height);
-    context.font = fontSize + "px Arial";
+    context.font = fontSize + "px sans-serif";
     context.textAlign = "center";
     context.fillStyle = "#FFF";
     context.fillText(initials, canvasCssWidth / 2, canvasCssHeight / 1.5);
+}
+
+function alertSuccess(dialog, message) {}
+
+function alertError(message) {
+    bootbox.alert({
+        message,
+        closeButton: false,
+        backdrop: false
+    })
 }

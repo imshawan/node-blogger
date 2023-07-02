@@ -1,10 +1,15 @@
 import { Request } from "express";
-import {database} from "@src/database";
+import category from "@src/category";
 
 const create = async (req: Request) => {
-    console.log(req.body);
+    const categoryData = req.body;
+    console.log('req.files', req.files);
     
-    return {message: 'Ok, working fine.'};
+
+    // @ts-ignore
+    categoryData.userid = req.user.userid;
+
+    return await category.create(categoryData)
 }
 
 export default {

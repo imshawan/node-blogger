@@ -5,7 +5,8 @@ const create = async function create(req:Request, res: Response, next: NextFunct
     const pageData = {
         title: 'Categories'
     }
-    res.render(BASE + '/create', pageData);
+    
+    res.render(BASE + '/manage', pageData);
 }
 
 

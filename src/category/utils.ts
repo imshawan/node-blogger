@@ -1,9 +1,8 @@
 import { database } from '@src/database';
 import { slugify } from '@src/utilities';
 import { meta } from '@src/meta';
-import { getCategoryBySlug } from './data';
 
-export async function generateCategoryslug(name: string): Promise<string> {
+const generateCategoryslug = async function generateCategoryslug(name: string): Promise<string> {
     let index = 0, generatedSlug='';
 
     while (!generatedSlug) {
@@ -22,6 +21,10 @@ export async function generateCategoryslug(name: string): Promise<string> {
     return generatedSlug;
 }
 
-export async function generateNextCategoryId() {
+const generateNextCategoryId = async function generateNextCategoryId() {
     return await database.incrementFieldCount('category');
 }
+
+export default {
+    generateCategoryslug, generateNextCategoryId
+} as const

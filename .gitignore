@@ -2,3 +2,4 @@
 dist/
 **/**/*.log
 config.json
+public/uploads

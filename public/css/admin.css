@@ -1,0 +1,36 @@
+.card {
+    box-shadow: 0 0.15rem 1.75rem 0 rgb(33, 40, 50, .15);
+}
+.card .card-header {
+    font-weight: 300;
+    font-size: 1rem;
+}
+.card-header:first-child {
+    border-radius: 0.35rem 0.35rem 0 0;
+}
+.card-header {
+    padding: 1rem 1.35rem;
+    margin-bottom: 0;
+    background-color: rgba(33, 40, 50, 0.03);
+    border-bottom: 1px solid rgba(33, 40, 50, 0.125);
+}
+
+.float-right-btn {
+    position: fixed;
+    bottom: 26px;
+    right: 26px;
+    z-index: 999;
+    height: 65px;
+    width: 65px;
+    border-radius: 100%;
+    box-shadow: 0 0.35rem 0.75rem 0  rgb(33, 40, 50, .55);
+}
+
+.float-right-btn i {
+    font-size: 24px;
+    margin-top: 5px;
+}
+
+.bootbox .modal-content {
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+}

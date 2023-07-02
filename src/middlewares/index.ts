@@ -2,12 +2,14 @@ import { NextFunction, Response, Request } from 'express';
 import { handleApiResponse } from '@src/helpers';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import csurf from 'csurf';
+import { isAdministrator } from '@src/user';
 
 export * from './cors';
 export * from './overrides';
 export * from './authentication';
 export * from './user';
 export * from './breadcrumb';
+export * from './filestore';
 
 export const checkRequiredFields = function (fields: Array<string>, req: Request, res: Response, next: NextFunction) {
     if (fields && !Array.isArray(fields)) {
@@ -36,9 +38,20 @@ export const requireLogin = async function (req: Request, res: Response, next: N
     next();
 }
 
-export const requireAuthentication = async function (req: Request, res: Response, next: NextFunction) {    
+export const requireAuthentication = async function (req: Request, res: Response, next: NextFunction) {
     if (!req.isAuthenticated() || !req.user) {
         return handleApiResponse(HttpStatusCodes.UNAUTHORIZED, res, new Error('A valid session key or token was not found with this API call'));
+    }
+
+    next();
+}
+
+export const verifyAdministrator = async function (req: Request, res: Response, next: NextFunction) {    
+    const {user} = req;
+
+    // @ts-ignore
+    if (user && user.userid && !await isAdministrator(user.userid)) {
+        return handleApiResponse(HttpStatusCodes.UNAUTHORIZED, res, new Error('Unauthorized! Protected administrator route'));
     }
 
     next();

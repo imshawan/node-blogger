@@ -46,3 +46,12 @@ export async function getUserByUserId(userid: number) {
 
     return await database.getObjects({userid, _key: 'user'}, validUserFields);
 }
+
+export async function isAdministrator(userid: number) {
+    // TODo
+    // Logic to be implemented
+
+    const user = await getUserByUserId(userid);
+
+    return true;
+}

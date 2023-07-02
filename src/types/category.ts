@@ -9,6 +9,7 @@ export interface ICategory {
     slug?: string
     thumb?: string
     counters?: Counters
+    tagsPerPost?: TagsPerPost
     isActive?: boolean
     deleted?: boolean
     createdAt?: string
@@ -18,4 +19,9 @@ export interface ICategory {
 interface Counters {
     posts?: number
     tags?: number
+}
+
+interface TagsPerPost {
+    min: number
+    max: number
 }

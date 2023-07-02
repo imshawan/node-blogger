@@ -1,24 +1,16 @@
 import { ICategory } from "@src/types";
-import {generateCategoryslug, generateNextCategoryId} from './utils'
+import utilities from './utils'
 import { getISOTimestamp } from "@src/utilities";
 import _ from "lodash";
 import { meta } from "@src/meta";
 import { database } from "@src/database";
+import data from "./data";
 
-const categoryFields = [
-    "cid",
-    "userid",
-    "name",
-    "description",
-    "blurb",
-    "slug",
-    "thumb",
-];
 const MAX_BLURB_SIZE = 250;
 
-export const create = async function create(categoryData: ICategory) {
+export default async function create(categoryData: ICategory) {
     const {name='', userid} = categoryData;
-    var {description='', blurb=''} = categoryData;
+    var {description='', blurb='', tagsPerPost} = categoryData;
     var maxCategoryBlurbLength = meta.configurationStore?.maxCategoryBlurbLength || MAX_BLURB_SIZE;
 
     if (!userid) {
@@ -41,11 +33,21 @@ export const create = async function create(categoryData: ICategory) {
         } else blurb = '';
     }
 
+    if (!tagsPerPost) {
+        tagsPerPost = {
+            min: 0,
+            max: 0
+        }
+    } else {
+        if (!tagsPerPost.hasOwnProperty('min')) tagsPerPost.min = 0;
+        if (!tagsPerPost.hasOwnProperty('max')) tagsPerPost.max = 0;
+    }
+
     const timestamp = getISOTimestamp();
     
     const category: ICategory = {};
-    const slug = await generateCategoryslug(name);
-    const cid = await generateNextCategoryId();
+    const slug = await utilities.generateCategoryslug(name);
+    const cid = await utilities.generateNextCategoryId();
     const categorySlug = [cid, '/', slug].join('');
 
     category._key = 'category';
