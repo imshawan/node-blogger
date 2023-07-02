@@ -7,12 +7,12 @@ import nconf from 'nconf';
 import { Server } from 'http';
 
 const {info} = new Logger();
-const PORT = Number(nconf.get('port'));
 
 nconf.argv().env().file({ file: 'config.json' });
 
 // **** Run **** //
 
+const PORT = Number(nconf.get('port'));
 server.start(PORT, onListening);
 
 function onListening(httpServer: Server) {
