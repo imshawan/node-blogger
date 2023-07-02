@@ -2,11 +2,16 @@
     <div class="row pt-5">
         <%- include('/partials/breadcrumb'); -%>
         <form method="post" class="mt-4 create-post-">
-            <div class="mb-3">
-                <input type="text" style="text-transform: none;" class="form-control form-control-lg" id="post-title" placeholder="Enter your post's title here">
+            <div class="mb-3 form-floating">
+                <input type="text" style="text-transform: none;" class="form-control px-0 form-control-lg border-0 border-bottom" id="post-title" placeholder="Enter your post's title here">
+                <label for="post-title" style="left: unset;" class="form-label px-0">Enter your post's title here</label>
               </div>
 
             <textarea id="summernote" name="editordata"></textarea>
+
+            <div class="mt-2 mb-3">
+                <input type="text" style="text-transform: none;" class="form-control form-control-md" id="post-tags" placeholder="Tags">
+            </div>
         </form>
         <div class="mt-3 d-flex justify-content-end">
             <button class="btn btn-sm secondary-button mt-0">Discard</button>

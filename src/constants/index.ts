@@ -13,8 +13,8 @@ export const paths = {
     uploadsDirString: ['uploads'].join('/'),
     templatesDir: path.join(baseDir, 'src', 'views'),
     templatePartialsDir: path.join(baseDir, 'src', 'views', 'partials'),
-    adminTemplatesDir: path.join(__dirname, 'src', 'views', 'admin'),
-    adminTemplatePartialsDir: path.join(__dirname, 'src', 'views', 'admin', 'partials'),
+    adminTemplatesDir: path.join(baseDir, 'src', 'views', 'admin'),
+    adminTemplatePartialsDir: path.join(baseDir, 'src', 'views', 'admin', 'partials'),
     assetsDir: path.join(baseDir, 'public'),
     javaScriptsDir: path.join(baseDir, 'public', 'scripts'),
 };

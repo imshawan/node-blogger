@@ -8,6 +8,6 @@ router.use(function (req: Request, res: Response, next: NextFunction) {
     next();
 });
 
-router.use('/manage/category', categories);
+router.use('/manage/categories', categories);
 
 export default router;

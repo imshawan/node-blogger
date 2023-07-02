@@ -315,6 +315,10 @@ nav .nav-link:hover {
   padding: 0;
 }
 
+#navbarNavAltMarkup a {
+  color: var(--color-white);
+}
+
 .dark {
   background-color: black;
   color: white;
