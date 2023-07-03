@@ -1,5 +1,8 @@
 import {connect} from './connection';
 import { initializeSessionStore } from './database';
+import { Logger } from '@src/utilities';
+
+const logger = new Logger();
 
 export const mongo: {client?: any, connection?: any, sessionStore?: any} = {};
 
@@ -19,7 +22,7 @@ export const initializeDbConnection = async function (mongodb: any) {
 
     var dbCredentials = uri.match(/(?<=:\/\/)(.*)(?=@)/gi);
     if (!dbCredentials?.length || dbCredentials.length < 1) {
-        console.warn('username and password missing from the connection URI');
+        logger.warn('username and password missing from the connection URI');
     }
 
     const {client, connection, dbName} = await connect(uri, {database: db}); 
@@ -33,7 +36,7 @@ export const initializeDbConnection = async function (mongodb: any) {
 export const closeConnection = async function (callback?: Function) {
     if (!callback) {
         callback = function (err: Error) {
-            console.error(err.message);
+            logger.error(err.message);
         }
     }
 

@@ -34,12 +34,12 @@ export const connect = async function (connectionString: string, options: object
     const {database} = options;
     const client = new MongoClient(connectionString, _.merge(connectionOptions, {serverApi}));
 
-    info('Trying to establish connection with MongoDB');
+    info('Trying to establish connection with database server');
     
     const connection = await client.connect();  
     var db = client.db(database);    
 
-    info('Established connection with MongoDB');
+    info('Established connection with database server');
 
     // Send a ping to confirm a successful connection to databases
     await db.command({ ping: 1 });

@@ -42,7 +42,7 @@ const start = async function (port: Number, callback: Function) {
         address = address.split(':');
         address.pop();
 
-        address = address.join('');
+        address = address.join(':');
     }
 
     validateConfiguration(config)
