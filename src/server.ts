@@ -34,7 +34,16 @@ import { Logger } from './utilities';
 const {info} = new Logger();
 const app = express();
 const httpServer = http.createServer(app);
+
 const start = async function (port: Number, callback: Function) {
+    var address = nconf.get('host');
+
+    if (address.split(':').length > 2) {
+        address = address.split(':');
+        address.pop();
+
+        address = address.join('');
+    }
 
     validateConfiguration(config)
     await initializeDbConnection(config.mongodb);
@@ -77,7 +86,7 @@ const start = async function (port: Number, callback: Function) {
     });
 
     app.set('port', port);
-    app.set('address', nconf.get('host'));
+    app.set('address', address);
     app.listen(port, () => {
         if (callback && typeof callback == 'function') {
             callback(httpServer);

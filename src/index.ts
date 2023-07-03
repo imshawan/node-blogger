@@ -5,6 +5,7 @@ import server from './server';
 import {Logger} from '@src/utilities';
 import nconf from 'nconf';
 import { Server } from 'http';
+import { log } from 'console';
 
 const {info} = new Logger();
 
@@ -23,7 +24,7 @@ function onListening(httpServer: Server) {
 
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
-    : (addr.address ? addr.address : host) + (env === 'development' ? (':' + addr.port) : '');
+    : (addr.address ? addr.address : host) + (env === 'development' ? (':' + addr.port) : '') + '/';
 
   info('NodeBlogger running on ' + bind);
 }
