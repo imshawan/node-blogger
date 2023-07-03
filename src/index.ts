@@ -24,7 +24,7 @@ function onListening(httpServer: Server) {
 
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
-    : (addr.address ? addr.address : host) + (env === 'development' ? (':' + addr.port) : '') + '/';
+    : (addr.address ? addr.address : host) + (env === 'development' ? (':' + addr.port) : '');
 
   info('NodeBlogger running on ' + bind);
 }
