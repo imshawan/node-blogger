@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import multer, { StorageEngine, Multer } from "multer";
+import { Request } from 'express';
+import multer, { StorageEngine } from "multer";
 import { paths } from '@src/constants';
 import fs  from 'fs';
 import path from 'path';
@@ -43,7 +43,6 @@ export class FileStore {
     }
 
     private setDestination (req: Request, file: any, cb: Function) {
-        console.log(file);
         var {mimetype} = file;
         var fileType = 'others', destination = this.destination || paths.uploadsDir;
 
