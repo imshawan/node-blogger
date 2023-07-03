@@ -3,28 +3,38 @@
  */
 
 import fs from 'fs-extra';
-import logger from 'jet-logger';
 import childProcess from 'child_process';
+import {Logger} from './src/utilities/logger';
 
+const logger = new Logger({prefix: 'build'});
 
 /**
  * Start
  */
 (async () => {
   try {
-    // Remove current build
+    var time = Date.now();
+    
+    logger.info('Removing current build');
     await remove('./dist/');
-    // Copy front-end files
+
+    logger.info('Building client side files');
+
     await copy('./public', './dist/public');
     await copy('./src/views', './dist/views');
-    // Copy back-end files
+    
+    logger.info('Building back-end files');
     await exec('tsc --build tsconfig.prod.json', './');
 
     await copy('./dist/src', './dist/');
     await remove('./dist/src');
+
+    var timeDiff = parseFloat(String((Date.now() - time) / 1000)).toFixed(2);
+
+    logger.success(`Build process completed in ${timeDiff}s`);
     
   } catch (err) {
-    logger.err(err);
+    logger.error(err);
   }
 })();
 

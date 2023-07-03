@@ -18,12 +18,22 @@ export class Logger {
 
     info = (...message: Array<any>) => {
         const parsedMessage = this.#parseMessage(message);
-        console.info(this.#timeStamp(), chalk.yellowBright(parsedMessage));
+        console.info(this.#timeStamp(), chalk.rgb(255,250,224)(parsedMessage));
+    }
+
+    warn = (...message: Array<any>) => {
+        const parsedMessage = this.#parseMessage(message);
+        console.warn(this.#timeStamp(), chalk.yellow(parsedMessage));
     }
 
     error = (...message: Array<any>) => {
         const parsedMessage = this.#parseMessage(message);
         console.error(this.#timeStamp(), chalk.redBright(parsedMessage));
+    }
+
+    success = (...message: Array<any>) => {
+        const parsedMessage = this.#parseMessage(message);
+        console.info(this.#timeStamp(), chalk.greenBright(parsedMessage));
     }
 
     #timeStamp() {
