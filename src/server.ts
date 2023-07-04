@@ -118,12 +118,13 @@ async function setupExpressServer(app: Application) {
 
     // Basic middleware
     app.use(express.json({
-        limit: meta.configurationStore?.maximumRequestBodySize || '100kb'
+        limit: meta.configurationStore?.maximumRequestBodySize || '1mb'
     }));
     app.use(express.urlencoded({
         extended: true,
-        limit: meta.configurationStore?.maximumRequestBodySize || '100kb'
+        limit: meta.configurationStore?.maximumRequestBodySize || '1mb'
     }));
+
     app.use(cookieParser(secret));
     app.use(overrideRender);
     app.use(function userAgent(req, res, next) {

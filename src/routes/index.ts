@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { handleApiResponse } from '@src/helpers';
-import { initializeCors, corsWithOptions } from '@src/middlewares';
+import { initializeCors, corsWithOptions, requireLogin } from '@src/middlewares';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import apiRouter from './api';
 import pageRouter from './pageRoutes';
@@ -16,7 +16,7 @@ router.use('/', initializeCors, pageRouter);
 router.use('/', initializeCors, authentication);
 
 // Mounting the admin page routers
-router.use('/admin', initializeCors, adminPageRouter);
+router.use('/admin', initializeCors, requireLogin.bind(null, '/admin'), adminPageRouter);
 
 // Mounting the API router
 router.use('/api/v1', initializeCors, apiRouter);

@@ -10,6 +10,7 @@ export * from './authentication';
 export * from './user';
 export * from './breadcrumb';
 export * from './filestore';
+export * from './multiparty';
 
 export const checkRequiredFields = function (fields: Array<string>, req: Request, res: Response, next: NextFunction) {
     if (fields && !Array.isArray(fields)) {
@@ -30,9 +31,25 @@ export const checkRequiredFields = function (fields: Array<string>, req: Request
     } else next();
 }
 
-export const requireLogin = async function (req: Request, res: Response, next: NextFunction) {
+export const requireLogin = async function (baseRoute: string, req: Request, res: Response, next: NextFunction) {
     if (!req.isAuthenticated() || !req.user) {
-        return res.redirect('/signin?redirect=' + req.url);
+        var originalUrl = req.url;
+        if (baseRoute) {
+            originalUrl = [baseRoute, originalUrl].join('');
+        }
+        
+        return res.redirect('/signin?redirect=' + originalUrl);
+    }
+
+    next();
+}
+
+export const hasAdministratorAccess = async function (req: Request, res: Response, next: NextFunction) {
+    const {user} = req;
+
+    // @ts-ignore
+    if (user && user.userid && !await isAdministrator(user.userid)) {
+        return res.status(HttpStatusCodes.UNAUTHORIZED).render('401');
     }
 
     next();

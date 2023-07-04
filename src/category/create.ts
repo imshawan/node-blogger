@@ -9,7 +9,7 @@ import data from "./data";
 const MAX_BLURB_SIZE = 250;
 
 export default async function create(categoryData: ICategory) {
-    const {name='', userid} = categoryData;
+    const {name='', userid, thumb} = categoryData;
     var {description='', blurb='', tagsPerPost} = categoryData;
     var maxCategoryBlurbLength = meta.configurationStore?.maxCategoryBlurbLength || MAX_BLURB_SIZE;
 
@@ -39,8 +39,12 @@ export default async function create(categoryData: ICategory) {
             max: 0
         }
     } else {
-        if (!tagsPerPost.hasOwnProperty('min')) tagsPerPost.min = 0;
-        if (!tagsPerPost.hasOwnProperty('max')) tagsPerPost.max = 0;
+        if (!Object.hasOwnProperty.bind(tagsPerPost)('min')) {
+            if (!tagsPerPost.min) tagsPerPost.min = 0;
+        };
+        if (!Object.hasOwnProperty.bind(tagsPerPost)('max')) {
+            if (!tagsPerPost.max) tagsPerPost.max = 0;
+        }
     }
 
     const timestamp = getISOTimestamp();
@@ -57,6 +61,7 @@ export default async function create(categoryData: ICategory) {
     category.description = description || '';
     category.blurb = blurb;
     category.slug = categorySlug;
+    category.thumb = thumb || null;
     category.counters = {
         posts: 0,
         tags: 0,

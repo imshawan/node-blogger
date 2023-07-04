@@ -170,9 +170,11 @@ function generateAvatarFromName(canvasId, name='Unknown name') {
 function alertSuccess(dialog, message) {}
 
 function alertError(message) {
-    bootbox.alert({
+    const alertModal = bootbox.alert({
         message,
         closeButton: false,
         backdrop: false
-    })
+    });
+
+    alertModal.find('.modal-content').addClass('border-danger');
 }

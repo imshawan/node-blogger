@@ -7,7 +7,7 @@ export interface ICategory {
     description?: string
     blurb?: string
     slug?: string
-    thumb?: string
+    thumb?: string | null | undefined
     counters?: Counters
     tagsPerPost?: TagsPerPost
     isActive?: boolean
