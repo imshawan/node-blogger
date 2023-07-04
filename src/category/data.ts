@@ -10,6 +10,13 @@ const categoryFields = [
     "thumb",
 ];
 
+const getCategories = async function getCategories() {
+    // TODO need to properly write the logic with pagination and etc.
+    const data = await database.getObjects({_key: 'category'}, [], {multi: true});
+
+    return data;
+}
+
 const getCategoryByName = async function getCategoryByName(name: string) {
     if (!name) {
         throw new Error('name is required');
@@ -27,5 +34,5 @@ const getCategoryBySlug = async function getCategoryBySlug(slug: string) {
 }
 
 export default {
-    categoryFields, getCategoryByName, getCategoryBySlug
+    categoryFields, getCategoryByName, getCategoryBySlug, getCategories
 } as const;

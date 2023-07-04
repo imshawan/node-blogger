@@ -10,7 +10,7 @@ const getObjects = async function (key: object, fields?: Array<string>, options?
     options = getObjectOptions(options || {});
 
     if (options.multi) {
-        const data = await mongo.client.collection(options.collection).find(key);
+        const data = await mongo.client.collection(options.collection).find(key).toArray();
         if (Array.isArray(fields) && fields.length) {
             return data.map((elem: any) => filterObjectFields(elem, fields));
         } else {
@@ -170,12 +170,13 @@ function getObjectOptions (options?: IParamOptions): IParamOptions {
 
 function validateCollection(name: string) {
     name = name.trim();
+    const collections = Object.values(Collections).map(el => String(el));
 
     if (!name) {
         throw new Error('A valid collection name is required');
     }
 
-    if (!Object.keys(Collections).includes(name)) {
+    if (!collections.includes(name)) {
         throw new Error('Permission denied! Tried using an un-defined collection name')
     } 
 }

@@ -1,0 +1,20 @@
+<div class="container pt-5">
+    <div class="main-body">
+        <div class="row justify-content-center">
+            <% if (categories && categories.length) { %>
+            
+                <% categories.forEach(function(category) { %>
+                    <div class="card my-2 w-75">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= category.name %></h5>
+                            <p class="card-text"><%= category.description %></p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                    <% }); %>
+            <% } %>
+        </div>
+    
+
+  </div>
+</div>
