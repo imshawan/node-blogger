@@ -70,10 +70,10 @@ const deleteObjects = async function (key: object, options?: IParamOptions) {
     }
 
     if (!options.multi) {
-        mongoOptions.justOne = true;
+        return await mongo.client.collection(options.collection).deleteOne(key);
     }
 
-    return await mongo.client.collection(options.collection).remove(key, mongoOptions);
+    return await mongo.client.collection(options.collection).deleteMany(key);
 }
 
 const paginateObjects = async function (key: object, paginate: IMongoPaginateOptions, options?: IParamOptions) {

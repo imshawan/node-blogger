@@ -1,5 +1,6 @@
 import { database } from "@src/database";
 import {utils as UserUtils} from './utils'
+import { IRoles, MutableObject } from "@src/types";
 
 export const validUserFields = [
     "userid",
@@ -13,6 +14,7 @@ export const validUserFields = [
     "location",
     "bio",
     "about",
+    "roles"
   ];
 
 export async function getUserByUsername(username: string) {
@@ -47,11 +49,38 @@ export async function getUserByUserId(userid: number) {
     return await database.getObjects({userid, _key: 'user'}, validUserFields);
 }
 
-export async function isAdministrator(userid: number) {
+export async function isAdministrator(userid: number): Promise<boolean> {
     // TODo
     // Logic to be implemented
 
     const user = await getUserByUserId(userid);
 
-    return true;
+    if (Object.hasOwnProperty.bind(user)('roles')) {
+        const roles: IRoles = user.roles;
+
+        if (Object.hasOwnProperty.bind(roles)('administrator')) {
+            return Boolean(Number(roles.administrator));
+        }
+    }
+
+    return false;
+}
+
+export async function getUserRoles(userid: number): Promise<Array<string>> {
+    const userRoles: Array<string> = [];
+    const user = await getUserByUserId(userid);
+
+    if (Object.hasOwnProperty.bind(user)('roles')) {
+        const roles: MutableObject = user.roles;
+
+        for (const key in roles) {
+            if (Object.prototype.hasOwnProperty.call(roles, key)) {
+                if (Boolean(Number(roles[key]))) {
+                    userRoles.push(key);
+                }
+            }
+        }
+    }
+
+    return userRoles;
 }

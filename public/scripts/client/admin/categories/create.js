@@ -1,4 +1,4 @@
-define('client/admin/categories/manage', ['modules/http'], function (http) {
+define('client/admin/categories/create', ['modules/http'], function (http) {
     const create = {};
 
     create.initialize = function () {

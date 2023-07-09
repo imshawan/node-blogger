@@ -21,4 +21,11 @@ export interface IUser {
     lastOnline?: string
     gdprConsent?: boolean
     acceptedTnC?: boolean
+    roles?: IRoles
+}
+
+export interface IRoles {
+    administrator?: string | number
+    moderator?: string | number
+    globalModerator?: string | number
 }

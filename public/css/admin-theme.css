@@ -11800,15 +11800,16 @@
   .modal .modal-dialog {
     margin-top: 100px; }
     .modal .modal-dialog .modal-content .modal-header {
-      padding: 25px 26px; }
+      padding: 25px 26px;
+    padding-bottom: 10px; }
       .modal .modal-dialog .modal-content .modal-header .close span {
         font-size: 20px;
         font-weight: 400;
         color: #6a6a6a; }
     .modal .modal-dialog .modal-content .modal-body {
-      padding: 35px 26px; }
+      padding: 26px 26px; }
     .modal .modal-dialog .modal-content .modal-footer {
-      padding: 15px 31px; }
+      padding: 15px 26px; }
   
   /* Pagination */
   .pagination .page-item .page-link {

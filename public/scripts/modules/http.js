@@ -62,7 +62,7 @@ define('modules/http', () => {
 		}, onSuccess);
 	}
 
-	http.DELETE = async (route, payload, options={}, onSuccess) => {
+	http.DELETE = async (route, options={}, onSuccess) => {
 		if (!Object.keys(options).length) {
 			options = {};
 		}
@@ -70,7 +70,7 @@ define('modules/http', () => {
 		return await callAjax({
 			url: route,
 			method: 'delete',
-			data: payload,
+			data: {},
 			headers: {
 				'csrf-token': csrfToken.get()
 			},

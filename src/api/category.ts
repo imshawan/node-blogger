@@ -1,7 +1,10 @@
 import { Request } from "express";
 import category from "@src/category";
+import { MutableObject } from "@src/types";
 
-const create = async (req: Request) => {
+const categoryApi: MutableObject = {};
+
+categoryApi.create = async (req: Request) => {
     const categoryData = req.body;
     const {files} = req;
 
@@ -18,6 +21,14 @@ const create = async (req: Request) => {
     return await category.create(categoryData)
 }
 
-export default {
-    create,
-  } as const;
+categoryApi.delete = async (req: Request) => {
+    const {id} = req.params;
+    const {user} = req;
+
+    // @ts-ignore
+    const userid = Number(user.userid);
+
+    await category.deleteCategory(id, userid)
+}
+
+export default categoryApi;

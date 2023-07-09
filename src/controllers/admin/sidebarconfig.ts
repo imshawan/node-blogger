@@ -18,7 +18,7 @@ export const data: Array<ISidebar> = [
   {
     url: "",
     id: "categories",
-    icon: "icon-screen-desktop",
+    icon: "icon-list",
     title: "Categories",
     classes: "",
     menu: menus.MANAGE,
@@ -26,7 +26,7 @@ export const data: Array<ISidebar> = [
       {
         url: "/admin/categories",
         id: "all_categories",
-        icon: "icon-screen-desktop",
+        icon: "",
         title: "All",
         classes: "",
         menu: menus.MANAGE,
@@ -34,7 +34,7 @@ export const data: Array<ISidebar> = [
       {
         url: "/admin/categories/create",
         id: "new_category",
-        icon: "icon-screen-desktop",
+        icon: "",
         title: "New category",
         classes: "",
         menu: menus.MANAGE,
