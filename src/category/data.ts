@@ -17,6 +17,19 @@ const getCategories = async function getCategories() {
     return data;
 }
 
+const getCategoryByCid = async function getCategoryByCid(id: any) {
+    if (!id) {
+        throw new Error('id is required');
+    }
+
+    if (isNaN(id)) {
+        throw new Error('id must be a number, found ' + typeof id)
+    }
+
+    const cid = Number(id);
+    return await database.getObjects({cid, _key: 'category'});   
+}
+
 const getCategoryByName = async function getCategoryByName(name: string) {
     if (!name) {
         throw new Error('name is required');
@@ -34,5 +47,5 @@ const getCategoryBySlug = async function getCategoryBySlug(slug: string) {
 }
 
 export default {
-    categoryFields, getCategoryByName, getCategoryBySlug, getCategories
+    categoryFields, getCategoryByName, getCategoryBySlug, getCategories, getCategoryByCid
 } as const;

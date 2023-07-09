@@ -50,8 +50,13 @@ define('client/admin/categories/manage', ['modules/http'], function (http) {
                 contentType: false,
                 processData: false,
             }).then(res => {
+                    let callback;
+
+                    if (res && res.slug) {
+                        callback = () => location.href = [location.origin, 'admin', 'categories', res.slug].join('/');
+                    }
                     dialog.hide();
-                    alertSuccess('Category created!');
+                    alertSuccess('Category created!', callback);
                     
                 }).catch(err => {
                     dialog.hide();

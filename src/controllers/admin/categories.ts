@@ -12,10 +12,24 @@ categories.get = async function get(req: Request, res: Response, next: NextFunct
     const sidebar = new SideBar(sidebarData);
 
     pageData.title = 'Categories';
-    pageData.categories = await category.data.getCategories();
     pageData.sidebar = sidebar.get('all_categories');
+
+    pageData.categories = await category.data.getCategories();
     
     res.render(BASE + '/list', pageData);
+}
+
+categories.getBySlug = async function get(req: Request, res: Response, next: NextFunction) {
+    const pageData: MutableObject = {};
+    const sidebar = new SideBar(sidebarData);
+    const {cid, slug} = req.params;
+
+    pageData.title = 'Categories';
+    pageData.sidebar = sidebar.get('all_categories');
+
+    pageData.category = await category.data.getCategoryBySlug([cid, slug].join('/'));
+
+    return res.render(BASE + '/edit', pageData);
 }
 
 categories.create = async function create(req: Request, res: Response, next: NextFunction) {
@@ -25,7 +39,7 @@ categories.create = async function create(req: Request, res: Response, next: Nex
     pageData.title = 'New category';
     pageData.sidebar = sidebar.get('new_category');
     
-    res.render(BASE + '/manage', pageData);
+    res.render(BASE + '/create', pageData);
 }
 
 

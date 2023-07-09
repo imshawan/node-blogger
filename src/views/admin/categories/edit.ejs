@@ -6,7 +6,7 @@
 
                 <form class="" id="category-form">
                     <div class="mb-3 form-floating">
-                        <input type="text" name="name" class="form-control" id="nameInout"
+                        <input type="text" name="name" value="<%= category.name %>" class="form-control" id="nameInout"
                             placeholder="Enter the name of the new category">
                         <label for="nameInout" class="form-label">Category name</label>
                         <div id="" class="form-text">You can choose a unique name for this category
@@ -14,7 +14,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="decriptionTextarea" class="form-label">Category description</label>
-                        <textarea class="form-control" rows="4" id="decriptionTextarea"></textarea>
+                        <textarea class="form-control" rows="4" id="decriptionTextarea"><%= category.description %></textarea>
                         <div id="" class="form-text">You can add a description of the category of about
                             50
                             words.
@@ -71,12 +71,12 @@
                 <div class="d-flex flex-column align-items-center text-center">
                     <div class="category-image-area">
                         <canvas id="category-icon" width="128" height="128" class="rounded-circle d-none"></canvas>
-                        <img id="categoryimage" src="" accept="image/*" style="
+                        <img id="categoryimage" src="<%= category.thumb %>" accept="image/*" style="
                                 height: 140px;
                                 width: 140px;
                                 object-fit: cover;
-                                border-radius: 100%;
-                            " onerror="this.onerror=null;this.src='https://sgame.etsisi.upm.es/pictures/12946.png';" />
+                                border-radius: 100%;" 
+                            onerror="this.onerror=null;this.src='/img/default-image.jpeg';" />
                     </div>
 
                     <div class="mt-3 w-100">

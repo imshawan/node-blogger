@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { ISidebar } from "@src/types";
-import { log } from "console";
 
 export class SideBar {
     sidebar: Array<ISidebar>;
@@ -109,7 +108,6 @@ export class SideBar {
             sidebar.classes = sidebar.classes.replace('active', '');
 
             if (sidebar.id === id) {
-                log(sidebar.id)
                 if (classes && classes.length) {{
                     sidebar.classes = [sidebar.classes, classes].join(' ')
                 }}

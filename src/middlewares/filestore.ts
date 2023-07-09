@@ -81,7 +81,7 @@ export class FileStore {
         const filename = this.generateFilename(originalname, mimetype)
         const folder = this.getFilesDirByMimeType(mimetype);
         
-        file.url = [folder, '/', filename].join('');
+        file.url = ['/uploads', folder, filename].join('/');
 
         cb(null, filename);
     }

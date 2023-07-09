@@ -38,7 +38,8 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         pageOptions.pageScript = ['client/', (isAdminRoute ? 'admin/' + template : template)].join('');
         pageOptions._meta = parseMetaInformation(req);
         pageOptions._breadcrumb = res.locals.breadcrumb || [];
-        pageOptions._csrf_token = csrfToken
+        pageOptions._csrf_token = csrfToken;
+        pageOptions.hidePageHeader = pageOptions.hidePageHeader || false;
         res.locals.csrftoken = csrfToken;
 
         const [header, body, footer] = await Promise.all([

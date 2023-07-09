@@ -1,7 +1,11 @@
-<div class="page-header">
-    <h3 class="page-title"><%= navHeading %></h3>
+<% try { %>
+    <% if (!hidePageHeader) { %>
 
-    <%- include('/admin/partials/breadcrumb'); -%>
+        <div class="page-header">
+            <h3 class="page-title"><%= navHeading %></h3>
 
+            <%- include('/admin/partials/breadcrumb'); -%>
 
-</div>
+        </div>
+    <% } %>
+<% } catch (err) {} %>
