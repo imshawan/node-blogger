@@ -7,17 +7,24 @@ const ICONS = {
     home: 'fa-home',
 }
 
-export const breadcrumbs = function (req: Request, res: Response, next: NextFunction) {
+export const breadcrumbs = function (base: string, req: Request, res: Response, next: NextFunction) {
 
-    var requestUri: string = String(req.url);
+    var requestUri: string = String(req.url), home: string = '';
     if (!requestUri) {
         requestUri = '/';
+    }
+
+    if (base) {
+        let splitted = base.split('/');
+        if (splitted.length > 1) {
+            home = capitalizeFirstLetter(splitted[1]);
+        }
     }
 
     // grab the current url
     const baseUrl = url.format({
         protocol: req.protocol,
-        host: req.get('host')
+        host: req.get('host') + base || ''
     });
 
     // break it apart removing empty string
@@ -36,7 +43,7 @@ export const breadcrumbs = function (req: Request, res: Response, next: NextFunc
 
     // insert home link
     items.push({
-        label: 'Home',
+        label: home || 'Home',
         url: baseUrl,
         active: parts.length < 1,
         icon: ICONS['home'],
@@ -49,7 +56,7 @@ export const breadcrumbs = function (req: Request, res: Response, next: NextFunc
         let label = parts[i].replace(/-/g, ' ');
         items.push({
             label: label && capitalizeFirstLetter(label),
-            url: url.resolve(baseUrl, parts.slice(0, i + 1).join('/')),
+            url: [baseUrl, parts.slice(0, i + 1)].join('/'),
             active: i === (parts.length - 1),
             // @ts-ignore
             icon: ICONS[label],

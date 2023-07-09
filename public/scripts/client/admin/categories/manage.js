@@ -5,7 +5,7 @@ define('client/admin/categories/manage', ['modules/http'], function (http) {
         const {category} = pagePayload;
         // generateAvatarFromName('category-icon');
 
-        $('#upload-category-image').off().on('click', function () {
+        $('#upload-category-image').off('click').on('click', function () {
             $('#category-image').trigger('click');
         })
 
@@ -50,7 +50,8 @@ define('client/admin/categories/manage', ['modules/http'], function (http) {
                 contentType: false,
                 processData: false,
             }).then(res => {
-                    dialog.find('.bootbox-body').html('Category created!');
+                    dialog.hide();
+                    alertSuccess('Category created!');
                     
                 }).catch(err => {
                     dialog.hide();

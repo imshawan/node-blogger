@@ -1,0 +1,24 @@
+<div aria-label="breadcrumb">
+    <ol class="breadcrumb">
+
+        <% if (_breadcrumb && _breadcrumb.length) { %>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <% _breadcrumb.forEach(function(item) { %>
+                <li class="breadcrumb-item <% if (item.active) { %>active<% } %>" <% if (item.active) { %>
+                    aria-current="page" <% } %>>
+
+                    <% if (!item.active) { %>
+                        <a href="<%- item.url %>"><%- item.label %> </a>
+                    <% } else { %>
+                        <%- item.label %>
+                    <% } %>
+
+                </li>
+                <% }); %>
+            </ol>
+        </nav>
+        <% } %>
+
+    </ol>
+</div>

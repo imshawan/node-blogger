@@ -3,7 +3,18 @@ import { handleApiResponse } from "./response";
 import { breadcrumbs, applyCSRFMiddleware } from "@src/middlewares";
 
 const mountPageRoute = function (router: any, route: string, middlewares: Array<Function>, controller: Function) {
-	const defaults: Array<Function> = [breadcrumbs, applyCSRFMiddleware];
+	const defaults: Array<Function> = [breadcrumbs.bind(null, ''), applyCSRFMiddleware];
+	middlewares = [...defaults].concat([...middlewares]);
+
+	if (typeof controller != 'function') {
+		throw new Error(`'controller' must be a function, found ${typeof controller} instead`);
+	}
+
+	router.get(route, middlewares, tryRoute(controller));
+};
+
+const mountAdminPageRoute = function (router: any, route: string, middlewares: Array<Function>, controller: Function) {
+	const defaults: Array<Function> = [applyCSRFMiddleware];
 	middlewares = [...defaults].concat([...middlewares]);
 
 	if (typeof controller != 'function') {
@@ -26,7 +37,7 @@ const mountApiRoute = function (router: any, method: string, route: string, midd
 	}));
 };
 
-function tryRoute (controller: any, handler?: Function) {
+function tryRoute (controller: Function, handler?: Function) {
 	if (controller && controller.constructor && controller.constructor.name === 'AsyncFunction') {
 		return async function (req: Request, res: Response, next: NextFunction) {
 			try {
@@ -44,5 +55,5 @@ function tryRoute (controller: any, handler?: Function) {
 };
 
 export {
-    mountApiRoute, mountPageRoute
+    mountApiRoute, mountPageRoute, mountAdminPageRoute,
 };

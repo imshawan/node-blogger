@@ -6,8 +6,7 @@ import { database } from "@src/database";
 
 const userFields = [
   "userid",
-  "firstname",
-  "lastname",
+  "fullname",
   "slug",
   "username",
   "email",
@@ -45,7 +44,7 @@ export const register = async function register(userdata: IUser) {
         // @ts-ignore
         if (userdata[field]) {
             // @ts-ignore
-            user[field] = userdata[field];
+            user[field] = userdata[field] || '';
         }
     });
 

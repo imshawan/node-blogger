@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { baseScripts, vendorScripts } from "@src/meta";
+import { baseScripts, vendorScripts, adminScripts } from "@src/meta";
 import {siteName, paths} from '../constants';
 import fs from 'fs';
 import ejs from 'ejs';
 import { meta, styleSheets } from "@src/meta";
-import { log } from "console";
 import path from "path";
 
 export const overrideRender = (req: Request, res: Response, next: NextFunction) => {
@@ -15,6 +14,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         const self = this;
         const req = this.req;
         const {isAdminRoute} = res.locals;
+        const {user} = req;
         const partialsDir = paths[isAdminRoute ? 'adminTemplatePartialsDir' : 'templatePartialsDir'];
 
         if (!template) return next();
@@ -26,15 +26,18 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         const pageClass = generatePageClass(req, res);
         const csrfToken = req.user && req.csrfToken && req.csrfToken();
 
+        pageOptions.navHeading = pageOptions.title;
         pageOptions.title = [pageOptions.title, ' | ', siteName].join('');
+        pageOptions.user = user || {};
+        
         pageOptions.pageClass = pageClass;
         pageOptions.modules = vendorScripts;
 
         pageOptions.scripts = [];
-        pageOptions.baseScripts = baseScripts;
-        pageOptions.pageScript = ['client/', (isAdminRoute ? 'admin' + template : template)].join('');
+        pageOptions.baseScripts = isAdminRoute ? baseScripts.concat(adminScripts) : baseScripts;
+        pageOptions.pageScript = ['client/', (isAdminRoute ? 'admin/' + template : template)].join('');
         pageOptions._meta = parseMetaInformation(req);
-        pageOptions._breadcrumb = res.locals.breadcrumb;
+        pageOptions._breadcrumb = res.locals.breadcrumb || [];
         pageOptions._csrf_token = csrfToken
         res.locals.csrftoken = csrfToken;
 

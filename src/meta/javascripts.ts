@@ -10,8 +10,12 @@ const baseScripts = [
     "/scripts/modules/main.js",
 ];
 
+const adminScripts = [
+    "/scripts/modules/admin.js",
+];
+
 const vendors = path.join(paths.javaScriptsDir, 'vendors');
-let vendorScripts: Array<string> = [];
+var vendorScripts: Array<string> = [];
 
 if (fs.existsSync(vendors)) {
     vendorScripts = fs.readdirSync(vendors).map(e => ['/scripts/vendors/', e].join(''));
@@ -19,5 +23,5 @@ if (fs.existsSync(vendors)) {
 
 
 export {
-    vendorScripts, assetsDir, baseScripts
+    vendorScripts, assetsDir, baseScripts, adminScripts
   }

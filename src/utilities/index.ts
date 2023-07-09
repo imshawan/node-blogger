@@ -4,6 +4,7 @@ export * from './password';
 export * from './slugify';
 export * from './logger';
 export * from './mimetypes';
+export * from './sidebar';
 
 export const getISOTimestamp = () => new Date().toISOString();
 

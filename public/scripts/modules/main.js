@@ -167,7 +167,15 @@ function generateAvatarFromName(canvasId, name='Unknown name') {
     context.fillText(initials, canvasCssWidth / 2, canvasCssHeight / 1.5);
 }
 
-function alertSuccess(dialog, message) {}
+function alertSuccess(message) {
+    const alertModal = bootbox.alert({
+        message,
+        closeButton: false,
+        backdrop: false
+    });
+
+    alertModal.find('.modal-content').addClass('border-success');
+}
 
 function alertError(message) {
     const alertModal = bootbox.alert({

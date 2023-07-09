@@ -11,6 +11,7 @@ export * from './user';
 export * from './breadcrumb';
 export * from './filestore';
 export * from './multiparty';
+export * from './routes';
 
 export const checkRequiredFields = function (fields: Array<string>, req: Request, res: Response, next: NextFunction) {
     if (fields && !Array.isArray(fields)) {

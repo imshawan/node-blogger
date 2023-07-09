@@ -4,8 +4,7 @@ export interface IUser {
     _id?: ObjectId
     _key?: string
     userid?: number
-    firstname?: string
-    lastname?: string
+    fullname?: string
     slug?: string
     username?: string
     email?: string
