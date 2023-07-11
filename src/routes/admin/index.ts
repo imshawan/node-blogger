@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { hasAdministratorAccess, routeHelper } from '@src/middlewares';
 import categories from './categories';
+import users from './users';
 import controllers from '@src/controllers';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
@@ -12,6 +13,7 @@ router.use(function (req: Request, res: Response, next: NextFunction) {
 });
 
 router.use('/categories', categories);
+router.use('/users', users);
 router.use('/dashboard', hasAdministratorAccess, controllers.administrator.admin.get);
 
 router.use('/', async function (req: Request, res: Response) {

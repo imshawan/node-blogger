@@ -17,6 +17,12 @@ export const validUserFields = [
     "roles"
   ];
 
+export async function getUsersByPagination(options={}) {
+    //TODO need to implement pagination
+
+    return await database.getObjects({_key: 'user'}, validUserFields, {multi: true});
+}
+
 export async function getUserByUsername(username: string) {
     if (!username) {
         throw new Error('username is required');
