@@ -1,83 +1,82 @@
-<nav class="sidebar sidebar-offcanvas" id="sidebar">
-    <ul class="nav">
-        <li class="nav-item nav-profile">
-            <a href="#" class="nav-link">
-                <div class="profile-image">
-                    <img class="img-xs rounded-circle" src="images/faces/face8.jpg" onerror="this.onerror=null;this.src='/img/default-image.jpeg';" alt="profile image">
-                    <div class="dot-indicator bg-success"></div>
-                </div>
-                <div class="text-wrapper">
-                    <p class="profile-name"><%- user.fullname || user.username %></p>
-                    <p class="designation">Administrator</p>
-                </div>
-                <div class="icon-container">
-                    <i class="icon-bubbles"></i>
-                    <div class="dot-indicator bg-danger"></div>
-                </div>
-            </a>
-        </li>
 
 
-        <!-- sidebar menus -->
+<!-- sidebar menus -->
 
-        <% try { %>
+<% try { %>
 
-            <% if (sidebar && Object.keys(sidebar).length) { %>
-                <!-- Parent menu -->
-                <% Object.keys(sidebar).forEach(function(menuItem) { %>
-                    <li class="nav-item nav-category">
-                        <span class="nav-link"><%= menuItem %></span>
-                    </li>
-    
-                    <% if (sidebar[menuItem] && sidebar[menuItem].length) { %>
-                        
-                        <!-- Main menu -->
-                        <% sidebar[menuItem].forEach(function(menu) { %>
-    
-                            <!-- If sub-menu exists -->
-                            <% if (menu.child && menu.child.length) { %>
-                                <li class="nav-item <%= menu.classes %>">
-                                    <a class="nav-link" data-bs-toggle="collapse" href="#<%= menu.elementid %>" aria-expanded="false">
-                                        <span class="menu-title"><%= menu.title %></span>
-                                        <i class="<%= menu.icon %> menu-icon"></i>
-                                    </a>
-    
-                                    <!-- Out sub-menu -->
-                                    <div class="collapse" id="<%= menu.elementid %>">
-                                        <ul class="nav flex-column sub-menu">
-    
-                                            <% menu.child.forEach(function(subMenu, index) { %>
-                                                <li class="nav-item sub-menu-item <%= subMenu.classes %>"> <a class="nav-link" href="#" data-href="<%= subMenu.url %>"><%= subMenu.title %></a></li>
-                                                    
-                                            <% }); %>
-                                        </ul>
-                                    </div>
-    
-                                </li>
-                            <% } else { %>
-                                <!-- else Main menu -->
-                                <li class="nav-item <%= menu.classes %>">
-                        
-                                    <a class="nav-link" href="#" data-href="<%= menu.url %>">
-                                        <span class="menu-title"><%= menu.title %></span>
-                                        <i class="<%= menu.icon %> menu-icon"></i>
-                                    </a>
-                                </li>
-    
-                            <% } %>
-            
-                        <% }); %>
-                        
+    <% if (sidebar && Object.keys(sidebar).length) { %>
+
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item nav-profile">
+                    <a href="#" class="nav-link">
+                        <div class="profile-image">
+                            <img class="img-xs rounded-circle" src="images/faces/face8.jpg" onerror="this.onerror=null;this.src='/img/default-image.jpeg';" alt="profile image">
+                            <div class="dot-indicator bg-success"></div>
+                        </div>
+                        <div class="text-wrapper">
+                            <p class="profile-name"><%- user.fullname || user.username %></p>
+                            <p class="designation">Administrator</p>
+                        </div>
+                        <div class="icon-container">
+                            <i class="icon-bubbles"></i>
+                            <div class="dot-indicator bg-danger"></div>
+                        </div>
+                    </a>
+                </li>
+
+        <!-- Parent menu -->
+        <% Object.keys(sidebar).forEach(function(menuItem) { %>
+            <li class="nav-item nav-category">
+                <span class="nav-link"><%= menuItem %></span>
+            </li>
+
+            <% if (sidebar[menuItem] && sidebar[menuItem].length) { %>
+                
+                <!-- Main menu -->
+                <% sidebar[menuItem].forEach(function(menu) { %>
+
+                    <!-- If sub-menu exists -->
+                    <% if (menu.child && menu.child.length) { %>
+                        <li class="nav-item <%= menu.classes %>">
+                            <a class="nav-link" data-bs-toggle="collapse" href="#<%= menu.elementid %>" aria-expanded="false">
+                                <span class="menu-title"><%= menu.title %></span>
+                                <i class="<%= menu.icon %> menu-icon"></i>
+                            </a>
+
+                            <!-- Out sub-menu -->
+                            <div class="collapse" id="<%= menu.elementid %>">
+                                <ul class="nav flex-column sub-menu">
+
+                                    <% menu.child.forEach(function(subMenu, index) { %>
+                                        <li class="nav-item sub-menu-item <%= subMenu.classes %>"> <a class="nav-link" href="#" data-href="<%= subMenu.url %>"><%= subMenu.title %></a></li>
+                                            
+                                    <% }); %>
+                                </ul>
+                            </div>
+
+                        </li>
+                    <% } else { %>
+                        <!-- else Main menu -->
+                        <li class="nav-item <%= menu.classes %>">
+                
+                            <a class="nav-link" href="#" data-href="<%= menu.url %>">
+                                <span class="menu-title"><%= menu.title %></span>
+                                <i class="<%= menu.icon %> menu-icon"></i>
+                            </a>
+                        </li>
+
                     <% } %>
     
                 <% }); %>
-    
+                
             <% } %>
-        <% } catch (err) { %>
+
+        <% }); %>
+
+        </ul>
+    </nav>
+
         <% } %>
-         
-
-        
-
-    </ul>
-</nav>
+    <% } catch (err) { %>
+<% } %>

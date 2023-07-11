@@ -50,7 +50,8 @@ export const hasAdministratorAccess = async function (req: Request, res: Respons
 
     // @ts-ignore
     if (user && user.userid && !await isAdministrator(user.userid)) {
-        return res.status(HttpStatusCodes.UNAUTHORIZED).render('401');
+        res.locals.error = true;
+        return res.status(HttpStatusCodes.UNAUTHORIZED).render('401', {title: '401'});
     }
 
     next();

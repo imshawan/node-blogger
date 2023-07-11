@@ -39,8 +39,13 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         pageOptions._meta = parseMetaInformation(req);
         pageOptions._breadcrumb = res.locals.breadcrumb || [];
         pageOptions._csrf_token = csrfToken;
+        pageOptions._isError = res.locals.error || false;
         pageOptions.hidePageHeader = pageOptions.hidePageHeader || false;
         res.locals.csrftoken = csrfToken;
+
+        if (!pageOptions.sidebar) {
+            pageOptions.sidebar = [];
+        }
 
         const [header, body, footer] = await Promise.all([
             renderTemplateTohtml(headerPath, pageOptions),

@@ -20,7 +20,8 @@ router.use('/', async function (req: Request, res: Response) {
     if (req.path == '/') {
         return res.redirect('/admin/dashboard');
     } else {
-        return res.status(HttpStatusCodes.NOT_FOUND).render('404')
+        res.locals.error = true;
+        return res.status(HttpStatusCodes.NOT_FOUND).render('404', {title: '404'})
     }
 })
 

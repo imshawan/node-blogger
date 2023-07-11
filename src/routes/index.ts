@@ -29,7 +29,8 @@ router.use('/api/*', (req: Request, res: Response) => {
 
 // 404 handling for normal routes
 router.use('/*', (req: Request, res: Response) => {
-    res.status(HttpStatusCodes.NOT_FOUND).render('404')
+    res.locals.error = true;
+    res.status(HttpStatusCodes.NOT_FOUND).render('404', {title: '404'});
 });
 
 export default router;

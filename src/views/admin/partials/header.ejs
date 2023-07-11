@@ -89,8 +89,13 @@
           <%- include('/admin/partials/sidebar'); -%>
     
            <!-- main-panel -->
-          <div class="main-panel">
+          <div class="main-panel <% if (sidebar && sidebar.length < 1) { %> w-100 <% } %>">
             <!-- content-wrapper -->
             <div class="content-wrapper">
+
+                <% if (!_isError) { %> 
+
+                    <%- include('/admin/partials/pageheader'); -%>      
+                    
+                <% } %>
     
-              <%- include('/admin/partials/pageheader'); -%>      
