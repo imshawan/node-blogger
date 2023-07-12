@@ -12,7 +12,7 @@ users.get = async function get(req: Request, res: Response, next: NextFunction) 
     const pageData: MutableObject = {};
 
     pageData.title = 'Users';
-    pageData.sidebar = sidebar.get('all_users');
+    pageData.sidebar = sidebar.get('users');
     pageData.users = await getUsersByPagination();
 
     res.render(BASE + '/index', pageData);

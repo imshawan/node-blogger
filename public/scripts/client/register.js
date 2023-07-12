@@ -34,7 +34,8 @@ define('client/register', ['modules/http'], function (http) {
                     'csrf-token': csrfToken
                 }
             }).then(res => {
-                    console.log(res);
+                    const {payload} = res;
+                    location.href = payload.next;
                 })
                 .catch(err => {
                     let errMessage;
@@ -57,7 +58,8 @@ define('client/register', ['modules/http'], function (http) {
             http.GET('/user/validate/username/' + username , {})
                 .then(res => {
                     isUsernameValid = true;
-                    $('#username-status-text').text(`Cool! People can now mention you with @${username}`).show();
+                    $('#username-status-text').text(`Cool! People can now mention you with @${username}`)
+                        .css({color: 'rgb(98, 98, 98)'}).show();
                 })
                 .catch(err => {
                     $('#username-status-text').text(err.message)

@@ -42,29 +42,12 @@ export const data: Array<ISidebar> = [
     ],
   },
   {
-    url: "",
+    url: "/admin/users",
     id: "users",
-    icon: "icon-screen-desktop",
+    icon: "icon-user",
     title: "Users",
     classes: "",
     menu: menus.MANAGE,
-    child: [
-      {
-        url: "/admin/users",
-        id: "all_users",
-        icon: "icon-screen-desktop",
-        title: "All",
-        classes: "",
-        menu: menus.MANAGE,
-      },
-      {
-        url: "/admin/users/create",
-        id: "new_user",
-        icon: "icon-screen-desktop",
-        title: "New category",
-        classes: "",
-        menu: menus.MANAGE,
-      },
-    ],
+    child: []
   },
 ];
