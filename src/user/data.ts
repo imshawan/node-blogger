@@ -55,11 +55,17 @@ export async function getUserByUserId(userid: number) {
     return await database.getObjects({userid, _key: 'user'}, validUserFields);
 }
 
-export async function isAdministrator(userid: number): Promise<boolean> {
+export async function isAdministrator(userid: number | object): Promise<boolean> {
     // TODo
     // Logic to be implemented
 
-    const user = await getUserByUserId(userid);
+    var user;
+
+    if (typeof userid == 'object') {
+        user = userid;
+    } else {
+        user = await getUserByUserId(userid);
+    }
 
     if (Object.hasOwnProperty.bind(user)('roles')) {
         const roles: IRoles = user.roles;

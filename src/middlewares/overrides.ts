@@ -5,6 +5,7 @@ import fs from 'fs';
 import ejs from 'ejs';
 import { meta, styleSheets } from "@src/meta";
 import path from "path";
+import { isAdministrator } from "@src/user";
 
 export const overrideRender = (req: Request, res: Response, next: NextFunction) => {
     const render = res.render;
@@ -36,7 +37,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         pageOptions.scripts = [];
         pageOptions.baseScripts = isAdminRoute ? baseScripts.concat(adminScripts) : baseScripts;
         pageOptions.pageScript = ['client/', (isAdminRoute ? 'admin/' + template : template)].join('');
-        pageOptions._meta = parseMetaInformation(req);
+        pageOptions._meta = await parseMetaInformation(req);
         pageOptions._breadcrumb = res.locals.breadcrumb || [];
         pageOptions._csrf_token = csrfToken;
         pageOptions._isError = res.locals.error || false;
@@ -128,9 +129,15 @@ function generatePageDataScript(options: object): string {
             </script>`
 }
 
-function parseMetaInformation(req: Request) {
+async function parseMetaInformation(req: Request) {
+    const {user} = req;
+
+    // @ts-ignore
+    const administrator = user && user.userid && await isAdministrator(user);
+
     const obj = {
         authenticated: req.isAuthenticated(),
+        isAdministrator: administrator,
     };
 
     return obj;

@@ -12,15 +12,22 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ms-auto">
                     <a class="nav-link active" href="/">home</a>
+
+                    <% if (_meta && _meta.isAdministrator ) { %>
+                        <a class="nav-link" href="/admin">Admin</a>
+                    <% } %>
+
                     <a class="nav-link" href="/categories">Categories</a>
                     <a class="nav-link" href="/posts">Posts</a>
                     <a class="nav-link" href="/contact">contact</a>
                     <a class="nav-link" href="/about">about</a>
+
                     <% if (!_meta.authenticated) { %>
                         <a class="nav-link" href="/signin">Sign in</a>
                     <% } else { %>
                         <%- include('/partials/loggedin_usernav'); -%>
                     <% } %>
+                    
                 </div>
             </div>
         </div>
