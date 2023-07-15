@@ -6052,7 +6052,7 @@
   .badge {
     display: inline-block;
     padding: 0.25em 0.4em;
-    font-size: 75%;
+    font-size: 12px;
     font-weight: 700;
     line-height: 1;
     text-align: center;
@@ -11960,11 +11960,12 @@
       vertical-align: middle;
       font-size: 0.875rem;
       line-height: 1;
-      white-space: nowrap; }
+      /* white-space: nowrap; */
+     }
       .table th img,
       .table td img {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
         border-radius: 100%; }
       .table th .badge,
       .table td .badge {

@@ -1,23 +1,52 @@
 <table class="table table-hover table-striped">
-    <thead>
-      <tr>
-        <th class="font-weight-bolder">Username</th>
-        <th class="font-weight-bolder">Email</th>
-      </tr>
-    </thead>
-    
-    <tbody>
+  <thead>
+    <tr>
+      <th class="font-weight-bolder"></th>
+      <th class="font-weight-bolder">Username</th>
+      <th class="font-weight-bolder">Roles</th>
+      <th class="font-weight-bolder">Joined at</th>
+    </tr>
+  </thead>
 
-      <% if (users && users.length) { %>
-        <% users.forEach(element => { %>
-          <tr>
-            <td><%= element.fullname || element.username %></td>
-            <td><%= element.email %></td>
+  <tbody>
+
+    <% if (users && users.length) { %>
+      <% users.forEach(element => { %>
+          <tr class="">
+            <td>
+              <input class="form-check-input m-auto position-relative" type="checkbox" style="height: 20px; width: 20px;"
+                id="user_<%= element.userid %>" data-userid="<%= element.userid %>">
+            </td>
+
+            <td class="d-flex">
+              <img src="<%= element.picture %>" class="me-2 admin-user-table" onerror="this.onerror=null;this.src='/img/default-image.jpeg';">
+              <div class="col">
+                <a class="font-weight-bold" href="#"><%= element.fullname || element.username %></a>
+                <div class="pt-2 text-black-50"><%= element.email %></div>
+              </div>
+            </td>
+            
+            <td>
+              <% if (element.roles) { %>
+                  <% Object.keys(element.roles).forEach(role => { %>
+
+                    <% if (Boolean(element.roles[role])) { %>
+                      <span class="badge badge-info badge-<%= role %> py-1"><%= role %></span>
+                    <% } %>
+
+                  <% }) %>
+
+              <% } else { %>
+                <span class="badge badge-info badge-user py-1">user</span>
+              <% } %>
+
+            </td>
+            <td><%= element.joiningDate %></td>
           </tr>
-        <% }); %>
+      <% }); %>
     <% } %>
 
 
-      
-    </tbody>
-  </table>
+
+  </tbody>
+</table>

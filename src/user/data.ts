@@ -14,7 +14,9 @@ export const validUserFields = [
     "location",
     "bio",
     "about",
-    "roles"
+    "roles",
+    "joiningDate",
+    "lastOnline"
   ];
 
 export async function getUsersByPagination(options={}) {
