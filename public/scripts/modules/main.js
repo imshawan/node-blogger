@@ -3,6 +3,7 @@ $(document).ready(function () {
     loadScripts(modules);
     loadScripts(pageScript);
     attachGlobalEvents();
+    initialize();
 });
 
 function loadScripts (scripts, callback) {
@@ -201,4 +202,20 @@ function alertError(message, callback) {
     const alertModal = bootbox.alert(options);
 
     alertModal.find('.modal-content').addClass('border-danger');
+}
+
+function initialize() {
+    
+}
+
+function imageOnError(element) {
+    const defaultOnErrorImage = '/img/default-image.jpeg';
+    element = $(element);
+    if (element.data('onerror') && element.data('onerror').length) {
+        element.attr('src', element.data('onerror'));
+    } else {
+        element.attr('src', defaultOnErrorImage);
+    }
+
+    element.attr('onerror', null);
 }

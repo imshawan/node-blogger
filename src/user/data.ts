@@ -1,11 +1,10 @@
 import { database } from "@src/database";
 import {utils as UserUtils} from './utils'
-import { IRoles, MutableObject } from "@src/types";
+import { IRoles, IUser } from "@src/types";
 
 export const validUserFields = [
     "userid",
-    "firstname",
-    "lastname",
+    "fullname",
     "slug",
     "username",
     "email",
@@ -25,7 +24,7 @@ export async function getUsersByPagination(options={}) {
     return await database.getObjects({_key: 'user'}, validUserFields, {multi: true});
 }
 
-export async function getUserByUsername(username: string) {
+export async function getUserByUsername(username: string): Promise<IUser> {
     if (!username) {
         throw new Error('username is required');
     }
@@ -33,7 +32,7 @@ export async function getUserByUsername(username: string) {
     return await database.getObjects({username, _key: 'user'}, validUserFields);   
 }
 
-export async function getUserByEmail(email: string) {
+export async function getUserByEmail(email: string): Promise<IUser> {
     if (!email || !email.length) {
         throw new Error('An email-id is required');
     }
@@ -45,7 +44,7 @@ export async function getUserByEmail(email: string) {
     return await database.getObjects({email, _key: 'user'}, validUserFields);
 }
 
-export async function getUserByUserId(userid: number) {
+export async function getUserByUserId(userid: number): Promise<IUser> {
     if (!userid) {
         throw new Error('Userid is required');
     }
@@ -61,7 +60,7 @@ export async function isAdministrator(userid: number | object): Promise<boolean>
     // TODo
     // Logic to be implemented
 
-    var user;
+    var user: any;
 
     if (typeof userid == 'object') {
         user = userid;
@@ -85,7 +84,7 @@ export async function getUserRoles(userid: number): Promise<Array<string>> {
     const user = await getUserByUserId(userid);
 
     if (Object.hasOwnProperty.bind(user)('roles')) {
-        const roles: MutableObject = user.roles;
+        const roles: any = user.roles;
 
         for (const key in roles) {
             if (Object.prototype.hasOwnProperty.call(roles, key)) {

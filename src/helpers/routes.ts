@@ -11,7 +11,7 @@ const mountPageRoute = function (router: any, route: string, middlewares: Array<
 		throw new Error(`'controller' must be a function, found ${typeof controller} instead`);
 	}
 
-	router.get(route, middlewares, tryRoute(controller));
+	router.get(route, middlewares, tryRoute(controller, pageRouteErrorHandler));
 };
 
 const mountAdminPageRoute = function (router: any, route: string, middlewares: Array<Function>, controller: Function) {
@@ -22,15 +22,7 @@ const mountAdminPageRoute = function (router: any, route: string, middlewares: A
 		throw new Error(`'controller' must be a function, found ${typeof controller} instead`);
 	}
 
-	router.get(route, middlewares, tryRoute(controller, (err: Error, req: Request, res: Response) => {
-		const error = createErrorObj(err);
-		const data = {
-			title: 'Error',
-			path: req.originalUrl
-		};
-
-		res.render('error', _.merge({error}, data));
-	}));
+	router.get(route, middlewares, tryRoute(controller, pageRouteErrorHandler));
 };
 
 const mountApiRoute = function (router: any, method: string, route: string, middlewares: Array<Function>, controller: Function) {
@@ -62,6 +54,17 @@ function tryRoute (controller: Function, handler?: Function) {
 	}
 	return controller;
 };
+
+function pageRouteErrorHandler (err: Error, req: Request, res: Response) {
+	const error = createErrorObj(err);
+	const data = {
+		title: 'Error',
+		path: req.originalUrl
+	};
+
+	res.locals.error = true;
+	res.render('error', _.merge({error}, data));
+}
 
 function createErrorObj(err: Error) {
 	const {name, message} = err;

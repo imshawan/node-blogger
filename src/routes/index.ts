@@ -7,6 +7,7 @@ import apiRouter from './api';
 import pageRouter from './pageRoutes';
 import authentication from './authentication';
 import adminPageRouter from './admin';
+import userRoutes from './user';
 
 const router = Router();
 
@@ -18,6 +19,8 @@ router.use('/', initializeCors, authentication);
 
 // Mounting the admin page routers
 router.use('/admin', initializeCors, requireLogin.bind(null, '/admin'), breadcrumbs.bind(null, '/admin'), adminPageRouter);
+
+router.use('/users', initializeCors, breadcrumbs.bind(null, '/users'), userRoutes);
 
 // Mounting the API router
 router.use('/api/v1', initializeCors, apiRouter);

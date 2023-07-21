@@ -17,6 +17,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         const {isAdminRoute} = res.locals;
         const {user} = req;
         const partialsDir = paths[isAdminRoute ? 'adminTemplatePartialsDir' : 'templatePartialsDir'];
+        let footer = '';
 
         if (!template) return next();
         
@@ -48,11 +49,14 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
             pageOptions.sidebar = [];
         }
 
-        const [header, body, footer] = await Promise.all([
+        const [header, body] = await Promise.all([
             renderTemplateTohtml(headerPath, pageOptions),
             renderTemplateTohtml(templatePath, pageOptions),
-            renderTemplateTohtml(footerPath, pageOptions)
         ]);
+
+        if (!pageOptions._isError) {
+            footer = await renderTemplateTohtml(footerPath, pageOptions);
+        }
 
         const pageData = generatePageDataScript(pageOptions);
 
