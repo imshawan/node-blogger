@@ -149,12 +149,32 @@ label {
   cursor: pointer;
 }
 
+.button-outlined {
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  background-color: var(--color-white);
+  border: 2px solid var(--color-black)!important;
+  padding: 8px 20px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .button:hover {
   background-color: rgb(77, 77, 77);
 }
 .button:focus-visible, .button:active {
   color: rgb(255, 255, 255)!important;
   background-color: var(--color-black)!important;
+}
+
+.button-outlined:hover {
+  background-color: rgb(241, 241, 241);
+  color: var(--color-black);
+}
+.button-outlined:focus-visible, .button-outlined:active {
+  color: rgb(255, 255, 255)!important;
+  background-color: var(--color-gray)!important;
 }
 
 .secondary-button {
@@ -1170,6 +1190,65 @@ a.badge-light:focus, a.badge-light:hover {
   font-size: 12px;
 }
 
+/* User list cards */
+
+.user-listing-container .card{
+  width: 275px;
+  border: none;
+  border-radius: 10px;
+  padding: 8px;
+  background-color: #fff;
+  position: relative;
+  height: 350px;
+ }
+
+ .user-listing-container .upper{
+  height: 100px;
+ }
+
+ .user-listing-container .upper img{
+  width: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+
+ }
+
+ .user-listing-container .user{
+  position: relative;
+ }
+
+ .user-listing-container .profile img{
+  height: 100px;
+  width: 100px;
+  margin-top:2px;
+ }
+
+ .user-listing-container .profile{
+  /* position: absolute; */
+  /* top:-50px; */
+  /* height: 90px; */
+  /* width: 90px; */
+  border:3px solid #fff;
+  border-radius: 50%;
+ }
+
+ .user-listing-container .user-name {
+  text-transform: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+ }
+
+ .user-listing-container .follow{
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 35px;
+ }
+
+ .user-listing-container .stats span{
+  font-size: 20px;
+ }
+
 @media (max-width: 650px) {
   #posts .posts-container .post-content {
     font-size: 14px;
@@ -1198,6 +1277,10 @@ a.badge-light:focus, a.badge-light:hover {
   /* Global classes (responsive) */
 
   .button {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+  .button-outlined {
     font-size: 12px;
     padding: 6px 14px;
   }

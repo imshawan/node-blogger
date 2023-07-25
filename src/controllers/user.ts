@@ -1,9 +1,21 @@
 import { IUser, MutableObject } from '@src/types';
-import { getUserByUsername } from '@src/user';
+import { getUserByUsername, getUsersByPagination } from '@src/user';
 import { Request, Response } from 'express';
 import moment from 'moment';
 
 const users: MutableObject = {};
+
+users.get = async function (req: Request, res: Response) {
+    var {page, limit, search} = req.query;
+    const pageData: MutableObject = {};
+
+    const users = await getUsersByPagination();
+
+    pageData.title = 'Users';
+    pageData.users = users;
+
+    res.render('users/index', pageData);
+}
 
 users.getByUsername = async function (req: Request, res: Response) {  
     const {username} = req.params;
