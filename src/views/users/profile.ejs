@@ -20,9 +20,14 @@
                         </div>
                         <% if (user && user.userid) { %>
                             <% if (profile.userid == user.userid) { %>
-                                <div class="">
+                                <div class="d-none d-md-block">
                                     <a href="/users/<%= profile.username %>/edit" class="btn btn-dark btn-icon-text btn-edit-profile">
                                         <i class="fa-regular fa-pen-to-square"></i> Edit profile
+                                    </a>
+                                </div>
+                                <div class="d-md-none">
+                                    <a href="/users/<%= profile.username %>/edit" class="btn btn-dark btn-icon-text btn-edit-profile">
+                                        <i class="fa-regular fa-pen-to-square"></i>
                                     </a>
                                 </div>
                             <% } else { %>
