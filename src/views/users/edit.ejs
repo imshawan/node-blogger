@@ -1,0 +1,64 @@
+<div class="profile-page">
+    <div class="row g-0">
+        <div class="col-12">
+            <div class="profile-header">
+                <div class="cover">
+                    <div class="gray-shade"></div>
+                    <figure>
+                        <img src="https://bootdey.com/img/Content/bg1.jpg" class="img-fluid"
+                            alt="profile cover">
+                    </figure>
+                    <div class="cover-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex">
+                            <img class="profile-pic" data-onerror="" onerror="imageOnError(this)" src="<%= profile.picture %>"
+                                alt="profile">
+                            <div class="my-auto ms-2">
+                                <div class="profile-name text-black"><%= profile.fullname || profile.username %></div>
+                                <div class="username font-body">@<%= profile.username %></div>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<div class="row profile-edit-container common-styles-css g-0 pt-5 px-2">
+
+    <%- include('/users/partials/navigation/desktop'); -%>
+
+    <div class="col-md-8 col-lg-9 px-3">
+        <div class="card border">
+            <%- include('/users/partials/navigation/mobile'); -%>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="profile">
+
+                    <div class="card-header">Your Profile Information</div>
+                    <%- include('/users/partials/profile'); -%>
+
+                </div>
+                <div class="tab-pane" id="account">
+
+                    <div class="card-header">Account Settings</div>
+                    <%- include('/users/partials/account'); -%>
+                    
+                </div>
+                <div class="tab-pane" id="security">
+
+                    <div class="card-header">Security Settings</div>
+                    <%- include('/users/partials/security'); -%>
+                    
+                </div>
+                <div class="tab-pane" id="notification">
+
+                    <div class="card-header">Notification Settings</div>
+                    <%- include('/users/partials/notifications'); -%>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

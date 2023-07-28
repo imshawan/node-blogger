@@ -18,17 +18,23 @@
                             </div>
                             
                         </div>
-                        <div class="d-none d-md-block">
-                            <button class="btn button btn-primary btn-icon-text btn-edit-profile">
-                                <i class="fa-regular fa-pen-to-square"></i> Edit profile
-                            </button>
-                        </div>
+                        <% if (user && user.userid) { %>
+                            <% if (profile.userid == user.userid) { %>
+                                <div class="">
+                                    <a href="/users/<%= profile.username %>/edit" class="btn btn-dark btn-icon-text btn-edit-profile">
+                                        <i class="fa-regular fa-pen-to-square"></i> Edit profile
+                                    </a>
+                                </div>
+                            <% } else { %>
+                                <div class="">
+                                    <button data-userid="<%= profile.userid %>" class="btn button mt-0 btn-primary btn-icon-text btn-edit-profile">
+                                        Follow <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>    
+                            <% } %>
+                        <% } %>
 
-                        <!-- <div class="">
-                            <button class="btn button mt-0 btn-primary btn-icon-text btn-edit-profile">
-                                Follow <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </div> -->
+                        
                     </div>
                 </div>
                 <div class="header-links">

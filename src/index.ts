@@ -5,7 +5,7 @@ import server from './server';
 import {Logger} from '@src/utilities';
 import nconf from 'nconf';
 import { Server } from 'http';
-import { log } from 'console';
+import { getIPv4Address } from './helpers';
 
 const {info} = new Logger();
 
@@ -26,5 +26,8 @@ function onListening(httpServer: Server) {
     ? 'pipe ' + addr
     : (addr.address ? addr.address : host) + (env === 'development' ? (':' + addr.port) : '') + '/';
 
+  var IPv4Addr = ['http://', getIPv4Address(), ':',addr.port, '/'].join('');
+
   info('NodeBlogger running on ' + bind);
+  info('On your local network ' + IPv4Addr)
 }

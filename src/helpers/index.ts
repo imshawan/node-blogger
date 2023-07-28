@@ -1,5 +1,6 @@
 export * from './routes';
 export * from './response';
+export * from './network';
 
 export const validateConfiguration = function (configuration: any) {
     if (!Object.keys(configuration).length) {

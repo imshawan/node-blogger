@@ -40,7 +40,7 @@ html {
 
 body {
   position: relative;
-  font-family: 'Poppins', sans-serif;
+  font-family: sans-serif;
   color: #707070;
 }
 
@@ -52,6 +52,10 @@ h2, h3, h4, h5 {
   color: black;
   text-transform: uppercase;
   font-weight: 600;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins'!important;
 }
 
 .curser-pointer {
@@ -118,7 +122,7 @@ input[type="search"],
 input[type="tel"],
 input[type="color"],
 label {
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   border-radius: 0px;
 }
 
@@ -343,6 +347,7 @@ nav .nav-link:hover {
 
 #navbarNavAltMarkup a {
   color: var(--color-white);
+  font-family: 'Poppins';
 }
 
 .dark {
@@ -417,12 +422,14 @@ nav .nav-link:hover {
 .main-slider .hero-img .hero-text .welcome-text .big-text {
   font-size: 50px;
   font-weight: bold;
+  font-family: 'Poppins';
 }
 
 .main-slider .hero-img .hero-text .welcome-text .small-text {
   font-size: 38px;
   font-weight: bold;
   margin-top: 0px;
+  font-family: 'Poppins';
 }
 
 .aboutus {
