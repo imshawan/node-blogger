@@ -2,7 +2,7 @@ define([], function () {
     const signIn = {};
 
     signIn.initialize = function () {
-        const {redirect} = pagePayload;
+        const {redirect} = Application;
 
         $('.password-show-toggle').on('click', function () {
             $(this).find('i').toggleClass('fa-eye-slash');

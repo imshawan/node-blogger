@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const {modules, pageScript} = pagePayload;
+    const {modules, pageScript} = Application;
     loadScripts(modules);
     loadScripts(pageScript);
     attachGlobalEvents();

@@ -7,7 +7,9 @@
                     <figure>
                         <img id="user-cover-image" src="https://bootdey.com/img/Content/bg1.jpg" class="img-fluid"
                             alt="profile cover">
-                        <input type="file" id="cover-image" class="d-none">
+                        <form class="d-none" id="cover-image-form">
+                            <input type="file" id="cover-image" name="cover" class="d-none">
+                        </form>
                     </figure>
                 
                     <div class="cover-body d-flex justify-content-between align-items-center">
@@ -31,7 +33,9 @@
                 <div class="position-relative">
                     <img id="user-profile-image" class="profile-pic" data-onerror="" onerror="imageOnError(this)" src="<%= profile.picture %>"
                     alt="profile">
-                    <input type="file" id="profile-image" class="d-none">
+                    <form class="d-none" id="profile-image-form">
+                        <input type="file" id="profile-image" name="picture" class="d-none">
+                    </form>
                     <div id="change-profile-image" class="change-profile-image-icon-container cursor-pointer">
                         <span class="material-symbols-outlined text-white">
                         add_a_photo

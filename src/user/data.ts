@@ -10,6 +10,7 @@ export const validUserFields = [
     "email",
     "birthday",
     "picture",
+    "cover",
     "location",
     "bio",
     "about",

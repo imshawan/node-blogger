@@ -2,7 +2,7 @@ define('client/admin/categories/create', ['modules/http'], function (http) {
     const create = {};
 
     create.initialize = function () {
-        const {category} = pagePayload;
+        const {category} = Application;
         // generateAvatarFromName('category-icon');
 
         $('#upload-category-image').off('click').on('click', function () {

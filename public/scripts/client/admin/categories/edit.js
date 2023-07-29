@@ -2,7 +2,7 @@ define('client/admin/categories/edit', ['modules/http'], function (http) {
     const edit = {};
 
     edit.initialize = function () {
-        const {category} = pagePayload;
+        const {category} = Application;
 
         const message = `This action will permanently remove all its associated content, posts, subcategories, and tags from the platform.`;
 

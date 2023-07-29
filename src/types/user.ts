@@ -13,6 +13,7 @@ export interface IUser {
     passwordHash?: string
     birthday?: string
     picture?: string
+    cover?: string
     location?: string
     bio?: string
     about?: string

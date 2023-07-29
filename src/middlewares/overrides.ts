@@ -129,7 +129,7 @@ function generatePageDataScript(options: object): string {
     }
 
     return `<script id="page-data">
-                var pagePayload = ${JSON.stringify(options).replace(/<\//g, '<\\/')}
+                const Application = ${JSON.stringify(options).replace(/<\//g, '<\\/')}
             </script>`
 }
 
