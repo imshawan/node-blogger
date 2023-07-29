@@ -2,10 +2,18 @@
 .material-symbols-outlined {
     font-variation-settings:
     'FILL' 0,
-    'wght' 400,
+    'wght' 500,
     'GRAD' 0,
     'opsz' 48
   }
+
+/* Global styles */
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Global styles end here */
 
 /* 404 page Styles */
 
@@ -130,10 +138,14 @@
     padding: 0 20px;
 }
 
-.profile-page .profile-header .cover .cover-body .profile-pic {
+.profile-page .profile-pic {
     border-radius: 50%;
     width: 128px;
     height: 128px;
+    object-fit: cover;
+    outline-color: white;
+    outline-width: 4px;
+    outline-style: solid;
 }
 
 .profile-page .profile-header .cover figure img {
@@ -141,13 +153,13 @@
     width: 100%;
 }
 
-.profile-page .profile-header .cover .cover-body .profile-name {
+.profile-page .profile-name {
     font-size: 26px;
     font-weight: 600;
-    margin-left: 17px;
+    /* margin-left: 17px; */
 }
 
-.profile-page .profile-header .header-links {
+.profile-page .header-links {
     padding: 15px;
     display: -webkit-flex;
     display: flex;
@@ -157,27 +169,27 @@
     border-radius: 0 0 .25rem .25rem;
 }
 
-.profile-page .profile-header .header-links ul {
+.profile-page .header-links ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     font-size: 18px;
 }
 
-.profile-page .profile-header .header-links ul li a {
+.profile-page .header-links ul li a {
     color: #000;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
     text-decoration: none;
 }
 
-.profile-page .profile-header .header-links ul li:hover,
-.profile-page .profile-header .header-links ul li.active {
+.profile-page .header-links ul li:hover,
+.profile-page .header-links ul li.active {
     color: var(--color-highlighting-blue);
 }
 
-.profile-page .profile-header .header-links ul li:hover a,
-.profile-page .profile-header .header-links ul li.active a {
+.profile-page .header-links ul li:hover a,
+.profile-page .header-links ul li.active a {
     color: var(--color-highlighting-blue);
 }
 
@@ -274,6 +286,44 @@
     border-radius: 0.25rem;
 }
 
+.profile-page .change-profile-image-icon-container {
+    bottom: -2px; 
+    left: 62%;
+    background-color: rgba(0, 0, 0, .5);
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    padding: .43rem;
+    border-radius: 50%;
+}
+.profile-page .change-profile-image-icon-container span {
+    font-size: 22px;
+}
+.profile-page .change-profile-image-icon-container:hover {
+    background-color: rgba(0, 0, 0, .8);
+}
+.profile-page .cover-image-change-icon {
+    position: absolute;
+    right: 50px;
+    bottom: 50px;
+    z-index: 1;
+    display: flex;
+    background-color: rgba(0, 0, 0, .3);
+    padding: .6rem;
+    border-radius: 6px;
+    color: #fff;
+    transition: .1s;
+}
+
+.profile-page .cover-image-change-icon .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 28;
+    font-size: 20px;
+}
+
+.profile-page .cover-image-change-icon:hover {
+    color: #dddddd;
+}
+
 .common-styles-css .card {
     box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, .15);
 }
@@ -368,6 +418,11 @@
     /* .profile-page .profile-header .cover .cover-body .profile-pic {
         width: 70px;
     } */
+
+    .profile-page .cover-image-change-icon .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 28;
+        font-size: 24px;
+    }
 }
 
 @media (min-width: 2400px) {

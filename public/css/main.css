@@ -162,6 +162,8 @@ label {
   text-transform: uppercase;
   font-weight: 600;
   cursor: pointer;
+  height: 35px;
+  line-height: 1;
 }
 
 .button:hover {
@@ -1250,6 +1252,7 @@ a.badge-light:focus, a.badge-light:hover {
   padding-left: 20px;
   padding-right: 20px;
   height: 35px;
+  line-height: 1;
  }
 
  .user-listing-container .stats span{

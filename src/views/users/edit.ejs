@@ -2,19 +2,20 @@
     <div class="row g-0">
         <div class="col-12">
             <div class="profile-header">
-                <div class="cover">
-                    <div class="gray-shade"></div>
+                <div class="cover position-relative">
+                    <!-- <div class="gray-shade"></div> -->
                     <figure>
-                        <img src="https://bootdey.com/img/Content/bg1.jpg" class="img-fluid"
+                        <img id="user-cover-image" src="https://bootdey.com/img/Content/bg1.jpg" class="img-fluid"
                             alt="profile cover">
+                        <input type="file" id="cover-image" class="d-none">
                     </figure>
+                
                     <div class="cover-body d-flex justify-content-between align-items-center">
                         <div class="d-flex">
-                            <img class="profile-pic" data-onerror="" onerror="imageOnError(this)" src="<%= profile.picture %>"
-                                alt="profile">
-                            <div class="my-auto ms-2">
-                                <div class="profile-name text-black"><%= profile.fullname || profile.username %></div>
-                                <div class="username font-body">@<%= profile.username %></div>
+
+                            <div id="change-cover-image" class="btn btn-sm cover-image-change-icon cursor-pointer">
+                                <span class="material-symbols-outlined"> add_a_photo </span>
+                                <span class="d-sm-none d-md-block ms-1">Change picture</span>
                             </div>
                             
                         </div>
@@ -24,8 +25,27 @@
 
             </div>
         </div>
+
+        <div class="row position-relative ms-0">
+            <div class="d-flex position-absolute" style="top: -39px;">
+                <div class="position-relative">
+                    <img id="user-profile-image" class="profile-pic" data-onerror="" onerror="imageOnError(this)" src="<%= profile.picture %>"
+                    alt="profile">
+                    <input type="file" id="profile-image" class="d-none">
+                    <div id="change-profile-image" class="change-profile-image-icon-container cursor-pointer">
+                        <span class="material-symbols-outlined text-white">
+                        add_a_photo
+                        </span>
+                    </div>
+                </div>
+                <div class="mt-5 ms-2">
+                    <div class="profile-name text-black"><%= profile.fullname || profile.username %></div>
+                    <div class="username font-body">@<%= profile.username %></div>
+                </div>
+            </div>
+        </div>
     </div>
-<div class="row profile-edit-container common-styles-css g-0 pt-5 px-2">
+<div class="row profile-edit-container common-styles-css g-0 px-2" style="padding-top: 7rem;">
 
     <%- include('/users/partials/navigation/desktop'); -%>
 
