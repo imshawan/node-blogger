@@ -68,6 +68,8 @@ export const register = async function register(userdata: IUser) {
     user.acceptedTnC = _.isBoolean(acceptedTnC) ? acceptedTnC : false;
     user.joiningDate = timestamp;
     user.isOnline = true;
+    user.createdAt = timestamp;
+    user.updatedAt = timestamp;
 
     const uniqueUUID = generateUUID();
     const newUserRegData = {

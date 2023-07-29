@@ -1,3 +1,5 @@
+import { Express } from 'express';
+
 export * from './database';
 export * from './authentication';
 export * from './meta';
@@ -19,4 +21,12 @@ export interface ISidebar {
 export interface ISidebarMenu {
     title: string
     id: any
+}
+
+export interface MulterFilesArray extends Express.Multer.File {
+    url: string
+}
+
+export interface ExpressUser extends Express.User {
+    userid: number
 }

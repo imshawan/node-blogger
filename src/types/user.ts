@@ -23,6 +23,8 @@ export interface IUser {
     gdprConsent?: boolean
     acceptedTnC?: boolean
     roles?: IRoles
+    createdAt?: string
+    updatedAt?: string
 }
 
 export interface IRoles {

@@ -6,7 +6,7 @@
                 <div class="cover">
                     <!-- <div class="gray-shade"></div> -->
                     <figure>
-                        <img src="https://bootdey.com/img/Content/bg1.jpg" class="img-fluid"
+                        <img data-onerror="https://bootdey.com/img/Content/bg1.jpg" onerror="imageOnError(this)"  src="<%= profile.cover %>" class="img-fluid"
                             alt="profile cover">
 
                             
@@ -44,7 +44,7 @@
         </div>
 
         <div class="row position-relative ms-0">
-            <div class="d-flex position-absolute" style="top: -39px;">
+            <div class="d-flex position-absolute" style="top: -39px;width: 95%;">
                 <div class="d-flex">
                     <img class="profile-pic" data-onerror="" onerror="imageOnError(this)" src="<%= profile.picture %>"
                         alt="profile">

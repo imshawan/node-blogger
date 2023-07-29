@@ -55,10 +55,10 @@ const updateObjects = async function (key: object, data: any, options?: IParamOp
     }
 
     if (options.multi) {
-        mongoOptions.multi = true;
+        return await mongo.client.collection(options.collection).updateOne(key, data, mongoOptions);
     }
 
-    return await mongo.client.collection(options.collection).update(key, data, mongoOptions);
+    return await mongo.client.collection(options.collection).updateMany(key, data, mongoOptions);
 }
 
 const deleteObjects = async function (key: object, options?: IParamOptions) {

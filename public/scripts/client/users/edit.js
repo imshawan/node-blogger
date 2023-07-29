@@ -38,7 +38,7 @@ define('client/users/edit', ['modules/http'], function () {
     edit.updateUserImage = function (targetElem) {
         const form = new FormData(document.querySelector(targetElem));
         const csrfToken = String($('form#csrf_token > input').val());
-        console.log(...form)
+        
         $.ajax({
             url : `/api/v1/user/${Application.user.userid}/picture`,
             type : 'PUT',
@@ -50,8 +50,8 @@ define('client/users/edit', ['modules/http'], function () {
             contentType: false,  // tell jQuery not to set contentType
             enctype: 'multipart/form-data',
             success : function(data) {
-                const {response} = data;
-                alertSuccess(response.message || 'Updated successfully!');
+                const {payload} = data;
+                alertSuccess(payload.message || 'Updated successfully!');
             }
         }).catch((err) => {
             let errMessage;

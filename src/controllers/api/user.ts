@@ -11,6 +11,14 @@ const checkPassword = async (req: Request, res: Response) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.user.checkPassword(req));
 }
 
+const update = async (req: Request, res: Response) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.user.updateUser(req));
+}
+
+const updatePicture = async (req: Request, res: Response) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.user.updatePicture(req));
+}
+
 export default {
-    checkUsername, checkPassword
+    checkUsername, checkPassword, update, updatePicture
   } as const;

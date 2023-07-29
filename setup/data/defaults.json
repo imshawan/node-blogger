@@ -23,5 +23,13 @@
     "minPasswordLength": 6,
     "minUsernameLength": 4,
     "minEmailLength": 8,
-    "minPasswordStrength": 2
+    "minPasswordStrength": 2,
+    "maxFullnameLength": 30,
+    "minFullnameLength": 5,
+    "maxLocationLength": 100,
+    "minLocationLength": 10,
+    "maxBioLength": 250,
+    "minBioLength": 50,
+    "maxAboutLength": 1000,
+    "minAboutLength": 200
 }

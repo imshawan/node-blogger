@@ -14,6 +14,14 @@ export interface IMeta {
   minUsernameLength: number
   minEmailLength: number
   minPasswordStrength: number
+  maxFullnameLength: number
+  minFullnameLength: number
+  maxLocationLength: number
+  minLocationLength: number
+  maxBioLength: number
+  minBioLength: number
+  maxAboutLength: number
+  minAboutLength: number
 }
 
 export interface Session {

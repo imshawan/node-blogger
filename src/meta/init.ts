@@ -6,6 +6,13 @@ import { Logger } from '@src/utilities';
 const {info} = new Logger();
 export const meta: {configurationStore?: IMeta} = {};
 
+export const get = function (field: string) {
+    if (meta.configurationStore && Object.hasOwnProperty.bind(meta.configurationStore)(field)) {
+        // @ts-ignore
+        return meta.configurationStore[field];
+    }
+}
+
 export const initialize = async function initialize() {
     const _key = 'global:meta';
     const defaults =  require('../../setup/data/defaults.json');
