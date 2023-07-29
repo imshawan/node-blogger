@@ -45,7 +45,7 @@ body {
 }
 
 section {
-  margin-top: 60px;
+  margin-top: 66px;
 }
 
 h2, h3, h4, h5 {
@@ -163,7 +163,7 @@ label {
   font-weight: 600;
   cursor: pointer;
   height: 35px;
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .button:hover {
@@ -1252,7 +1252,7 @@ a.badge-light:focus, a.badge-light:hover {
   padding-left: 20px;
   padding-right: 20px;
   height: 35px;
-  line-height: 1;
+  line-height: 1.2;
  }
 
  .user-listing-container .stats span{
