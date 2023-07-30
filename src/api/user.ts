@@ -22,8 +22,24 @@ const checkPassword = async (req: Request) => {
 }
 
 const updateUser = async (req: Request) => {
-    const {userid} = req.params;
-    return
+    let userid = Number(req.params.userid);
+
+    const user = req.user as ExpressUser;
+    const {body} = req;
+
+    if (typeof userid !== 'number') {
+        throw new Error('userid supplied must be a number');
+    }
+
+    if (user.userid != userid) {
+        if (!await isAdministrator(userid)) {
+            throw new Error('You are not authorized to perform this action');
+        }
+
+        // TODO: Need to put an event logger if admin updates a profile
+    }
+
+    await updateUserData(userid, body);
 }
 
 const updatePicture = async (req: Request) => {

@@ -1,8 +1,9 @@
-define('client/users/edit', ['modules/http'], function () {
+define('client/users/edit', ['modules/http'], function (http) {
     const edit = {};
 
     edit.initialize = function () {
         this.attachPageEvents();
+        this.profileUpdateEvents();
     }
 
     edit.attachPageEvents = function () {
@@ -24,6 +25,30 @@ define('client/users/edit', ['modules/http'], function () {
             let file = this.files[0];
             edit.setImage(file, '#user-cover-image');
             edit.updateUserImage('#cover-image-form');
+        });
+    }
+
+    edit.profileUpdateEvents = function () {
+        const {user} = Application;
+        $('#profile-update-form').off('submit').on('submit', function (e) {
+            e.preventDefault();
+            const form = $(this);
+            const formData = form.serializeObject();
+
+            form.find('[type="submit"]').attr('disabled', true);
+            
+            http.PUT(`/user/${user.userid}`, formData)
+                .then(res => {
+                    const {message} = res;
+                    alertSuccess(message || 'Updated successfully!');
+                })
+                .catch(err => {
+                    const {message} = err;
+                    alertError(message || 'Updated successfully!');
+                })
+                .finally(() => {
+                    form.find('[type="submit"]').attr('disabled', false);
+                })
         });
     }
 

@@ -8,7 +8,7 @@ const router = Router();
 const fileStorage = new FileStore();
 const fileuploadMiddleware = fileStorage.initialize();
 
-mountApiRoute(router, 'put', '/:userid/profile', [requireAuthentication], controllers.api.user.update);
+mountApiRoute(router, 'put', '/:userid', [requireAuthentication], controllers.api.user.update);
 mountApiRoute(router, 'put', '/:userid/picture', [fileuploadMiddleware, requireAuthentication], controllers.api.user.updatePicture);
 
 // Public routes

@@ -1,30 +1,30 @@
 <div class="card-body">
-    <form>
+    <form id="profile-update-form">
         <div class="form-group my-1">
             <label for="fullName">Full Name</label>
             <input type="text" class="form-control" id="fullName" aria-describedby="fullNameHelp"
-                placeholder="Enter your fullname" value="<%= profile.fullname %>">
+                name="fullname" placeholder="Enter your fullname" value="<%= profile.fullname %>">
             <small id="fullNameHelp" class="form-text text-muted">Your name may appear around
                 here where you are mentioned. You can change or remove it at any time.</small>
         </div>
         <div class="form-group my-1">
-            <label for="bio">About you</label>
-            <input type="text" value="<%= profile.about %>" class="form-control autosize" id="about" placeholder="What do you do?">
+            <label for="about">About you</label>
+            <input type="text" name="about" value="<%= profile.about %>" class="form-control autosize" id="about" placeholder="What do you do?">
         </div>
         <div class="form-group my-1">
             <label for="bio">Your Bio</label>
-            <textarea type="text" class="form-control autosize" id="bio" placeholder="Write something about you"
+            <textarea type="text" name="bio" class="form-control autosize" id="bio" placeholder="Write something about you"
                 style="overflow: hidden; overflow-wrap: break-word; resize: none; height: 62px;"><%= profile.bio %></textarea>
         </div>
         <div class="form-group my-1">
             <label for="url">URL</label>
-            <input type="text" class="form-control" id="url" placeholder="Enter your website address"
-                value="http://benije.ke/pozzivkij">
+            <input name="website" type="text" class="form-control" id="url" placeholder="Enter your website address"
+                value="<%= profile.website %>">
         </div>
         <div class="form-group my-1">
             <label for="location">Location</label>
-            <input type="text" class="form-control" id="location" placeholder="Enter your location"
-                value="Bay Area, San Francisco, CA">
+            <input name="location" type="text" class="form-control" id="location" placeholder="Enter your location"
+                value="<%= profile.location %>">
         </div>
         <div class="form-group my-1 small text-muted">
             All of the fields on this page are optional and can be deleted at any time, and by
@@ -32,7 +32,7 @@
             profile appears.
         </div>
         <div class="form-group mt-4">
-            <button type="button" class="btn btn-dark">Update Profile</button>
+            <button type="submit" class="btn btn-dark">Update Profile</button>
             <button type="reset" class="btn btn-light">Reset Changes</button>
         </div>
     </form>
