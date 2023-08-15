@@ -11,6 +11,7 @@ export const paths = {
     baseDir: baseDir,
     uploadsDir: path.join(baseDir, 'public', 'uploads'),
     uploadsDirString: ['uploads'].join('/'),
+    buildDir: path.join(baseDir, 'dist'),
     templatesDir: path.join(baseDir, 'src', 'views'),
     templatePartialsDir: path.join(baseDir, 'src', 'views', 'partials'),
     adminTemplatesDir: path.join(baseDir, 'src', 'views', 'admin'),

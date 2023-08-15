@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { baseScripts, vendorScripts, adminScripts } from "@src/meta";
-import {siteName, paths} from '../constants';
+import {siteName, paths} from '@src/constants';
 import fs from 'fs';
 import ejs from 'ejs';
 import { meta, styleSheets } from "@src/meta";

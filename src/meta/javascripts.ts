@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {paths} from '../constants';
+import {paths} from '@src/constants';
 
 const {assetsDir} = paths;
 

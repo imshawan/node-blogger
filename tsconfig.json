@@ -76,7 +76,7 @@
   "include": [
     "src/**/*.ts",
     "spec/**/*.ts",
-    "build.ts"
+    "build/build.ts"
   ],
   "exclude": [
     "public"

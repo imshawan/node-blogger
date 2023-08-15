@@ -30,6 +30,7 @@ import {Strategy as LocalStrategy} from 'passport-local';
 import flash from 'express-flash';
 import nconf from 'nconf';
 import { Logger } from './utilities';
+import {paths} from './constants';
 
 const {info} = new Logger();
 const app = express();
@@ -113,8 +114,12 @@ async function setupExpressServer(app: Application) {
     app.set('view engine', 'ejs');
 
     // Set static directory (js and css).
-    const staticDir = path.join('public');
+    var staticDir = path.join('public');
+    if (EnvVars.NodeEnv === NodeEnvs.Production) {
+        staticDir = path.join(paths.buildDir, 'public');
+    }
     app.use(express.static(staticDir));
+
 
     // Basic middleware
     app.use(express.json({
