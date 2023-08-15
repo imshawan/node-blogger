@@ -57,7 +57,7 @@ const start = async function (port: Number, callback: Function) {
 
     // Security
     if (EnvVars.NodeEnv === NodeEnvs.Production) {
-        app.use(helmet());
+        app.use(helmet({contentSecurityPolicy: false,}));
     }
 
     // Add APIs, must be after middleware
