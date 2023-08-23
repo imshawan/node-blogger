@@ -1,3 +1,4 @@
+import { PassportUserSessionStore } from '@src/utilities';
 import { IUser, MutableObject } from '@src/types';
 import { getUserByUsername, getUsersByPagination } from '@src/user';
 import { Request, Response } from 'express';
