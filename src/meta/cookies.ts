@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import _ from 'lodash';
 import { meta } from './init';
 
@@ -22,7 +23,7 @@ export const cookies = {
         return cookie;
     },
 
-    setupCookie: function (): object {
+    setupCookie: function (req: Request, res: Response): object {
         const cookie = this.get();
         const ttl = getTTLSessionSeconds();
         

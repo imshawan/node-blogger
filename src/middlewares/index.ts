@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
-import { handleApiResponse } from '@src/helpers';
+import { handleApiResponse, extractRemoteAddrFromRequest } from '@src/helpers';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import csurf from 'csurf';
 import { isAdministrator } from '@src/user';
@@ -100,4 +100,28 @@ export const applyCSRFMiddleware = async function (req: Request, res: Response, 
     } else {
         return next();
     }
+}
+
+export function addUserSessionAgent(req: Request, res: Response, next: NextFunction) {
+    const { useragent } = req;
+    // @ts-ignore
+    const { browser, version, os, platform } = useragent;
+
+    if (req.session.hasOwnProperty('passport')) {
+        // @ts-ignore
+        if (typeof req.session.passport !== 'object') {
+            // @ts-ignore
+            req.session.passport = {};
+        }
+        // @ts-ignore
+        req.session.passport.agent = {
+            browser,
+            version,
+            os,
+            platform,
+            ip: extractRemoteAddrFromRequest(req)
+        };
+    }
+
+    next();
 }

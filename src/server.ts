@@ -11,6 +11,7 @@ import http from 'http';
 import logger from 'jet-logger';
 import useragent from 'express-useragent';
 import expressSession from 'express-session';
+import chalk from 'chalk';
 
 import 'express-async-errors';
 
@@ -19,8 +20,8 @@ import EnvVars from '@src/constants/EnvVars';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import {NodeEnvs} from '@src/constants/misc';
 import {RouteError} from '@src/other/classes';
-import { handleApiResponse, validateConfiguration } from '@src/helpers';
-import { overrideRender, user, authentication, overrideHeaders } from '@src/middlewares';
+import { handleApiResponse, validateConfiguration, extractRemoteAddrFromRequest } from '@src/helpers';
+import { overrideRender, user, authentication, overrideHeaders, addUserSessionAgent } from '@src/middlewares';
 import {initializeDbConnection, mongo, database} from './database';
 import { cookies, meta, initialize as initializeMeta } from './meta';
 import config from '../config.json';
@@ -29,8 +30,9 @@ import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
 import flash from 'express-flash';
 import nconf from 'nconf';
-import { Logger } from './utilities';
+import { Logger, getISOTimestamp } from './utilities';
 import {paths} from './constants';
+import { log } from 'console';
 
 const {info} = new Logger();
 const app = express();
@@ -54,6 +56,28 @@ const start = async function (port: Number, callback: Function) {
     // Show routes called in console during development
     if (EnvVars.NodeEnv === NodeEnvs.Dev) {
         app.use(morgan('dev'));
+    } else {
+        // Production morgan logging pattern
+        morgan.token('morgan-prod', () => {
+            return `:timestamp ${chalk.magentaBright(":remote-addr")} - ${chalk.greenBright.bold(":method")} :url ${chalk.yellowBright("HTTP/:http-version")} (:status)`;
+        });
+
+        morgan.token('remote-addr', extractRemoteAddrFromRequest);
+
+        morgan.token('status', (req: Request, res: Response) => {
+            if (res.statusCode > 400) {
+                return chalk.redBright.bold(res.statusCode);
+            }
+            else {
+                return chalk.greenBright.bold(res.statusCode);
+            }
+        });
+        
+        morgan.token('timestamp', () => {
+            return `[${getISOTimestamp()}]`;
+        });
+
+        app.use(morgan('morgan-prod'));
     }
 
     // Security
@@ -137,14 +161,16 @@ async function setupExpressServer(app: Application) {
     });
 
     app.use(flash());
-    app.use(expressSession({
-        store: mongo.sessionStore,
-        secret: secret,
-        name: meta.configurationStore?.session.name,
-        cookie: cookies.setupCookie(),
-        resave: meta.configurationStore?.session.resave || false,
-        saveUninitialized: meta.configurationStore?.session.saveUninitialized || false,
-    }));
+    app.use(function (req, res, next) {
+        expressSession({
+            store: mongo.sessionStore,
+            secret: secret,
+            name: meta.configurationStore?.session.name,
+            cookie: cookies.setupCookie(req, res),
+            resave: meta.configurationStore?.session.resave || false,
+            saveUninitialized: meta.configurationStore?.session.saveUninitialized || false,
+        })(req, res, next);
+    });
 
     passport.serializeUser(user.serializeUser);
     passport.deserializeUser(user.deserializeUser);
@@ -152,6 +178,7 @@ async function setupExpressServer(app: Application) {
 
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use(addUserSessionAgent);
 }
 
 export default {
