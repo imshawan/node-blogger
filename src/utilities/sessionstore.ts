@@ -119,7 +119,7 @@ export class PassportUserSessionStore {
 
         const sessionkey = {
             session: {$regex: new RegExp(`\"user\":${userId}`), $options: 'i'}
-        }
+        };
         
         const sessions = await database.getObjects(sessionkey, [], {collection: 'sessions', multi: true});
         if (sessions && sessions.length) {
