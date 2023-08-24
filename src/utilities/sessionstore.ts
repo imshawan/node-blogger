@@ -28,6 +28,7 @@ export class PassportUserSessionStore {
       this.destroy = this.destroy.bind(this);
       this.getAllSessionsByUserId = this.getAllSessionsByUserId.bind(this);
       this.getActiveSessionsByUserId = this.getActiveSessionsByUserId.bind(this);
+      this.getCurrentUserSessions = this.getCurrentUserSessions.bind(this);
 
       this.validate();
     }
