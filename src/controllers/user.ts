@@ -38,8 +38,11 @@ users.getByUsername = async function (req: Request, res: Response) {
 }
 
 users.edit = async function (req: Request, res: Response) {  
+    // @ts-ignore
+    const userid: Number = req.user.userid;
     const {username} = req.params;
     const page: MutableObject = {};
+    const sessionStore = new PassportUserSessionStore(req.sessionStore);
 
     var userData: IUser = await getUserByUsername(username);
     if (!userData) {
@@ -52,6 +55,7 @@ users.edit = async function (req: Request, res: Response) {
     
     page.title = userData.fullname || userData.username;
     page.profile = userData;
+    page.sessions = await sessionStore.getCurrentUserSessions(userid);
 
     res.render('users/edit', page);
 }

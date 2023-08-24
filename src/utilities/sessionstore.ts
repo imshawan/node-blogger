@@ -4,9 +4,7 @@ import session from "express-session";
 
 interface SessionObject {
     _id: string
-    expires: {
-        $date: string
-    }
+    expires: string
     session: string
 }
 
@@ -99,10 +97,25 @@ export class PassportUserSessionStore {
         });
     }
 
+    public async getCurrentUserSessions(userId: Number) {
+        const sessions = await this.getActiveSessionsByUserId(userId);
+        if (sessions && sessions.length) {
+            return sessions.map(elem => {
+                if (Object.hasOwnProperty.bind(elem.session)('passport')) {
+                    // @ts-ignore
+                    const {agent} = elem.session.passport;
+                    return agent;
+                } else return {};
+            });
+        } else {
+            return [];
+        }
+    }
+
     public async getActiveSessionsByUserId(userId: Number) {
         const sessions = await this.getAllSessionsByUserId(userId);
         if (sessions && sessions.length) {
-            return sessions.filter(elem => new Date(elem.expires.$date) > new Date());
+            return sessions.filter(elem => new Date(elem.expires) > new Date());
         } else {
             return [];
         }
