@@ -1,6 +1,8 @@
 import { Express } from "express";
 import { database } from "@src/database";
 import session from "express-session";
+import axios from "axios";
+import { resolveGeoLocation } from ".";
 
 interface SessionObject {
     _id: string
@@ -101,13 +103,18 @@ export class PassportUserSessionStore {
     public async getCurrentUserSessions(userId: Number) {
         const sessions = await this.getActiveSessionsByUserId(userId);
         if (sessions && sessions.length) {
-            return sessions.map(elem => {
+            return await Promise.all(sessions.map(async elem => {
                 if (Object.hasOwnProperty.bind(elem.session)('passport')) {
                     // @ts-ignore
-                    const {agent} = elem.session.passport;
+                    const agent: any = elem.session.passport.agent;
+                    if (Object.hasOwnProperty.bind(agent)('ip') && agent.ip) {
+                        agent.geoLocation = await resolveGeoLocation(agent.ip);
+                    }
                     return agent;
-                } else return {};
-            });
+                } else {
+                    return {};
+                }
+            }));
         } else {
             return [];
         }
