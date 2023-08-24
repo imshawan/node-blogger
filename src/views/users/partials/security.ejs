@@ -15,15 +15,34 @@
             <p class="font-size-sm text-secondary">This is a list of devices that have logged
                 into your account. Revoke any sessions that you do not recognize.</p>
             <ul class="list-group list-group-sm">
-                <li class="list-group-item has-icon">
-                    <div>
-                        <h6 class="mb-0">San Francisco City 190.24.335.55</h6>
-                        <small class="text-muted">Your current session seen in United
-                            States</small>
-                    </div>
-                    <button class="btn btn-light btn-sm ms-auto" type="button">More
-                        info</button>
-                </li>
+                <% if (sessions && sessions.length) { %>
+                    <% sessions.forEach((session, index) => { %>
+                        <li class="list-group-item has-icon">
+                            <div>
+                                <h6 class="mb-0"><% if (session.geoLocation.city) { %>
+                                    <%= session.geoLocation.city %> ,
+                                <% } %> <%= session.geoLocation.countryCode %> <%= session.ip %></h6>
+                                <small class="text-muted">Your current session seen in <%= session.geoLocation.country %></small>
+                            </div>
+                            
+                            <button class="btn btn-light btn-sm ms-auto my-2" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#<%= session.geoLocation.city %>-<%= index %>" aria-expanded="false" aria-controls="<%= session.geoLocation.city %>-<%= index %>">
+                                More info
+                            </button>
+
+                            <div class="collapse" id="<%= session.geoLocation.city %>-<%= index %>">
+                                <div class="shadow-none">
+                                  <ul>
+                                    <li class="font-body">Browser: <%= session.browser %> (<%= session.version %>)</li>
+                                    <li class="font-body">OS: <%= session.os %></li>
+                                    <li class="font-body">Platform: <%= session.platform %></li>
+                                  </ul>
+                                </div>
+                            </div>
+                        </li>
+                    <% }); %>
+                <% } %> 
+                
             </ul>
         </div>
     </form>
