@@ -2,6 +2,7 @@ import { Request } from "express";
 import {database} from "@src/database"
 import { getUserByUsername, utils, updateUserData, isAdministrator } from "@src/user";
 import { MutableObject, MulterFilesArray, ExpressUser } from "@src/types";
+import { parseBoolean } from "@src/utilities";
 
 const checkUsername = async (req: Request) => {
     const {username} = req.params;
@@ -72,6 +73,23 @@ const updatePicture = async (req: Request) => {
     
 }
 
+const consent = async (req: Request) => {
+    const {emails, data} = req.body;
+    // @ts-ignore
+    const userid: Number = req.user.userid;
+    const key = {_key: 'user:' + userid + ':registeration', userid};
+
+    const consentData = await database.getObjects(key);
+    if (consentData && !consentData.consentCompleted) {
+        let payload = {
+            consent: {emails: parseBoolean(emails), data: parseBoolean(data)},
+            consentCompleted: true
+        }
+
+        await database.updateObjects(key, {$set: payload});
+    }
+}
+
 export default {
-    checkUsername, checkPassword, updateUser, updatePicture
+    checkUsername, checkPassword, updateUser, updatePicture, consent
   } as const;

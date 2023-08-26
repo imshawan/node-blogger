@@ -19,6 +19,10 @@ const updatePicture = async (req: Request, res: Response) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.user.updatePicture(req));
 }
 
+const consent = async (req: Request, res: Response) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.user.consent(req));
+}
+
 export default {
-    checkUsername, checkPassword, update, updatePicture
+    checkUsername, checkPassword, update, updatePicture, consent
   } as const;

@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { handleApiResponse } from '@src/helpers';
-import { initializeCors, corsWithOptions, requireLogin } from '@src/middlewares';
+import { initializeCors, corsWithOptions, requireLogin, notFoundHandler } from '@src/middlewares';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { breadcrumbs } from '@src/middlewares';
 import apiRouter from './api';
@@ -31,9 +31,6 @@ router.use('/api/*', (req: Request, res: Response) => {
 });
 
 // 404 handling for normal routes
-router.use('/*', (req: Request, res: Response) => {
-    res.locals.error = true;
-    res.status(HttpStatusCodes.NOT_FOUND).render('404', {title: '404'});
-});
+router.use('/*', notFoundHandler);
 
 export default router;

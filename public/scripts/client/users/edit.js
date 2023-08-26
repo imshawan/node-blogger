@@ -44,7 +44,7 @@ define('client/users/edit', ['modules/http'], function (http) {
                 })
                 .catch(err => {
                     const {message} = err;
-                    alertError(message || 'Updated successfully!');
+                    alertError(message || 'Something went wrong');
                 })
                 .finally(() => {
                     form.find('[type="submit"]').attr('disabled', false);

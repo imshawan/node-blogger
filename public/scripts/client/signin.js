@@ -1,4 +1,4 @@
-define([], function () {
+define('client/signin', [], function () {
     const signIn = {};
 
     signIn.initialize = function () {

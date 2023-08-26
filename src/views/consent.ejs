@@ -31,18 +31,18 @@
         
         <div class="">
             <b>Contact Us</b>
-            <p>If you have questions about this privacy notice, please contact us at privacy@communityforum.com.</p>
+            <p>If you have questions about this privacy notice, please contact us at privacy@nodeblogger.com.</p>
         </div>
         
-        <form>
+        <form id="consent-form">
             <div class="form-check">
-                <input class="form-check-input" name="data" type="checkbox" value="" id="agree-data-consent">
+                <input required class="form-check-input" name="data" type="checkbox" value="" id="agree-data-consent">
                 <label class="form-check-label" for="agree-data-consent">
                     I allow consent to the collection and processing of my personal information on this website.
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" name="emails" type="checkbox" value="" id="agree-email-consent">
+                <input required class="form-check-input" name="emails" type="checkbox" value="" id="agree-email-consent">
                 <label class="form-check-label" for="agree-email-consent">
                     I allow consent to receive digest and notification emails from this website.
                 </label>
@@ -51,7 +51,7 @@
               <div class="form-group mt-3">
                 <div class="w-auto">
                     <button type="submit" class="btn btn-primary px-3">Accept consent</button>
-                    <button type="submit" class="btn btn-secondary">Remind me later</button>
+                    <button type="button" id="skip-consent" class="btn btn-secondary">Remind me later</button>
                 </div>
             </div>
         </form>

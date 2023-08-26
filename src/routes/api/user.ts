@@ -10,6 +10,7 @@ const fileuploadMiddleware = fileStorage.initialize();
 
 mountApiRoute(router, 'put', '/:userid', [requireAuthentication], controllers.api.user.update);
 mountApiRoute(router, 'put', '/:userid/picture', [fileuploadMiddleware, requireAuthentication], controllers.api.user.updatePicture);
+mountApiRoute(router, 'post', '/:userid/consent', [requireAuthentication, checkRequiredFields.bind(null, ['data', 'emails', 'token'])], controllers.api.user.consent);
 
 // Public routes
 mountApiRoute(router, 'get', '/validate/username/:username', [], controllers.api.user.checkUsername);

@@ -39,6 +39,10 @@ export const connect = async function (connectionString: string, options: object
     const connection = await client.connect();  
     var db = client.db(database);    
 
+    connection.on('close', () => {
+        connection.removeAllListeners();
+    });
+
     info('Established connection with database server');
 
     // Send a ping to confirm a successful connection to databases

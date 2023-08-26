@@ -21,7 +21,7 @@ export const checkRequiredFields = function (fields: Array<string>, req: Request
     let missingFields: Array<string> = [];
     if (fields.length) {
         fields.forEach((field) => {
-            if (!req.body[field] || req.body[field] == '') {
+            if (!Object.hasOwnProperty.bind(req.body)(field) || req.body[field] == '') {
                 missingFields.push(field)
             }
         });
@@ -124,4 +124,9 @@ export function addUserSessionAgent(req: Request, res: Response, next: NextFunct
     }
 
     next();
+}
+
+export const notFoundHandler = async function (req: Request, res: Response) {
+    res.locals.error = true;
+    res.status(HttpStatusCodes.NOT_FOUND).render('404', {title: '404'});
 }

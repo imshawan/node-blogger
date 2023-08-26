@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import axios from 'axios';
+import _ from 'lodash';
 
 export * from './password';
 export * from './slugify';
@@ -41,4 +42,23 @@ export const resolveGeoLocation = async (ipAddr: string): Promise<{[key: string]
     }
 
     return geoLocation;
+}
+
+export const parseBoolean = function(value: any) {
+    if (!value) return false;
+
+    if (Array.isArray(value)) {
+        return Boolean(value.length);
+    }
+    if (typeof value == 'object') {
+        return Boolean(Object.keys(value).length);
+    }
+
+    try {
+        value = JSON.parse(String(value).toLowerCase().trim());
+    } catch (err) {
+        value = false;
+    }
+
+    return value;
 }
