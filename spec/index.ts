@@ -1,16 +1,12 @@
 import dotenv from 'dotenv';
-import find from 'find';
-import Jasmine from 'jasmine';
-import { parse } from 'ts-command-line-args';
-import logger from 'jet-logger';
+import { Logger } from '@src/utilities';
+import {sync} from 'glob';
 
+const logger = new Logger();
 
-// **** Types **** //
-
-interface IArgs {
-  testFile: string;
+interface TestFile {
+    execute: Function | Promise<any>
 }
-
 
 // **** Setup **** //
 
@@ -24,54 +20,43 @@ if (result2.error) {
   throw result2.error;
 }
 
-// Setup command line options. 
-const args = parse<IArgs>({
-  testFile: {
-    type: String,
-    defaultValue: '',
-  },
-});
-
-
-// ** Start Jasmine ** //
-
-// Init Jasmine
-const jasmine = new Jasmine();
-jasmine.exitOnCompletion = false;
-
-// Set location of test files
-jasmine.loadConfig({
-  random: true,
-  spec_dir: 'spec',
-  spec_files: [
-    './tests/**/*.spec.ts',
-  ],
-  stopSpecOnExpectationFailure: false,
-});
+const testFiles = sync('./spec/**/*.spec.ts'); 
 
 // Run all or a single unit-test
-let execResp: Promise<jasmine.JasmineDoneInfo> | undefined;
-if (args.testFile) {
-  const testFile = args.testFile;
-  find.file(testFile + '.spec.ts', './spec', (files: string[]) => {
-    if (files.length === 1) {
-      jasmine.execute([files[0]]);
-    } else {
-      logger.err('Test file not found!');
+
+async function execTests() {
+    let failed = 0, passed = 0, overallStatus = 'failed';
+    if (testFiles.length) {
+        await Promise.all(testFiles.map(async file => {
+            const testFile: TestFile = require(file);
+            if (Object.hasOwnProperty.bind(testFile)('execute') && typeof testFile.execute == 'function') {
+                try {
+                  if (testFile.execute.constructor.name == 'AsyncFunction') {
+                      await testFile.execute();
+                  } else {
+                      testFile.execute();
+                  }
+                  passed++;
+                } catch (err) {
+                  failed++;
+              }
+            }
+        }));
     }
-  });
-} else {
-  execResp = jasmine.execute();
+
+    if (!Boolean(failed)) {
+        overallStatus = 'passed';
+    }
+
+    return {passed, failed, overallStatus};
 }
 
 // Wait for tests to finish
 (async () => {
-  if (!!execResp) {
-    const info = await execResp;
-    if (info.overallStatus === 'passed') {
+  const info = await execTests();
+  if (info.overallStatus === 'passed') {
       logger.info('All tests have passed :)');
-    } else {
-      logger.err('At least one test has failed :(');
-    }
+  } else {
+      logger.error('At least one test has failed :(');
   }
 })();
