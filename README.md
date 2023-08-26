@@ -2,6 +2,9 @@
 
 Node Blogger - A simple open-source blogging application powered by NodeJS
 
+## Dependencies
+- Node: 16.20.x
+- NPM: 8.19.x
 
 ## Available Scripts
 
