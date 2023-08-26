@@ -105,9 +105,21 @@ async function generateNextUserId() {
     return await database.incrementFieldCount('user');
 }
 
+async function hasCompletedConsent(userid: Number) {
+    if (!userid) {
+        throw new Error('A userid is required to check against');
+    }
+    if (typeof userid != 'number') {
+        throw new Error(`userid must be a number found ${typeof userid} instead`);
+    }
+
+    const consent = await database.getObjects({_key: 'user:' + userid + ':registeration'});
+    return consent;
+}
+
 const utils = {
     validatePassword, checkPasswordStrength, isValidEmail, validateUsername, checkEmailAvailability,
-    generateNextUserId, generateUserslug,
+    generateNextUserId, generateUserslug, hasCompletedConsent,
 }
 
 export {utils};

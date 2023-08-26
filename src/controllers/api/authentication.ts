@@ -6,7 +6,7 @@ import { IUserRegisteration } from "@src/types";
 import passport from "passport";
 
 const signIn = async (req: Request, res: Response, next: NextFunction) => {
-    const {redirect} = req.body;
+    var {redirect} = req.body;
 
     passport.authenticate('local', async function (err?: Error, userData?: any, info?: object) {
         if (err) {
@@ -17,8 +17,15 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
             // TODO
         }
         
-        req.logIn(userData, function(err) {
+        req.logIn(userData, async function(err) {
             if (err) { return next(err); }
+
+            const consent: any = await utils.hasCompletedConsent(userData.userid);
+            if (consent && !consent.consentCompleted) {
+                const {token} = consent;
+                return res.json({next: `register/complete/token=${token}`});
+            }
+
             return res.json({next: redirect || '/'});
         });
     })(req, res, next);

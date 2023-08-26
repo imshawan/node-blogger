@@ -399,6 +399,14 @@
     background-color: #e2e8f0;
 }
 
+.font-weight-normal {
+    font-weight: 400;
+}
+
+.text-normal {
+    text-transform: none;
+}
+
 @media (max-width: 767px) {
     .profile-page .profile-header .cover figure {
         height: 160px;

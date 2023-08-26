@@ -75,7 +75,7 @@ export const register = async function register(userdata: IUser) {
     const newUserRegData = {
         _key: 'user:' + userid + ':registeration',
         token: uniqueUUID,
-        consentStage: false,
+        consentCompleted: false, // Flag to check if the user has completed the consent stage
         userid: userid,
         createdAt: timestamp,
     };
