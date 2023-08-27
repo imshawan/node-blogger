@@ -1,6 +1,7 @@
-import dotenv from 'dotenv';
+import nconf from 'nconf';
 import { Logger } from '@src/utilities';
 import {sync} from 'glob';
+import childProcess from 'child_process';
 
 const logger = new Logger();
 
@@ -13,12 +14,7 @@ interface TestFile {
 // ** Init ** //
 
 // NOTE: MUST BE FIRST!! Load env vars
-const result2 = dotenv.config({
-  path: './env/test.env',
-});
-if (result2.error) {
-  throw result2.error;
-}
+nconf.argv().env().file({ file: 'config.json' });
 
 const testFiles = sync('./spec/**/*.spec.ts'); 
 
@@ -28,19 +24,7 @@ async function execTests() {
     let failed = 0, passed = 0, overallStatus = 'failed';
     if (testFiles.length) {
         await Promise.all(testFiles.map(async file => {
-            const testFile: TestFile = require(file);
-            if (Object.hasOwnProperty.bind(testFile)('execute') && typeof testFile.execute == 'function') {
-                try {
-                  if (testFile.execute.constructor.name == 'AsyncFunction') {
-                      await testFile.execute();
-                  } else {
-                      testFile.execute();
-                  }
-                  passed++;
-                } catch (err) {
-                  failed++;
-              }
-            }
+            await exec(`mocha --require ts-node/register -r tsconfig-paths/register ${file}`, './');
         }));
     }
 
@@ -50,6 +34,23 @@ async function execTests() {
 
     return {passed, failed, overallStatus};
 }
+
+/**
+ * Do command line command.
+ */
+function exec(cmd: string, loc: string): Promise<void> {
+    return new Promise((res, rej) => {
+      return childProcess.exec(cmd, {cwd: loc}, (err, stdout, stderr) => {
+        if (!!stdout) {
+          logger.info(stdout);
+        }
+        if (!!stderr) {
+          logger.warn(stderr);
+        }
+        return (!!err ? rej(err) : res());
+      });
+    });
+  }
 
 // Wait for tests to finish
 (async () => {

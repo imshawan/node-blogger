@@ -68,7 +68,9 @@
     "resolveJsonModule": true,                  /* Enables importing .json files */
     "paths": {
       "@src/*": [
-        "src/*"
+        "src/*",
+        "../../src/*", /* For mocha, the spec folder is outside of src */
+        "../src/*" /* For build, the build folder is outside of src */
       ],
     },
     "useUnknownInCatchVariables": false
@@ -76,9 +78,10 @@
   "include": [
     "src/**/*.ts",
     "spec/**/*.ts",
-    "build/build.ts"
+    "build/*.ts"
   ],
   "exclude": [
     "public"
-  ]
+  ],
+  "types": ["mocha", "chai"]
 }

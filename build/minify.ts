@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import uglify from 'uglify-js';
-import {paths} from '../src/constants';
-import { Logger } from '../src/utilities';
+import {paths} from '@src/constants';
+import { Logger } from '@src/utilities';
 
 const logger = new Logger({prefix: 'build'});
 
