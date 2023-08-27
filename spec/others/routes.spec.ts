@@ -16,7 +16,7 @@ describe('Other API Tasks', () => {
   describe('GET /api/*/*', () => {
       it('It should return a 404 response', () => {
           chai.request(server.app)
-          .get('/books')
+          .get('/api/*/*')
           .end((err, response) => {
               response.should.have.status(HttpStatusCodes.NOT_FOUND);
           })
