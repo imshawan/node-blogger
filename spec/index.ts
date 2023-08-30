@@ -5,20 +5,9 @@ import childProcess from 'child_process';
 import path from 'path';
 import server from '@src/server';
 import Mocha, { Test } from 'mocha';
+import { ITestConfig, ITestResult } from '@src/types';
 
-const logger = new Logger();
-const mocha = new Mocha({timeout: 1000 * 20});
-
-interface TestFile {
-    execute: Function | Promise<any>
-}
-
-interface TestResult {
-    total: Number
-    failed: Number
-    passed: Number
-    overallStatus: string
-}
+const DEFAULT_MOCHA_TIMEOUT = 1000 * 10; // 10 seconds
 
 // **** Setup **** //
 
@@ -28,12 +17,17 @@ interface TestResult {
 nconf.argv().env().file({ file: 'config.json' });
 
 const testFiles = sync('./spec/**/*.spec.ts'); 
+const testConfig: ITestConfig = nconf.get('test');
+const mochaOptions = {timeout: Number(testConfig.timeout) || DEFAULT_MOCHA_TIMEOUT};
+
+const logger = new Logger();
+const mocha = new Mocha(mochaOptions);
 
 // Run all or a single unit-test
 
-async function execTests(): Promise<TestResult> {
+async function execTests(): Promise<ITestResult> {
     await server.initialize();
-    
+
     return new Promise((resolve, reject) => {
         let total = 0,
           failed = 0,
