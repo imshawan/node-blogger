@@ -3,15 +3,13 @@ import EnvVars from '@src/constants/EnvVars';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import chai, {expect, should} from 'chai';
 import chaiHttp from 'chai-http';
+import path from 'path';
 
 const Should = should();
-
-//Assertion style
-chai.should();
 chai.use(chaiHttp);
 
 // **** Tests **** //
-describe('Other API Tasks', () => {
+describe(`Other API Tasks (${path.basename(__filename)})`, () => {
 
   describe('GET /api/*/*', () => {
       it('It should return a 404 response', () => {

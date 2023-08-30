@@ -48,36 +48,48 @@ const start = async function (port: Number, callback: Function) {
         address = address.join(':');
     }
 
+    await initialize();
+
+    app.set('port', port);
+    app.set('address', address);
+    app.listen(port, () => {
+        if (callback && typeof callback == 'function') {
+            callback(httpServer);
+        }
+    });
+}
+
+const initialize = async function () {
     validateConfiguration(config)
     await initializeDbConnection(config.mongodb);
     await initializeMeta();
     await setupExpressServer(app);
 
+    // Production morgan logging pattern
+    morgan.token(NodeEnvs.Production, () => {
+        return `:timestamp ${chalk.magentaBright(":remote-addr")} - ${chalk.greenBright.bold(":method")} :url ${chalk.yellowBright("HTTP/:http-version")} (:status)`;
+    });
+
+    morgan.token('remote-addr', extractRemoteAddrFromRequest);
+
+    morgan.token('status', (req: Request, res: Response) => {
+        if (res.statusCode > 400) {
+            return chalk.redBright.bold(res.statusCode);
+        }
+        else {
+            return chalk.greenBright.bold(res.statusCode);
+        }
+    });
+    
+    morgan.token('timestamp', () => {
+        return `[${getISOTimestamp()}]`;
+    });
+    
     // Show routes called in console during development
     if (EnvVars.NodeEnv === NodeEnvs.Dev) {
         app.use(morgan('dev'));
-    } else {
-        // Production morgan logging pattern
-        morgan.token('morgan-prod', () => {
-            return `:timestamp ${chalk.magentaBright(":remote-addr")} - ${chalk.greenBright.bold(":method")} :url ${chalk.yellowBright("HTTP/:http-version")} (:status)`;
-        });
-
-        morgan.token('remote-addr', extractRemoteAddrFromRequest);
-
-        morgan.token('status', (req: Request, res: Response) => {
-            if (res.statusCode > 400) {
-                return chalk.redBright.bold(res.statusCode);
-            }
-            else {
-                return chalk.greenBright.bold(res.statusCode);
-            }
-        });
-        
-        morgan.token('timestamp', () => {
-            return `[${getISOTimestamp()}]`;
-        });
-
-        app.use(morgan('morgan-prod'));
+    } else if (EnvVars.NodeEnv === NodeEnvs.Production) {
+        app.use(morgan(NodeEnvs.Production));
     }
 
     // Security
@@ -110,13 +122,7 @@ const start = async function (port: Number, callback: Function) {
         });
     });
 
-    app.set('port', port);
-    app.set('address', address);
-    app.listen(port, () => {
-        if (callback && typeof callback == 'function') {
-            callback(httpServer);
-        }
-    });
+    return app;
 }
 
 const destroy = (callback: Function) => {
@@ -185,5 +191,6 @@ export default {
   app,
   httpServer,
   start,
-  destroy
+  destroy,
+  initialize
 };

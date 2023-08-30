@@ -2,11 +2,22 @@ import nconf from 'nconf';
 import { Logger } from '@src/utilities';
 import {sync} from 'glob';
 import childProcess from 'child_process';
+import path from 'path';
+import server from '@src/server';
+import Mocha, { Test } from 'mocha';
 
 const logger = new Logger();
+const mocha = new Mocha({timeout: 1000 * 20});
 
 interface TestFile {
     execute: Function | Promise<any>
+}
+
+interface TestResult {
+    total: Number
+    failed: Number
+    passed: Number
+    overallStatus: string
 }
 
 // **** Setup **** //
@@ -20,19 +31,37 @@ const testFiles = sync('./spec/**/*.spec.ts');
 
 // Run all or a single unit-test
 
-async function execTests() {
-    let failed = 0, passed = 0, overallStatus = 'failed';
-    if (testFiles.length) {
-        await Promise.all(testFiles.map(async file => {
-            await exec(`mocha --require ts-node/register -r tsconfig-paths/register ${file}`, './');
-        }));
-    }
+async function execTests(): Promise<TestResult> {
+    await server.initialize();
+    
+    return new Promise((resolve, reject) => {
+        let total = 0,
+          failed = 0,
+          passed = 0,
+          overallStatus = "failed";
 
-    if (!Boolean(failed)) {
-        overallStatus = 'passed';
-    }
+        if (testFiles.length) {
+            testFiles.forEach(async file => mocha.addFile(file));
 
-    return {passed, failed, overallStatus};
+            mocha.run()
+              .on('test', function(test: Test) {
+                  total++;
+              })
+              .on('pass', function(test: Test) {
+                  passed++;
+              })
+              .on('fail', function(test: Test, err) {
+                  failed++;
+              })
+              .on('end', function() {
+                  if (!Boolean(failed)) {
+                      overallStatus = 'passed';
+                  }
+
+                  resolve({passed, failed, overallStatus, total});
+              });
+        }
+    });
 }
 
 /**
