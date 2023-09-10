@@ -1,7 +1,7 @@
 import create from './create';
 import utilities from './utils';
 import data from './data';
-import deleteCategory from './delete';
+import deleteCategory from './remove';
 
 export default {
     create, utilities, data, deleteCategory,
