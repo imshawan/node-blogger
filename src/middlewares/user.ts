@@ -27,7 +27,7 @@ const comparePassword = async function comparePassword(userid: number, password:
         throw new Error('A valid password is required to validate against');
     }
 
-    const user = await database.getObjects({userid}, ['passwordHash']);
+    const user = await database.getObjects({userid, passwordHash: {$exists: true}}, ['passwordHash']);
     if (!user) {
         throw new Error('No user found with the supplied id');
     }
