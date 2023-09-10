@@ -15,6 +15,10 @@ const update = async (req: Request, res: Response) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.user.updateUser(req));
 }
 
+const deleteUser = async (req: Request, res: Response) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.user.deleteUser(req));
+}
+
 const updatePicture = async (req: Request, res: Response) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.user.updatePicture(req));
 }
@@ -24,5 +28,5 @@ const consent = async (req: Request, res: Response) => {
 }
 
 export default {
-    checkUsername, checkPassword, update, updatePicture, consent
+    checkUsername, checkPassword, update, updatePicture, consent, deleteUser
   } as const;

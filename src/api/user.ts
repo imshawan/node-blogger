@@ -1,8 +1,10 @@
 import { Request } from "express";
 import {database} from "@src/database"
-import { getUserByUsername, utils, updateUserData, isAdministrator } from "@src/user";
+import { getUserByUsername, utils, updateUserData, isAdministrator, 
+    deleteUser as deleteUserWithData } from "@src/user";
 import { MutableObject, MulterFilesArray, ExpressUser } from "@src/types";
 import { parseBoolean } from "@src/utilities";
+import { isAuthorizedToDelete } from "@src/permissions";
 
 const checkUsername = async (req: Request) => {
     const {username} = req.params;
@@ -73,6 +75,17 @@ const updatePicture = async (req: Request) => {
     
 }
 
+const deleteUser = async (req: Request) => {
+    let userid = Number(req.params.userid);
+
+    const loggedinUser = req.user as ExpressUser;
+    if (!await isAuthorizedToDelete('user', loggedinUser.userid)) {
+        throw new Error('caller requires elevated permissions for performing this operation');
+    }
+    
+    return await deleteUserWithData(userid, loggedinUser.userid);
+}
+
 const consent = async (req: Request) => {
     const {emails, data} = req.body;
     // @ts-ignore
@@ -91,5 +104,5 @@ const consent = async (req: Request) => {
 }
 
 export default {
-    checkUsername, checkPassword, updateUser, updatePicture, consent
+    checkUsername, checkPassword, updateUser, updatePicture, deleteUser, consent
   } as const;
