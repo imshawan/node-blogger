@@ -13,7 +13,7 @@ export const deleteUser = async function deleteUser(id: any, callerId: number, h
         throw new Error(`callerId must be a number, found ${typeof callerId} instead`);
     }
 
-    if (!isAuthorizedToDelete('user', callerId)) {
+    if (id != callerId && !await isAuthorizedToDelete('user', callerId)) {
         throw new Error('caller requires elevated permissions for performing this operation');
     }
 

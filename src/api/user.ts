@@ -79,7 +79,7 @@ const deleteUser = async (req: Request) => {
     let userid = Number(req.params.userid);
 
     const loggedinUser = req.user as ExpressUser;
-    if (!await isAuthorizedToDelete('user', loggedinUser.userid)) {
+    if (userid != loggedinUser.userid && !await isAuthorizedToDelete('user', loggedinUser.userid)) {
         throw new Error('caller requires elevated permissions for performing this operation');
     }
     
