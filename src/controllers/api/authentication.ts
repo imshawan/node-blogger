@@ -23,7 +23,7 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
             const consent: any = await utils.hasCompletedConsent(userData.userid);
             if (consent && !consent.consentCompleted) {
                 const {token} = consent;
-                return res.json({next: `register/complete?token=${token}`});
+                return res.json({next: `register/complete?token=${token}`, user: userData});
             }
 
             return res.json({next: redirect || '/', user: userData});

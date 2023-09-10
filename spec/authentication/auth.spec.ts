@@ -77,9 +77,9 @@ describe(`Authentication API routes (${path.basename(__filename)})`, () => {
                 expect(response.headers).haveOwnProperty('set-cookie');
                 expect(response.header['set-cookie']).to.be.an('array');
                 expect(response.body.next).to.be.an('string')
+                expect(response.body).haveOwnProperty('user');
                 
                 // validating the session user
-                expect(response.body).haveOwnProperty('user');
                 expect(response.body.user).to.be.an('object');
                 expect(response.body.user.userid).equal(newUser.userid, 'Userid does not match with the newly registered user');
                 expect(response.body.user.email).equal(newUser.email, 'email does not match with the newly registered user');
