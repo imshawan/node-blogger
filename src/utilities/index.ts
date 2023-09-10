@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import axios from 'axios';
 import _ from 'lodash';
+import { MutableObject } from '@src/types';
 
 export * from './password';
 export * from './slugify';
@@ -61,4 +62,25 @@ export const parseBoolean = function(value: any) {
     }
 
     return value;
+}
+
+export const getArgv = function (key: string): string | Number | Boolean {
+    const args = process.argv;
+    const parsedArgs: MutableObject = {};
+    
+    // Start from index 2 to skip "node" and the script name
+    for (let i = 2; i < args.length; i++) { 
+        const arg = args[i];
+
+        if (arg.startsWith('--')) {
+            const [key, value] = arg.slice(2).split('=');
+            parsedArgs[key] = value || true;
+        }
+    }
+
+    const value = parsedArgs[key];
+    if (value) {
+        if (!isNaN(value)) return Number(value);
+        return value;
+    } else return '';
 }

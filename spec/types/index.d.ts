@@ -25,8 +25,8 @@ export interface IResponsePayload extends {}
  * @description Interface declaration for the new registered user types
  */
 interface IRegisteredUser extends IResponsePayload {
-    userid: number
-    email: string
-    username: string
-    cookies: string
+    userid?: number
+    email?: string
+    username?: string
+    cookies?: string
 }

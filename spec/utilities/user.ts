@@ -8,7 +8,7 @@ import { IResponseBody, IRegisteredUser } from 'spec/types';
 
 chai.use(chaiHttp);
 
-export const registerTestUser = function registerTestUser(): Promise<IRegisteredUser | {}> {
+export const registerTestUser = function registerTestUser(): Promise<IRegisteredUser> {
     return new Promise((resolve, reject) => {
         chai.request(server.app)
             .post('/register')
@@ -24,7 +24,7 @@ export const registerTestUser = function registerTestUser(): Promise<IRegistered
     });
 }
 
-export const signInTestUser = function signInTestUser(): Promise<IRegisteredUser | {}> {
+export const signInTestUser = function signInTestUser(): Promise<IRegisteredUser> {
     return new Promise((resolve, reject) => {
         chai.request(server.app)
             .post('/signin')
@@ -47,8 +47,8 @@ export const signInTestUser = function signInTestUser(): Promise<IRegisteredUser
     });
 }
 
-export const authenticateAndFetchUser = async function authenticateAndFetchUser(): Promise<IRegisteredUser | {}> {
-    var user: IRegisteredUser | {} = {};
+export const authenticateAndFetchUser = async function authenticateAndFetchUser(): Promise<IRegisteredUser> {
+    var user: IRegisteredUser = {};
 
     try {
         user = await signInTestUser();

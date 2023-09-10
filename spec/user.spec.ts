@@ -11,7 +11,7 @@ import { IRegisteredUser } from './types';
 const Should = should();
 chai.use(chaiHttp);
 
-var user: IRegisteredUser | {} = {}
+var user: IRegisteredUser = {}
 
 describe(`Processing tests for user API routes (${path.basename(__filename)})`, () => {
     before(async function () {
@@ -19,6 +19,12 @@ describe(`Processing tests for user API routes (${path.basename(__filename)})`, 
     });
 
     it('It should attempt deletion of a user and return with a status code 200', (done) => {
-        done()
+        chai.request(server.app)
+            .delete('/api/v1/user/' + user.userid)
+            .set('Cookie', user.cookies || '')
+            .end((err, response) => {
+                response.should.have.status(HttpStatusCodes.OK);
+                done();
+            })
     });
 });
