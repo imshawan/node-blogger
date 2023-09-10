@@ -32,6 +32,10 @@ Check for linting errors.
 
 Build the project for production.
 
+### `npm run clean`
+
+Clears the existing distribution files generated from build process
+
 ### `npm start`
 
 Run the production build (Must be built first).
