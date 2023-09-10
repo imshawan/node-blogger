@@ -1,4 +1,4 @@
-import { IUser } from "@src/types";
+import { IUser, MutableObject } from "@src/types";
 import {utils as Utils} from './utils';
 import { password as Passwords, getISOTimestamp, generateUUID } from "@src/utilities";
 import _ from "lodash";
@@ -87,6 +87,10 @@ export const register = async function register(userdata: IUser) {
     const [data] = await Promise.all([
         database.setObjects(user),
         database.setObjects(newUserRegData),
-    ])
-    return _.merge(data, {token: uniqueUUID});
+    ]);
+
+    const filtered: MutableObject = {};
+    Object.keys(data).forEach(elem => (filtered[elem] = data[elem]))
+
+    return _.merge(filtered, {token: uniqueUUID});
 }

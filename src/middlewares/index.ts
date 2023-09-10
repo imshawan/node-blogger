@@ -3,6 +3,8 @@ import { handleApiResponse, extractRemoteAddrFromRequest } from '@src/helpers';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import csurf from 'csurf';
 import { isAdministrator } from '@src/user';
+import { NodeEnvs } from '@src/constants/misc';
+import EnvVars from '@src/constants/EnvVars';
 
 export * from './cors';
 export * from './overrides';
@@ -77,6 +79,11 @@ export const verifyAdministrator = async function (req: Request, res: Response, 
 }
 
 export const applyCSRFMiddleware = async function (req: Request, res: Response, next: NextFunction) {
+    // No need of CSRF if the server is running tests?
+    if (EnvVars.NodeEnv === NodeEnvs.Test) {
+        return next();
+    }
+
     // TODO
     // Need to implement cookie options based on the config (https or not and etc)
     const csurfOptions = {

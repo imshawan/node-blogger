@@ -26,7 +26,7 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
                 return res.json({next: `register/complete?token=${token}`});
             }
 
-            return res.json({next: redirect || '/'});
+            return res.json({next: redirect || '/', user: userData});
         });
     })(req, res, next);
 }
@@ -56,7 +56,10 @@ const register = async (req: Request, res: Response) => {
     const data = await RegisterUser(userData);
 
     // TODO introduce the token mechanism for consents (per user)
-    handleApiResponse(HttpStatusCodes.OK, res, {next: `${req.url}/complete?token=${data.token}`});
+    handleApiResponse(HttpStatusCodes.OK, res, {
+        next: `${req.url}/complete?token=${data.token}`, token: data.token,
+        userid: data.userid
+    });
 }
 
 export default {
