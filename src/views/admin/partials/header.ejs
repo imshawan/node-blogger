@@ -84,7 +84,11 @@
 
 <body class="<%- pageClass -%>" data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="82">
     <div class="container-scroller">
-        <%- include('/admin/partials/navigation'); -%>
+        <% if (!_isError) { %> 
+            
+            <%- include('/admin/partials/navigation'); -%>
+            
+        <% } %>
         
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
