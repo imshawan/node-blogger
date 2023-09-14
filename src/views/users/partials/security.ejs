@@ -19,10 +19,13 @@
                     <% sessions.forEach((session, index) => { %>
                         <li class="list-group-item has-icon">
                             <div>
-                                <h6 class="mb-0"><% if (session.geoLocation.city) { %>
-                                    <%= session.geoLocation.city %> ,
-                                <% } %> <%= session.geoLocation.countryCode %> <%= session.ip %></h6>
-                                <small class="text-muted">Your current session seen in <%= session.geoLocation.country %></small>
+                                <% if (session.geoLocation) { %> 
+                                    
+                                    <h6 class="mb-0"><% if (session.geoLocation.city) { %>
+                                        <%= session.geoLocation.city %> ,
+                                    <% } %> <%= session.geoLocation.countryCode %> <%= session.ip %></h6>
+                                    <small class="text-muted">Your current session seen in <%= session.geoLocation.country %></small>
+                                <% } %>
                             </div>
                             
                             <button class="btn btn-light btn-sm ms-auto my-2" type="button" 

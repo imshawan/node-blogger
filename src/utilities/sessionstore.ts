@@ -106,9 +106,11 @@ export class PassportUserSessionStore {
             return await Promise.all(sessions.map(async elem => {
                 if (Object.hasOwnProperty.bind(elem.session)('passport')) {
                     // @ts-ignore
-                    const agent: any = elem.session.passport.agent;
+                    const agent: any = elem.session.passport.agent || {};
                     if (Object.hasOwnProperty.bind(agent)('ip') && agent.ip) {
                         agent.geoLocation = await resolveGeoLocation(agent.ip);
+                    } else {
+                        agent.geoLocation = {};
                     }
                     return agent;
                 } else {
