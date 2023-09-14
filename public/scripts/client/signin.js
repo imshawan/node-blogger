@@ -15,6 +15,7 @@ define('client/signin', [], function () {
         $('#signin-form').on('submit', function (e) {
             e.preventDefault();
             $('#errors-area').hide();
+            signIn.addShimmer();
 
             const form = $(this).serializeObject();
             form.redirect = redirect;
@@ -39,9 +40,20 @@ define('client/signin', [], function () {
                     $('#errors-area > span').text(errMessage);
                     $('#errors-area').show();
 
+                    signIn.removeShimmer();
                     scrollToTop();
                 });
         });
+    }
+
+    signIn.addShimmer = function () {
+        $('[type="submit"]').empty()
+            .attr('disabled', true)
+            .append('<i class="fa fa-spinner fa-spin align-self-center" aria-hidden="true"></i>');
+    }
+
+    signIn.removeShimmer = function () {
+        $('[type="submit"]').empty().attr('disabled', false).append('Sign In');
     }
 
     return signIn;
