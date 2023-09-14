@@ -16,7 +16,7 @@ const DEFAULT_MOCHA_TIMEOUT = 1000 * 10; // 10 seconds
 // NOTE: MUST BE FIRST!! Load env vars
 nconf.argv().env().file({ file: 'config.json' });
 
-const testFiles = sync('./spec/user.spec.ts'); 
+const testFiles = sync('./spec/**/*.spec.ts'); 
 const testConfig: ITestConfig = nconf.get('test');
 const mochaOptions = {timeout: Number(testConfig.timeout) || DEFAULT_MOCHA_TIMEOUT};
 
