@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { Logger } from "./logger";
 import pkg from '../../package.json';
+import { MutableObject } from "@src/types";
 
 interface ICommit {
     commit: string
@@ -94,6 +95,22 @@ export class Changelog {
         return categorised;
     }
 
+    private groupCommitsByMonth(commits: Array<ICommit>) {
+        const grouped: MutableObject = {};
+    
+        for (const commit of commits) {
+            const monthYearKey = commit.date;
+    
+            if (!grouped[monthYearKey]) {
+                grouped[monthYearKey] = [];
+            }
+    
+            grouped[monthYearKey].push(commit);
+        }
+    
+        return grouped;
+    }
+
     public getCategorized() {
         const commits = this.getCommits();
         return this.categorise(commits);
@@ -126,14 +143,25 @@ export class Changelog {
         keys.forEach((key) => {
             if (Object.hasOwnProperty.bind(categorised)(key)) {
                 const selected = categorised[key];
-                categorisedCommits[key] = selected.map((item) => item.commit); 
-            }
-        });
+                const groupedCommits = this.groupCommitsByMonth(selected);
 
-        keys.forEach((key) => {
-            markdown += '## ' + this.categoryNames[key] + '\n\n';
-            markdown += categorisedCommits[key].map(elem => '- ' + elem ).join('\n');
-            markdown += '\n\n';
+                markdown += '## ' + this.categoryNames[key] + '\n';
+
+                for (const monthYearKey in groupedCommits) {
+                    const messagesForMonth = groupedCommits[monthYearKey];
+
+                    const date = moment(monthYearKey);
+                    const month = date.format('MMMM');
+                    const year = date.format('YYYY');
+                    
+                    markdown += `\n### Changes for ${month}, ${year}:\n`;
+                    for (const message of messagesForMonth) {
+                        markdown += `- ${message.commit}\n`;
+                    }
+                }
+
+                markdown += '\n\n';
+            }
         });
 
         this.logger.info(`Generating change-logs for ${pkg.name} v${pkg.version}`);
