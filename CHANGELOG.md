@@ -2,7 +2,7 @@
 
 ## What's new
 
-### Changes for September, 2023:
+### September, 2023:
 - Added commits grouping by months for better changelogs generation
 - Added changelog and changelog generator scripts
 - [Addition] Profile redirects (my profile)
@@ -15,7 +15,7 @@
 - [Addition] Clean Build Directory Script With Command Line Interface
 - Added Auth-based tests and few minor updates
 
-### Changes for September, 2023:
+### August, 2023:
 - Added types and configurations
 - Added collapseible for session details section. Updates in geolocation resolver response
 - Added GeoLocation resolver and integrations
@@ -24,7 +24,7 @@
 - Added addUserSessionAgent method, and morgan prod pattern
 - Added minification & build process
 
-### Changes for September, 2023:
+### July, 2023:
 - Updates in margin & padding
 - layout restructure of profile edit and view. Added page events for pictures change
 - Added material icons, added passwords manage page
@@ -34,16 +34,16 @@
 - Updates in logger and bind address
 - Added proper logging on server start-up
 
-### Changes for September, 2023:
+### June, 2023:
 - Added logger
 
-### Changes for September, 2023:
+### April, 2023:
 - Added types for category
 - Added breadcrumbs middleware, create post page and few other updates
 - Added meta
 - Added passport auth, registeration and authentation for users
 
-### Changes for September, 2023:
+### March, 2023:
 - Added slugify
 - Added password utils
 - Added frontend resources-copying to dist
@@ -61,7 +61,7 @@
 
 ## Features
 
-### Changes for September, 2023:
+### September, 2023:
 - Updated changelogs categorization for better functioning
 - Updated the changelog script
 - Update
@@ -69,14 +69,14 @@
 - [Update] Renamed delete.ts -> remove.ts
 - [Update] List of available scripts in README.md
 
-### Changes for September, 2023:
+### August, 2023:
 - Updates
 - Initial setup of test-casing, updates in ts-node registeration in tests and builds
 - Completed consent API and Integration, new middleware for 404, new util for boolean parsing, updates to consent data schema
 - Update README.md
 - Updated type declaration filenames
 
-### Changes for September, 2023:
+### July, 2023:
 - Update user data
 - Setup API call for various image update in profile page, changed pagePayload to Application as global variable
 - Profiles listing & few updates
@@ -91,11 +91,11 @@
 - Updates v2
 - Updates
 
-### Changes for September, 2023:
+### June, 2023:
 - Updates in constants
 - Updates
 
-### Changes for September, 2023:
+### April, 2023:
 - Updated layout
 - Updates in admin views, styles, category creation page
 - Updates in http module
@@ -103,7 +103,7 @@
 - Updates in style
 - Updates
 
-### Changes for September, 2023:
+### March, 2023:
 - user creation and updates in utils, db operations
 - Updates
 - Updated database structure
@@ -117,7 +117,8 @@
 
 ## Fixes
 
-### Changes for September, 2023:
+### September, 2023:
+- Fixed the issue of months duplicacy for changelogs v2
 - Fixed the issue of months duplicacy for changelogs
 - [Fix] Breadcrumb URL issue
 - Fixed geolocation issue if no IP
@@ -125,24 +126,26 @@
 - Fixed Authentication tests [Signin]
 - Fixed bug causing password compare to fail
 
-### Changes for September, 2023:
+### August, 2023:
 - Fix
 - Fixed CSP issues in production
 
-### Changes for September, 2023:
+### July, 2023:
 - Fix
 - Minor fixes in routing and UI elements
 
 
 ## Miscellaneous
 
-### Changes for September, 2023:
+### September, 2023:
+- Removed development code
+- (Changelog CI) Latest Changelogs for node-blogger v1.1.0
 - (Changelog CI) Latest Changelogs for node-blogger v1.1.0
 - (Changelog CI) Latest Changelogs for node-blogger v1.1.0
 - (Changelog CI) Latest Changelogs for node-blogger v1.1.0
 - Hide navigation bar on error
 
-### Changes for September, 2023:
+### August, 2023:
 - Restructured server startup logic, impl stable unit-testing mechanism
 - Reconfigued test folder and files, removed unused dependencies
 - Conscent screens and backend logic impl
@@ -150,7 +153,7 @@
 - New method impl
 - Class implementation of PassportUserSessionStore
 
-### Changes for September, 2023:
+### July, 2023:
 - User profile data updation
 - Merge branch 'master' of https
 - Select list logic
@@ -161,10 +164,10 @@
 - Cleanup
 - WIP in the implementation of fileupload, mimetype mapping, category creation frontend and backend logics
 
-### Changes for September, 2023:
+### June, 2023:
 - Merge branch 'master' of https
 
-### Changes for September, 2023:
+### April, 2023:
 - WIP on categories page
 - Categories
 - Implementation of Anti CSRF
@@ -174,7 +177,7 @@
 - Removed logs
 - Saving registeration token
 
-### Changes for September, 2023:
+### March, 2023:
 - Increment and decrement operations
 - User Interface
 - checkEmailAvailability init
