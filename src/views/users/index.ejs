@@ -6,7 +6,7 @@
                 <div class="card p-0 shadow border m-3">
                     <div class="user mt-4 mb-2 text-center">
                       <div class="profile d-flex justify-content-center w-100">
-                        <img crossorigin="anonymous" src="https://i.imgur.com/JgYD2nQ.jpg" class="rounded-circle" width="80">
+                        <img crossorigin="anonymous" data-onerror="/img/default-user.jpg" onerror="imageOnError(this)" src="<%= element.picture %>" class="rounded-circle" width="80">
                       </div>
                     </div>
     
