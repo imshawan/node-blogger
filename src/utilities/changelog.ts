@@ -99,8 +99,8 @@ export class Changelog {
         const grouped: MutableObject = {};
     
         for (const commit of commits) {
-            const date = new Date(commit.date);
-            const monthYearKey = `${date.getMonth() + 1}-${date.getFullYear()}`;
+            const date = moment(commit.date);
+            const monthYearKey = `${date.format('MMMM')}-${date.format('YYYY')}`;
     
             if (!grouped[monthYearKey]) {
                 grouped[monthYearKey] = [];
@@ -150,12 +150,9 @@ export class Changelog {
 
                 for (const monthYearKey in groupedCommits) {
                     const commitMessagesForMonth = groupedCommits[monthYearKey];
-
-                    const date = moment(commitMessagesForMonth.date);
-                    const month = date.format('MMMM');
-                    const year = date.format('YYYY');
+                    const [month, year] = monthYearKey.split('-');
                     
-                    markdown += `\n### Changes for ${month}, ${year}:\n`;
+                    markdown += `\n### ${month}, ${year}:\n`;
                     for (const commitMessage of commitMessagesForMonth) {
                         markdown += `- ${commitMessage.commit}\n`;
                     }
