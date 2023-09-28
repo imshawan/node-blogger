@@ -1,9 +1,9 @@
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="navbar-brand-wrapper d-none d-md-flex align-items-center">
-        <a class="navbar-brand brand-logo" href="index.html">
+        <a class="navbar-brand brand-logo" href="/">
             <img src="/images/logo.svg" alt="logo" onerror="this.onerror=null;this.src='/img/default-image.jpeg';" class="logo-dark" />
         </a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="/images/logo-mini.svg" onerror="this.onerror=null;this.src='/img/default-image.jpeg';" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="/"><img src="/images/logo-mini.svg" onerror="this.onerror=null;this.src='/img/default-image.jpeg';" alt="logo" /></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
         <h5 class="mb-0 font-weight-medium d-none d-lg-flex">NodeBlogger Admin</h5>
@@ -67,8 +67,9 @@
                         <p class="mb-1 mt-3"><%- user.fullname || user.username %></p>
                         <p class="font-weight-light text-muted mb-0"><%- user.email %></p>
                     </div>
-                    <a class="dropdown-item"><i class="dropdown-item-icon icon-user text-primary"></i> My Profile <span
-                            class="badge badge-pill badge-danger">1</span></a>
+                    <a class="dropdown-item" href="/users/<%- user.username %>"><i class="dropdown-item-icon icon-user text-primary">
+                        </i> My Profile <span class="badge badge-pill badge-danger">1</span>
+                    </a>
                     <a class="dropdown-item"><i class="dropdown-item-icon icon-speech text-primary"></i> Messages</a>
                     <a class="dropdown-item"><i class="dropdown-item-icon icon-energy text-primary"></i> Activity</a>
                     <form id="signout-form" class="dropdown-item">
