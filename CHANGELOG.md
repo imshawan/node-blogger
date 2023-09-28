@@ -2,16 +2,93 @@
 
 ## What's new
 
+- Added changelog and changelog generator scripts
+- [Addition] Profile redirects (my profile)
+- Added default user image and onerror handler
+- Added user navigation link in admin users listing
+- Added shimmers in signin button
+- [Addition] Utils for getArgs, Delete User API test, updates in typings
+- [Addition] Constants, Type declarations, utilities for testing.
+- [Addition] Permission module, Delete User API and Methods
+- [Addition] Clean Build Directory Script With Command Line Interface
+- Added Auth-based tests and few minor updates
+- Added types and configurations
+- Added collapseible for session details section. Updates in geolocation resolver response
+- Added GeoLocation resolver and integrations
+- Added axios for network calls
+- Added bind with this
+- Added addUserSessionAgent method, and morgan prod pattern
+- Added minification & build process
+- Updates in margin & padding
+- layout restructure of profile edit and view. Added page events for pictures change
+- Added material icons, added passwords manage page
+- Added user information edit screen and components
 - Minor updates in functionalities, addition of user profile page
+- Added user roles + category deletion logic (WIP)
+- Updates in logger and bind address
+- Added proper logging on server start-up
+- Added logger
+- Added types for category
+- Added breadcrumbs middleware, create post page and few other updates
+- Added meta
+- Added passport auth, registeration and authentation for users
+- Added slugify
+- Added password utils
+- Added frontend resources-copying to dist
+- Added auth functionalities
+- Restructure files and added middlewares
+- Added gitpod workflow run
+- Added database layer
+- Added mongodb
+- Registeration functionality, added validations
+- Added signin page, HTTP module, vendors script
 - Re-restructuring views, addition of requirejs and updated scripts dirs
+- Added 404 page, render overrides and separate ejs render functionality
+- 404 handling, added CORS
 
 ## Features
 
+- Updated changelogs categorization for better functioning
 - Updated the changelog script
+- Update
+- [Update] isAuthorizedToDelete invoke in delete user
+- [Update] Renamed delete.ts -> remove.ts
+- [Update] List of available scripts in README.md
+- Updates
+- Initial setup of test-casing, updates in ts-node registeration in tests and builds
+- Completed consent API and Integration, new middleware for 404, new util for boolean parsing, updates to consent data schema
+- Update README.md
 - Updated type declaration filenames
+- Update user data
+- Setup API call for various image update in profile page, changed pagePayload to Application as global variable
+- Profiles listing & few updates
+- Updates in registeration flow and sidebar
+- Admin isAdministrator updates + implementation
+- Updates in error pages rendering logic
 - Updated category edit, create and listing
+- Implementation of multiparty parser, admin auth middlewares, 401 page, updates in filestore logic and a common CSS for client & admin.
+- Updates
+- Updates in logging system
+- Updates in bind adsress logic
+- Updates v2
+- Updates
+- Updates in constants
+- Updates
 - Updated layout
+- Updates in admin views, styles, category creation page
+- Updates in http module
+- Updates in middleware, cors and categories
+- Updates in style
+- Updates
+- user creation and updates in utils, db operations
+- Updates
 - Updated database structure
+- Validations, user module and few updates in database handling
+- Update
+- Updates
+- Updates
+- Update in CORS
+- Update README.md
 
 ## Fixes
 
@@ -27,120 +104,45 @@
 
 ## Miscellaneous
 
-- Added changelog and changelog generator scripts
-- [Addition] Profile redirects (my profile)
-- Added default user image and onerror handler
-- Added user navigation link in admin users listing
-- Added shimmers in signin button
+- (Changelog CI) Latest Changelogs for node-blogger v1.1.0
 - Hide navigation bar on error
-- Update
-- [Update] isAuthorizedToDelete invoke in delete user
-- [Addition] Utils for getArgs, Delete User API test, updates in typings
-- [Addition] Constants, Type declarations, utilities for testing.
-- [Update] Renamed delete.ts -> remove.ts
-- [Addition] Permission module, Delete User API and Methods
-- [Update] List of available scripts in README.md
-- [Addition] Clean Build Directory Script With Command Line Interface
-- Added Auth-based tests and few minor updates
-- Added types and configurations
 - Restructured server startup logic, impl stable unit-testing mechanism
-- Updates
-- Initial setup of test-casing, updates in ts-node registeration in tests and builds
 - Reconfigued test folder and files, removed unused dependencies
-- Completed consent API and Integration, new middleware for 404, new util for boolean parsing, updates to consent data schema
-- Update README.md
 - Conscent screens and backend logic impl
-- Added collapseible for session details section. Updates in geolocation resolver response
-- Added GeoLocation resolver and integrations
-- Added axios for network calls
-- Added bind with this
 - Merge branch 'master' of https
 - New method impl
 - Class implementation of PassportUserSessionStore
-- Added addUserSessionAgent method, and morgan prod pattern
-- Added minification & build process
 - User profile data updation
 - Merge branch 'master' of https
-- Update user data
-- Updates in margin & padding
-- Setup API call for various image update in profile page, changed pagePayload to Application as global variable
-- layout restructure of profile edit and view. Added page events for pictures change
-- Added material icons, added passwords manage page
-- Added user information edit screen and components
-- Profiles listing & few updates
 - Select list logic
 - WIP on user management page
-- Updates in registeration flow and sidebar
-- Admin isAdministrator updates + implementation
-- Updates in error pages rendering logic
 - Users module WIP
-- Added user roles + category deletion logic (WIP)
 - Admin theme in place with several new utilitiies anc classes
 - category listing page WIP
-- Implementation of multiparty parser, admin auth middlewares, 401 page, updates in filestore logic and a common CSS for client & admin.
-- Updates in logger and bind address
-- Updates
 - Cleanup
-- Updates in logging system
-- Updates in bind adsress logic
 - WIP in the implementation of fileupload, mimetype mapping, category creation frontend and backend logics
-- Updates v2
-- Updates
-- Added proper logging on server start-up
-- Added logger
-- Updates in constants
 - Merge branch 'master' of https
-- Updates
-- Updates in admin views, styles, category creation page
 - WIP on categories page
-- Updates in http module
-- Updates in middleware, cors and categories
 - Categories
-- Added types for category
 - Implementation of Anti CSRF
 - Loggedin user name
-- Updates in style
-- Added breadcrumbs middleware, create post page and few other updates
-- Added meta
 - WIP on logout mechanisms
 - Session validation, auth and integration with frontend
 - Removed logs
-- Updates
 - Saving registeration token
-- Added passport auth, registeration and authentation for users
-- user creation and updates in utils, db operations
 - Increment and decrement operations
 - User Interface
-- Added slugify
-- Updates
-- Added password utils
 - checkEmailAvailability init
 - Username validator
 - Validations and error handling
-- Validations, user module and few updates in database handling
-- Added frontend resources-copying to dist
-- Added auth functionalities
-- Update
 - Created DB operation methods
 - Configured passport
-- Restructure files and added middlewares
-- Added gitpod workflow run
-- Added database layer
-- Added mongodb
-- Registeration functionality, added validations
-- Updates
 - Registeration page
-- Added signin page, HTTP module, vendors script
-- Updates
 - Configured and functioning client side js
-- Added 404 page, render overrides and separate ejs render functionality
 - Removed unused packages
-- Update in CORS
-- 404 handling, added CORS
 - Initialized API routes, page routes, helpers and constants
 - Merge branch 'master' of https
 - Cleaning up orphaned JS
-- Update README.md
 - LICENSED
 - Init project with express-typescript & EJS views
 
