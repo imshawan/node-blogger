@@ -77,9 +77,9 @@ export class Changelog {
 
                 if (/^([\d\.]+)$/.test(commit)) {
                     return;
-                } else if (commit.includes("addition")) {
+                } else if (/(add)|(addition)/i.test(commit)) {
                     category = "new";
-                } else if (/(updated)|(support)/i.test(commit)) {
+                } else if (/(update)|(support)/i.test(commit)) {
                     category = "features";
                 } else if (/fix/i.test(commit)) {
                     category = "bugFixes";
