@@ -56,7 +56,7 @@ export const breadcrumbs = function (base: string, req: Request, res: Response, 
         let label = parts[i].replace(/-/g, ' ');
         items.push({
             label: label && capitalizeFirstLetter(label),
-            url: [baseUrl, parts.slice(0, i + 1)].join('/'),
+            url: [baseUrl, ...parts.slice(0, i + 1)].join('/'),
             active: i === (parts.length - 1),
             // @ts-ignore
             icon: ICONS[label],
