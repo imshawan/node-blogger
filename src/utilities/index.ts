@@ -9,6 +9,7 @@ export * from './logger';
 export * from './mimetypes';
 export * from './sidebar';
 export * from './sessionstore';
+export * from './changelog';
 
 export const getISOTimestamp = () => new Date().toISOString();
 

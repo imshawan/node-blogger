@@ -1,6 +1,6 @@
 {
-  "name": "blogger-node",
-  "version": "1.0.0",
+  "name": "node-blogger",
+  "version": "1.1.0",
   "author": "Shawan Mandal",
   "license": "GPL-3.0",
   "repository": {
@@ -15,7 +15,8 @@
     "start": "node -r module-alias/register ./dist --env=production",
     "dev": "nodemon",
     "test": "nodemon --config ./spec/nodemon.json",
-    "test:no-reloading": "npx ts-node --files -r tsconfig-paths/register ./spec"
+    "test:no-reloading": "npx ts-node --files -r tsconfig-paths/register ./spec",
+    "generate-changelog": "npx ts-node ./scripts/changelog.ts"
   },
   "nodemonConfig": {
     "watch": [
