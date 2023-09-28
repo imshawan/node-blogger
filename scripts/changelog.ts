@@ -15,13 +15,13 @@ import pkg from '../package.json';
 
 const gitStatusOutput = execSync('git status --porcelain').toString('utf-8').trim();
 
-if (false) {
+if (gitStatusOutput.trim()) {
     console.log(`The repository has ${gitStatusOutput.split('\n').length} modified file(s). Please commit the existing files and than proceed.`);
     process.exit(1);
     
 } else {
     new Changelog().write();
-    process.exit(1);
+
     execSync('git add CHANGELOG.md');
     execSync(`git commit -m "(Changelog CI) Latest Changelogs for ${pkg.name} v${pkg.version}"`);
 }
