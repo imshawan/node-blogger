@@ -138,6 +138,7 @@
 ## Miscellaneous
 
 ### September, 2023:
+- (Changelog CI) Latest Changelogs for node-blogger v1.1.0
 - Removed development code
 - (Changelog CI) Latest Changelogs for node-blogger v1.1.0
 - (Changelog CI) Latest Changelogs for node-blogger v1.1.0
