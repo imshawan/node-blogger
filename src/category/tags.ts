@@ -5,7 +5,7 @@ import _ from "lodash";
 import { meta } from "@src/meta";
 import { ICategoryTag, ICategory } from "@src/types";
 
-const MAX_TAG_SIZE = 250;
+const MAX_TAG_SIZE = 25;
 
 const create = async function create(tagData: ICategoryTag) {
     const {name,cid,userid} = tagData;
