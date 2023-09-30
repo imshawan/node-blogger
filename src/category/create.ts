@@ -62,6 +62,7 @@ export default async function create(categoryData: ICategory) {
     category.blurb = blurb;
     category.slug = categorySlug;
     category.thumb = thumb || '';
+    category.tagsPerPost = tagsPerPost;
     category.counters = {
         posts: 0,
         tags: 0,

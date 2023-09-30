@@ -1,8 +1,6 @@
-import { isAdministrator, getUserRoles } from "@src/user";
+import { isAdministrator, getUserRoles, validAccessUserRoles } from "@src/user";
 import data from './data';
 import { database } from "@src/database";
-
-const validAccessUserRoles = ['administrator', 'globalModerator'];
 
 export default async function deleteCategory(id: any, callerId: number) {
     if (isNaN(id)) {

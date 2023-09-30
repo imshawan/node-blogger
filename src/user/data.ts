@@ -2,6 +2,7 @@ import { database } from "@src/database";
 import {utils as UserUtils} from './utils'
 import { IRoles, IUser } from "@src/types";
 
+export const validAccessUserRoles = ['administrator', 'globalModerator'];
 export const validUserFields = [
     "userid",
     "fullname",

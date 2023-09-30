@@ -2,37 +2,41 @@ define('client/admin/categories/edit', ['modules/http', 'client/admin/categories
     const edit = {};
 
     edit.initialize = function () {
-        const {category} = Application;
+        const {category, tags} = Application;
         
         events.initialize();
-        edit.attachEvents(category);
+        edit.attachEvents(category, tags);
         
     }
     
-    edit.attachEvents = function (category) {
+    edit.attachEvents = function (category, tags) {
         const message = `This action will permanently remove all its associated content, posts, subcategories, and tags from the platform.`;
         const select2Options = {
             placeholder: "Create tags",
             width: '100%',
             tags: true,
-            createTag: function (params) {
-                var term = $.trim(params.term);
-            
-                if (term === '') {
-                  return null;
-                }
-            
-                return {
-                  id: utilities.generateUUID(),
-                  text: term,
-                }
-              }
+            data: tags
         };
 
         $("#tagsInput").select2(select2Options);
 
         $("#tagsInput").on('select2:unselect', function (e) {
-            var deselectedOption = e.params.data;
+            let deselectedOption = e.params.data;
+            let data = $(deselectedOption.element).data();
+            let id = data.tagId || deselectedOption.id;
+
+            edit.deleteTag(category.cid, id);
+        });
+
+        $("#tagsInput").on('select2:select', function (e) {
+            let selectedOption = e.params.data;
+            let {text} = selectedOption;
+
+            edit.createTag(category.cid, {name: text}).then((res) => {
+                if (res && res._id) {
+                    $("#tagsInput option").val(text).attr('data-tag-id', res.tagid);
+                }
+            }).catch(e => alertError(e.message))
         });
 
         $('#delete-category').on('click', function () {
@@ -106,9 +110,11 @@ define('client/admin/categories/edit', ['modules/http', 'client/admin/categories
         });
     }
 
-    edit.updateTag = function (categoryId, tagId) {
-        http.PUT(`/api/v1/admin/categories/${categoryId}/tags/${tagId}`).then(res => {}).catch(err => {
-            alertError(err.message);
+    edit.createTag = function (categoryId, formData) {
+        return new Promise((resolve, reject) => {
+            http.POST(`/api/v1/admin/categories/${categoryId}/tags`, formData).then(res => resolve(res)).catch(err => {
+                reject(err.message);
+            });
         });
     }
 
