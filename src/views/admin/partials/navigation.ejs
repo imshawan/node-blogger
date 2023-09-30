@@ -58,12 +58,12 @@
             <li class="nav-item dropdown d-none d-inline-flex user-dropdown">
                 <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-bs-toggle="dropdown"
                     aria-expanded="false">
-                    <img class="img-xs rounded-circle ms-2" width="100px" src="//images/faces/face8.jpg" onerror="this.onerror=null;this.src='/img/default-image.jpeg';" alt="Profile image"> 
+                    <img class="img-xs rounded-circle ms-2" width="100px" src="<%= user.picture %>" onerror="this.onerror=null;this.src='/img/default-image.jpeg';" alt="Profile image"> 
                     <span class="font-weight-normal d-none d-md-block"> <%- user.fullname || user.username %> </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                     <div class="dropdown-header text-center">
-                        <img class="img-md rounded-circle" src="//images/faces/face8.jpg" onerror="this.onerror=null;this.src='/img/default-image.jpeg';" alt="Profile image">
+                        <img class="img-md rounded-circle" src="<%= user.picture %>" onerror="this.onerror=null;this.src='/img/default-image.jpeg';" alt="Profile image">
                         <p class="mb-1 mt-3"><%- user.fullname || user.username %></p>
                         <p class="font-weight-light text-muted mb-0"><%- user.email %></p>
                     </div>
