@@ -18,6 +18,18 @@ export interface ICategory {
     updatedAt?: string
 }
 
+export interface ICategoryTag {
+    _key?: string
+    cid?: number
+    tagid?: number
+    userid?: number
+    name?: string
+    deleted?: boolean
+    deletedAt?: string
+    createdAt?: string
+    updatedAt?: string
+}
+
 interface Counters {
     posts?: number
     tags?: number

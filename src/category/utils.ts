@@ -21,10 +21,16 @@ const generateCategoryslug = async function generateCategoryslug(name: string): 
     return generatedSlug;
 }
 
-const generateNextCategoryId = async function generateNextCategoryId() {
-    return await database.incrementFieldCount('category');
+const generateNextCategoryId = async function generateNextCategoryId(): Promise<number> {
+    const id = await database.incrementFieldCount('category');
+    return Number(id);
+}
+
+const generateNextTagId = async function generateNextTagId(): Promise<number> {
+    const id = await database.incrementFieldCount('tag');
+    return Number(id);
 }
 
 export default {
-    generateCategoryslug, generateNextCategoryId
+    generateCategoryslug, generateNextCategoryId, generateNextTagId
 } as const

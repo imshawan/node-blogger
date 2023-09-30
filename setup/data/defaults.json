@@ -31,5 +31,7 @@
     "maxBioLength": 250,
     "minBioLength": 50,
     "maxAboutLength": 1000,
-    "minAboutLength": 200
+    "minAboutLength": 200,
+    "maxTagLength": 30,
+    "minTagLength": 3
 }

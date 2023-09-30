@@ -22,6 +22,8 @@ export interface IMeta {
   minBioLength: number
   maxAboutLength: number
   minAboutLength: number
+  maxTagLength: number
+  minTagLength: number
 }
 
 export interface Session {
