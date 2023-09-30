@@ -39,17 +39,19 @@
                     <!-- If sub-menu exists -->
                     <% if (menu.child && menu.child.length) { %>
                         <li class="nav-item <%= menu.classes %>">
-                            <a class="nav-link" data-bs-toggle="collapse" href="#<%= menu.elementid %>" aria-expanded="false">
+                            <a class="nav-link <%= menu.classes %>" data-bs-toggle="collapse" href="#<%= menu.elementid %>" aria-expanded="false">
                                 <span class="menu-title"><%= menu.title %></span>
                                 <i class="<%= menu.icon %> menu-icon"></i>
                             </a>
 
                             <!-- Out sub-menu -->
-                            <div class="collapse" id="<%= menu.elementid %>">
+                            <div class="collapse <% if (menu.classes.includes('active')) { %>show<% } %>" id="<%= menu.elementid %>">
                                 <ul class="nav flex-column sub-menu">
 
                                     <% menu.child.forEach(function(subMenu, index) { %>
-                                        <li class="nav-item sub-menu-item <%= subMenu.classes %>"> <a class="nav-link" href="#" data-href="<%= subMenu.url %>"><%= subMenu.title %></a></li>
+                                        <li class="nav-item sub-menu-item <%= subMenu.classes %>"> 
+                                            <a class="nav-link" href="#" data-href="<%= subMenu.url %>"><%= subMenu.title %></a>
+                                        </li>
                                             
                                     <% }); %>
                                 </ul>
