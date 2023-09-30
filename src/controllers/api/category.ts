@@ -10,6 +10,10 @@ categoryControllers.create = async (req: Request, res: Response, next: NextFunct
     handleApiResponse(HttpStatusCodes.OK, res, await api.category.create(req));
 }
 
+categoryControllers.edit = async (req: Request, res: Response, next: NextFunction) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.category.edit(req));
+}
+
 categoryControllers.delete = async (req: Request, res: Response, next: NextFunction) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.category.delete(req));
 }

@@ -8,6 +8,8 @@ export interface ICategory {
     blurb?: string
     slug?: string
     thumb?: string | null | undefined
+    altThumb?: string | null | undefined
+    tags?: Array[] | string
     counters?: Counters
     tagsPerPost?: TagsPerPost
     isActive?: boolean

@@ -14,7 +14,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="decriptionTextarea" class="form-label">Category description</label>
-                        <textarea class="form-control" rows="4" id="decriptionTextarea"><%= category.description %></textarea>
+                        <textarea class="form-control" name="description" rows="4" id="decriptionTextarea"><%= category.description %></textarea>
                         <div id="" class="form-text">You can add a description of the category of about
                             50
                             words.
@@ -23,7 +23,7 @@
 
                     <div class="row justify-content-between">
                         <div class="form-floating col-12 col-md-6 mb-3">
-                            <input type="text" name="tagsPerPost[min]" placeholder="Enter a number" class="form-control"
+                            <input type="text" name="tagsPerPost[min]" value="<%= category.tagsPerPost.min %>" placeholder="Enter a number" class="form-control"
                                 id="minTags">
                             <label for="minTags" style="left: unset;" class="form-label">Minimum tags
                                 per
@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-floating col-12 col-md-6 mb-3">
-                            <input type="text" name="tagsPerPost[max]" placeholder="Enter a number" class="form-control"
+                            <input type="text" name="tagsPerPost[max]" value="<%= category.tagsPerPost.max %>" placeholder="Enter a number" class="form-control"
                                 id="maxTags">
                             <label for="maxTags" style="left: unset;" class="form-label">Maximum tags
                                 per
@@ -44,9 +44,9 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" name="tags" placeholder="Create tags for the selected category"
-                            class="form-control" id="tagsInput">
-                        <label for="tagsInput" class="form-label">Create tags</label>
+                        <p>
+                            <select class="form-control" id="tagsInput" multiple="multiple"></select>
+                        </p>
                         <div id="" class="form-text">This tags will be visible to the users while they
                             create post in this category
                         </div>
@@ -98,7 +98,7 @@
                             <div class="mb-3">
                                 <label for="nameInout" class="form-label w-100 text-start">Image
                                     text</label>
-                                <input type="text" name="name" class="form-control" id="nameInout"
+                                <input type="text" name="altThumb" value="<%= category.altThumb %>" class="form-control" id="nameInout"
                                     placeholder="Alt text for image">
                                 <div id="" class="form-text text-start">Displayed when the image fails
                                     to load</div>
@@ -113,28 +113,28 @@
         <div class="card mt-3">
             <h5 class="p-3 card-header">Manage category</h5>
             <ul class="list-group-flush px-0">
-                <li class="list-group-item my-3 d-flex justify-content-center align-items-center flex-wrap">
+                <li class="list-group-item my-1 d-flex justify-content-center align-items-center flex-wrap">
                     <button class="btn btn-secondary shadow-sm py-2 w-75">
                         <i class="fa fa-eye" aria-hidden="true"></i>
                         View as visitor
                     </button>
                 </li>
 
-                <li class="list-group-item my-3 d-flex justify-content-center align-items-center flex-wrap">
+                <li class="list-group-item my-1 d-flex justify-content-center align-items-center flex-wrap">
                     <button class="btn btn-secondary shadow-sm py-2 w-75">
                         <i class="fa fa-cogs" aria-hidden="true"></i>
                         Edit permissions
                     </button>
                 </li>
 
-                <li class="list-group-item my-3 d-flex justify-content-center align-items-center flex-wrap">
+                <li class="list-group-item my-1 d-flex justify-content-center align-items-center flex-wrap">
                     <button class="btn btn-secondary shadow-sm py-2 w-75">
                         <i class="fa fa-lock" aria-hidden="true"></i>
                         Lock category
                     </button>
                 </li>
 
-                <li class="list-group-item my-3 d-flex justify-content-center align-items-center flex-wrap">
+                <li class="list-group-item my-1 d-flex justify-content-center align-items-center flex-wrap">
                     <button id="delete-category" class="btn btn-danger shadow-sm py-2 w-75">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                         Delete category

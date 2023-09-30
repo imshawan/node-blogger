@@ -11,6 +11,7 @@ const fileStorage = new FileStore()
 const fileuploadMiddleware = fileStorage.initialize();
 
 mountApiRoute(router, 'post', '/', [fileuploadMiddleware, checkRequiredFields.bind(null, ['name'])], controllers.api.category.create);
+mountApiRoute(router, 'put', '/:id', [fileuploadMiddleware], controllers.api.category.edit);
 mountApiRoute(router, 'delete', '/:id', [], controllers.api.category.delete);
 
 export default router;

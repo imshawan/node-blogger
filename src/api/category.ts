@@ -21,6 +21,26 @@ categoryApi.create = async (req: Request) => {
     return await category.create(categoryData)
 }
 
+categoryApi.edit = async (req: Request) => {
+    const categoryData = req.body;
+    const {files} = req;
+    const id = req.params.id;
+    const {tags} = categoryData;
+
+    if (files && files.length) {
+        const thumb = (files as any[]).find((file: any) => file.fieldname == 'thumb');
+        if (thumb && Object.hasOwnProperty.bind(thumb)('url')) {
+            req.body.thumb = thumb.url;
+        }
+    }
+
+    // @ts-ignore
+    categoryData.userid = req.user.userid;
+    categoryData.cid = id;
+
+    return await category.update(req.body);
+}
+
 categoryApi.delete = async (req: Request) => {
     const {id} = req.params;
     const {user} = req;

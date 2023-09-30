@@ -1,29 +1,11 @@
-define('client/admin/categories/create', ['modules/http'], function (http) {
+define('client/admin/categories/create', ['modules/http', 'client/admin/categories/events'], function (http, events) {
     const create = {};
 
     create.initialize = function () {
         const {category} = Application;
         // generateAvatarFromName('category-icon');
 
-        $('#upload-category-image').off('click').on('click', function () {
-            $('#category-image').trigger('click');
-        })
-
-        $('#category-image').on('change', function () {
-            const imageInput = $(this)[0];
-
-            if (imageInput && imageInput.files && imageInput.files.length) {
-                const file = imageInput.files[0];
-
-                if (file.type.split('/')[0] != 'image') {
-                    return alertError('File must be an image');
-                }
-
-                const base64Image = URL.createObjectURL(file);
-                $("#categoryimage").attr("src", base64Image);
-            }
-
-        });
+        events.initialize();
 
         $('#category-form').off().on('submit', function (e) {
             e.preventDefault();
