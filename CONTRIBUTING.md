@@ -174,7 +174,7 @@ Each commit message should have a clear and concise structure, consisting of the
 - The flag is a short, lowercase keyword enclosed in '#'. It categorizes the type of commit. Use one of the following flags:
   - #new: For new additions or features.
   - #bugfix: For bug fixes or issue resolutions.
-  - #updates: For general updates, improvements, or enhancements.
+  - #update: For general updates, improvements, or enhancements.
   - #misc: For miscellaneous changes or anything that doesn't fit into the above categories.
 
 ### Brief Description
@@ -211,7 +211,7 @@ This commit resolves an issue where the login process would crash due to a null 
 
 ### General Update
 ```
-#updates: Update dependencies to the latest versions
+#update: Update dependencies to the latest versions
 
 This commit updates our project dependencies to their latest versions, ensuring security and stability.
 
