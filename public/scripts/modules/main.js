@@ -4,6 +4,7 @@ $(document).ready(function () {
     loadScripts(pageScript);
     attachGlobalEvents();
     initialize();
+    attachServiceWorker();
 });
 
 function loadScripts (scripts, callback) {
@@ -206,6 +207,28 @@ function alertError(message, callback) {
 
 function initialize() {
     
+}
+
+function attachServiceWorker() {
+    if (!('serviceWorker' in navigator)) {
+        return console.warn('Aborting serviceWorker registeration (Not found)');
+    }
+
+    navigator.serviceWorker.register('/scripts/worker.js')
+        .then(() => {
+            console.info('ServiceWorker registration successfull!');
+        })
+        .catch(err => {
+            console.error('ServiceWorker registration failed!', err);
+        });
+
+    // navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    //     if (registrations && registrations.length) {
+    //         // return console.warn('Aborting serviceWorker registeration (Already installed)');
+    //     } else {
+            
+    //     }
+    // });
 }
 
 function imageOnError(element) {
