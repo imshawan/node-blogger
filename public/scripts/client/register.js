@@ -48,7 +48,7 @@ define('client/register', ['modules/http'], function (http) {
                     $('#errors-area > span').text(errMessage);
                     $('#errors-area').show();
 
-                    scrollToTop();
+                    core.scrollToTop();
                 });
 
         });

@@ -13,7 +13,7 @@ define('client/admin/categories/events', [], function () {
                 const file = imageInput.files[0];
 
                 if (file.type.split('/')[0] != 'image') {
-                    return alertError('File must be an image');
+                    return core.alertError('File must be an image');
                 }
 
                 const base64Image = URL.createObjectURL(file);

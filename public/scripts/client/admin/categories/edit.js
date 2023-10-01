@@ -36,7 +36,7 @@ define('client/admin/categories/edit', ['modules/http', 'client/admin/categories
                 if (res && res._id) {
                     $("#tagsInput option").val(text).attr('data-tag-id', res.tagid);
                 }
-            }).catch(e => alertError(e.message))
+            }).catch(e => core.alertError(e.message))
         });
 
         $('#delete-category').on('click', function () {
@@ -92,10 +92,10 @@ define('client/admin/categories/edit', ['modules/http', 'client/admin/categories
             contentType: false,
             processData: false,
         }).then(res => {
-            alertSuccess('Category information updated!');
+            core.alertSuccess('Category information updated!');
 
         }).catch(err => {
-            alertError(err.message);
+            core.alertError(err.message);
         });
     }
 
@@ -103,10 +103,10 @@ define('client/admin/categories/edit', ['modules/http', 'client/admin/categories
         http.DELETE('/api/v1/admin/categories/' + id).then(res => {
             const callback = () => location.href = [location.origin, 'admin', 'categories'].join('/');
 
-            alertSuccess('Category deleted!', callback);
+            core.alertSuccess('Category deleted!', callback);
 
         }).catch(err => {
-            alertError(err.message);
+            core.alertError(err.message);
         });
     }
 
@@ -120,7 +120,7 @@ define('client/admin/categories/edit', ['modules/http', 'client/admin/categories
 
     edit.deleteTag = function (categoryId, tagId) {
         http.DELETE(`/api/v1/admin/categories/${categoryId}/tags/${tagId}`).then(res => {}).catch(err => {
-            alertError(err.message);
+            core.alertError(err.message);
         });
     }
 

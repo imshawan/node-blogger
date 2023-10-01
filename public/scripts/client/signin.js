@@ -41,7 +41,7 @@ define('client/signin', [], function () {
                     $('#errors-area').show();
 
                     signIn.removeShimmer();
-                    scrollToTop();
+                    core.scrollToTop();
                 });
         });
     }

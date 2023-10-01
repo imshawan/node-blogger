@@ -5,7 +5,7 @@
                 <div class="cover position-relative">
                     <!-- <div class="gray-shade"></div> -->
                     <figure>
-                        <img id="user-cover-image" data-onerror="https://bootdey.com/img/Content/bg1.jpg" onerror="imageOnError(this)"  src="<%= profile.cover %>" class="img-fluid"
+                        <img id="user-cover-image" data-onerror="https://bootdey.com/img/Content/bg1.jpg" onerror="core.imageOnError(this)"  src="<%= profile.cover %>" class="img-fluid"
                             alt="profile cover">
                         <form class="d-none" id="cover-image-form">
                             <input type="file" id="cover-image" name="cover" class="d-none">
@@ -31,7 +31,7 @@
         <div class="row position-relative ms-0 px-lg-5">
             <div class="d-flex position-absolute" style="top: -39px;width: 95%;">
                 <div class="position-relative">
-                    <img id="user-profile-image" class="profile-pic" data-onerror="" onerror="imageOnError(this)" src="<%= profile.picture %>"
+                    <img id="user-profile-image" class="profile-pic" data-onerror="" onerror="core.imageOnError(this)" src="<%= profile.picture %>"
                     alt="profile">
                     <form class="d-none" id="profile-image-form">
                         <input type="file" id="profile-image" name="picture" class="d-none">

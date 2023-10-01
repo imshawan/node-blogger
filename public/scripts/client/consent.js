@@ -22,7 +22,7 @@ define('client/consent', ['modules/http'], function (http) {
                 })
                 .catch(err => {
                     const {message} = err;
-                    alertError(message);
+                    core.alertError(message);
                 });
         });
     }

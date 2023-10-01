@@ -2,7 +2,6 @@
 
 (function (factory) {
     if (typeof module === 'object' && module.exports) {
-        console.log('yes')
         module.exports = factory(console);
     } else {
         window.utilities = factory(console);

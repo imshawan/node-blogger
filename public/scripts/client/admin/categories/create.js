@@ -3,7 +3,7 @@ define('client/admin/categories/create', ['modules/http', 'client/admin/categori
 
     create.initialize = function () {
         const {category} = Application;
-        // generateAvatarFromName('category-icon');
+        // core.generateAvatarFromName('category-icon');
 
         events.initialize();
 
@@ -38,11 +38,11 @@ define('client/admin/categories/create', ['modules/http', 'client/admin/categori
                         callback = () => location.href = [location.origin, 'admin', 'categories', res.slug].join('/');
                     }
                     dialog.hide();
-                    alertSuccess('Category created!', callback);
+                    core.alertSuccess('Category created!', callback);
                     
                 }).catch(err => {
                     dialog.hide();
-                    alertError(err.message);
+                    core.alertError(err.message);
                 });
         });
     }

@@ -40,11 +40,11 @@ define('client/users/edit', ['modules/http'], function (http) {
             http.PUT(`/user/${user.userid}`, formData)
                 .then(res => {
                     const {message} = res;
-                    alertSuccess(message || 'Updated successfully!');
+                    core.alertSuccess(message || 'Updated successfully!');
                 })
                 .catch(err => {
                     const {message} = err;
-                    alertError(message || 'Something went wrong');
+                    core.alertError(message || 'Something went wrong');
                 })
                 .finally(() => {
                     form.find('[type="submit"]').attr('disabled', false);
@@ -76,7 +76,7 @@ define('client/users/edit', ['modules/http'], function (http) {
             enctype: 'multipart/form-data',
             success : function(data) {
                 const {payload} = data;
-                alertSuccess(payload.message || 'Updated successfully!');
+                core.alertSuccess(payload.message || 'Updated successfully!');
             }
         }).catch((err) => {
             let errMessage;
@@ -85,7 +85,7 @@ define('client/users/edit', ['modules/http'], function (http) {
                     err.responseJSON.status.message :
                     err.responseJSON.error;
             }
-            alertError(errMessage);
+            core.alertError(errMessage);
         })
     }
 
