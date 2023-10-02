@@ -11,6 +11,7 @@
 
 import { execSync } from 'child_process';
 import { Changelog } from '../src/utilities/changelog';
+import moment from 'moment';
 import pkg from '../package.json';
 
 const gitStatusOutput = execSync('git status --porcelain').toString('utf-8').trim();
@@ -23,5 +24,5 @@ if (gitStatusOutput.trim()) {
     new Changelog().write();
 
     execSync('git add CHANGELOG.md');
-    execSync(`git commit -m "(Changelog CI) Latest Changelogs for ${pkg.name} v${pkg.version}"`);
+    execSync(`git commit -m "[${moment().format('DD-MM-YYYY')}] Changelog CI - Latest Changelogs for ${pkg.name} v${pkg.version}"`);
 }
