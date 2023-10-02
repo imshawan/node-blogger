@@ -1,14 +1,96 @@
- <div class="row justify-content-center">
-     <% if (categories && categories.length) { %>
-
-     <% categories.forEach(function(category) { %>
-     <div class="card my-2 w-75">
-         <div class="card-body">
-             <h5 class="card-title"><%= category.name %></h5>
-             <p class="card-text"><%= category.description %></p>
-             <a href="/admin/categories/<%= category.slug %>" class="btn btn-primary">Go somewhere</a>
+ <div class="justify-content-center pb-4">
+  
+   <form class="row" id="category-search-form">
+     <div class="form-group col-12 col-sm-6">
+       <div class="input-group justify-content-start">
+         <input type="text" name="search" class="form-control" placeholder="Search categories"
+           aria-label="Recipient's username" aria-describedby="basic-addon2">
+         <div class="input-group-append">
+           <button type="submit" class="btn btn-sm btn-primary" type="button">Search</button>
          </div>
+       </div>
      </div>
-     <% }); %>
-     <% } %>
+
+     <div class="form-group col-12 col-sm-6">
+       <div class="input-group h-100 justify-content-end">
+         <div class="input-group-prepend">
+           <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false">Sort categories</button>
+           <div class="dropdown-menu" x-placement="top-start"
+             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -2px, 0px);">
+             <a class="dropdown-item" href="?sortBy=latest">Latest</a>
+             <a class="dropdown-item" href="?sortBy=oldest">Oldest</a>
+             <a class="dropdown-item" href="?sortBy=popularity">Popularity</a>
+             <a class="dropdown-item" href="?sortBy=posts">More posts</a>
+             <div role="separator" class="dropdown-divider"></div>
+             <a class="dropdown-item" href="?sortBy=default">Default</a>
+           </div>
+         </div>
+       </div>
+     </div>
+   </form>
+
+   <div class="row">
+     <div class="col-12">
+       <% if (categories && categories.length) { %>
+       <div class="list-group">
+
+         <% categories.forEach(function(category) { %>
+            <div class="list-group-item list-group-item-action cursor-pointer d-inline-flex"  <% if (category.subCategories && category.subCategories.length) { %> data-has-child="true" <% } %>>
+              <button data-bs-target="#category-<%= category.cid %>" data-bs-toggle="collapse" class="w-100 border-0 bg-transparent text-left d-flex">
+
+                <% if (category.thumb) { %>
+                  <img src="<%= category.thumb %>" onerror="core.imageOnError(this)" alt="" class="user-img-sm">
+                 
+                <% } else { %>
+                    <canvas height="36" width="36" style="border-radius: 36px;" id="cat-<%= category.cid %>" data-category-name="<%= category.name %>"></canvas>
+                <% } %> 
+
+                <a class="ps-3" href="/admin/categories/<%= category.slug %>">
+                  <h5 class="my-auto"><%= category.name %></h5>
+                </a>
+                
+                <!-- <% if (category.subCategories && category.subCategories.length) { %> 
+                  <label class="badge badge-info ms-2">
+                  <%= category.subCategories.length %>
+                  </label>
+                <% } %> -->
+
+              </button>
+             
+            </div>
+
+            <% if (category.subCategories && category.subCategories.length) { %>
+          
+              <div class="list-group ps-5 collapse" id="category-<%= category.cid %>">
+  
+                <% category.subCategories.forEach(function(subCategory) { %>
+
+                  <div class="list-group-item list-group-item-action cursor-pointer d-inline-flex" <% if (subCategory.subCategories && subCategory.subCategories.length) { %> data-has-child="true" <% } %>>
+                    <button data-bs-target="#subCategory-<%= subCategory.cid %>" class="w-100 border-0 bg-transparent text-left d-flex">
+                     
+                      <% if (subCategory.thumb) { %>
+                        <img src="<%= subCategory.thumb %>" onerror="core.imageOnError(this)" alt="" class="user-img-sm">
+                       
+                      <% } else { %>
+                          <canvas height="36" width="36" style="border-radius: 36px;" id="cat-<%= subCategory.cid %>" data-category-name="<%= subCategory.name %>"></canvas>
+                      <% } %> 
+                      
+                      <a class="ps-3" href="/admin/categories/<%= subCategory.slug %>">
+                        <h5 class="my-auto"><%= subCategory.name %></h5>
+                      </a>
+
+                    </button>
+                  </div>
+                <% }); %>
+              
+              </div>
+           <% } %>
+
+         <% }); %>
+
+       </div>
+       <% } %>
+     </div>
+   </div>
  </div>

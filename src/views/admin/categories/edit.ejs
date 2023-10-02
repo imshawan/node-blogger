@@ -23,7 +23,7 @@
 
                     <div class="row justify-content-between">
                         <div class="form-floating col-12 col-md-6 mb-3">
-                            <input type="text" name="tagsPerPost[min]" value="<%= category.tagsPerPost.min %>" placeholder="Enter a number" class="form-control"
+                            <input type="text" name="tagsPerPost[min]" value="<%= category.tagsPerPost?.min %>" placeholder="Enter a number" class="form-control"
                                 id="minTags">
                             <label for="minTags" style="left: unset;" class="form-label">Minimum tags
                                 per
@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-floating col-12 col-md-6 mb-3">
-                            <input type="text" name="tagsPerPost[max]" value="<%= category.tagsPerPost.max %>" placeholder="Enter a number" class="form-control"
+                            <input type="text" name="tagsPerPost[max]" value="<%= category.tagsPerPost?.max %>" placeholder="Enter a number" class="form-control"
                                 id="maxTags">
                             <label for="maxTags" style="left: unset;" class="form-label">Maximum tags
                                 per

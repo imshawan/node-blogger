@@ -10,9 +10,81 @@ const categoryFields = [
     "thumb",
 ];
 
-const getCategories = async function getCategories() {
+const getCategories = async function getCategories(perPage: number=15, page: number=1) {
     // TODO need to properly write the logic with pagination and etc.
-    const data = await database.getObjects({_key: 'category'}, [], {multi: true});
+    if (!perPage) {
+        perPage=15;
+    }
+    if (!page) {
+        page = 1;
+    }
+    if (isNaN(perPage)) {
+        throw new TypeError('perPage must be a number (int) found ' + typeof perPage);
+    }
+    if (isNaN(page)) {
+        throw new TypeError('perPage must be a number (int) found ' + typeof page);
+    }
+
+    const query = {_key: 'category'};
+    const pagination = [
+      {
+        $skip: (page - 1) * perPage,
+      },
+      {
+        $limit: perPage,
+      },
+    ];
+    const pipeline = [
+      { $match: query },
+      {
+        $lookup: {
+          from: "objects",
+          let: { cid: "$cid" },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$parentCid", "$$cid"] },
+                _key: "category",
+              },
+            },
+          ],
+          as: "subCategories",
+        },
+      },
+      {
+        $addFields: {
+          subCategories: {
+            $concatArrays: [
+              {
+                $filter: {
+                  input: "$subCategories",
+                  cond: { $ne: ["$$this.parentCid", "$cid"] },
+                },
+              },
+              {
+                $map: {
+                  input: {
+                    $filter: {
+                      input: "$subCategories",
+                      cond: { $eq: ["$$this.parentCid", "$cid"] },
+                    },
+                  },
+                  in: "$$this",
+                },
+              },
+            ],
+          },
+        },
+      },
+      {
+        $match: {
+          parentCid: { $exists: false },
+        },
+      },
+      ...pagination
+    ];
+
+    var data = await database.aggregateObjects(pipeline);
 
     return data;
 }
