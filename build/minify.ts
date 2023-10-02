@@ -10,6 +10,8 @@ export async function minifyJavaScripts(): Promise<void> {
     const filesToMinify = prepareFilesArray(paths.javaScriptsDir);
     const uglifyOptions = {
       warnings: true,
+      compress: {assignments: true},
+      mangle: {toplevel: true},
       output: {
         beautify: false,
       },
