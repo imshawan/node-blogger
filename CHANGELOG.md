@@ -1,8 +1,10 @@
-# node-blogger v1.1.0 - (September, 2023)
+# node-blogger v1.1.0 - (October, 2023)
 
 ## What's new
 
 ### September, 2023:
+- [new] Added tags management for categories
+- [new] Added edit functionality to categories, added utilities for client side implementation.
 - Added commits grouping by months for better changelogs generation
 - Added changelog and changelog generator scripts
 - [Addition] Profile redirects (my profile)
@@ -61,7 +63,16 @@
 
 ## Features
 
+### October, 2023:
+- #update
+- #update
+- #update
+- #update
+
 ### September, 2023:
+- #update Commit flag updated
+- #update
+- [update] Limited MAX_TAG_SIZE to 25
 - Updated changelogs categorization for better functioning
 - Updated the changelog script
 - Update
@@ -118,6 +129,7 @@
 ## Fixes
 
 ### September, 2023:
+- #fix
 - Fixed the issue of months duplicacy for changelogs v2
 - Fixed the issue of months duplicacy for changelogs
 - [Fix] Breadcrumb URL issue
@@ -137,7 +149,13 @@
 
 ## Miscellaneous
 
+### October, 2023:
+- #new
+
 ### September, 2023:
+- #new
+- [new] Stable tag fuctionality in category management
+- (Changelog CI) Latest Changelogs for node-blogger v1.1.0
 - (Changelog CI) Latest Changelogs for node-blogger v1.1.0
 - (Changelog CI) Latest Changelogs for node-blogger v1.1.0
 - Removed development code
