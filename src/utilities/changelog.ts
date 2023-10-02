@@ -39,7 +39,7 @@ export class Changelog {
     private getCommits(): Array<ICommit> {
         const parsedCommits: Array<ICommit> = [];
 
-        const commits = execSync(`git log --format=commit:%s;author:%cn;email:%ce;date:%cs;`).toString("utf-8");
+        const commits = execSync(`git log --format=commit:-%s;author:-%cn;email:-%ce;date:-%cs;`).toString("utf-8");
         const commitsArray = commits.split("\n").filter((message: string) => message && message !== "");
 
         commitsArray.forEach(commit => {
@@ -52,7 +52,7 @@ export class Changelog {
             };
 
             for (const pair of keyValuePairs) {
-                let [key, value] = pair.split(':');
+                let [key, value] = pair.split(':-');
                 
                 if (key && value) {
                     // @ts-ignore
@@ -78,12 +78,15 @@ export class Changelog {
 
                 if (/^([\d\.]+)$/.test(commit)) {
                     return;
-                } else if (/(add)|(addition)/i.test(commit)) {
+                } else if (/(#new)|(add)|(addition)/i.test(commit)) {
                     category = "new";
-                } else if (/(update)|(support)/i.test(commit)) {
+                    commitObj.commit = commit.replace('#new:', '').trim();
+                } else if (/(#update)|(support)/i.test(commit)) {
                     category = "features";
-                } else if (/fix/i.test(commit)) {
+                    commitObj.commit = commit.replace('#update:', '').trim();
+                } else if (/#fix/i.test(commit)) {
                     category = "bugFixes";
+                    commitObj.commit = commit.replace('#fix"', '').trim();
                 } else {
                     category = "others";
                 }

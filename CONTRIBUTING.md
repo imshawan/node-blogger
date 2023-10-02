@@ -173,7 +173,7 @@ Each commit message should have a clear and concise structure, consisting of the
 ### Flag
 - The flag is a short, lowercase keyword enclosed in '#'. It categorizes the type of commit. Use one of the following flags:
   - #new: For new additions or features.
-  - #bugfix: For bug fixes or issue resolutions.
+  - #fix: For bug fixes or issue resolutions.
   - #update: For general updates, improvements, or enhancements.
   - #misc: For miscellaneous changes or anything that doesn't fit into the above categories.
 
@@ -201,7 +201,7 @@ This commit adds a new feature that allows users to register on the platform.
 
 ### Bug Fix
 ```
-#bugfix: Fix null pointer exception in login logic
+#fix: Fix null pointer exception in login logic
 
 This commit resolves an issue where the login process would crash due to a null pointer exception.
 
