@@ -4,6 +4,7 @@ import { getISOTimestamp } from "@src/utilities";
 import _ from "lodash";
 import { meta } from "@src/meta";
 import { database } from "@src/database";
+import _data from "./data";
 
 
 const MAX_BLURB_SIZE = 250;
@@ -11,7 +12,7 @@ const MAX_BLURB_SIZE = 250;
 export default async function update(data: ICategory) {
     const maxCategoryBlurbLength = meta.configurationStore?.maxCategoryBlurbLength || MAX_BLURB_SIZE;
     const {name, userid, thumb, description, cid, altThumb} = data;
-    var {tagsPerPost} = data;
+    var {tagsPerPost, parent} = data;
 
     const categoryData: ICategory = {};
     const timestamp = getISOTimestamp();
@@ -73,6 +74,18 @@ export default async function update(data: ICategory) {
 
     if (Object.hasOwnProperty.bind(data)('altThumb')) {
         categoryData.altThumb = altThumb;
+    }
+
+    if (parent) {
+        if (typeof parent != 'number') {
+            throw new TypeError('parent must be a number, found ' + typeof parent);
+        }
+
+        if (!await _data.getCategoryByCid(parent)) {
+            throw new Error('No such category exists with the parent id: ' + parent);
+        }
+
+        categoryData.parent = Number(parent)
     }
 
     categoryData.updatedAt = timestamp;

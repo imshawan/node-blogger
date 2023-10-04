@@ -1,3 +1,9 @@
+ <style>
+.select2-container {
+    width: 100% !important;
+    padding: 0;
+}
+ </style>
  <div class="justify-content-center pb-4">
   
    <form class="row" id="category-search-form">
@@ -15,12 +21,12 @@
        <div class="input-group h-100 justify-content-end">
          <div class="input-group-prepend">
            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-             aria-haspopup="true" aria-expanded="false">Sort categories</button>
+             aria-haspopup="true" aria-expanded="false"><% if (sorting.id != 'default') { %> <%= sorting.label %> <% } else { %>Sort categories<% } %></button>
            <div class="dropdown-menu" x-placement="top-start"
              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -2px, 0px);">
-             <a class="dropdown-item" href="?sortBy=latest">Latest</a>
+             <a class="dropdown-item" href="?sortBy=recent">Most recent</a>
              <a class="dropdown-item" href="?sortBy=oldest">Oldest</a>
-             <a class="dropdown-item" href="?sortBy=popularity">Popularity</a>
+             <a class="dropdown-item" href="?sortBy=popular">Popularity</a>
              <a class="dropdown-item" href="?sortBy=posts">More posts</a>
              <div role="separator" class="dropdown-divider"></div>
              <a class="dropdown-item" href="?sortBy=default">Default</a>
@@ -85,6 +91,7 @@
                 <% }); %>
               
               </div>
+
            <% } %>
 
          <% }); %>
@@ -93,4 +100,13 @@
        <% } %>
      </div>
    </div>
+
+   <%- include('/admin/categories/partials/new_category_modal'); -%>
+
+   <div class="row mx-0 justify-content-end">
+     <button type="submit" class="btn float-right-btn btn-primary py-2" data-bs-toggle="modal" data-bs-target="#new-category-modal">
+       <i class="fa fa-plus" aria-hidden="true"></i>
+     </button>
+   </div>
+
  </div>

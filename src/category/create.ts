@@ -10,7 +10,7 @@ const MAX_BLURB_SIZE = 250;
 
 export default async function create(categoryData: ICategory) {
     const {name='', userid, thumb} = categoryData;
-    var {description='', blurb='', tagsPerPost} = categoryData;
+    var {description='', blurb='', tagsPerPost, parent} = categoryData;
     var maxCategoryBlurbLength = meta.configurationStore?.maxCategoryBlurbLength || MAX_BLURB_SIZE;
 
     if (!userid) {
@@ -47,6 +47,16 @@ export default async function create(categoryData: ICategory) {
         }
     }
 
+    if (parent) {
+        if (typeof parent != 'number') {
+            throw new TypeError('parent must be a number, found ' + typeof parent);
+        }
+
+        if (!await data.getCategoryByCid(parent)) {
+            throw new Error('No such category exists with the parent id: ' + parent);
+        }
+    }
+
     const timestamp = getISOTimestamp();
     
     const category: ICategory = {};
@@ -67,6 +77,10 @@ export default async function create(categoryData: ICategory) {
         posts: 0,
         tags: 0,
     };
+
+    if (parent){
+        category.parent = Number(parent);
+    }
 
     category.createdAt = timestamp;
     category.updatedAt = timestamp;

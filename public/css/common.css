@@ -412,7 +412,10 @@
     height: 36px;
     border-radius: 100%;
 }
-
+.select2-search__field {
+    min-height: 40px!important;
+    padding-top: 0.7rem!important;
+}
 @media (max-width: 767px) {
     .profile-page .profile-header .cover figure {
         height: 160px;

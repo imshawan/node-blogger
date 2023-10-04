@@ -2,6 +2,7 @@ export * from './StatusCodesWithError';
 export * from './StatusCodesWithMessage';
 export * from './ImageExts';
 export * from './Collections';
+export * from './sorting';
 
 import path from "path";
 

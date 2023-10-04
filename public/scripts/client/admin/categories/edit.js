@@ -1,4 +1,8 @@
-define('client/admin/categories/edit', ['modules/http', 'client/admin/categories/events'], function (http, events) {
+define('client/admin/categories/edit', [
+    'modules/http', 
+    'client/admin/categories/events', 
+    'client/admin/categories/utils'
+], function (http, events, utils) {
     const edit = {};
 
     edit.initialize = function () {
@@ -11,14 +15,43 @@ define('client/admin/categories/edit', ['modules/http', 'client/admin/categories
     
     edit.attachEvents = function (category, tags) {
         const message = `This action will permanently remove all its associated content, posts, subcategories, and tags from the platform.`;
+        const parentCategorySelector = $("#parent-cid-selection");
         const select2Options = {
+            placeholder: 'Select...',
+            width: '100%',
+            templateResult: utils.select2TemplateFormatOptions,
+            templateSelection: utils.select2TemplateFormatOptions,
+            ajax: {
+                url: '/api/v1/admin/categories?perPage=5',
+                data: function (params) {
+                    return {
+                        search: params.term,
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.payload.data.map(el => ({
+                            ...el,
+                            id: el.cid,
+                            text: el.name,
+                        }))
+                    };
+                }
+            }
+        };
+
+        if (category.parent && Object.keys(category.parent).length) {
+            select2Options.data = [category.parent].map(el => ({...el, id: el.cid, text: el.name}));
+        }
+
+        $("#tagsInput").select2({
             placeholder: "Create tags",
             width: '100%',
             tags: true,
             data: tags
-        };
+        });
 
-        $("#tagsInput").select2(select2Options);
+        parentCategorySelector.select2(select2Options);
 
         $("#tagsInput").on('select2:unselect', function (e) {
             let deselectedOption = e.params.data;

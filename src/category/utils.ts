@@ -3,22 +3,18 @@ import { slugify } from '@src/utilities';
 import { meta } from '@src/meta';
 
 const generateCategoryslug = async function generateCategoryslug(name: string): Promise<string> {
-    let index = 0, generatedSlug='';
+    let slug = slugify(name);
 
-    while (!generatedSlug) {
-        let slug = slugify(name);
-        slug = index < 0 ? String(slug + '-' + index) : slug;
+    const category = await database.getObjects({
+        slug: { $regex: new RegExp(`^[0-9]+\/${slug}`), $options: "i" },
+        _key: "category",
+    }, [], {multi: true});
 
-        const category = await database.getObjects({slug, _key: 'category'});
-        if (category) {
-            index++;
-        } else {
-            generatedSlug = slug;
-            break;
-        }
+    if (category && category.length) {
+        return String(slug + '-' + (category.length + 1));
     }
 
-    return generatedSlug;
+    return slug;
 }
 
 const generateNextCategoryId = async function generateNextCategoryId(): Promise<number> {

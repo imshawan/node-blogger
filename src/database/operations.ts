@@ -10,7 +10,14 @@ const getObjects = async function (key: object, fields?: Array<string>, options?
     options = getObjectOptions(options || {});
 
     if (options.multi) {
-        const data = await mongo.client.collection(options.collection).find(key).toArray();
+        let data: any = [];
+        if (options.skip && options.limit) {
+            let {skip, limit} = options;
+            data = await mongo.client.collection(options.collection).find(key).skip(skip).limit(limit).toArray();
+        } else {
+            data = await mongo.client.collection(options.collection).find(key).toArray();
+        }
+
         if (Array.isArray(fields) && fields.length) {
             return data.map((elem: any) => filterObjectFields(elem, fields));
         } else {
@@ -161,7 +168,7 @@ function getObjectOptions (options?: IParamOptions): IParamOptions {
     } else {
         options = {
             multi: false,
-            collection: Collections.DEFAULT
+            collection: Collections.DEFAULT,
         };
     }
 

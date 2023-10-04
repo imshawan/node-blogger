@@ -123,15 +123,27 @@
           "#7f8c8d",
         ];
     
-        const nameSplit = name.split(" "),
-            initials = nameSplit[0].charAt(0).toUpperCase() + nameSplit[1].charAt(0).toUpperCase();
-        
+        const nameSplit = name.split(" ");
+
+        let initials = nameSplit[0].charAt(0).toUpperCase();
+        if (nameSplit.length > 1) {
+            initials += nameSplit[1].charAt(0).toUpperCase();
+        }
+
         const charIndex = initials.charCodeAt(0) - 65,
             colourIndex = charIndex % 19;
         
-        const canvas = document.getElementById(canvasId);
-        const context = canvas.getContext("2d");
+        let canvas;
+        if (typeof canvasId == 'string') {
+            canvas = document.getElementById(canvasId);
+        } else {
+            canvas = $(canvasId);
+            if (canvas.length && typeof canvas[0] == 'object') {
+                canvas = canvas[0];
+            }
+        }
         
+        const context = canvas.getContext("2d");
         const canvasWidth = $(canvas).attr("width") || 128,
             canvasHeight = $(canvas).attr("height") || 128,
             canvasCssWidth = canvasWidth,

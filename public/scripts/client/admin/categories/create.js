@@ -1,4 +1,8 @@
-define('client/admin/categories/create', ['modules/http', 'client/admin/categories/events'], function (http, events) {
+define('client/admin/categories/create', [
+    'modules/http', 
+    'client/admin/categories/events',
+    'client/admin/categories/utils'
+], function (http, events, utils) {
     const create = {};
 
     create.initialize = function () {
@@ -6,6 +10,34 @@ define('client/admin/categories/create', ['modules/http', 'client/admin/categori
         // core.generateAvatarFromName('category-icon');
 
         events.initialize();
+        const data = create.checkLocalStore();
+        const form = $('#category-form');
+        form.find('[name="name"]').val(data.name);
+
+        $('#parent-cid-selection').select2({
+            placeholder: 'Select...',
+            width: '100%',
+            data: [data.category],
+            templateResult: utils.select2TemplateFormatOptions,
+            templateSelection: utils.select2TemplateFormatOptions,
+            ajax: {
+                url: '/api/v1/admin/categories?perPage=5',
+                data: function (params) {
+                    return {
+                        search: params.term,
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.payload.data.map(el => ({
+                            ...el,
+                            id: el.cid,
+                            text: el.name,
+                        }))
+                    };
+                }
+            }
+        });
 
         $('#category-form').off().on('submit', function (e) {
             e.preventDefault();
@@ -45,6 +77,20 @@ define('client/admin/categories/create', ['modules/http', 'client/admin/categori
                     core.alertError(err.message);
                 });
         });
+    }
+
+    create.checkLocalStore = function () {
+        const url = new URLSearchParams(window.location.search);
+        const state = url.get('state');
+
+        if (state && state == 'editing') {
+            let cached = window.localStorage.getItem('category-create');
+            if (!cached) {
+                return {};
+            }
+            
+            return JSON.parse(cached); 
+        }
     }
 
     return create;

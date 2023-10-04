@@ -8,6 +8,10 @@ const categoryControllers: MutableObject = {
     tags: {}
 };
 
+categoryControllers.get = async (req: Request, res: Response, next: NextFunction) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.category.get(req));
+}
+
 categoryControllers.create = async (req: Request, res: Response, next: NextFunction) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.category.create(req));
 }

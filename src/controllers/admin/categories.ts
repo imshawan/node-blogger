@@ -4,6 +4,9 @@ import { ICategoryTag, MutableObject } from "@src/types";
 import { SideBar } from "@src/utilities";
 import {data as sidebarData} from "./sidebarconfig";
 import { database } from "@src/database";
+import _ from "lodash";
+import { validatePaginationControls, ValueError } from "@src/helpers";
+import { ValidSortingTechniques, ValidSortingTechniquesWithNames } from "@src/constants";
 
 const BASE = 'categories';
 const categories: MutableObject = {}
@@ -11,11 +14,26 @@ const categories: MutableObject = {}
 categories.get = async function get(req: Request, res: Response, next: NextFunction) {
     const pageData: MutableObject = {};
     const sidebar = new SideBar(sidebarData);
+    const {sortBy} = req.query;
+    let sortingLabel = '';
+
+    if (sortBy && typeof sortBy !== undefined) {
+        if (!Object.keys(ValidSortingTechniques).includes(String(sortBy).toUpperCase())) {
+           throw new ValueError('Invalid sorting type - ' + sortBy);
+        }
+        if (Object.keys(ValidSortingTechniquesWithNames).includes(String(sortBy).toUpperCase())) {
+            // @ts-ignore
+            sortingLabel = ValidSortingTechniquesWithNames[(String(sortBy).toUpperCase())];
+         }
+    }
+
+    const {perPage, page} = validatePaginationControls(req);
 
     pageData.title = 'Categories';
     pageData.sidebar = sidebar.get('all_categories');
+    pageData.sorting = {id: sortBy, label: sortingLabel};
 
-    pageData.categories = await category.data.getCategories();
+    pageData.categories = await category.data.getCategoriesWithData(perPage, page, [], String(sortBy));
     
     res.render(BASE + '/list', pageData);
 }
@@ -31,6 +49,9 @@ categories.getBySlug = async function get(req: Request, res: Response, next: Nex
     }
 
     const tags = await category.tags.getByCategoryId(Number(cid), ['name', 'tagid']);
+    if (categoryData.parent) {
+        categoryData.parent = await category.data.getCategoryByCid(categoryData.parent, ['cid', 'name', 'thumb']);
+    }
 
     pageData.title = 'Categories';
     pageData.sidebar = sidebar.get('all_categories');

@@ -9,6 +9,8 @@ interface IParamOptions {
     multi?: boolean,
     collection?: string
     mongoOptions?: object
+    skip?: number
+    limit?: number
 }
 
 /**
