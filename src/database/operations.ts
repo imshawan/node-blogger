@@ -13,9 +13,9 @@ const getObjects = async function (key: object, fields?: Array<string>, options?
         let data: any = [];
         if (options.skip && options.limit) {
             let {skip, limit} = options;
-            data = await mongo.client.collection(options.collection).find(key).skip(skip).limit(limit).toArray();
+            data = await mongo.client.collection(options.collection).find(key).sort(options.sort).skip(skip).limit(limit).toArray();
         } else {
-            data = await mongo.client.collection(options.collection).find(key).toArray();
+            data = await mongo.client.collection(options.collection).find(key).sort(options.sort).toArray();
         }
 
         if (Array.isArray(fields) && fields.length) {
@@ -164,11 +164,15 @@ function getObjectOptions (options?: IParamOptions): IParamOptions {
         if (options.collection) {
             validateCollection(options.collection);
         }
+        if (!options.sort || !Object.keys(options.sort).length) {
+            options.sort = {$natural: -1}
+        }
 
     } else {
         options = {
             multi: false,
             collection: Collections.DEFAULT,
+            sort: {$natural: -1}
         };
     }
 

@@ -45,5 +45,36 @@
         element.attr('disabled', false);
     }
 
+    utilities.getQueryParamsFromUrl = function (url) {
+        if (!url) {
+            url = location.href || window.location.href;
+        }
+        
+        let splittedUrl = url.split('?');
+        if (splittedUrl.length <= 1) {
+            return {}
+        }
+
+        let urlparams = new URLSearchParams(splittedUrl[1]);
+        let queryParamsObject = {};
+
+        for(var value of urlparams.keys()) {
+            queryParamsObject[value] = urlparams.get(value);
+        }
+
+        return queryParamsObject;
+    }
+
+    utilities.objectToQueryString = function (obj) {
+        if (!Object.keys(obj).length) return '';
+        
+        return Object.keys(obj).map(key => {
+            if (obj[key] !== undefined && obj[key] !== null) {
+                return encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]);
+            }
+            return '';
+        }).filter(param => param !== '').join('&');
+    }
+
     return utilities;
 }));

@@ -9,8 +9,7 @@
    <form class="row" id="category-search-form">
      <div class="form-group col-12 col-sm-6">
        <div class="input-group justify-content-start">
-         <input type="text" name="search" class="form-control" placeholder="Search categories"
-           aria-label="Recipient's username" aria-describedby="basic-addon2">
+         <input type="text" value="<% if (search && search.length) { %><%= search %><% } %>" name="search" class="form-control" placeholder="Search categories">
          <div class="input-group-append">
            <button type="submit" class="btn btn-sm btn-primary" type="button">Search</button>
          </div>
@@ -24,12 +23,12 @@
              aria-haspopup="true" aria-expanded="false"><% if (sorting && sorting.id && sorting.id != 'default') { %> <%= sorting.label %> <% } else { %> Sort categories<% } %></button>
            <div class="dropdown-menu" x-placement="top-start"
              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -2px, 0px);">
-             <a class="dropdown-item" href="?sortBy=recent">Most recent</a>
-             <a class="dropdown-item" href="?sortBy=oldest">Oldest</a>
-             <a class="dropdown-item" href="?sortBy=popular">Popularity</a>
-             <a class="dropdown-item" href="?sortBy=posts">More posts</a>
+             <a class="dropdown-item" href="?sortBy=recent<% if (search && search.length) { %>&search=<%= search %><% } %>">Most recent</a>
+             <a class="dropdown-item" href="?sortBy=oldest<% if (search && search.length) { %>&search=<%= search %><% } %>">Oldest</a>
+             <a class="dropdown-item" href="?sortBy=popular<% if (search && search.length) { %>&search=<%= search %><% } %>">Popularity</a>
+             <a class="dropdown-item" href="?sortBy=posts<% if (search && search.length) { %>&search=<%= search %><% } %>">More posts</a>
              <div role="separator" class="dropdown-divider"></div>
-             <a class="dropdown-item" href="?sortBy=default">Default</a>
+             <a class="dropdown-item" href="?sortBy=default<% if (search && search.length) { %>&search=<%= search %><% } %>">Default</a>
            </div>
          </div>
        </div>

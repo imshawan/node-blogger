@@ -14,8 +14,9 @@ const categories: MutableObject = {}
 categories.get = async function get(req: Request, res: Response, next: NextFunction) {
     const pageData: MutableObject = {};
     const sidebar = new SideBar(sidebarData);
-    const {sortBy} = req.query;
-    let sortingLabel = '';
+    const {sortBy, search} = req.query;
+    const {perPage, page} = validatePaginationControls(req);
+    let sortingLabel = '', categories: Array<any> = [];
 
     if (sortBy && typeof sortBy !== undefined) {
         if (!Object.keys(ValidSortingTechniques).includes(String(sortBy).toUpperCase())) {
@@ -31,12 +32,17 @@ categories.get = async function get(req: Request, res: Response, next: NextFunct
         pageData.sorting = {};
     }
 
-    const {perPage, page} = validatePaginationControls(req);
+    if (search && search.length) {
+        categories = await category.data.getCategoryByName(String(search), perPage, page, [], String(sortBy));
+    } else {
+        categories = await category.data.getCategoriesWithData(perPage, page, [], String(sortBy));
+    }
 
     pageData.title = 'Categories';
     pageData.sidebar = sidebar.get('all_categories');
 
-    pageData.categories = await category.data.getCategoriesWithData(perPage, page, [], String(sortBy));
+    pageData.categories = categories;
+    pageData.search = search || '';
     
     res.render(BASE + '/list', pageData);
 }

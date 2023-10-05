@@ -11,6 +11,7 @@ interface IParamOptions {
     mongoOptions?: object
     skip?: number
     limit?: number
+    sort?: object
 }
 
 /**

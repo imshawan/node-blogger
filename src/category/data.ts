@@ -1,5 +1,5 @@
 import { database } from "@src/database";
-import { MutableObject } from "@src/types";
+import { IParamOptions, MutableObject } from "@src/types";
 import { ValidSortingTechniques } from "@src/constants";
 import { ValueError } from "@src/helpers";
 
@@ -36,7 +36,7 @@ const getCategoriesWithData = async function getCategoriesWithData(perPage: numb
         fields = [];
     }
 
-    const query = {_key: 'category'};
+    const query: MutableObject = {_key: 'category'};
     const pagination: Array<any> = [
         {
           $skip: (page - 1) * perPage,
@@ -59,56 +59,7 @@ const getCategoriesWithData = async function getCategoriesWithData(perPage: numb
         }
     }
 
-    const pipeline = [
-        { $match: query },
-        {
-          $lookup: {
-            from: "objects",
-            let: { cid: "$cid" },
-            pipeline: [
-              {
-                $match: {
-                  $expr: { $eq: ["$parent", "$$cid"] },
-                  _key: "category",
-                },
-              },
-            ],
-            as: "subCategories",
-          },
-        },
-        {
-          $addFields: {
-            subCategories: {
-              $concatArrays: [
-                {
-                  $filter: {
-                    input: "$subCategories",
-                    cond: { $ne: ["$$this.parent", "$cid"] },
-                  },
-                },
-                {
-                  $map: {
-                    input: {
-                      $filter: {
-                        input: "$subCategories",
-                        cond: { $eq: ["$$this.parent", "$cid"] },
-                      },
-                    },
-                    in: "$$this",
-                  },
-                },
-              ],
-            },
-          },
-        },
-        {
-          $match: {
-            parent: { $exists: false },
-          },
-        },
-        ...pagination
-    ];
-
+    const pipeline = createAggregationPipeline(query, pagination);
     var data = await database.aggregateObjects(pipeline);
 
     return data;
@@ -162,7 +113,7 @@ const getCategoryByCid = async function getCategoryByCid(id: any, fields: string
     return await database.getObjects({cid, _key: 'category'}, fields);   
 }
 
-const getCategoryByName = async function getCategoryByName(name: string, perPage: number=15, page: number=1, fields: string[]=[]) {
+const getCategoryByName = async function getCategoryByName(name: string, perPage: number=15, page: number=1, fields: string[]=[], sorting: string='default') {
     if (!name) {
         throw new Error('name is required');
     }
@@ -187,11 +138,24 @@ const getCategoryByName = async function getCategoryByName(name: string, perPage
     name = String(name).trim();
 
     const searchKeys = {name: {$regex: new RegExp(name), $options: 'i'}, _key: 'category'};
-    const matchOptions = {
+    const matchOptions: IParamOptions = {
         skip: (page - 1) * perPage,
         limit: perPage,
         multi: true
     };
+
+    if (sorting && sorting != 'undefined') {
+        sorting = sorting.trim();
+        
+        if (!ValidSortingTechniques.hasOwnProperty(sorting.toUpperCase())) {
+          throw new ValueError('Invalid sorting type: ' + sorting);
+        }
+
+        let sort = applySort(sorting);
+        if (Object.keys(sort).length) {
+            matchOptions.sort = sort['$sort']
+        }
+    }
 
     return await database.getObjects(searchKeys, fields, matchOptions);   
 }
@@ -202,6 +166,70 @@ const getCategoryBySlug = async function getCategoryBySlug(slug: string) {
     }
 
     return await database.getObjects({slug, _key: 'category'});   
+}
+
+function createAggregationPipeline (query: MutableObject, pagination: Array<MutableObject>) {
+    if (!query) {
+        throw new ValueError('query is required for $match to function');
+    }
+    if (typeof query !== 'object') {
+        throw new TypeError('query must be an object, found ' + typeof query);
+    }
+
+    const pipeline: Array<any> = [
+        { $match: query },
+        {
+          $lookup: {
+            from: "objects",
+            let: { cid: "$cid" },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: ["$parent", "$$cid"] },
+                  _key: "category",
+                },
+              },
+            ],
+            as: "subCategories",
+          },
+        },
+        {
+          $addFields: {
+            subCategories: {
+              $concatArrays: [
+                {
+                  $filter: {
+                    input: "$subCategories",
+                    cond: { $ne: ["$$this.parent", "$cid"] },
+                  },
+                },
+                {
+                  $map: {
+                    input: {
+                      $filter: {
+                        input: "$subCategories",
+                        cond: { $eq: ["$$this.parent", "$cid"] },
+                      },
+                    },
+                    in: "$$this",
+                  },
+                },
+              ],
+            },
+          },
+        },
+        {
+          $match: {
+            parent: { $exists: false },
+          },
+        },
+    ];
+
+    if (pagination && Array.isArray(pagination) && pagination.length) {
+        pagination.forEach(e => pipeline.push(e))    
+    }
+
+    return pipeline;
 }
 
 function applySort (sortingType: string): MutableObject {

@@ -39,8 +39,10 @@ define('client/admin/categories/list', ['client/admin/categories/utils', 'module
 
         $('#category-search-form').on('submit', function (e) {
             e.preventDefault();
-            const formData = $(this).serializeObject();
-            console.log(formData)
+            let formData = $.extend(utilities.getQueryParamsFromUrl(), $(this).serializeObject());
+            let query = utilities.objectToQueryString(formData);
+
+            location.href = '/admin/categories?' + query;
         });
 
         $.each($('canvas[data-category-name]'), function (i, elem) {
