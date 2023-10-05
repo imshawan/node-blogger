@@ -127,7 +127,7 @@ const getCategoryByName = async function getCategoryByName(name: string, perPage
         throw new TypeError('perPage must be a number (int) found ' + typeof perPage);
     }
     if (isNaN(page)) {
-        throw new TypeError('perPage must be a number (int) found ' + typeof page);
+        throw new TypeError('page must be a number (int) found ' + typeof page);
     }
     if (fields && !Array.isArray(fields)) {
         throw new TypeError('fields must be an array, found ' + typeof fields);
