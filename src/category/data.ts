@@ -11,6 +11,9 @@ const categoryFields = [
     "blurb",
     "slug",
     "thumb",
+    "altThumb",
+    "tagsPerPost",
+    "counters"
 ];
 
 const getCategoriesWithData = async function getCategoriesWithData(perPage: number=15, page: number=1, fields: string[]=[], sorting: string='default') {
@@ -113,7 +116,7 @@ const getCategoriesWithData = async function getCategoriesWithData(perPage: numb
 
 const getAllCategories = async function getAllCategories(perPage: number=15, page: number=1, fields: string[]=[]) {
   if (!perPage) {
-    perPage=15;
+      perPage=15;
   }
   if (!page) {
       page = 1;
@@ -185,9 +188,9 @@ const getCategoryByName = async function getCategoryByName(name: string, perPage
 
     const searchKeys = {name: {$regex: new RegExp(name), $options: 'i'}, _key: 'category'};
     const matchOptions = {
-      skip: (page - 1) * perPage,
-      limit: perPage,
-      multi: true
+        skip: (page - 1) * perPage,
+        limit: perPage,
+        multi: true
     };
 
     return await database.getObjects(searchKeys, fields, matchOptions);   

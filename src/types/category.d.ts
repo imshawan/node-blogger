@@ -9,7 +9,6 @@ export interface ICategory {
     slug?: string
     thumb?: string | null | undefined
     altThumb?: string | null | undefined
-    tags?: Array[] | string
     counters?: Counters
     tagsPerPost?: TagsPerPost
     isActive?: boolean
