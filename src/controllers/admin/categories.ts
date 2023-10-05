@@ -24,14 +24,17 @@ categories.get = async function get(req: Request, res: Response, next: NextFunct
         if (Object.keys(ValidSortingTechniquesWithNames).includes(String(sortBy).toUpperCase())) {
             // @ts-ignore
             sortingLabel = ValidSortingTechniquesWithNames[(String(sortBy).toUpperCase())];
-         }
+        }
+        
+        pageData.sorting = {id: sortBy, label: sortingLabel};
+    } else {
+        pageData.sorting = {};
     }
 
     const {perPage, page} = validatePaginationControls(req);
 
     pageData.title = 'Categories';
     pageData.sidebar = sidebar.get('all_categories');
-    pageData.sorting = {id: sortBy, label: sortingLabel};
 
     pageData.categories = await category.data.getCategoriesWithData(perPage, page, [], String(sortBy));
     

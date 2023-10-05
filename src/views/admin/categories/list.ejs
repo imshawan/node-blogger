@@ -20,8 +20,8 @@
      <div class="form-group col-12 col-sm-6">
        <div class="input-group h-100 justify-content-end">
          <div class="input-group-prepend">
-           <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-             aria-haspopup="true" aria-expanded="false"><% if (sorting.id != 'default') { %> <%= sorting.label %> <% } else { %>Sort categories<% } %></button>
+           <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="min-width: 140px;"
+             aria-haspopup="true" aria-expanded="false"><% if (sorting && sorting.id && sorting.id != 'default') { %> <%= sorting.label %> <% } else { %> Sort categories<% } %></button>
            <div class="dropdown-menu" x-placement="top-start"
              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -2px, 0px);">
              <a class="dropdown-item" href="?sortBy=recent">Most recent</a>
