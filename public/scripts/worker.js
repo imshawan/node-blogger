@@ -26,7 +26,8 @@ const CACHE_WHITELIST = [
 ];
 const CACHE_BLACKLIST = [
     "chrome-extension://",
-    "/css/common.css"
+    "/css/common.css",
+    "/api"
 ];
 const CACHE_BLACKLISTED_CONTENT_TYPES = [
     "text/html"
