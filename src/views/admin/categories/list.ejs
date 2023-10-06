@@ -41,27 +41,24 @@
        <div class="list-group">
 
          <% categories.forEach(function(category) { %>
-            <div class="list-group-item list-group-item-action cursor-pointer d-inline-flex"  <% if (category.subCategories && category.subCategories.length) { %> data-has-child="true" <% } %>>
-              <button data-bs-target="#category-<%= category.cid %>" data-bs-toggle="collapse" class="w-100 border-0 bg-transparent text-left d-flex">
+            <div class="list-group-item border-0 justify-content-between list-group-item-action cursor-pointer d-inline-flex bg-transparent" <% if (category.subCategories && category.subCategories.length) { %> data-has-child="true" <% } %>>
+              <button data-bs-target="#category-<%= category.cid %>" data-bs-toggle="collapse" 
+                class="w-90 h-100 border-0 bg-transparent text-left d-flex">
 
-                <% if (category.thumb) { %>
-                  <img src="<%= category.thumb %>" onerror="core.imageOnError(this)" alt="" class="user-img-sm">
-                 
-                <% } else { %>
-                    <canvas height="36" width="36" style="border-radius: 36px;" id="cat-<%= category.cid %>" data-category-name="<%= category.name %>"></canvas>
-                <% } %> 
-
-                <a class="ps-3" href="/admin/categories/<%= category.slug %>">
-                  <h5 class="my-auto"><%= category.name %></h5>
-                </a>
+                  <i class="fa fa-chevron-right me-3 my-auto" aria-hidden="true"></i>
+                  <% if (category.thumb) { %>
+                    <img src="<%= category.thumb %>" onerror="core.imageOnError(this)" alt="" class="user-img-sm my-auto">
+                  
+                  <% } else { %>
+                      <canvas height="36" width="36" style="border-radius: 36px;" id="cat-<%= category.cid %>" data-category-name="<%= category.name %>"></canvas>
+                  <% } %>
+                  <a class="ps-3 my-auto w-100 text-ellipse-2" href="/admin/categories/<%= category.slug %>">
+                    <h5 class="my-auto" style="line-height: normal;"><%= category.name %></h5>
+                  </a>
                 
-                <!-- <% if (category.subCategories && category.subCategories.length) { %> 
-                  <label class="badge badge-info ms-2">
-                  <%= category.subCategories.length %>
-                  </label>
-                <% } %> -->
-
               </button>
+
+              <span class="my-auto badge shadow-sm badge-light me-1">...</span>
              
             </div>
 
@@ -71,21 +68,24 @@
   
                 <% category.subCategories.forEach(function(subCategory) { %>
 
-                  <div class="list-group-item list-group-item-action cursor-pointer d-inline-flex" <% if (subCategory.subCategories && subCategory.subCategories.length) { %> data-has-child="true" <% } %>>
-                    <button data-bs-target="#subCategory-<%= subCategory.cid %>" class="w-100 border-0 bg-transparent text-left d-flex">
+                  <div class="list-group-item justify-content-between list-group-item-action cursor-pointer bg-transparent border-0 d-inline-flex" <% if (subCategory.subCategories && subCategory.subCategories.length) { %> data-has-child="true" <% } %>>
+                    <button data-bs-target="#subCategory-<%= subCategory.cid %>" class="w-90 h-100 border-0 bg-transparent text-left d-flex ">
                      
-                      <% if (subCategory.thumb) { %>
-                        <img src="<%= subCategory.thumb %>" onerror="core.imageOnError(this)" alt="" class="user-img-sm">
-                       
-                      <% } else { %>
-                          <canvas height="36" width="36" style="border-radius: 36px;" id="cat-<%= subCategory.cid %>" data-category-name="<%= subCategory.name %>"></canvas>
-                      <% } %> 
-                      
-                      <a class="ps-3" href="/admin/categories/<%= subCategory.slug %>">
-                        <h5 class="my-auto"><%= subCategory.name %></h5>
-                      </a>
+                        <% if (subCategory.thumb) { %>
+                          <img src="<%= subCategory.thumb %>" onerror="core.imageOnError(this)" alt="" class="user-img-sm my-auto">
+                        
+                        <% } else { %>
+                            <canvas height="36" width="36" style="border-radius: 36px;" id="cat-<%= subCategory.cid %>" data-category-name="<%= subCategory.name %>"></canvas>
+                        <% } %> 
+                        
+                        <a class="ps-3 w-100 text-ellipse-2" href="/admin/categories/<%= subCategory.slug %>">
+                          <h5 class="my-auto" style="line-height: normal;"><%= subCategory.name %></h5>
+                        </a>
 
                     </button>
+
+                    <span class="my-auto badge shadow-sm badge-light me-1">...</span>
+
                   </div>
                 <% }); %>
               

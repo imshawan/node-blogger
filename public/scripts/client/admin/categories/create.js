@@ -12,12 +12,9 @@ define('client/admin/categories/create', [
         events.initialize();
         const data = create.checkLocalStore();
         const form = $('#category-form');
-        form.find('[name="name"]').val(data.name);
-
-        $('#parent-cid-selection').select2({
+        const select2Options = {
             placeholder: 'Select...',
             width: '100%',
-            data: [data.category],
             templateResult: utils.select2TemplateFormatOptions,
             templateSelection: utils.select2TemplateFormatOptions,
             ajax: {
@@ -37,7 +34,16 @@ define('client/admin/categories/create', [
                     };
                 }
             }
-        });
+        }
+        
+        if (data && Object.keys(data).length) {
+            form.find('[name="name"]').val(data.name);
+            if (data.category) {
+                select2Options.data = [data.category];
+            }
+        }
+
+        $('#parent-cid-selection').select2(select2Options);
 
         $('#category-form').off().on('submit', function (e) {
             e.preventDefault();

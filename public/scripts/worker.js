@@ -11,12 +11,11 @@
 */
 
 const URL_PARAMS = new URLSearchParams(self.location.search);
-const DEV_ENV = - URL_PARAMS.get('dev');
+const DEV_ENV = URL_PARAMS.get('dev');
 
 const CACHE_NAME = 'node-blogger-assets';
 const CACHE_WHITELIST = [
     "/css/main.css",
-    "/css/common.css",
     "/css/admin-theme.css",
     "/css/admin.css",
     "https://fonts.googleapis.com/css?family=Lato",
@@ -25,12 +24,15 @@ const CACHE_WHITELIST = [
     "/scripts/modules/main.js",
     "/scripts/modules/utilities.js",
 ];
-const CACHE_BLACKLIST = [];
-const CACHE_BLACKLISTED_CONTENT_TYPES = [];
+const CACHE_BLACKLIST = [
+    "chrome-extension://",
+    "/css/common.css"
+];
+const CACHE_BLACKLISTED_CONTENT_TYPES = [
+    "text/html"
+];
 
 const LOG = (...args) => DEV_ENV && console.info(...args);
-
-const EVENTS = {};
 
 /**
  * 
@@ -42,7 +44,7 @@ const EVENTS = {};
  * It is a good place to pre-cache static assets like HTML, CSS, and JavaScript files that are essential for the 
  * application to run offline.
  */
-EVENTS.install = async function install (event) {
+self.addEventListener('install', function (event) {
     event.waitUntil(
         caches
         .open(CACHE_NAME)
@@ -58,7 +60,7 @@ EVENTS.install = async function install (event) {
             throw err;
         })
     )
-}
+})
 
 /**
  * 
@@ -70,7 +72,7 @@ EVENTS.install = async function install (event) {
  * This event is triggered when the service worker is activated and can be used to clean up any old caches 
  * or perform other maintenance tasks.
  */
-EVENTS.activate = async function activate (event) {
+self.addEventListener('activate', async function (event) {
     LOG('Service Worker activated successfully!');
 
     // Returns array containing strings corresponding to all of the named Cache objects tracked by the CacheStorage 
@@ -79,7 +81,7 @@ EVENTS.activate = async function activate (event) {
     
     await Promise.all(cachesToDelete.map((cacheToDelete) => caches.delete(cacheToDelete)));
     await self.clients.claim();
-}
+});
 
 /**
  * 
@@ -91,10 +93,12 @@ EVENTS.activate = async function activate (event) {
  * This event is triggered whenever a network request is made from within the web page. We can intercept these requests 
  * and decide whether to serve them from the cache (if available) or make a network request.
  */
-EVENTS.fetch = async function fetch (event) {
+self.addEventListener('fetch', function (event) {
+    if (!event || !event.respondWith) return;
+
     let flag = 0;
 
-    if (event.request.method !== 'GET') {
+    if (event.request && event.request.method !== 'GET') {
         flag++;
     }
     
@@ -123,21 +127,22 @@ EVENTS.fetch = async function fetch (event) {
                         if (flag) {
                             return response;
                         }
+                        const clone = response.clone();
+
                         caches.open(CACHE_NAME)
                             .then((cache) => {
-                                cache.put(event.request, response.clone());
-                            });
+                                cache.put(event.request, clone);
+                            }).catch(er => {})
                     }
 
                     return response;
                 })
                 .catch(function (error) {
-                    console.error('Failed to fetch resource');
-                    throw error;
+                    
                 });
         })
     )
-}
+});
 
 /**
  * 
@@ -148,12 +153,6 @@ EVENTS.fetch = async function fetch (event) {
  * 'message' events are commonly used for scenarios like cross-origin communication, communication between a web page 
  * and its iframes, sending and receiving data in a service worker, or even implementing messaging systems for web applications.
  */
-EVENTS.message = async function message (event) {
+self.addEventListener('message', function (event) {
     LOG('SW message: ', event.data)
-}
-
-// Attach all the required dynamically by accessing the keys
-Object.keys(EVENTS).forEach(ev => {
-    LOG('Attaching SW Events');
-    self.addEventListener(ev, EVENTS[ev]);
 });

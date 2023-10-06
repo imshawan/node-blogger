@@ -207,9 +207,9 @@
             return console.warn('Aborting serviceWorker registeration (Not found)');
         }
     
-        navigator.serviceWorker.register('/scripts/worker.js')
-            .then(() => {
-                console.info('ServiceWorker registration successfull!');
+        navigator.serviceWorker.register('/worker.js')
+            .then((registration) => {
+                console.info('ServiceWorker registration successfull with scope of: ' + registration.scope);
             })
             .catch(err => {
                 console.error('ServiceWorker registration failed!', err);

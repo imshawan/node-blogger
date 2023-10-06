@@ -29,7 +29,6 @@ define('client/admin/categories/list', ['client/admin/categories/utils', 'module
         };
 
         $('.list-group-item').on('click', function () {
-            console.log($(this).data('has-child'))
             if (!$(this).data('has-child')) return;
 
             $('.fa', this)

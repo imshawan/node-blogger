@@ -398,7 +398,15 @@
 .bg-gray-300 {
     background-color: #e2e8f0;
 }
-
+.bg-transparent {
+    background-color: transparent!important;
+}
+.w-90 {
+    width: 90%!important;
+}
+.w-95 {
+    width: 95%!important;
+}
 .font-weight-normal {
     font-weight: 400;
 }
@@ -406,7 +414,42 @@
 .text-normal {
     text-transform: none;
 }
-
+.text-ellipse {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+.text-ellipse-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    word-break: break-all;
+    text-overflow: ellipsis;
+}
+.text-ellipse-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    word-break: break-all;
+    text-overflow: ellipsis;
+}
+.text-ellipse-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    word-break: break-all;
+    text-overflow: ellipsis;
+}
 .user-img-sm {
     width: 36px;
     height: 36px;
