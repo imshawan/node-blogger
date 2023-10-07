@@ -72,11 +72,13 @@ export class MimeTypeResolver {
         }
     }
 
-    public getFileExtensionByMimeType(mimeType: string): string | undefined {
+    public getFileExtensionByMimeType(mimeType: string): string {
+      if (!mimeType) return '.bin';
       return this.mimeTypeMap[mimeType.toLowerCase()];
     }
 
-    public getMimeTypeByExtension(extension: string): string | undefined {
+    public getMimeTypeByExtension(extension: string=''): string {
+        if (!extension) return 'application/octet-stream';
         return this.extensionMap[extension.toLowerCase()];
     }    
   }

@@ -6,6 +6,7 @@ export * from './response';
 export * from './network';
 export * from './paginate';
 export * from './errors';
+export * from './webmanifest';
 
 export const validateConfiguration = function validateConfiguration (configuration: any) {
     if (!Object.keys(configuration).length) {

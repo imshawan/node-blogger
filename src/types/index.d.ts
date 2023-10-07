@@ -6,6 +6,7 @@ export * from './meta';
 export * from './category';
 export * from './user';
 export * from './test';
+export * from './webmanifest';
 
 export interface MutableObject { [x: string]: any; }
 export interface ISidebar {

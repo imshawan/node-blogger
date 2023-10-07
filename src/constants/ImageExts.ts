@@ -11,4 +11,24 @@ enum AllowedImageExtensions {
     tiff = 'image/tiff',
 }
 
-export {AllowedImageExtensions};
+enum IconDensity {
+    sdpi = 0.75,
+    mdpi = 1,
+    hdpi = 1.5,
+    xdpi = 2,
+    xxhdpi = 3,
+    xxxhdpi = 4,
+    xxxxhdpi = 10,
+}
+
+enum IconDensityWithSizes {
+    sdpi = 36,
+    mdpi = 48,
+    hdpi = 72,
+    xdpi = 96,
+    xxhdpi = 144,
+    xxxhdpi = 192,
+    xxxxhdpi = 512
+}
+
+export {AllowedImageExtensions, IconDensity, IconDensityWithSizes};
