@@ -11235,7 +11235,7 @@
     color: #ffffff; }
   
   .btn-inverse-dark {
-    background-color: rgba(62, 75, 91, 0.2);
+    background-color: rgba(62, 75, 91, 0.2)!important;
     background-image: none;
     border-color: rgba(62, 75, 91, 0); }
     .btn-inverse-dark:not(.btn-inverse-light) {
@@ -11253,7 +11253,7 @@
     .btn-inverse-dark.active, .btn-inverse-dark:active,
     .show > .btn-inverse-dark.dropdown-toggle {
       color: #ffffff;
-      background-color: #3e4b5b;
+      background-color: #3e4b5b!important;
       border-color: #3e4b5b; }
   
   .btn-dark:not(.btn-light) {
