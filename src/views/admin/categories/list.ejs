@@ -65,7 +65,7 @@
                 <ul class="dropdown-menu shadow-sm">
                   <li><a class="dropdown-item" target="_blank" href="/categories/<%= category.slug %>">View</a></li>
                   <li><a class="dropdown-item" href="/admin/categories/<%= category.slug %>">Edit</a></li>
-                  <li><a class="dropdown-item" href="#">Delete</a></li>
+                  <li><a class="dropdown-item" data-cid="<%= category.cid %>" data-name="<%= category.name %>" id="delete-category">Delete</a></li>
                   <!-- <li><hr class="dropdown-divider"></li> -->
                   <!-- <li><a class="dropdown-item" href="#">Separated link</a></li> -->
                 </ul>
@@ -103,7 +103,7 @@
                       <ul class="dropdown-menu shadow-sm">
                         <li><a class="dropdown-item" target="_blank" href="/categories/<%= subCategory.slug %>">View</a></li>
                         <li><a class="dropdown-item" href="/admin/categories/<%= subCategory.slug %>">Edit</a></li>
-                        <li><a class="dropdown-item" href="#">Delete</a></li>
+                        <li><a class="dropdown-item" data-cid="<%= subCategory.cid %>" data-name="<%= subCategory.name %>" id="delete-category">Delete</a></li>
                       </ul>
                     </div>
 

@@ -102,6 +102,30 @@ define('client/admin/categories/list', ['client/admin/categories/utils', 'module
                     core.alertError(err.message);
                 });
         });
+
+        $('.dropdown-menu').on('click', '#delete-category', function () {
+            const category = $(this).data();
+            var dialog = bootbox.dialog({
+                title: `Are you sure to delete category <span class="font-italic">"${category.name}"</span>`,
+                message: utils.getDeletionMessage(category),
+                buttons: {
+                    cancel: {
+                        label: "Cancel",
+                        className: 'btn-danger',
+                        callback: function(){
+                            dialog.hide('modal');
+                        }
+                    },
+                    ok: {
+                        label: "Ok",
+                        className: 'btn-info',
+                        callback: function(){
+                            utils.deleteCategory(category.cid);
+                        }
+                    }
+                },
+            });
+        });
     }
 
     return list;

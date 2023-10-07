@@ -14,7 +14,6 @@ define('client/admin/categories/edit', [
     }
     
     edit.attachEvents = function (category, tags) {
-        const message = `This action will permanently remove all its associated content, posts, subcategories, and tags from the platform.`;
         const parentCategorySelector = $("#parent-cid-selection");
         const select2Options = {
             placeholder: 'Select...',
@@ -75,11 +74,7 @@ define('client/admin/categories/edit', [
         $('#delete-category').on('click', function () {
             var dialog = bootbox.dialog({
                 title: `Are you sure to delete category <span class="font-italic">"${category.name}"</span>`,
-                message: `
-                    <p>${message}</p>
-                    <p>${edit.getDeletionPointers(category)}</p>
-                    <p><span class="text-danger font-weight-semibold">Warning!</span> This process cannot be undone. Please ensure that you have carefully reviewed the consequences before proceeding with this action.</p>
-                    `,
+                message: utils.getDeletionMessage(category),
                 buttons: {
                     cancel: {
                         label: "Cancel",
@@ -92,7 +87,7 @@ define('client/admin/categories/edit', [
                         label: "Ok",
                         className: 'btn-info',
                         callback: function(){
-                            edit.deleteCategory(category.cid);
+                            utils.deleteCategory(category.cid);
                         }
                     }
                 },
@@ -132,17 +127,6 @@ define('client/admin/categories/edit', [
         });
     }
 
-    edit.deleteCategory = function (id) {
-        http.DELETE('/api/v1/admin/categories/' + id).then(res => {
-            const callback = () => location.href = [location.origin, 'admin', 'categories'].join('/');
-
-            core.alertSuccess('Category deleted!', callback);
-
-        }).catch(err => {
-            core.alertError(err.message);
-        });
-    }
-
     edit.createTag = function (categoryId, formData) {
         return new Promise((resolve, reject) => {
             http.POST(`/api/v1/admin/categories/${categoryId}/tags`, formData).then(res => resolve(res)).catch(err => {
@@ -155,17 +139,6 @@ define('client/admin/categories/edit', [
         http.DELETE(`/api/v1/admin/categories/${categoryId}/tags/${tagId}`).then(res => {}).catch(err => {
             core.alertError(err.message);
         });
-    }
-
-    edit.getDeletionPointers = function (category) {
-        let {name} = category;
-        name = `<span class="font-monospace font-weight-semibold">${name}</span>`;
-        return `
-            <ul>
-                <li>All content, including posts, sub-categories and media, within ${name} will be deleted and cannot be recovered. This would impact the discoverability of content.</li>
-                <li>Users who have engaged with the category will lose access to their contributions, and ongoing discussions will be terminated.</li>
-            </ul>
-        `
     }
 
     return edit;
