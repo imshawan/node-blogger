@@ -7,9 +7,6 @@ import { WebManifest } from '@src/helpers';
 const router = Router();
 
 router.use('/worker.js', express.static(path.join(paths.assetsDir, 'scripts', 'worker.js')));
-router.get('/manifest.json', async function (req: Request, res: Response) {
-    const manifest = new WebManifest().get();
-    return res.json(manifest)
-});
+router.get('/manifest.json', controllers.web.manifest);
 
 export default router;

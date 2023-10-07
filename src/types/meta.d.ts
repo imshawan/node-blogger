@@ -1,9 +1,11 @@
 export interface IMeta {
   siteName: string
+  siteShortName: string
   description: string
   session: Session
   cookie: Cookie
   cors: CorsOptions
+  manifest: Manifest
   xPoweredByHeaders: string
   maximumRequestBodySize: string
   maxPasswordLength: number
@@ -40,4 +42,9 @@ export interface CorsOptions {
   allowedHeaders: string | string[] | undefined
   whitelistOrigins?: string | undefined
   credentials?: boolean | undefined
+}
+
+export interface Manifest {
+  backgroundColor: string
+  themeColor: string
 }

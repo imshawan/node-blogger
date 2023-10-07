@@ -1,5 +1,6 @@
 {
     "siteName": "NodeBlogger",
+    "siteShortName": "NodeBlogger",
     "description": "A simple open-source blogging application powered by MongoDB & NodeJS",
     "session": {
         "name": "session.sid",
@@ -13,6 +14,10 @@
         "allowedHeaders": "Origin, X-Requested-With, Cookie, Content-Type, Accept, X-Access-Token, Authorization",
         "whitelistOrigins": "*",
         "credentials": true
+    },
+    "manifest": {
+        "themeColor": "#ffffff",
+        "backgroundColor": "#ffffff"
     },
     "xPoweredByHeaders": "NodeBlogger",
     "maximumRequestBodySize": "50mb",
