@@ -6,6 +6,7 @@ export interface IMeta {
   cookie: Cookie
   cors: CorsOptions
   manifest: Manifest
+  robots: Robots
   xPoweredByHeaders: string
   maximumRequestBodySize: string
   maxPasswordLength: number
@@ -47,4 +48,10 @@ export interface CorsOptions {
 export interface Manifest {
   backgroundColor: string
   themeColor: string
+}
+
+export interface Robots {
+    allowed: Array<string>
+    disallowed: Array<string>
+    userAgents: Array<string>
 }
