@@ -3,6 +3,10 @@ import { WebManifest } from '@src/helpers';
 import { meta } from '@src/meta';
 import { IManifestData } from '@src/types';
 import nconf from 'nconf';
+import { createGzip } from 'zlib';
+import { SitemapStream, streamToPromise } from 'sitemap';
+
+var sitemapCache: Buffer;
 
 const robots = async function (req: Request, res: Response) {
     const userAgents: Array<string> = meta.configurationStore?.robots?.userAgents || ['*'];
@@ -20,7 +24,32 @@ const robots = async function (req: Request, res: Response) {
     res.status(200).send(robotsTxt);
 }
 
-const sitemap = async function (req: Request, res: Response) {}
+const sitemap = async function (req: Request, res: Response) {
+    const urls = ['/', '/users', '/categories/', '/posts', '/about', '/contact',];
+    res.header('Content-Type', 'application/xml');
+    res.header('Content-Encoding', 'gzip');
+
+    if (sitemapCache) {
+        return res.status(200).send(sitemapCache);
+    }
+
+    try {
+        const smStream = new SitemapStream({ hostname: nconf.get('host') });
+        const pipeline = smStream.pipe(createGzip());
+
+        urls.forEach((url, i) => smStream.write({ url,  changefreq: 'monthly', priority: Number((i + 1)/10) }))
+    
+        // cache the response
+        streamToPromise(pipeline).then(map => sitemapCache = map).catch(e => {});
+        smStream.end()
+
+        // stream write the response
+        pipeline.pipe(res).on('error', (e) => {throw new Error(e.message)});
+      } catch (e) {
+        console.error(e)
+        res.status(500).end()
+      }
+}
 
 const manifest = async function (req: Request, res: Response) {
     const manifestInfo: IManifestData = {

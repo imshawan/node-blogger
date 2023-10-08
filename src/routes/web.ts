@@ -9,5 +9,6 @@ const router = Router();
 router.use('/worker.js', express.static(path.join(paths.assetsDir, 'scripts', 'worker.js')));
 router.get('/manifest.json', controllers.web.manifest);
 router.get('/robots.txt', controllers.web.robots);
+router.get('/sitemap.xml', controllers.web.sitemap);
 
 export default router;

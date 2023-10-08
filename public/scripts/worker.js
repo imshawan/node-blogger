@@ -31,9 +31,8 @@ const CACHE_BLACKLIST = [
     "/scripts/"
 ];
 const CACHE_BLACKLISTED_CONTENT_TYPES = [
-    "text/html",
-    "application/json",
-    "text/plain"
+    "text/",
+    "application/",
 ];
 
 const LOG = (...args) => DEV_ENV && console.info(...args);
