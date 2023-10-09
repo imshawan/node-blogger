@@ -9,6 +9,8 @@ export * from './test';
 export * from './webmanifest';
 
 export interface MutableObject { [x: string]: any; }
+
+export type ValueOf<T> = T[keyof T];
 export interface ISidebar {
     url: string
     icon: string
