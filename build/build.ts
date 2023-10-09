@@ -42,7 +42,7 @@ module.exports = async function build () {
 async function buildClientSideFiles(): Promise<void> {
     const outputDir = './dist/public/';
     await copy('./public/css', outputDir + 'css');
-    await copy('./public/img', outputDir + 'img');
+    await copy('./public/images', outputDir + 'images');
 
     await minifyJavaScripts();
 }

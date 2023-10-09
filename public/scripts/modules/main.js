@@ -225,7 +225,7 @@
     }
     
     core.imageOnError = function imageOnError(element) {
-        const defaultOnErrorImage = '/img/default-image.jpeg';
+        const defaultOnErrorImage = '/images/default-image.jpeg';
         element = $(element);
         if (element.data('onerror') && element.data('onerror').length) {
             element.attr('src', element.data('onerror'));
