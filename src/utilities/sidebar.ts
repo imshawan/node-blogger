@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { ISidebar } from "@src/types";
+import { ISidebar, ISidebarMenu } from "@src/types";
 
 export class SideBar {
     sidebar: Array<ISidebar>;
@@ -60,25 +60,33 @@ export class SideBar {
      * @description Group sidebar data by menu
      */
     private groupDataByMenuId(data: Array<ISidebar>): { [key: number]: Array<ISidebar> } {
-        const groupedData: { [key: string]: ISidebar[] } = {};
+        const groupedData: { [key: string]: any } = {};
         const generateElementId = this.generateElementId;
 
         function processSidebar(sidebar: ISidebar) {
             const menuTitle = sidebar.menu.title;
 
-            if (!groupedData[menuTitle]) {
-                groupedData[menuTitle] = [];
+            if (!groupedData[String(menuTitle)]) {
+                groupedData[String(menuTitle)] = {
+                    title: sidebar.menu.title,
+                    icon: sidebar.menu.icon,
+                    data: []
+                };
             }
 
             sidebar.elementid = generateElementId(sidebar.menu.title);
 
             if (sidebar.child && sidebar.child.length > 0) {
-                sidebar.child.forEach((child) => {
+                sidebar.child.forEach((child: ISidebar) => {
                     if (child.menu.title !== menuTitle) {
-                        if (!groupedData[child.menu.title]) {
-                            groupedData[child.menu.title] = [];
+                        if (!groupedData[String(child.menu.title)]) {
+                            groupedData[String(child.menu.title)] = {
+                                title: sidebar.menu.title,
+                                icon: child.menu.icon,
+                                data: []
+                            };
                         }
-                        groupedData[child.menu.title].push(child);
+                        groupedData[String(child.menu.title)].data?.push(child);
                     }
                     if (child.classes.includes('active') && !sidebar.classes.includes('active')) {
                         sidebar.classes = [sidebar.classes, 'active'].join(' ');
@@ -89,7 +97,10 @@ export class SideBar {
                 sidebar.child = [];
             }
 
-            groupedData[menuTitle].push(sidebar);
+            groupedData[String(menuTitle)].data?.push(sidebar);
+            if (!groupedData[String(menuTitle)].classes) {
+                groupedData[String(menuTitle)].classes = sidebar.classes.includes('active') && 'show';
+            }
         }
 
         data.forEach(processSidebar);

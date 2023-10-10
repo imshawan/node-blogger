@@ -23,8 +23,10 @@ export interface ISidebar {
 }
 
 export interface ISidebarMenu {
+    icon?: string
+    data?: Array<ISidebar>
     title: string
-    id: any
+    id?: any
 }
 
 export interface MulterFilesArray extends Express.Multer.File {

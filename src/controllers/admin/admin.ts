@@ -10,8 +10,8 @@ admin.get = async function get(req: Request, res: Response, next: NextFunction) 
     const sidebar = new SideBar(sidebarData);
     const pageData: MutableObject = {};
 
-    pageData.title = 'Admin panel';
-    pageData.sidebar = sidebar.get('index');
+    pageData.title = 'Admin';
+    pageData.sidebar = {...sidebar.get('index'), ...{isDashboard: true}};
     res.render('index', pageData);
     
 }

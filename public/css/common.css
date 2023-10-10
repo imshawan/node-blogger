@@ -407,10 +407,29 @@
 .w-95 {
     width: 95%!important;
 }
-.font-weight-normal {
-    font-weight: 400;
-}
-
+.text-lowercase {
+    text-transform: lowercase !important; }
+  
+  .text-uppercase {
+    text-transform: uppercase !important; }
+  
+  .text-capitalize {
+    text-transform: capitalize !important; }
+  
+  .font-weight-light {
+    font-weight: 300 !important; }
+  
+  .font-weight-lighter {
+    font-weight: lighter !important; }
+  
+  .font-weight-normal {
+    font-weight: 400 !important; }
+  
+  .font-weight-bold {
+    font-weight: 700 !important; }
+  
+  .font-weight-bolder {
+    font-weight: bolder !important; }
 .text-normal {
     text-transform: none;
 }
@@ -450,11 +469,51 @@
     word-break: break-all;
     text-overflow: ellipsis;
 }
+.text-left {
+    text-align: left !important; }
+  
+  .text-right {
+    text-align: right !important; }
+  
+  .text-center {
+    text-align: center !important; }
+.img-lg {
+    width: 92px;
+    height: 92px; }
+  
+  .img-sm {
+    width: 43px;
+    height: 43px; }
+  
+  .img-xs {
+    width: 37px;
+    height: 37px; }
+  
+  .img-ss {
+    width: 26px;
+    height: 26px; }
+
+.icon-lg {
+    font-size: 3.438rem; }
+    
+    .icon-md {
+    font-size: 1.875rem; }
+    
+    .icon-sm {
+    font-size: 1rem; }
+  
 .user-img-sm {
     width: 36px;
     height: 36px;
     border-radius: 100%;
 }
+.img-thumbnail {
+    padding: 0.25rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    max-width: 100%;
+    height: auto; }
 .select2-search__field {
     min-height: 40px!important;
     padding-top: 0.7rem!important;

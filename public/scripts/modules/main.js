@@ -98,6 +98,10 @@
                     console.log(errMessage);
                 });
         });
+
+        $('body').on('click', '.toggle-sidebar-btn', function () {
+            $('body').toggleClass('toggle-sidebar');
+        });
     }
 
     core.generateAvatarFromName = function generateAvatarFromName(canvasId, name='Unknown name') {

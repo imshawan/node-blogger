@@ -1,4 +1,4 @@
-<table class="table table-hover table-striped">
+<table class="table table-striped">
   <thead>
     <tr>
       <th class="font-weight-bolder">
@@ -33,13 +33,13 @@
                   <% Object.keys(element.roles).forEach(role => { %>
 
                     <% if (Boolean(element.roles[role])) { %>
-                      <span class="badge badge-info badge-<%= role %> py-1"><%= role %></span>
+                      <span class="badge bg-primary badge-<%= role %> py-1"><%= role %></span>
                     <% } %>
 
                   <% }) %>
 
               <% } else { %>
-                <span class="badge badge-info badge-user py-1">user</span>
+                <span class="badge bg-primary badge-user py-1">user</span>
               <% } %>
 
             </td>

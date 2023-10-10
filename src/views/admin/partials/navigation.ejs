@@ -1,86 +1,164 @@
-<nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-    <div class="navbar-brand-wrapper d-none d-md-flex align-items-center">
-        <a class="navbar-brand brand-logo" href="/">
-            <img src="/images/logo.svg" alt="logo" onerror="this.onerror=null;this.src='/images/default-image.jpeg';" class="logo-dark" />
-        </a>
-        <a class="navbar-brand brand-logo-mini" href="/"><img src="/images/logo-mini.svg" onerror="this.onerror=null;this.src='/images/default-image.jpeg';" alt="logo" /></a>
-    </div>
-    <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
-        <h5 class="mb-0 font-weight-medium d-none d-lg-flex">NodeBlogger Admin</h5>
-        <ul class="navbar-nav navbar-nav-right ml-auto">
-            <form class="search-form d-block" action="#">
-                <i class="icon-magnifier"></i>
-                <input type="search" class="form-control" placeholder="Search Here" title="Search here">
-            </form>
-            <li class="nav-item dropdown">
-                <a class="nav-link count-indicator message-dropdown" id="messageDropdown" href="#"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="icon-bell"></i>
-                    <span class="count">7</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
-                    aria-labelledby="messageDropdown">
-                    <a class="dropdown-item py-3">
-                        <p class="mb-0 font-weight-medium float-left">You have 7 unread mails </p>
-                        <span class="badge badge-pill badge-primary float-right">View all</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <img src="/images/faces/face10.jpg" alt="image" onerror="this.onerror=null;this.src='/images/default-image.jpeg';" class="img-sm profile-pic">
-                        </div>
-                        <div class="preview-item-content flex-grow py-2">
-                            <p class="preview-subject ellipsis font-weight-medium text-dark">Marian Garner </p>
-                            <p class="font-weight-light small-text"> The meeting is cancelled </p>
-                        </div>
-                    </a>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <img src="/images/faces/face12.jpg" alt="image" onerror="this.onerror=null;this.src='/images/default-image.jpeg';" class="img-sm profile-pic">
-                        </div>
-                        <div class="preview-item-content flex-grow py-2">
-                            <p class="preview-subject ellipsis font-weight-medium text-dark">David Grey </p>
-                            <p class="font-weight-light small-text"> The meeting is cancelled </p>
-                        </div>
-                    </a>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <img src="/images/faces/face1.jpg" alt="image" onerror="this.onerror=null;this.src='/images/default-image.jpeg';" class="img-sm profile-pic">
-                        </div>
-                        <div class="preview-item-content flex-grow py-2">
-                            <p class="preview-subject ellipsis font-weight-medium text-dark">Travis Jenkins </p>
-                            <p class="font-weight-light small-text"> The meeting is cancelled </p>
-                        </div>
-                    </a>
-                </div>
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/" class="logo d-flex align-items-center">
+        <img src="assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block">Node Blogger</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center me-2">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon " href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number">4</span>
+          </a><!-- End Notification Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">
+              You have 4 new notifications
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
             </li>
 
-            <li class="nav-item dropdown d-none d-inline-flex user-dropdown">
-                <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <img class="img-xs rounded-circle ms-2" width="100px" src="<%= user.picture %>" onerror="this.onerror=null;this.src='/images/default-image.jpeg';" alt="Profile image"> 
-                    <span class="font-weight-normal d-none d-md-block"> <%- user.fullname || user.username %> </span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-                    <div class="dropdown-header text-center">
-                        <img class="img-md rounded-circle" src="<%= user.picture %>" onerror="this.onerror=null;this.src='/images/default-image.jpeg';" alt="Profile image">
-                        <p class="mb-1 mt-3"><%- user.fullname || user.username %></p>
-                        <p class="font-weight-light text-muted mb-0"><%- user.email %></p>
-                    </div>
-                    <a class="dropdown-item" href="/users/<%- user.username %>"><i class="dropdown-item-icon icon-user text-primary">
-                        </i> My Profile <span class="badge badge-pill badge-danger">1</span>
-                    </a>
-                    <a class="dropdown-item"><i class="dropdown-item-icon icon-speech text-primary"></i> Messages</a>
-                    <a class="dropdown-item"><i class="dropdown-item-icon icon-energy text-primary"></i> Activity</a>
-                    <form id="signout-form" class="dropdown-item">
-                        <button type="submit" class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i>Sign Out</button>
-                    </form>
-                </div>
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <h4>Lorem Ipsum</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>30 min. ago</p>
+              </div>
             </li>
-        </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-            data-toggle="offcanvas">
-            <span class="icon-menu"></span>
-        </button>
-    </div>
-</nav>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-x-circle text-danger"></i>
+              <div>
+                <h4>Atque rerum nesciunt</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>1 hr. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-check-circle text-success"></i>
+              <div>
+                <h4>Sit rerum fuga</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>2 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-info-circle text-primary"></i>
+              <div>
+                <h4>Dicta reprehenderit</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>4 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li class="dropdown-footer">
+              <a href="#">Show all notifications</a>
+            </li>
+
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="<%= user.picture %>" onerror="core.imageOnError(this)" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2"><%= user.fullname || user.username %></span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <img src="<%= user.picture %>" onerror="core.imageOnError(this)" alt="Profile" class="img-lg rounded-circle">
+            </li>
+            <li class="dropdown-header">
+              <h6><%= user.fullname || user.username %></h6>
+              <span><%= user.email %></span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/users/<%- user.username %>">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/users/<%- user.username %>/edit">
+                <i class="bi bi-gear"></i>
+                <span>Account Settings</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>Need Help?</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <form class="dropdown-item d-flex align-items-center cursor-pointer">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </form>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header>
