@@ -25,6 +25,12 @@ a:hover {
 h1,h2,h3,h4,h5,h6 {
   font-family: "Nunito", sans-serif;
 }
+h1,.h1 {font-size: 2.19rem;}
+h2,.h2 {font-size: 1.88rem;}
+h3,.h3 {font-size: 1.56rem;}
+h4,.h4 {font-size: 1.13rem;}
+h5,.h5 {font-size: 1rem;}
+h6,.h6 {font-size: .9375rem;}
 
 /*--------------------------------------------------------------
 # Main
@@ -2227,7 +2233,6 @@ input[type="button"].btn-block {
     .btn-inverse-dark:not(.btn-inverse-light) {
       color: #3e4b5b; }
     .btn-inverse-dark:hover {
-      color: #ffffff;
       background-color: #3e4b5b;
       border-color: #3e4b5b; }
     .btn-inverse-dark.focus, .btn-inverse-dark:focus {
@@ -2238,7 +2243,7 @@ input[type="button"].btn-block {
       background-color: transparent; }
     .btn-inverse-dark.active, .btn-inverse-dark:active,
     .show > .btn-inverse-dark.dropdown-toggle {
-      color: #ffffff;
+      color: #ffffff!important;
       background-color: #3e4b5b!important;
       border-color: #3e4b5b; }
   
@@ -2253,6 +2258,25 @@ input[type="button"].btn-block {
   .btn-outline-dark:hover, .btn-outline-dark:focus, .btn-outline-dark:active {
     background: #3e4b5b;
     color: #ffffff; }
+
+  .close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5; }
+    .close:hover {
+      color: #000;
+      text-decoration: none; }
+    .close:not(:disabled):not(.disabled):hover, .close:not(:disabled):not(.disabled):focus {
+      opacity: .75; }
+  
+  button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0; }
 
     /* ---------------------------------- */
 

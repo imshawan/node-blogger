@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import category from "@src/category";
-import { ICategoryTag, MutableObject } from "@src/types";
+import { ICategoryTag, MutableObject, ICategory } from "@src/types";
 import { SideBar } from "@src/utilities";
 import {data as sidebarData} from "./sidebarconfig";
 import { database } from "@src/database";
@@ -52,7 +52,14 @@ categories.getBySlug = async function get(req: Request, res: Response, next: Nex
     const sidebar = new SideBar(sidebarData);
     const {cid, slug} = req.params;
 
-    const categoryData = await category.data.getCategoryBySlug([cid, slug].join('/'));
+    let categoryData: ICategory = {};
+
+    if (cid && slug) {
+        categoryData = await category.data.getCategoryBySlug([cid, slug].join('/'));
+    } else if (cid) {
+        categoryData = await category.data.getCategoryByCid(cid);
+    }
+
     if (!categoryData) {
         throw new Error('No such category was found!')
     }
@@ -62,7 +69,7 @@ categories.getBySlug = async function get(req: Request, res: Response, next: Nex
         categoryData.parent = await category.data.getCategoryByCid(categoryData.parent, ['cid', 'name', 'thumb']);
     }
 
-    pageData.title = 'Categories';
+    pageData.title = categoryData.name;
     pageData.sidebar = sidebar.get('all_categories');
 
     pageData.category = categoryData;

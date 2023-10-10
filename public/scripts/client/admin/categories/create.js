@@ -13,7 +13,7 @@ define('client/admin/categories/create', [
         const data = create.checkLocalStore();
         const form = $('#category-form');
         const select2Options = {
-            placeholder: 'Select...',
+            placeholder: 'Select parent category (optional)',
             width: '100%',
             templateResult: utils.select2TemplateFormatOptions,
             templateSelection: utils.select2TemplateFormatOptions,
@@ -38,7 +38,7 @@ define('client/admin/categories/create', [
         
         if (data && Object.keys(data).length) {
             form.find('[name="name"]').val(data.name);
-            if (data.category) {
+            if (data.category && !Array.isArray(data.category)) {
                 select2Options.data = [data.category];
             }
         }
