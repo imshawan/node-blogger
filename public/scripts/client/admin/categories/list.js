@@ -111,14 +111,14 @@ define('client/admin/categories/list', ['client/admin/categories/utils', 'module
                 buttons: {
                     cancel: {
                         label: "Cancel",
-                        className: 'btn-danger',
+                        className: 'btn-secondary',
                         callback: function(){
                             dialog.hide('modal');
                         }
                     },
                     ok: {
-                        label: "Ok",
-                        className: 'btn-info',
+                        label: "Delete",
+                        className: 'btn-danger',
                         callback: function(){
                             utils.deleteCategory(category.cid);
                         }

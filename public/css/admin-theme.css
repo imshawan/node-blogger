@@ -1577,18 +1577,17 @@ fieldset:disabled a.btn {
 
 .btn-secondary {
   color: #212529;
-  background-color: #d8d8d8;
-  border-color: #d8d8d8; }
+  background-color: #0d6efd26;
+  border-color: var(--bs-primary); }
   .btn-secondary:hover {
     color: #212529;
-    background-color: #c5c5c5;
-    border-color: #bfbfbf; }
+  background-color: #0d6efd15; border-color: var(--bs-primary); }
   .btn-secondary:focus, .btn-secondary.focus {
     color: #212529;
-    background-color: #c5c5c5;
-    border-color: #bfbfbf;
-    -webkit-box-shadow: 0 0 0 0.2rem rgba(189, 189, 190, 0.5);
-    box-shadow: 0 0 0 0.2rem rgba(189, 189, 190, 0.5); }
+    background-color: #0d6efd50;
+    border-color: var(--bs-primary);
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.5); }
   .btn-secondary.disabled, .btn-secondary:disabled {
     color: #212529;
     background-color: #d8d8d8;
@@ -1596,12 +1595,12 @@ fieldset:disabled a.btn {
   .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
   .show > .btn-secondary.dropdown-toggle {
     color: #212529;
-    background-color: #bfbfbf;
-    border-color: #b8b8b8; }
+    background-color: #0d6efd50;
+    border-color: var(--bs-primary); }
     .btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
     .show > .btn-secondary.dropdown-toggle:focus {
-      -webkit-box-shadow: 0 0 0 0.2rem rgba(189, 189, 190, 0.5);
-      box-shadow: 0 0 0 0.2rem rgba(189, 189, 190, 0.5); }
+      -webkit-box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.5);
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.5); }
 
 .btn-success {
   color: #fff;
@@ -1791,27 +1790,27 @@ fieldset:disabled a.btn {
       box-shadow: 0 0 0 0.2rem rgba(27, 219, 224, 0.5); }
 
 .btn-outline-secondary {
-  color: #d8d8d8;
-  border-color: #d8d8d8; }
+  color: #000;
+  border-color: var(--bs-primary); }
   .btn-outline-secondary:hover {
     color: #212529;
-    background-color: #d8d8d8;
-    border-color: #d8d8d8; }
+    background-color: #0d6efd50;
+    border-color: var(--bs-primary); }
   .btn-outline-secondary:focus, .btn-outline-secondary.focus {
-    -webkit-box-shadow: 0 0 0 0.2rem rgba(216, 216, 216, 0.5);
-    box-shadow: 0 0 0 0.2rem rgba(216, 216, 216, 0.5); }
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.5); }
   .btn-outline-secondary.disabled, .btn-outline-secondary:disabled {
     color: #d8d8d8;
     background-color: transparent; }
   .btn-outline-secondary:not(:disabled):not(.disabled):active, .btn-outline-secondary:not(:disabled):not(.disabled).active,
   .show > .btn-outline-secondary.dropdown-toggle {
-    color: #212529;
-    background-color: #d8d8d8;
-    border-color: #d8d8d8; }
+    color: #000;
+    background-color: #0d6efd50;
+    border-color: var(--bs-primary); }
     .btn-outline-secondary:not(:disabled):not(.disabled):active:focus, .btn-outline-secondary:not(:disabled):not(.disabled).active:focus,
     .show > .btn-outline-secondary.dropdown-toggle:focus {
-      -webkit-box-shadow: 0 0 0 0.2rem rgba(216, 216, 216, 0.5);
-      box-shadow: 0 0 0 0.2rem rgba(216, 216, 216, 0.5); }
+      -webkit-box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.5);
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.5); }
 
 .btn-outline-success {
   color: #38ce3c;
@@ -2043,18 +2042,6 @@ input[type="button"].btn-block {
       color: #ffffff;
       background-color: #d8d8d8;
       border-color: #d8d8d8; }
-  
-  .btn-secondary:not(.btn-light) {
-    color: #ffffff; }
-    .btn-secondary:not(.btn-light):hover, .btn-secondary:not(.btn-light):focus, .btn-secondary:not(.btn-light):active {
-      color: #ffffff; }
-    .btn-secondary:not(.btn-light):focus, .btn-secondary:not(.btn-light):active {
-      background: #d8d8d8;
-      border-color: #d8d8d8; }
-  
-  .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
-    background: #d8d8d8;
-    color: #ffffff; }
   
   .btn-inverse-success {
     background-color: rgba(56, 206, 60, 0.2);
