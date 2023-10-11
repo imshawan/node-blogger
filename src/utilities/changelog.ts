@@ -6,7 +6,6 @@ import { Logger } from "./logger";
 import pkg from '../../package.json';
 import { MutableObject, IPagination } from "@src/types";
 import _ from 'lodash';
-import { log } from "console";
 
 interface ICommit {
     commit: string
@@ -73,7 +72,6 @@ export class Changelog {
 
             const skip = Number(pageNumber) * Number(perPage);
             const limit = perPage;
-            log(skip, limit)
 
             command = `git log --skip=${skip} -n ${limit} --format=commit:-%s;author:-%cn;email:-%ce;date:-%cs;`;
         }
