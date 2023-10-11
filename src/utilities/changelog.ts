@@ -4,7 +4,9 @@ import path from 'path';
 import fs from 'fs';
 import { Logger } from "./logger";
 import pkg from '../../package.json';
-import { MutableObject } from "@src/types";
+import { MutableObject, IPagination } from "@src/types";
+import _ from 'lodash';
+import { log } from "console";
 
 interface ICommit {
     commit: string
@@ -12,13 +14,22 @@ interface ICommit {
     email: string
     date: string
 }
+interface IPaginatedCommits {
+    totalItems: number;
+    totalPages: number;
+    commits: Array<ICommit>;
+}
+type IPaginatedCategorisedCommits = Omit<IPaginatedCommits, 'commits'> & {
+    commits: { [key: string]: ICommit[] }
+}
 
 
 export class Changelog {
-    categories: { new: ICommit[]; features: ICommit[]; bugFixes: ICommit[]; others: ICommit[]; };
-    categoryNames: { new: string; features: string; bugFixes: string; others: string; };
-    changelogFilePath: string;
-    logger: Logger;
+    private readonly categories: { new: ICommit[]; features: ICommit[]; bugFixes: ICommit[]; others: ICommit[]; };
+    private readonly categoryNames: { new: string; features: string; bugFixes: string; others: string; };
+    private readonly changelogFilePath: string;
+    private readonly logger: Logger;
+    private readonly perPage: number;
     constructor() {
         this.categories = {
             new: [] as ICommit[],
@@ -34,12 +45,40 @@ export class Changelog {
         };
         this.changelogFilePath = path.resolve(__dirname, "../../CHANGELOG.md");
         this.logger = new Logger({prefix: path.basename(__filename)});
+        this.perPage = 15;
     }
 
-    private getCommits(): Array<ICommit> {
-        const parsedCommits: Array<ICommit> = [];
+    private getTotalCommits(): number {
+        const commitCount = execSync('git rev-list --count HEAD').toString("utf-8");
+        if (commitCount && !_.isNaN(commitCount)) {
+            return Number(commitCount);
+        }
+        
+        return 0;
+    }
 
-        const commits = execSync(`git log --format=commit:-%s;author:-%cn;email:-%ce;date:-%cs;`).toString("utf-8");
+    private getCommits(pageNumber?: number, perPage?: number): Array<ICommit> {
+        const parsedCommits: Array<ICommit> = [];
+        let command = `git log --format=commit:-%s;author:-%cn;email:-%ce;date:-%cs;`;
+
+        if (pageNumber) {
+            if (typeof pageNumber !== 'number') {
+                throw new TypeError('pageNumber must be a number, found ' + typeof pageNumber);
+            }
+            if (perPage && typeof perPage  !== 'number') {
+                throw new TypeError('perPage must be a number, found ' + typeof perPage);
+            } else if (!perPage) {
+                perPage = this.perPage;
+            }
+
+            const skip = Number(pageNumber) * Number(perPage);
+            const limit = perPage;
+            log(skip, limit)
+
+            command = `git log --skip=${skip} -n ${limit} --format=commit:-%s;author:-%cn;email:-%ce;date:-%cs;`;
+        }
+
+        const commits = execSync(command).toString("utf-8");
         const commitsArray = commits.split("\n").filter((message: string) => message && message !== "");
 
         commitsArray.forEach(commit => {
@@ -120,8 +159,25 @@ export class Changelog {
         return this.categorise(commits);
     }
 
+    public getCategorizedAndPaginated(pageNumber: number, perPage: number): IPaginatedCategorisedCommits {
+        const commits = this.getCommits(pageNumber, perPage);
+        const totalItems = this.getTotalCommits()
+        const totalPages = Math.ceil(totalItems / perPage);
+
+        const categorisedData = this.categorise(commits);
+        return {totalItems, totalPages, commits: categorisedData};
+    }
+
     public get() {
         return this.getCommits();
+    }
+
+    public getPaginated(pageNumber: number, perPage: number): IPaginatedCommits {
+        const totalItems = this.getTotalCommits()
+        const totalPages = Math.ceil(totalItems / perPage);
+
+        const commits = this.getCommits(pageNumber, perPage);
+        return {totalItems, totalPages, commits};
     }
 
     public write() {
