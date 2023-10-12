@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { MutableObject } from "@src/types";
-import {data as sidebarData} from "./sidebarconfig";
+import {data as sidebarData} from "./sidebar";
 import { SideBar } from "@src/utilities";
-import url from 'url'
 
 const admin: MutableObject = {}
 
