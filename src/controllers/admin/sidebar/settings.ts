@@ -4,7 +4,7 @@ export default [
   {
     url: "/admin/settings/site",
     id: "settings:site",
-    icon: "bi bi-globe",
+    icon: "bi bi-window-sidebar",
     title: "Site",
     classes: "",
     menu: menus.SETTINGS,
@@ -67,7 +67,7 @@ export default [
   {
     url: "/admin/settings/notifications",
     id: "settings:notifications",
-    icon: "fa-bell-o fa",
+    icon: "bi bi-bell",
     title: "Notifications",
     classes: "",
     menu: menus.SETTINGS,
