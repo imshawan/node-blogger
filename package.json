@@ -16,6 +16,7 @@
     "dev": "nodemon",
     "test": "nodemon --config ./spec/nodemon.json",
     "test:no-reloading": "npx ts-node --files -r tsconfig-paths/register ./spec",
+    "debug": "node --trace-warnings --inspect=9229 -r tsconfig-paths/register ./node_modules/ts-node/dist/bin.js ./src",
     "generate-changelog": "npx ts-node ./scripts/changelog.ts"
   },
   "nodemonConfig": {
@@ -27,7 +28,7 @@
       "/public"
     ],
     "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src",
-    "delay": 1500
+    "delay": 1000
   },
   "_moduleAliases": {
     "@src": "dist"

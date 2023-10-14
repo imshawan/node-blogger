@@ -5,6 +5,7 @@ import csurf from 'csurf';
 import { isAdministrator } from '@src/user';
 import { NodeEnvs } from '@src/constants/misc';
 import EnvVars from '@src/constants/EnvVars';
+import { MulterFilesArray } from '@src/types';
 
 export * from './cors';
 export * from './overrides';
@@ -31,6 +32,31 @@ export const checkRequiredFields = function (fields: Array<string>, req: Request
 
     if (missingFields.length) {
         return handleApiResponse(HttpStatusCodes.BAD_REQUEST, res, new Error('Required fields were missing from the API call: ' + missingFields.join(', ')));
+    } else next();
+}
+
+export const checkRequiredFileFields = function (fields: Array<string>, req: Request, res: Response, next: NextFunction) {
+    if (fields && !Array.isArray(fields)) {
+        throw new Error('fields required to be checked must be in an array');
+    }
+    let missingFileFields: Array<string> = [];
+    if (fields.length) {
+        if (!req.files || !req.files.length)  {
+            missingFileFields = fields;
+        } else {
+            const files = req.files as MulterFilesArray[];
+            fields.forEach((field) => {
+                files.forEach(file => {
+                    if (!Object.hasOwnProperty.bind(file)('fieldname') || file.fieldname != field) {
+                        missingFileFields.push(field);
+                    }
+                })
+            });
+        }
+    }
+
+    if (missingFileFields.length) {
+        return handleApiResponse(HttpStatusCodes.BAD_REQUEST, res, new Error('Required file fields were missing from the API call: ' + missingFileFields.join(', ')));
     } else next();
 }
 

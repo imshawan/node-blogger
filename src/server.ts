@@ -143,6 +143,8 @@ async function setupExpressServer(app: Application) {
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'ejs');
 
+    app.set('trust proxy', 1)
+
     // Set static directory (js and css).
     var staticDir = path.join('public');
     if (EnvVars.NodeEnv === NodeEnvs.Production) {

@@ -43,6 +43,10 @@ export const connect = async function (connectionString: string, options: object
         connection.removeAllListeners();
     });
 
+    // connection.on('disconnect', (event) => {
+    //     info(event)
+    // });
+
     info('Established connection with database server');
 
     // Send a ping to confirm a successful connection to databases

@@ -15,6 +15,16 @@
             const {href} = $(this).data();
             location.href = href;
         });
+
+        /**
+         * @description Hidden input trigger
+         */
+        $('body').on('click', '[data-file-target]', function () {
+            let fileTarget = $(this).data('file-target');
+            let fileUploadContainer = $(fileTarget);
+
+            fileUploadContainer.trigger('click');
+        });
     }
 
     $(document).ready(function () {

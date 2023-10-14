@@ -76,5 +76,16 @@
         }).filter(param => param !== '').join('&');
     }
 
+    utilities.renderImageFromFile = function (file, target) {
+        target = $('body').find(target);
+        if (!target.length) return;
+        
+        let reader = new FileReader();
+        reader.onload = function () {
+            target.attr('src', this.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
     return utilities;
 }));

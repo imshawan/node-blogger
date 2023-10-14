@@ -13,7 +13,7 @@ const site = async function (req: Request, res: Response, next: NextFunction) {
     pageData.title = 'Site settings';
     pageData.sidebar = sidebar.get('settings:site');
 
-    res.render(BASE + '/site', pageData);
+    res.render(BASE + '/site/index', pageData);
 }
 
 const blog = async function (req: Request, res: Response, next: NextFunction) {

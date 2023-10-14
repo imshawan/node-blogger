@@ -2450,7 +2450,10 @@ Input groups override
     .input-group > .custom-file:not(:first-child) .custom-file-label {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0; }
-
+      .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+        padding-left: 10px;
+      }
+      .select2-selection__choice__remove {height: 100%;}
 .input-group-prepend,
 .input-group-append {
   display: -webkit-box;
@@ -2747,7 +2750,7 @@ Forms
     .select2-container--default .select2-selection--single .select2-search__field,
     .select2-container--default .select2-dropdown .select2-search__field,
     .select2-container--default .select2-selection--multiple .select2-search__field {
-      border-color: #e8ecf1; }
+      border-color: #e8ecf1; padding-left: 10px; }
   
   .select2-container--default .select2-selection--single {
     height: auto; }
@@ -2762,12 +2765,15 @@ Forms
     color: #ffffff;
     border: 0;
     border-radius: 3px;
-    padding: 6px;
-    font-size: .625rem;
+    padding: 8px;
+    font-size: .725rem;
     font-family: inherit;
     line-height: 1; }
     .select2-container--default .select2-selection--multiple .select2-selection__choice .select2-selection__choice__remove {
-      color: #ffffff; }
+      color: #ffffff; border-right: 0px; font-size: 1.4em; }
+      .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover, .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
+        background-color: transparent;
+      }
     .select2-container--default .select2-selection--multiple .select2-selection__choice:nth-child(5n+1) {
       background: var(--bs-primary); }
     .select2-container--default .select2-selection--multiple .select2-selection__choice:nth-child(5n+2) {

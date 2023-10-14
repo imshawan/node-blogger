@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Blog's details</h5>
+
+        <form id="site-config" class="row g-3">
+            <div class="col-md-12">
+                <div class="form-floating">
+                    <input type="text" name="siteName" class="form-control" id="floatingName" placeholder="Blog Name">
+                    <label for="floatingName">Blog Name</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" name="BlogShortName" class="form-control" id="floatingshortname"
+                        placeholder="Short name for your blog">
+                    <label for="floatingshortname">Short name</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="homepageredirect"
+                        placeholder="When clicked, it'll take the user to blog's home">
+                    <label for="homepageredirect">Homepage URL</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-floating">
+                    <textarea class="form-control" name="description" placeholder="description" id="descriptionArea"
+                        style="height: 100px;"></textarea>
+                    <label for="descriptionArea">Blog's description</label>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <label class="mb-1" for="site-keywords">Enter keywords that best describes your blog</label>
+                <div class="form-floating mb-3">
+                    <select class="form-select" id="site-keywords" multiple="multiple" aria-label="State">
+                    </select>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
