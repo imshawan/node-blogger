@@ -5,20 +5,20 @@
         <form id="site-config" class="row g-3">
             <div class="col-md-12">
                 <div class="form-floating">
-                    <input type="text" name="siteName" class="form-control" id="floatingName" placeholder="Blog Name">
+                    <input type="text" name="siteName" value="<%= data.siteName %>" class="form-control" id="floatingName" placeholder="Blog Name">
                     <label for="floatingName">Blog Name</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="text" name="BlogShortName" class="form-control" id="floatingshortname"
+                    <input type="text" name="siteShortName" value="<%= data.siteShortName %>" class="form-control" id="floatingshortname"
                         placeholder="Short name for your blog">
                     <label for="floatingshortname">Short name</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="homepageredirect"
+                    <input type="text" class="form-control" id="homepageredirect" value=""
                         placeholder="When clicked, it'll take the user to blog's home">
                     <label for="homepageredirect">Homepage URL</label>
                 </div>
@@ -26,7 +26,7 @@
             <div class="col-12">
                 <div class="form-floating">
                     <textarea class="form-control" name="description" placeholder="description" id="descriptionArea"
-                        style="height: 100px;"></textarea>
+                        style="height: 100px;"><%= data.description %></textarea>
                     <label for="descriptionArea">Blog's description</label>
                 </div>
             </div>

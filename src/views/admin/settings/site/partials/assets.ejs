@@ -9,7 +9,7 @@
                 <div class="form-group">
                   
                   <div class="input-group col-12">
-                    <input type="text" class="form-control file-upload-info" id="favicon-upload-info" disabled="" placeholder="Upload Image">
+                    <input type="text" class="form-control file-upload-info" value="<%= data.favicon %>" id="favicon-upload-info" disabled="" placeholder="Upload Image">
                     <span class="input-group-append">
                       <button id="favicon-upload-btn" style="min-width: 130px;" class="file-upload-browse btn btn-primary" data-file-target="#favicon-upload-input" type="button">Upload</button>
                     </span>
@@ -24,7 +24,7 @@
                 <div class="form-group">
                     
                     <div class="input-group col-12">
-                      <input type="text" class="form-control file-upload-info" id="logo-upload-info" disabled="" placeholder="Upload Image">
+                      <input type="text" class="form-control file-upload-info" value="<%= data.logo %>" id="logo-upload-info" disabled="" placeholder="Upload Image">
                       <span class="input-group-append">
                         <button id="logo-upload-btn" style="min-width: 130px;" class="file-upload-browse btn btn-primary" data-file-target="#logo-upload-input" type="button">Upload</button>
                       </span>
@@ -35,7 +35,7 @@
 
             <div class="col-12">
               <div class="form-floating">
-                  <input type="text" class="form-control" id="image-alt"  name="altLogoText" placeholder="">
+                  <input type="text" class="form-control" value="<%= data.altLogoText %>" id="image-alt"  name="altLogoText" placeholder="">
                   <label for="image-alt">Alternative text for logo</label>
                   <div id="" class="form-text">This text will be shown in case the logo fails to load</div>
               </div>

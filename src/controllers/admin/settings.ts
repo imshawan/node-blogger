@@ -1,17 +1,28 @@
 import { NextFunction, Request, Response } from "express";
-import { MutableObject } from "@src/types";
+import { MetaKeysArray, MutableObject } from "@src/types";
 import {data as sidebarData} from "./sidebar";
 import { SideBar } from "@src/utilities";
 import { getUsersByPagination } from "@src/user";
+import { meta } from "@src/meta";
 
 const BASE = 'settings';
 
 const site = async function (req: Request, res: Response, next: NextFunction) {
     const sidebar = new SideBar(sidebarData);
     const pageData: MutableObject = {};
+    const siteMetaKeysArray: MetaKeysArray = [
+        "siteName",
+        "siteShortName",
+        "description",
+        "logo",
+        "favicon",
+        "altLogoText",
+        "logoRedirectionUrl"
+    ];
 
     pageData.title = 'Site settings';
     pageData.sidebar = sidebar.get('settings:site');
+    pageData.data = retriveMetaPropertiesFiltered(siteMetaKeysArray);
 
     res.render(BASE + '/site/index', pageData);
 }
@@ -106,6 +117,25 @@ const cookies = async function (req: Request, res: Response, next: NextFunction)
     pageData.sidebar = sidebar.get('settings:cookies');
 
     res.render(BASE + '/cookies', pageData);
+}
+
+function retriveMetaPropertiesFiltered(filterKeys: MetaKeysArray) {
+    const metaObject: MutableObject = {};
+    const {configurationStore} = meta;
+
+    if (!configurationStore) return metaObject;
+
+    if (filterKeys && filterKeys.length) {
+        filterKeys.forEach(key => {
+            if (Object.hasOwnProperty.bind(configurationStore)(key)) {
+                metaObject[key] = configurationStore[key];
+            } else {
+                metaObject[key] = null;
+            }
+        });
+    }
+
+    return metaObject;
 }
 
 export default {
