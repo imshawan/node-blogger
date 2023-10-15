@@ -9,22 +9,33 @@ define('client/admin/settings/site/index', ['modules/http'], function (http) {
             tags: true,
         });
 
-        $('#file-upload-input').on('change', function () {
+        $('#favicon-upload-input').on('change', function () {
             let files = this.files;
-            if (files && files.length) {
-                files = files[0];
-                $('#file-upload-info').val(files.name);
-                $('#file-upload-btn').lockWithLoader();
-
-                let formData = new FormData();
-                formData.append('logo', files);
-
-                site.uploadImage('/api/v1/admin/settings/site/logo',  'post', formData, () => {
-                    core.alertSuccess('Updated!');
-                    $('#file-upload-btn').unlockWithLoader();
-                })
-            }
+            site.handleImageTypeUpdates(files,  'favicon');
         });
+
+        $('#logo-upload-input').on('change', function () {
+            let files = this.files;
+            site.handleImageTypeUpdates(files,  'logo');
+        });
+    }
+
+    site.handleImageTypeUpdates = function (files, imageType) {
+        if (files && files.length) {
+            files = files[0];
+            $(`#${imageType}-upload-info`).val(files.name);
+            $(`#${imageType}-upload-btn`).lockWithLoader();
+            console.log($(`#${imageType}-upload-btn`), `#${imageType}-upload-btn`)
+
+            let formData = new FormData();
+            let endpoint = '/api/v1/admin/settings/site/' + imageType;
+            formData.append(imageType, files);
+
+            site.uploadImage(endpoint,  'post', formData, () => {
+                core.alertSuccess('Updated!');
+                $(`#${imageType}-upload-btn`).unlockWithLoader();
+            })
+        }
     }
 
     site.uploadImage = function (endpoint, method, formData, callback) {

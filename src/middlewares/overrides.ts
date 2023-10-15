@@ -3,7 +3,7 @@ import { baseScripts, vendorScripts, adminScripts } from "@src/meta";
 import {siteName, paths} from '@src/constants';
 import fs from 'fs';
 import ejs from 'ejs';
-import { meta, styleSheets } from "@src/meta";
+import { meta, styleSheets, getConfigurationStoreByScope } from "@src/meta";
 import path from "path";
 import { isAdministrator } from "@src/user";
 
@@ -42,6 +42,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         pageOptions._breadcrumb = res.locals.breadcrumb || [];
         pageOptions._csrf_token = csrfToken;
         pageOptions._isError = res.locals.error || false;
+        pageOptions._config = getConfigurationStoreByScope(isAdminRoute ? 'admin' : 'client');
         pageOptions.hidePageHeader = pageOptions.hidePageHeader || false;
         res.locals.csrftoken = csrfToken;
 

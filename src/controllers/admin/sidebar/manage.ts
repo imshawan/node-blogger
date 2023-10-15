@@ -11,7 +11,7 @@ export default [
       child: [],
     },
     {
-      url: "`/admin/users",
+      url: "/admin/users",
       id: "manage:users",
       icon: "bi bi-person-fill",
       title: "Users",

@@ -2,6 +2,10 @@
     "siteName": "NodeBlogger",
     "siteShortName": "NodeBlogger",
     "description": "A simple open-source blogging application powered by MongoDB & NodeJS",
+    "logo": "",
+    "favicon": "",
+    "altLogoText": "",
+    "logoRedirectionUrl": "",
     "session": {
         "name": "session.sid",
         "saveUninitialized": false,

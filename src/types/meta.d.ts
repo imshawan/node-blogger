@@ -1,7 +1,16 @@
+
+export type MetaKeysArray = Array<keyof IMeta>;
+
 export interface IMeta {
+  _id: string
+  _key: string
   siteName: string
   siteShortName: string
   description: string
+  logo: string
+  favicon: string
+  altLogoText: string
+  logoRedirectionUrl: string
   session: Session
   cookie: Cookie
   cors: CorsOptions

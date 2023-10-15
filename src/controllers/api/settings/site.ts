@@ -8,7 +8,11 @@ import api from "@src/api";
 export default {
     
     updateLogo: async (req: Request, res: Response, next: NextFunction) => {
-        handleApiResponse(HttpStatusCodes.OK, res, await api.settings.updateSiteLogo(req));
+        handleApiResponse(HttpStatusCodes.OK, res, await api.settings.updateSiteImages(req, 'logo'));
+    },
+
+    updateFavicon: async (req: Request, res: Response, next: NextFunction) => {
+        handleApiResponse(HttpStatusCodes.OK, res, await api.settings.updateSiteImages(req, 'favicon'));
     }
 
 } as const
