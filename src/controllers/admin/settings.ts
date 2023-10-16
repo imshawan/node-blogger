@@ -12,6 +12,7 @@ const site = async function (req: Request, res: Response, next: NextFunction) {
     const pageData: MutableObject = {};
     const siteMetaKeysArray: MetaKeysArray = [
         "siteName",
+        "siteNameUrl",
         "siteShortName",
         "description",
         "logo",

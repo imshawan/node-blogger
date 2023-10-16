@@ -5,6 +5,7 @@ export interface IMeta {
   _id: string
   _key: string
   siteName: string
+  siteNameUrl: string
   siteShortName: string
   description: string
   logo: string
