@@ -34,7 +34,8 @@
     "@src": "dist"
   },
   "engines": {
-    "node": ">=8.10.0"
+    "node": ">=16.x",
+    "npm": ">=8.0.0"
   },
   "dependencies": {
     "@types/chai": "^4.3.5",
