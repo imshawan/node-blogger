@@ -15,6 +15,10 @@ const logger = new Logger({prefix: 'build'});
 module.exports = async function build () {
   try {
     var time = Date.now();
+
+    if (!fs.existsSync('config.json')) {
+      return logger.error('Could not find config file. Please re-setup the application.');
+    }
     
     logger.info('Removing current build');
     await remove('./dist');
