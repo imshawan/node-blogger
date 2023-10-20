@@ -1,5 +1,8 @@
 import { Request } from 'express';
 import _ from 'lodash';
+import nconf from 'nconf';
+import { validateMongoConnectionUrl } from '@src/utilities';
+import { ValueError } from './errors';
 
 export * from './routes';
 export * from './response';
@@ -21,17 +24,39 @@ export const validateConfiguration = function validateConfiguration (configurati
         throw new Error('Database configurations missing from the configuration');
     }
 
-    const {mongodb} = configuration;
-    if (!Object.keys(mongodb).length) {
-        throw new Error('Mongodb configurations are empty');
+    validateMongoConfiguration(configuration.mongodb);
+
+    if (nconf.get('env') === 'test') {
+        validateUnitTestConfiguration(configuration);
+    }
+}
+
+export const validateUnitTestConfiguration = function validateUnitTestConfiguration (configuration: any) {
+    if (!Object.hasOwnProperty.bind(configuration)('test')) {
+        throw new Error('The test configuration seems to be missing from the config file');
+    }
+    if (!Object.hasOwnProperty.bind(configuration.test)('mongodb')) {
+        throw new Error('MongoDB configuration is missing from the config file');
     }
 
-    if (!mongodb.hasOwnProperty('uri')) {
-        throw new Error('Database connection URI missing from the configguration');
+    validateMongoConfiguration(configuration.test?.mongodb || {});
+}
+
+export const validateMongoConfiguration = function validateMongoConfiguration (mongoConf: {[key: string]: any}) {
+    if (!mongoConf || !Object.keys(mongoConf).length) {
+        throw new Error('MongoDB configurations is missing or is empty');
     }
 
-    if (!mongodb.hasOwnProperty('db')) {
-        throw new Error('Database name is missing from the configguration');
+    if (!mongoConf.hasOwnProperty('uri')) {
+        throw new Error('Database connection URI missing from the configuration');
+    }
+
+    if (!validateMongoConnectionUrl(mongoConf.uri)) {
+        throw new ValueError('Invalid MongoDB connection URL.');
+    }
+
+    if (!mongoConf.hasOwnProperty('db')) {
+        throw new Error('Database name is missing from the configuration');
     }
 }
 

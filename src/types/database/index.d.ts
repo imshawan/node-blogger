@@ -77,7 +77,20 @@ interface IMongoPaginateOptions {
     limit: number
 }
 
+/**
+ * @date 20-10-2023
+ * @interface IMongoConnectionProps
+ * @description This interface defines the structure of an object representing the components of a MongoDB connection URL
+ */
+interface IMongoConnectionProps {
+    protocol: string;
+    username: string;
+    password: string;
+    clusterAddress: string;
+}
+
+
 export {
     IMongoInsertOptions, IParamOptions, IMongoDeleteOptions,
-    IMongoUpdateOptions, IMongoPaginateOptions
+    IMongoUpdateOptions, IMongoPaginateOptions, IMongoConnectionProps
 }

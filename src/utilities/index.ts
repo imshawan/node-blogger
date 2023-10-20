@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import axios from 'axios';
 import _ from 'lodash';
-import { MutableObject } from '@src/types';
+import { MutableObject, IMongoConnectionProps } from '@src/types';
 
 export * from './password';
 export * from './slugify';
@@ -84,4 +84,21 @@ export const getArgv = function (key: string): string | Number | Boolean {
         if (!isNaN(value)) return Number(value);
         return value;
     } else return '';
+}
+
+export const validateMongoConnectionUrl = function (url: string): IMongoConnectionProps | null {
+    const regex = /^(mongodb\+srv:\/\/)(.*?):(.*?)@(.*?)\/?$/;
+    const match = url.match(regex);
+
+    if (match && match.length === 5) {
+        const [, protocol, username, password, clusterAddress] = match;
+        return {
+            protocol,
+            username,
+            password,
+            clusterAddress
+        };
+    } else {
+        return null;
+    }
 }

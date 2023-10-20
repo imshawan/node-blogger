@@ -8,7 +8,6 @@ import path from 'path';
 import helmet from 'helmet';
 import express, {Request, Response, NextFunction, Application} from 'express';
 import http from 'http';
-import logger from 'jet-logger';
 import useragent from 'express-useragent';
 import expressSession from 'express-session';
 import chalk from 'chalk';
@@ -34,7 +33,7 @@ import { Logger, getISOTimestamp } from './utilities';
 import {paths} from './constants';
 import { log } from 'console';
 
-const {info} = new Logger();
+const logger = new Logger();
 const app = express();
 const httpServer = http.createServer(app);
 
@@ -60,8 +59,15 @@ const start = async function (port: Number, callback: Function) {
 }
 
 const initialize = async function () {
+    logger.info('Validating configuration file');
     validateConfiguration(config)
-    await initializeDbConnection(config.mongodb);
+
+    let mongoConfig = config.mongodb;
+    if (nconf.get('env') == 'test') {
+        mongoConfig = config.test.mongodb;
+    }
+
+    await initializeDbConnection(mongoConfig);
     await initializeMeta();
     await setupExpressServer(app);
 
@@ -106,7 +112,7 @@ const initialize = async function () {
         next: NextFunction,
     ) => {
         if (EnvVars.NodeEnv !== NodeEnvs.Test) {
-            logger.err(err, true);
+            logger.error(err, true);
         }
         let status = HttpStatusCodes.BAD_REQUEST;
         if (err instanceof RouteError) {
