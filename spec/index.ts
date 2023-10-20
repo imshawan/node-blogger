@@ -71,7 +71,7 @@ function getFileSpecified() {
         let [key, value] = args.split('=');
         if (value.length) {
             value = value.trim().replace(/\.((spec)?\.ts)/g, '');
-            fileName = [fileName, 'spec.ts'].join('.');
+            fileName = [value, 'spec.ts'].join('.');
         }
 
         if (fileName.length) {
