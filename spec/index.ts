@@ -8,6 +8,7 @@ import Mocha, { Test } from 'mocha';
 import { ITestConfig, ITestResult } from '@src/types';
 
 const DEFAULT_MOCHA_TIMEOUT = 1000 * 10; // 10 seconds
+const FILE_FLAG = '--file=';
 
 // **** Setup **** //
 
@@ -16,7 +17,7 @@ const DEFAULT_MOCHA_TIMEOUT = 1000 * 10; // 10 seconds
 // NOTE: MUST BE FIRST!! Load env vars
 nconf.argv().env().file({ file: 'config.json' });
 
-const testFiles = sync('./spec/**/*.spec.ts'); 
+const testFiles = [...new Set([...sync('./spec/**/*.spec.ts'), ...sync('./spec/*.spec.ts')])]; 
 const testConfig: ITestConfig = nconf.get('test');
 const mochaOptions = {timeout: Number(testConfig.timeout) || DEFAULT_MOCHA_TIMEOUT};
 
@@ -25,7 +26,7 @@ const mocha = new Mocha(mochaOptions);
 
 // Run all or a single unit-test
 
-async function execTests(): Promise<ITestResult> {
+async function execTests(filesArray: Array<string>): Promise<ITestResult> {
     await server.initialize();
 
     return new Promise((resolve, reject) => {
@@ -34,8 +35,8 @@ async function execTests(): Promise<ITestResult> {
           passed = 0,
           overallStatus = "failed";
 
-        if (testFiles.length) {
-            testFiles.forEach(async file => mocha.addFile(file));
+        if (filesArray.length) {
+            filesArray.forEach(async file => mocha.addFile(file));
 
             mocha.run()
               .on('test', function(test: Test) {
@@ -58,6 +59,32 @@ async function execTests(): Promise<ITestResult> {
     });
 }
 
+function isTestFileSpecified() {
+    return Boolean(process.argv.find(arg => arg.includes(FILE_FLAG)));
+}
+
+function getFileSpecified() {
+    const args = process.argv.find(arg => arg.includes(FILE_FLAG));
+    let fileName = '';
+
+    if (args) {
+        let [key, value] = args.split('=');
+        if (value.length) {
+            value = value.trim().replace(/\.((spec)?\.ts)/g, '');
+            fileName = [fileName, 'spec.ts'].join('.');
+        }
+
+        if (fileName.length) {
+            let filefound = testFiles.find(e => e.includes(fileName));
+            if (filefound) {
+                fileName = filefound;
+            }
+        }
+    }
+
+    return fileName;
+}
+
 /**
  * Do command line command.
  */
@@ -77,7 +104,12 @@ function exec(cmd: string, loc: string): Promise<void> {
 
 // Wait for tests to finish
 (async () => {
-  const info = await execTests();
+  let filesArray = testFiles;
+  if (isTestFileSpecified()) {
+      filesArray = [getFileSpecified()];
+  }
+
+  const info = await execTests(filesArray);
   if (info.overallStatus === 'passed') {
       logger.info('All tests have passed :)');
   } else {
