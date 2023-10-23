@@ -36,6 +36,9 @@ Build the project for production.
 
 Clears the existing distribution files generated from build process
 
+### `npm run generate-changelog`
+Generates change log file by reading the commits created on the current branch
+
 ### `npm start`
 
 Run the production build (Must be built first).
