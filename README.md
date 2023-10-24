@@ -1,4 +1,4 @@
-## About
+## Node Blogger
 
 Node Blogger - A simple open-source blogging application powered by NodeJS
 
