@@ -16,9 +16,9 @@ Run the server in development mode.
 
 Run all unit-tests with hot-reloading.
 
-### `npm test -- --file="name of test file" (i.e. --file=Users).`
+### `npm test -- --file="name of test file" (i.e. --file=users).`
 
-Run a single unit-test.
+Run a single unit-test. You need not write the entire file name such as ``users.spec.ts``
 
 ### `npm run test:no-reloading`
 
