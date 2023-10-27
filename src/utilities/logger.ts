@@ -37,7 +37,7 @@ export class Logger {
     }
 
     #timeStamp() {
-        return `[${new Date(Date.now()).toISOString()}]`;
+        return `[${new Date(Date.now()).toLocaleString()}]`;
     }
 
     #parseMessage(message: Array<any>) {
