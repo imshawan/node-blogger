@@ -62,23 +62,23 @@ describe(`Processing tests for category API routes (${path.basename(__filename)}
             })
     });
 
-    // it('It should fetch the category by it\'s category id', (done) => {
-    //     chai.request(server.app)
-    //         .get('/api/v1/admin/categories/' + category.cid)
-    //         .set('Cookie', user.cookies || '')
-    //         .end((err, response) => {
-    //             console.log('get by id', response.body)
-    //             const {message=''} = response.body.status || {};
+    it('It should fetch the category by it\'s category id', (done) => {
+        chai.request(server.app)
+            .get('/api/v1/admin/categories/' + category.cid)
+            .set('Cookie', user.cookies || '')
+            .end((err, response) => {
+                console.log('get by id', response.body)
+                const {message=''} = response.body.status || {};
 
-    //             expect(response.statusCode).equal(HttpStatusCodes.OK, message);
-    //             expect(response.body).haveOwnProperty('payload');
-    //             expect(response.body.payload['name']).to.be.eql(categoryNameUpdated);
-    //             expect(response.body.payload['cid']).to.be.eql(category.cid);
-    //             expect(response.body.payload['userid']).to.be.eql(user.userid);
+                expect(response.statusCode).equal(HttpStatusCodes.OK, message);
+                expect(response.body).haveOwnProperty('payload');
+                expect(response.body.payload['name']).to.be.eql(categoryNameUpdated);
+                expect(response.body.payload['cid']).to.be.eql(category.cid);
+                expect(response.body.payload['userid']).to.be.eql(user.userid);
 
-    //             done();
-    //         })
-    // });
+                done();
+            })
+    });
 
     it('It should return all the categories available with pagination', (done) => {
         chai.request(server.app)
