@@ -15,7 +15,7 @@ nconf.set('env', getArgv('env'))
 // **** Run **** //
 
 const PORT = Number(nconf.get('port'));
-server.start(PORT, onListening);
+server.start(PORT || 3000, onListening);
 
 function onListening(httpServer: Server) {
   const {app} = server;
