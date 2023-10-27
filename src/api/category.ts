@@ -9,8 +9,17 @@ const categoryApi: MutableObject = {
 };
 
 categoryApi.get = async (req: Request) => {
-    const {query} = req;
-    let {search, cid} = query;
+    const {query, params} = req;
+    let {search} = query;
+    let {cid} = params;
+
+    if (cid) {
+        if (!Number(cid)) {
+            throw new Error('cid must be a number found ' + typeof cid);
+        }
+
+        return await category.data.getCategoryByCid(cid);
+    }
 
     let perPage = Number(query.perPage);
     let page = Number(query.page);
