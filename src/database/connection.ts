@@ -4,8 +4,6 @@ import _ from 'lodash';
 
 const connectionOptions = {
     connectTimeoutMS: 90000,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
 }
 
 const serverApi = {
