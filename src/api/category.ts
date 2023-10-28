@@ -3,6 +3,7 @@ import category from "@src/category";
 import { MutableObject } from "@src/types";
 import _ from 'lodash';
 import { paginate } from "@src/helpers";
+import { isParsableJSON } from "@src/utilities";
 
 const categoryApi: MutableObject = {
     tags: {}
@@ -10,8 +11,9 @@ const categoryApi: MutableObject = {
 
 categoryApi.get = async (req: Request) => {
     const {query, params} = req;
-    let {search} = query;
+    let {search, sortBy} = query;
     let {cid} = params;
+    let includeSubCategories = true;
 
     if (cid) {
         if (!Number(cid)) {
@@ -31,14 +33,22 @@ categoryApi.get = async (req: Request) => {
     if (isNaN(page) || !page) {
         page = 1;
     }
+    if (Object.hasOwnProperty.bind(query)('subCategories')) {
+        let {subCategories} = query;
+        subCategories = String(subCategories);
+
+        if (isParsableJSON(subCategories)) {
+            includeSubCategories = JSON.parse(subCategories.toLowerCase().trim());
+        }
+    } 
 
     var categories = []
 
     if (search) {
         search = String(search).trim();
-        categories = await category.data.getCategoryByName(search, perPage, page, ['name', 'cid', 'thumb']);
+        categories = await category.data.getCategoryByName(search, perPage, page, [], null, includeSubCategories);
     } else {
-        categories = await category.data.getAllCategories(perPage, page, ['name', 'cid', 'thumb'])
+        categories = await category.data.getAllCategories(perPage, page, ['name', 'cid', 'thumb'], null, includeSubCategories);
     }
 
     return paginate(categories, perPage, page, url)

@@ -65,33 +65,40 @@ const getCategoriesWithData = async function getCategoriesWithData(perPage: numb
     return data;
 }
 
-const getAllCategories = async function getAllCategories(perPage: number=15, page: number=1, fields: string[]=[]) {
-  if (!perPage) {
-      perPage=15;
-  }
-  if (!page) {
-      page = 1;
-  }
-  if (isNaN(perPage)) {
-      throw new TypeError('perPage must be a number (int) found ' + typeof perPage);
-  }
-  if (isNaN(page)) {
-      throw new TypeError('perPage must be a number (int) found ' + typeof page);
-  }
-  if (fields && !Array.isArray(fields)) {
-      throw new TypeError('fields must be an array, found ' + typeof fields);
-  } else if (!fields) {
-      fields = [];
-  }
+const getAllCategories = async function getAllCategories(perPage: number=15, page: number=1, fields: string[]=[], sorting: string | null='default', subCategories=true) {
+    if (!perPage) {
+        perPage=15;
+    }
+    if (!page) {
+        page = 1;
+    }
+    if (isNaN(perPage)) {
+        throw new TypeError('perPage must be a number (int) found ' + typeof perPage);
+    }
+    if (isNaN(page)) {
+        throw new TypeError('perPage must be a number (int) found ' + typeof page);
+    }
+    if (fields && !Array.isArray(fields)) {
+        throw new TypeError('fields must be an array, found ' + typeof fields);
+    } else if (!fields) {
+        fields = [];
+    }
+    if (!sorting) {
+        sorting = 'default';
+    }
 
-  const searchKeys = {_key: 'category'};
-  const matchOptions = {
-    skip: (page - 1) * perPage,
-    limit: perPage,
-    multi: true
-  };
+    const searchKeys: MutableObject = {_key: 'category'};
+    const matchOptions = {
+        skip: (page - 1) * perPage,
+        limit: perPage,
+        multi: true
+    };
 
-  return await database.getObjects(searchKeys, fields, matchOptions);  
+    if (!subCategories) {
+        searchKeys.parent = {$exists: false};
+    }
+
+    return await database.getObjects(searchKeys, fields, matchOptions);  
 }
 
 const getCategoryByCid = async function getCategoryByCid(id: any, fields: string[] = []) {
@@ -113,7 +120,7 @@ const getCategoryByCid = async function getCategoryByCid(id: any, fields: string
     return await database.getObjects({cid, _key: 'category'}, fields);   
 }
 
-const getCategoryByName = async function getCategoryByName(name: string, perPage: number=15, page: number=1, fields: string[]=[], sorting: string='default') {
+const getCategoryByName = async function getCategoryByName(name: string, perPage: number=15, page: number=1, fields: string[]=[], sorting: string | null='default', subCategories=true) {
     if (!name) {
         throw new Error('name is required');
     }
@@ -134,15 +141,22 @@ const getCategoryByName = async function getCategoryByName(name: string, perPage
     } else if (!fields) {
         fields = [];
     }
+    if (!sorting) {
+        sorting = 'default';
+    }
 
     name = String(name).trim();
 
-    const searchKeys = {name: {$regex: new RegExp(name), $options: 'i'}, _key: 'category'};
+    const searchKeys: MutableObject = {name: {$regex: new RegExp(name), $options: 'i'}, _key: 'category'};
     const matchOptions: IParamOptions = {
         skip: (page - 1) * perPage,
         limit: perPage,
         multi: true
     };
+
+    if (!subCategories) {
+        searchKeys.parent = {$exists: false};
+    }
 
     if (sorting && sorting != 'undefined') {
         sorting = sorting.trim();

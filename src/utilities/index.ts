@@ -65,6 +65,17 @@ export const parseBoolean = function(value: any) {
     return value;
 }
 
+export const isParsableJSON = function (jsonString?: string) {
+    if (!jsonString) return false;
+    
+    try {
+        JSON.parse(jsonString);
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
+
 export const getArgv = function (key: string): string | Number | Boolean {
     const args = process.argv;
     const parsedArgs: MutableObject = {};
