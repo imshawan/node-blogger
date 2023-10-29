@@ -963,7 +963,7 @@ a.badge-light:focus, a.badge-light:hover {
   justify-content: center;
   align-items: center;
   max-width: 80rem;
-  min-height: 100vh;
+  min-height: calc(100vh - 100px);
   width: 100%;
   padding: 0 2rem;
   margin: 0 auto;

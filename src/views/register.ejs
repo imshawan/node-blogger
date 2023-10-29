@@ -1,7 +1,7 @@
 <div class="signin-page">
     <main class="main">
         <div class="container">
-            <div class="col-12 col-md-8 col-lg-6 wrapper">
+            <section class="col-12 col-md-8 col-lg-6 wrapper">
                 <div class="heading">
                     <h1 class="text text-large">Create account</h1>
                     <p class="text text-normal">Already registered? <span><a href="/signin" class="text text-links">Sign in</a></span>
@@ -16,7 +16,7 @@
                 <form id="registeration-form" verified="false" action="/register" method="post" class="form needs-validation" novalidate>
                     <div class="input-control">
                         <label for="usernameInput" class="input-label">Username</label>
-                        <input name="username" id="usernameInput" class="input-field form-control" placeholder="Create an username" required>
+                        <input name="username" id="usernameInput" type="text" class="input-field form-control" placeholder="Create an username" required>
                         <div class="invalid-feedback">
                             Please enter a username
                         </div>
@@ -49,10 +49,10 @@
                     </div>
                     <div class="input-control">
                     </div>
-                    <button type="submit" class="input-submit mt-0 w-100 button-black">Register now</button>
+                    <button type="submit" class="input-submit mt-2 w-100 button-black">Register now</button>
                 </form>
                 
-            </div>
+            </section>
         </div>
     </main>
 </div>
