@@ -6,7 +6,6 @@
     const animatedNext = `<span>Next</span><i class="ms-2 fa fa-chevron-circle-right fa-beat"></i>`;
     const HANDLERS = {
         database: function (elem) {
-            return true
             elem = $(elem);
             if (!hasData(elem)) return false;
 
@@ -68,9 +67,7 @@
             const currStep = btn.parent();
             var {validator} = $(currStep).data();
 
-            if (btn.hasClass('btn-next-form'))  {
-                return console.log('returned as it\'s validated');
-            }
+            if (btn.hasClass('btn-next-form')) return;
 
             form.removeClass('was-validated');
 
