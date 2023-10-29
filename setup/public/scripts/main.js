@@ -82,14 +82,15 @@
                 form.addClass('was-validated');
                 currStep.find('[data-validation="uri"]').empty().append('Invalid MongoDB connection string. Please re-try.').show();
                 currStep.find('[name="uri"]')[0].setCustomValidity(1);
-
+                return btn.unlockWithLoader();
             }
             
             setTimeout(() => {
                 btn.unlockWithLoader(animatedNext);
                 btn.addClass('btn-next-form');
 
-                utilities.showToast('Database connection verified, please click next to continue.', 'success')
+                utilities.showToast('Database connection verified, please click next to continue.', 'success');
+                lockInputElements(currStep);
             }, 1000)
         });
 
@@ -119,7 +120,7 @@
                 form.addClass('was-validated');
 
                 if (!field) {
-                    utilities.showToast('Some error occured while account creation.', 'error');
+                    utilities.showToast(message || 'Some error occured while account creation.', 'error');
                     return btn.unlockWithLoader();
                 }
                 currStep.find(`[data-validation="${field}"]`).empty().append(message).show();
@@ -132,6 +133,7 @@
                 btn.addClass('btn-next-form');
 
                 utilities.showToast('Account created! Please click next to continue.', 'success')
+                lockInputElements(currStep);
             }, 1000)
         });
 
@@ -201,6 +203,12 @@
         } else {
             return null;
         }
+    }
+
+    function lockInputElements(parent) {
+        $.each($(parent).find('input,textarea'), function (i, e) {
+            $(e).prop("disabled", true)
+        })
     }
 
     function callAjax(method, payload, url) {

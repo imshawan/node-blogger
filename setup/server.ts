@@ -51,6 +51,14 @@ const start = async function (port: Number, callback: Function) {
     });
 }
 
+const destroy = (callback: Function) => {
+    httpServer.close(() => {
+        if (callback && typeof callback == 'function') {
+            callback();
+        }
+    });
+}
+
 async function setupExpressServer(app: Application) {
     
     app.use('/assets', express.static(path.join(__dirname, 'assets')));
@@ -129,5 +137,5 @@ async function setup(req: Request, res: Response) {
 }
 
 export default {
-    start, app
+    start, destroy, app
 }
