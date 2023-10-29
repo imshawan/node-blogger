@@ -1,13 +1,22 @@
 import express, {Request, Response, NextFunction} from 'express';
-import {MongoClient, ServerApiVersion} from 'mongodb';
+import {Db, MongoClient} from 'mongodb';
 import _ from 'lodash';
-import {Logger} from '../src/utilities';
-import {utils} from '../src/user'
+import fs from 'fs';
+import path from 'path';
+
+import {Logger, getISOTimestamp, generateUUID, slugify, password as Passwords} from '../src/utilities';
+import { IUser, MutableObject } from "../src/types";
+import { Collections } from "../src/constants";
+import {utils} from '../src/user';
 import server from './server';
 import defults from './data/defaults.json'
 
 const router = express.Router();
 const logger = new Logger({prefix: 'setup'});
+const tempFilesDir = path.join(__dirname, 'temp');
+const tempFiles = ['database.json', 'account.json'];
+const configFileLocation = path.join(__dirname, '../config.json');
+const userFields = ['username', 'email', 'password', 'confirmPassword'];
 const connectionOptions = {
     connectTimeoutMS: 90000,
     useNewUrlParser: true,
@@ -19,27 +28,33 @@ router.post('/account', setupAdministrator);
 router.post('/complete', complete);
 
 async function database(req: Request, res: Response, next: NextFunction) {
-    const {uri, dbName} = req.body;
+    const {uri, dbName, blogUrl, testDbName} = req.body;
 
     try {
-        if (!uri) {
-            throw new Error('Database URI is required.');
-        }
-        if (!dbName) {
-            throw new Error('A valid database name is required to connect.');
+        if (!blogUrl) {
+            throw new Error('Blog URL is required.');
         }
 
-        const client = new MongoClient(uri, _.merge(connectionOptions));
-        await client.connect();  
+        new URL(blogUrl); // Will throw error if is invalid.
+    } catch (err) {
+        return res.status(400).json({message: err.message, field: 'blogUrl'});
+    }
 
-        var db = client.db(dbName); 
-        await db.command({ ping: 1 }); 
-
+    try {
+        await setupDatabaseConnection(uri, dbName);       
         logger.info('Database connection successful') 
 
     } catch (err) {
-        return res.status(400).json({message: err.message});  
+        return res.status(400).json({message: err.message, field: 'database'});  
     }
+
+    const data = {uri, dbName, blogUrl, testDbName: testDbName || dbName + '-test'};
+    if (!fs.existsSync(tempFilesDir)) {
+        fs.mkdirSync(tempFilesDir);
+    }
+
+    fs.writeFileSync(path.join(tempFilesDir, 'database.json'), JSON.stringify(data, null, 4));
+
     res.status(200).json({message: 'OK'})
 }
 
@@ -47,7 +62,7 @@ async function setupAdministrator(req: Request, res: Response, next: NextFunctio
     const {username, email, password, confirmPassword} = req.body;
     const missing: string[] = [];
 
-    ['username', 'email', 'password', 'confirmPassword'].forEach(key => {
+    userFields.forEach(key => {
         if (!req.body[key]) {
             missing.push(key);
         }
@@ -83,14 +98,133 @@ async function setupAdministrator(req: Request, res: Response, next: NextFunctio
         return res.status(400).json({message: 'Invalid email address supplied.', field: 'email'})
     }
 
-    // TODO: Implement user creation
+    const userData: MutableObject = {}
+    userFields.forEach(field => userData[field] = req.body[field]);
+
+    if (!fs.existsSync(tempFilesDir)) {
+        fs.mkdirSync(tempFilesDir);
+    }
+
+    fs.writeFileSync(path.join(tempFilesDir, 'account.json'), JSON.stringify(userData, null, 4));
 
     res.status(200).json({message: 'Ok'});
 }
 
 async function complete(req: Request, res: Response, next: NextFunction) {
-    // TODO: Write the configuration to config.json
+    const missing = tempFiles.filter(file => !fs.existsSync(path.join(tempFilesDir, file)));
+    const config: MutableObject = {};
+    
+    try {
+        if (missing.length) {
+            throw new Error(`Looks like you havenn't configured ${missing.map(e => e.split('.json')).join(', ')} yet. Please restart the setup process.`);
+        }
+
+        const baseConf = JSON.parse(fs.readFileSync(path.join(tempFilesDir, 'database.json'), {encoding: 'utf-8'}));
+        const userData: IUser = JSON.parse(fs.readFileSync(path.join(tempFilesDir, 'account.json'), {encoding: 'utf-8'}));
+        const database = await setupDatabaseConnection(baseConf.uri, baseConf.dbName);
+
+        config.host = baseConf.blogUrl;
+        config.port = 3000;
+        config.mongodb = {
+            uri: baseConf.uri,
+            db: baseConf.dbName
+        }
+        config.test = {
+            timeout: 1500,
+            mongodb: {
+                uri: baseConf.uri,
+                db: baseConf.testDbName
+            }
+        }
+        config.secret = generateUUID();
+        config.env = "development";
+
+        const globalCounter = {
+            _key: 'global:counters',
+            user: 1
+        }
+        
+        await Promise.all([
+            database.collection(Collections.DEFAULT).insertOne(globalCounter),
+            createFirstUser(userData, database)
+        ])
+
+    } catch (err) {
+        return res.status(400).json({message: err.message})
+    }
+    
+    // Write to config.json
+    fs.writeFileSync(configFileLocation, JSON.stringify(config, null, 4));
+
+    // Clean up the temp folder
+    let previousTempFiles = fs.readdirSync(tempFilesDir);
+    if (previousTempFiles) {
+        previousTempFiles.forEach(file => fs.unlinkSync(path.join(tempFilesDir,  file)));
+    }
+    
     res.status(200).json({message: 'OK'})
+}
+
+async function setupDatabaseConnection(uri: string, dbName: string) {
+    if (!uri) {
+        throw new Error('Database URI is required.');
+    }
+    if (!dbName) {
+        throw new Error('A valid database name is required to connect.');
+    }
+
+    const client = new MongoClient(uri, _.merge(connectionOptions));
+    await client.connect();  
+
+    var db = client.db(dbName); 
+    await db.command({ ping: 1 }); 
+
+    return db;
+}
+
+async function createFirstUser(userdata: IUser, dbConnection: Db) {
+    const {email='', username='', password=''} = userdata;
+    const timestamp = getISOTimestamp();
+
+    const user: IUser = {
+        _key: 'user'
+    };
+
+    const passwordHash = await Passwords.hash({password, rounds: 12});
+    const userid = 1;
+
+    user.userid = userid;
+    user.username = username;
+    user.email = email;
+    user.slug = slugify(username);
+    user.passwordHash = passwordHash;
+    user.emailConfirmed = true;
+    user.roles = {
+        administrator: 1,
+        moderator: 1,
+        globalModerator: 1
+    }
+    user.gdprConsent = false;
+    user.acceptedTnC = false;
+    user.joiningDate = timestamp;
+    user.isOnline = true;
+    user.createdAt = timestamp;
+    user.updatedAt = timestamp;
+
+    const uniqueUUID = generateUUID();
+    const newUserRegData = {
+        _key: 'user:' + userid + ':registeration',
+        token: uniqueUUID,
+        consentCompleted: false,
+        consent: {
+            emails: false,
+            data: false
+        },
+        userid: userid,
+        createdAt: timestamp,
+    };
+
+    await dbConnection.collection(Collections.DEFAULT).insertMany([user, newUserRegData]);
 }
 
 export default router;

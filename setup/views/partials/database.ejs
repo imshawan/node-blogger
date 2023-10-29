@@ -1,6 +1,19 @@
 <div id="database-form" data-validator="database" role="tabpanel" class="bs-stepper-pane fade active dstepper-block"
     aria-labelledby="stepperFormTrigger1">
     <div class="mb-3">
+        <h6 class="text-muted my-2 mb-3">
+            Blog deployment URL
+            <a data-bs-toggle="tooltip" data-bs-html="true" 
+                data-bs-title="For cloud deployment use domain name such as <b>https://www.example.com</b> or use <b>http://localhost:3000</b> if you want to run it locally" id="blog-url-tooltip" data-bs-placement="right" class="text-muted">
+                <i class="fa fa-question-circle small" aria-hidden="true"></i>
+            </a>
+        </h6>
+        <div class="mb-4">
+            <label class="form-label" for="blog-url">URL<span class="text-danger font-weight-bold">*</span></label>
+            <input id="blog-url" class="form-control" type="url" name="blogUrl" value="http://localhost:3000" required>
+            <div data-validation="blogUrl" class="invalid-feedback">Invalid blog url, please re-check.</div>
+        </div>
+
         <h6 class="text-muted my-2 mb-4">
             Setup database connection (MongoDB)
             <a href="https://www.mongodb.com/docs/manual/reference/connection-string/" class="text-muted"
@@ -17,10 +30,17 @@
             <div data-validation="uri" class="invalid-feedback">Please fill the database uri field</div>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label" for="db-name">Database<span class="text-danger font-weight-bold">*</span></label>
-            <input id="db-name" class="form-control" name="dbName" value="NodeBlogger" required>
-            <div class="invalid-feedback">Please fill the database name</div>
+        <div class="row">
+            <div class="mb-3 col-12 col-md-6">
+                <label class="form-label" for="db-name">Database<span class="text-danger font-weight-bold">*</span></label>
+                <input id="db-name" class="form-control" name="dbName" value="NodeBlogger" required>
+                <div class="invalid-feedback">Please fill the database name</div>
+            </div>
+            <div class="mb-3 col-12 col-md-6">
+                <label class="form-label" for="test-db-name">Testing Database (for unit testing)</label>
+                <input id="test-db-name" class="form-control" name="testDbName" value="NodeBlogger-Test" required>
+                <div class="invalid-feedback">Please fill the database name</div>
+            </div>
         </div>
     </div>
 

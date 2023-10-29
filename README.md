@@ -54,6 +54,13 @@ npm install
   ```bash
   openssl rand -base64 32
   ```
+  This secret can be used in config.json as
+  ```json
+  {
+    ...
+    "secret": "base64 string"
+  }
+  ```
 
 Run the web setup installer using the following command:
 ```bash

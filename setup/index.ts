@@ -2,7 +2,7 @@ import { Server } from 'http';
 import server from "./server";
 import { Logger } from "../src/utilities";
 
-const logger = new Logger();
+const logger = new Logger({prefix: 'setup'});
 
 server.start(3000, onListening);
 

@@ -39,9 +39,15 @@
         var stepperPanList = [].slice.call($(stepperForm).find('.bs-stepper-pane'));
         var form = $(stepperForm).find('.bs-stepper-content form');
 
+        new bootstrap.Tooltip($('#blog-url-tooltip')[0]);
+
         $('body').on('click', '.btn-next-form', function () {
             stepper.next();
         });
+
+        $('#db-name').on('change', function () {
+            $('#test-db-name').val($(this).val().trim() + '-test');
+        })
 
         stepperForm.addEventListener('show.bs-stepper', async function (event) {
             form.removeClass('was-validated');
@@ -78,10 +84,16 @@
             btn.lockWithLoader('Saving');
             try {
                 await callAjax('post', serializeObject(currStep), '/setup/api/database');
-            } catch (err) {
+            } catch ({responseJSON, statusText}) {
+                let message = statusText;
+                let field = '';
+                if (responseJSON && responseJSON.message) {
+                    message = responseJSON.message;
+                    field = responseJSON.field;
+                }
                 form.addClass('was-validated');
-                currStep.find('[data-validation="uri"]').empty().append('Invalid MongoDB connection string. Please re-try.').show();
-                currStep.find('[name="uri"]')[0].setCustomValidity(1);
+                currStep.find(`[data-validation="${field}"]`).empty().append(message).show();
+                currStep.find(`[name="${field}"]`)[0].setCustomValidity(1);
                 return btn.unlockWithLoader();
             }
             
@@ -132,7 +144,7 @@
                 btn.unlockWithLoader(animatedNext);
                 btn.addClass('btn-next-form');
 
-                utilities.showToast('Account created! Please click next to continue.', 'success')
+                utilities.showToast('Account information saved! Please click next to continue.', 'success')
                 lockInputElements(currStep);
             }, 1000)
         });
