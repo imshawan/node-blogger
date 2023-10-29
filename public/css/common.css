@@ -469,6 +469,16 @@
     word-break: break-all;
     text-overflow: ellipsis;
 }
+.display-7 {
+    font-size: calc(1.325rem + .3vw);
+    font-weight: 300;
+    line-height: 1.2;
+}
+.display-8 {
+    font-size: calc(1.325rem  + .01vw);
+    font-weight: 300;
+    line-height: 1.2;
+}
 .text-left {
     text-align: left !important; }
   

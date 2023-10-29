@@ -5,7 +5,7 @@ interface ILogger {
 }
 
 export class Logger {
-    prefix?: string
+    private prefix?: string
     
     constructor(options: ILogger = {}) {
         this.prefix = options.prefix;
@@ -50,6 +50,6 @@ export class Logger {
             }).join(' ');
         }
         
-        return this.prefix ? `${chalk.magentaBright(`[${this.prefix}]`)} ${parsedMessage}` : parsedMessage;
+        return this.prefix ? `${chalk.greenBright(`[${this.prefix}]`)} ${parsedMessage}` : parsedMessage;
     }
 }

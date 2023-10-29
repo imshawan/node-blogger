@@ -1,0 +1,31 @@
+<div id="admin-account-setup" data-validator="administratorAccount" role="tabpanel" class="bs-stepper-pane fade dstepper-none" aria-labelledby="stepperFormTrigger2">
+    <h6 class="text-muted my-2 mb-4">
+        Create your administrator account
+    </h6>
+
+    <div class="mb-3">
+        <label class="form-label" for="usernameField">Username<span
+                class="text-danger font-weight-bold">*</span></label>
+        <input id="usernameField" class="form-control" name="username" placeholder="Enter your username" required="">
+        <div data-validation="username"" class="invalid-feedback">Please fill the username field</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="emailField">Email<span
+                class="text-danger font-weight-bold">*</span></label>
+        <input id="emailField" type="email" class="form-control" name="email" placeholder="Enter your email" required="">
+        <div data-validation="email" class="invalid-feedback">Please fill the email field</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="inputPasswordForm">Password<span
+                class="text-danger font-weight-bold">*</span></label>
+        <input id="inputPasswordForm" type="password" class="form-control" name="password" placeholder="Password" required="">
+        <div data-validation="password" class="invalid-feedback">Please fill the password field</div>
+    </div>
+    <div class="mb-4">
+        <label class="form-label" for="inputPasswordConfirmForm">Confirm Password<span
+                class="text-danger font-weight-bold">*</span></label>
+        <input id="inputPasswordConfirmForm" class="form-control"  name="confirmPassword" placeholder="Re-enter Password" required="">
+        <div data-validation="confirmPassword" class="invalid-feedback">Please re-enter your password once again</div>
+    </div>
+    <button id="create-admin-account" class="btn btn-primary px-4">Submit</button>
+</div>

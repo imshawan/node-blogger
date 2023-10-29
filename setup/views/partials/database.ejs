@@ -1,0 +1,50 @@
+<div id="database-form" data-validator="database" role="tabpanel" class="bs-stepper-pane fade active dstepper-block"
+    aria-labelledby="stepperFormTrigger1">
+    <div class="mb-3">
+        <h6 class="text-muted my-2 mb-4">
+            Setup database connection (MongoDB)
+            <a href="https://www.mongodb.com/docs/manual/reference/connection-string/" class="text-muted"
+                target="_blank">
+                <i class="fa fa-question-circle small" aria-hidden="true"></i>
+            </a>
+        </h6>
+        <div class="mb-3">
+            <label class="form-label" for="db-connection">
+                URI
+                <span class="text-danger font-weight-bold">*</span></label>
+            <textarea id="db-connection" type="text" class="form-control" name="uri" rows="4"
+                placeholder="Example: mongo+srv://username:password@example.abcde.mongodb.net" required></textarea>
+            <div data-validation="uri" class="invalid-feedback">Please fill the database uri field</div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="db-name">Database<span class="text-danger font-weight-bold">*</span></label>
+            <input id="db-name" class="form-control" name="dbName" value="NodeBlogger" required>
+            <div class="invalid-feedback">Please fill the database name</div>
+        </div>
+    </div>
+
+    <div id="advanced-options" class="my-4">
+        <a href="#getting-started-collapse"
+            class="text-decoration-none d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse"
+            aria-expanded="false">
+            <h6 class="text-black my-auto">Advanced connection options</h6>
+        </a>
+        <div class="collapse" id="getting-started-collapse">
+            <div class="text-muted small my-3">
+                Use username/password mode of Authentication to connect to your database
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="mongo-username">Username</label>
+                <input id="mongo-username" class="form-control" placeholder="Username">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="mongo-password">Password</label>
+                <input id="mongo-password" type="password" class="form-control" placeholder="Password">
+            </div>
+        </div>
+    </div>
+
+    <button id="connect-db" style="min-width: 108px;" class="btn btn-primary px-4">Connect</button>
+</div>

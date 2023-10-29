@@ -8,6 +8,7 @@
     "url": "https://github.com/imshawan/NodeBlogger/"
   },
   "scripts": {
+    "setup": "ts-node --files -r tsconfig-paths/register ./setup",
     "build": "npx ts-node --files -r tsconfig-paths/register ./build",
     "clean": "npx ts-node ./build/clean.ts clean --p dist",
     "lint": "npx eslint --ext .ts src/",
