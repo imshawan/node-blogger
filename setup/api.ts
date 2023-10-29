@@ -162,7 +162,12 @@ async function complete(req: Request, res: Response, next: NextFunction) {
         previousTempFiles.forEach(file => fs.unlinkSync(path.join(tempFilesDir,  file)));
     }
     
-    res.status(200).json({message: 'OK'})
+    res.status(200).json({message: 'OK'});
+
+    setTimeout(() => {
+        logger.info('Stopping Web Installer');
+        process.exit(1);
+    }, 500);
 }
 
 async function setupDatabaseConnection(uri: string, dbName: string) {

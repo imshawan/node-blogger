@@ -41,16 +41,16 @@
     <link rel="stylesheet" href="/assets/styles.css">
     <link rel="stylesheet" href="/assets/common.css">
 
-    <title>Setup | Node Blogger</title>
+    <title><%= title %></title>
 </head>
 
 <body class="bg-light">
     <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
         <div class="container py-2">
             <a class="navbar-brand" href="#">
-                <img src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24"
+                <img src="<%= logo %>" alt="" width="30" height="24"
                     class="d-inline-block align-text-top">
-                Node Blogger
+                <%= siteName %>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -80,7 +80,7 @@
 
                 <div class="my-5 p-4 bg-white shadow-sm">
                     <div class="col px-2">
-                        <h3 class="mb-2 display-6">Welcome to Node Blogger!</h3>
+                        <h3 class="mb-2 display-6">Welcome to <%= siteName %>!</h3>
                         <div class="text-muted display-8">Let's setup the application to Kickstart your blogging
                             adventure.</div>
                     </div>

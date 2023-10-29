@@ -10,6 +10,8 @@ import EnvVars from '../src/constants/EnvVars';
 import HttpStatusCodes from '../src/constants/HttpStatusCodes';
 import {NodeEnvs} from '../src/constants/misc';
 import apiHandler from './api';
+import { MutableObject } from '../src/types';
+import defults from './data/defaults.json'
 
 
 const logger = new Logger({prefix: 'setup'});
@@ -19,7 +21,6 @@ const httpServer = http.createServer(app);
 const start = async function (port: Number, callback: Function) {
 
     await buildAssets();
-
     await setupExpressServer(app);
 
     app.get('/', setup);
@@ -51,7 +52,7 @@ const start = async function (port: Number, callback: Function) {
     });
 }
 
-const destroy = (callback: Function) => {
+const destroy = (callback?: Function) => {
     httpServer.close(() => {
         if (callback && typeof callback == 'function') {
             callback();
@@ -60,7 +61,6 @@ const destroy = (callback: Function) => {
 }
 
 async function setupExpressServer(app: Application) {
-    
     app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
     // Serving the common CSS for the app
@@ -133,7 +133,13 @@ async function buildAssets() {
 }
 
 async function setup(req: Request, res: Response) {
-    res.render('install')
+    const data: MutableObject = {};
+
+    data.title = 'Setup | ' + defults.siteName;
+    data.siteName = defults.siteName;
+    data.logo = defults.logo;
+
+    res.render('install', data);
 }
 
 export default {
