@@ -38,7 +38,7 @@ categories.get = async function get(req: Request, res: Response, next: NextFunct
     }
 
     pageData.title = 'Categories';
-    pageData.sidebar = sidebar.get('all_categories');
+    pageData.sidebar = sidebar.get('manage:all-categories');
 
     pageData.categories = categories;
     pageData.search = search || '';
@@ -69,7 +69,7 @@ categories.getBySlug = async function get(req: Request, res: Response, next: Nex
     }
 
     pageData.title = categoryData.name;
-    pageData.sidebar = sidebar.get('all_categories');
+    pageData.sidebar = sidebar.get('manage:all-categories');
 
     pageData.category = categoryData;
     pageData.tags = (tags || []).map((tag: ICategoryTag) => ({id: tag.tagid, text: tag.name, selected: true}));
@@ -82,7 +82,7 @@ categories.create = async function create(req: Request, res: Response, next: Nex
     const sidebar = new SideBar(sidebarData);
 
     pageData.title = 'New category';
-    pageData.sidebar = sidebar.get('new_category');
+    pageData.sidebar = sidebar.get('manage:all-categories');
     
     res.render(BASE + '/create', pageData);
 }
