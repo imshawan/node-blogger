@@ -16,6 +16,11 @@ var category = {
     name: 'Test category 1',
     cid: 0
 }
+var subCategory = {
+    name: 'Sub category 1',
+    cid: 0,
+    parent: 0
+}
 
 describe(`Processing tests for category API routes (${path.basename(__filename)})`, () => {
     before(async function () {
@@ -44,7 +49,29 @@ describe(`Processing tests for category API routes (${path.basename(__filename)}
             })
     });
 
-    it('It should update the existing category and return the new updated category', (done) => {
+    it('It should create a new sub-category with a reference to a previously created category as it\'s parent', (done) => {
+        subCategory.parent = category.cid;
+
+        chai.request(server.app)
+            .post('/api/v1/admin/categories/')
+            .send(subCategory)
+            .set('Cookie', user.cookies || '')
+            .end((err, response) => {
+                const {message=''} = response.body.status || {};
+
+                expect(response.statusCode).equal(HttpStatusCodes.OK, message);
+                expect(response.body).haveOwnProperty('payload');
+                expect(response.body.payload['name']).to.be.eql(subCategory.name);
+                expect(response.body.payload['userid']).to.be.eql(user.userid);
+                expect(response.body.payload['parent']).to.be.eql(category.cid);
+
+                subCategory = response.body.payload;
+
+                done();
+            })
+    });
+
+    it('It should update an existing category and return the new updated category', (done) => {
         chai.request(server.app)
             .put('/api/v1/admin/categories/' + category.cid)
             .send({...category, name: categoryNameUpdated})
@@ -67,7 +94,6 @@ describe(`Processing tests for category API routes (${path.basename(__filename)}
             .get('/api/v1/admin/categories/' + category.cid)
             .set('Cookie', user.cookies || '')
             .end((err, response) => {
-                console.log('get by id', response.body)
                 const {message=''} = response.body.status || {};
 
                 expect(response.statusCode).equal(HttpStatusCodes.OK, message);
@@ -80,7 +106,7 @@ describe(`Processing tests for category API routes (${path.basename(__filename)}
             })
     });
 
-    it('It should return all the categories available with pagination', (done) => {
+    it('It should return all the categories and sub-categories available with pagination', (done) => {
         chai.request(server.app)
             .get('/api/v1/admin/categories')
             .set('Cookie', user.cookies || '')
@@ -105,6 +131,23 @@ describe(`Processing tests for category API routes (${path.basename(__filename)}
 
                 done();
             })
+    });
+
+    it('It should return only the categories available with pagination', (done) => {
+        chai.request(server.app)
+            .get('/api/v1/admin/categories?subCategories=false')
+            .set('Cookie', user.cookies || '')
+            .end((err, response) => {
+                const {message=''} = response.body.status || {};
+                const {data} = response.body.payload;
+
+                expect(response.statusCode).equal(HttpStatusCodes.OK, message);
+                expect(response.body.payload['data']).to.be.an('array');
+                expect(response.body.payload['data'].length).to.be.greaterThan(1);
+                expect(data[0]['parent']).to.be.an('undefined');
+
+                done();
+            });
     });
 
     it('It should delete the created category by it\'s id', (done) => {

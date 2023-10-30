@@ -8,6 +8,7 @@ import { isParsableJSON } from "@src/utilities";
 const categoryApi: MutableObject = {
     tags: {}
 };
+const categoryFields = ['name', 'cid', 'thumb', 'parent'];
 
 categoryApi.get = async (req: Request) => {
     const {query, params} = req;
@@ -46,9 +47,9 @@ categoryApi.get = async (req: Request) => {
 
     if (search) {
         search = String(search).trim();
-        categories = await category.data.getCategoryByName(search, perPage, page, [], null, includeSubCategories);
+        categories = await category.data.getCategoryByName(search, perPage, page, categoryFields, null, includeSubCategories);
     } else {
-        categories = await category.data.getAllCategories(perPage, page, ['name', 'cid', 'thumb'], null, includeSubCategories);
+        categories = await category.data.getAllCategories(perPage, page, categoryFields, null, includeSubCategories);
     }
 
     return paginate(categories, perPage, page, url)
