@@ -6,6 +6,10 @@ import api from "@src/api";
 
 
 export default {
+
+    updateCommon: async (req: Request, res: Response, next: NextFunction) => {
+        handleApiResponse(HttpStatusCodes.OK, res, await api.application.updateCommonStore(req));
+    },
     
     updateLogo: async (req: Request, res: Response, next: NextFunction) => {
         handleApiResponse(HttpStatusCodes.OK, res, await api.application.updateSiteImages(req, 'logo'));

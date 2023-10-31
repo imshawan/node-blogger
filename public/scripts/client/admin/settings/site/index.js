@@ -28,19 +28,26 @@ define('client/admin/settings/site/index', ['modules/http'], function (http) {
             }
         });
 
-        $('#save-site-information').on('click', async function () {
+        $('#save-site-information').on('click', function () {
             const keywordsSelector = $('#site-keywords');
-
-            utilities.showToast('Please wait..');
             if (keywordsSelector.data('is-dirrty')) {
                 dataChanged[keywordsSelector.attr('name')] = keywordsSelector.val();
             }
-            
-            console.log(dataChanged);
-            
 
-            $('#site-config').dirrty('setClean');
-            dataChanged = {};
+            if (!Object.keys(dataChanged).length) return utilities.showToast('Nothing to save, as no changes were made.');
+
+            http.PUT('/api/v1/admin/application/common', dataChanged)
+                .then(res => {
+                    $('#site-config').dirrty('setClean');
+                    dataChanged = {};
+
+                    if (Object.keys(res).length) {
+                        Object.assign(Application._config || {}, res);
+                    }
+
+                    utilities.showToast('Data was saved successfully.', 'success');
+                })
+                .catch(err => utilities.showToast(err.message, 'error'));
         });
     }
 

@@ -6,15 +6,17 @@ import { Logger } from '@src/utilities';
 const {info} = new Logger();
 const filterApplicationKeys: AppKeysArray = ['_id', '_key'];
 const protectedApplicationKeys: AppKeysArray = ['cookie', 'cors', 'session', 'xPoweredByHeaders'];
+const imageFields = ['logo', 'favicon'];
 
 export const application: {configurationStore?: IApplication} = {};
 
-export const get = function (field: string) {
+export const get = function (field: keyof IApplication) {
     if (application.configurationStore && Object.hasOwnProperty.bind(application.configurationStore)(field)) {
-        // @ts-ignore
         return application.configurationStore[field];
     }
 }
+
+export const getTypeofField = (field: keyof IApplication) => typeof get(field);
 
 export const getConfigurationStoreByScope = function (scope?: 'admin' | 'client') {
     const store: MutableObject = {};
@@ -42,12 +44,40 @@ export const getConfigurationStoreByScope = function (scope?: 'admin' | 'client'
     return store;
 }
 
+export const getCommonFields = function (): Array<keyof IApplication> {
+    const {configurationStore} = application;
+    const protectedFields = [...filterApplicationKeys, ...imageFields];
+    if (!configurationStore) return [];
+
+    const keys = Object.keys(configurationStore) as (keyof IApplication)[];
+    return keys.filter((key: keyof IApplication) => typeof configurationStore[key] != 'object' && !protectedFields.includes(key));
+}
+
 export const set = function(key: keyof IApplication, value: any) {
     if (!key) {
         throw new Error('key is required');
     }
 
     Object.assign(application.configurationStore || {}, {[key]: value});
+}
+
+export const setValuesBulk = function(applicationObject: MutableObject) {
+    const fieldsFromObj = Object.keys(applicationObject) as (keyof IApplication)[];
+    const commonFields = getCommonFields();
+    const invalid: (keyof IApplication)[] = [];
+
+    fieldsFromObj.forEach(field => !commonFields.includes(field) && invalid.push(field));
+    if (invalid.length) {
+        throw new Error('Invalid store field(s) ' + invalid.join(', '));
+    }
+    fieldsFromObj.forEach(field => {
+        const expectedType = getTypeofField(field)
+        if (typeof applicationObject[field] != expectedType) {
+            throw new Error(`Invalid type for ${field}. Expected ${expectedType} and found ${typeof applicationObject[field]}`);
+        }
+    });
+
+    Object.assign(application.configurationStore || {}, applicationObject);
 }
 
 export const initialize = async function initialize() {
