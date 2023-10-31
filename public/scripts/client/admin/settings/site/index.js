@@ -52,7 +52,7 @@ define('client/admin/settings/site/index', ['modules/http'], function (http) {
             console.log($(`#${imageType}-upload-btn`), `#${imageType}-upload-btn`)
 
             let formData = new FormData();
-            let endpoint = '/api/v1/admin/settings/site/' + imageType;
+            let endpoint = '/api/v1/admin/application/site/' + imageType;
             formData.append(imageType, files);
 
             site.uploadImage(endpoint,  'post', formData, () => {

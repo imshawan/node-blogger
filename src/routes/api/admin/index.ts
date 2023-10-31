@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import category from './category';
-import settings from './settings';
+import application from './application';
 
 const router = Router();
 
 router.use('/categories', category);
-router.use('/settings', settings);
+router.use('/application', application);
 
 export default router;
