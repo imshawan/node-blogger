@@ -10,7 +10,7 @@ const router = Router();
 const fileStorage = new FileStore();
 const fileuploadMiddleware = fileStorage.initialize();
 
-mountApiRoute(router, 'post', '/site/logo', [fileuploadMiddleware, checkRequiredFileFields.bind(null, ['logo'])], controllers.api.settings.site.updateLogo);
-mountApiRoute(router, 'post', '/site/favicon', [fileuploadMiddleware, checkRequiredFileFields.bind(null, ['favicon'])], controllers.api.settings.site.updateFavicon);
+mountApiRoute(router, 'post', '/site/logo', [fileuploadMiddleware, checkRequiredFileFields.bind(null, ['logo'])], controllers.api.application.site.updateLogo);
+mountApiRoute(router, 'post', '/site/favicon', [fileuploadMiddleware, checkRequiredFileFields.bind(null, ['favicon'])], controllers.api.application.site.updateFavicon);
 
 export default router;
