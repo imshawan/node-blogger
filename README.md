@@ -1,6 +1,6 @@
 ## Node Blogger
 
-Node Blogger is a simple open-source blogging application for the ones who loves content creation along with with powerful admin controls, and effortless site management.
+Node Blogger is a simple open-source blogging platform for the ones who loves content creation along with with powerful admin controls, and effortless site management.
 
 ## Getting Started
 
