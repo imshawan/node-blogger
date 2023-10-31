@@ -2,7 +2,7 @@ import { ICategory } from "@src/types";
 import utilities from './utils'
 import { getISOTimestamp } from "@src/utilities";
 import _ from "lodash";
-import { meta } from "@src/meta";
+import { application } from "@src/application";
 import { database } from "@src/database";
 import data from "./data";
 
@@ -11,7 +11,7 @@ const MAX_BLURB_SIZE = 250;
 export default async function create(categoryData: ICategory) {
     const {name='', userid, thumb} = categoryData;
     var {description='', blurb='', tagsPerPost, parent} = categoryData;
-    var maxCategoryBlurbLength = meta.configurationStore?.maxCategoryBlurbLength || MAX_BLURB_SIZE;
+    var maxCategoryBlurbLength = application.configurationStore?.maxCategoryBlurbLength || MAX_BLURB_SIZE;
 
     if (!userid) {
         throw new Error('userid is required');

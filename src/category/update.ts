@@ -2,7 +2,7 @@ import { ICategory } from "@src/types";
 import utilities from './utils'
 import { getISOTimestamp } from "@src/utilities";
 import _ from "lodash";
-import { meta } from "@src/meta";
+import { application } from "@src/application";
 import { database } from "@src/database";
 import _data from "./data";
 
@@ -10,7 +10,7 @@ import _data from "./data";
 const MAX_BLURB_SIZE = 250;
 
 export default async function update(data: ICategory) {
-    const maxCategoryBlurbLength = meta.configurationStore?.maxCategoryBlurbLength || MAX_BLURB_SIZE;
+    const maxCategoryBlurbLength = application.configurationStore?.maxCategoryBlurbLength || MAX_BLURB_SIZE;
     const {name, userid, thumb, description, cid, altThumb} = data;
     var {tagsPerPost, parent} = data;
 

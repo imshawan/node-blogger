@@ -2,7 +2,7 @@ import { Express } from 'express';
 
 export * from './database';
 export * from './authentication';
-export * from './meta';
+export * from './application';
 export * from './category';
 export * from './user';
 export * from './test';

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import _ from 'lodash';
-import { meta } from './init';
+import { application } from './init';
 
 export const getTTLSessionSeconds = () => {
-    var maxTTLDays = meta.configurationStore?.cookie.maxTTLDays;
+    var maxTTLDays = application.configurationStore?.cookie.maxTTLDays;
     if (!maxTTLDays) {
         maxTTLDays = 12;
     }

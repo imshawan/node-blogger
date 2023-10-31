@@ -1,13 +1,14 @@
 
-export type MetaKeysArray = Array<keyof IMeta>;
+export type AppKeysArray = Array<keyof IApplication>;
 
-export interface IMeta {
+export interface IApplication {
   _id: string
   _key: string
   siteName: string
   siteNameUrl: string
   siteShortName: string
   description: string
+  keywords: Array<string>
   logo: string
   favicon: string
   altLogoText: string

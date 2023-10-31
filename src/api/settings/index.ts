@@ -1,7 +1,7 @@
 import { Request } from "express";
 import {database} from "@src/database";
 import { MulterFilesArray, ValueOf } from "@src/types";
-import { meta, set as updateConfigurationStore } from "@src/meta";
+import { application, set as updateConfigurationStore } from "@src/application";
 
 const validSiteImagesArray = ['logo', 'favicon'] as const;
 
@@ -15,7 +15,7 @@ const updateSiteImages = async (req: Request, imageType: ValidSiteImageTypes) =>
         throw new Error('Invalid image type. Valid image types are: ' + validSiteImagesArray.join(', '))
     }
 
-    const _key = 'global:meta';
+    const _key = 'global:application';
     const files = req.files as MulterFilesArray[];
 
     if (files.length) {
@@ -27,7 +27,7 @@ const updateSiteImages = async (req: Request, imageType: ValidSiteImageTypes) =>
         updateConfigurationStore(imageType, url);
     }
     
-    return {message: meta.configurationStore};
+    return {message: application.configurationStore};
 }
 
 export default {

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { WebManifest } from '@src/helpers';
-import { meta } from '@src/meta';
+import { application } from '@src/application';
 import { IManifestData } from '@src/types';
 import nconf from 'nconf';
 import { createGzip } from 'zlib';
@@ -9,9 +9,9 @@ import { SitemapStream, streamToPromise } from 'sitemap';
 var sitemapCache: Buffer;
 
 const robots = async function (req: Request, res: Response) {
-    const userAgents: Array<string> = meta.configurationStore?.robots?.userAgents || ['*'];
-    const disallowed: Array<string> = meta.configurationStore?.robots?.disallowed || ['/admin/'];
-    const allowed: Array<string> = meta.configurationStore?.robots?.allowed || ['/'];
+    const userAgents: Array<string> = application.configurationStore?.robots?.userAgents || ['*'];
+    const disallowed: Array<string> = application.configurationStore?.robots?.disallowed || ['/admin/'];
+    const allowed: Array<string> = application.configurationStore?.robots?.allowed || ['/'];
     let robotsTxt = '';
     
     robotsTxt += userAgents.map(el => `User-agent: ${el}\n`).join('');
@@ -53,10 +53,10 @@ const sitemap = async function (req: Request, res: Response) {
 
 const manifest = async function (req: Request, res: Response) {
     const manifestInfo: IManifestData = {
-        name: meta.configurationStore?.siteName,
-        short_name: meta.configurationStore?.siteShortName,
-        theme_color: meta.configurationStore?.manifest?.themeColor,
-        background_color: meta.configurationStore?.manifest?.backgroundColor,
+        name: application.configurationStore?.siteName,
+        short_name: application.configurationStore?.siteShortName,
+        theme_color: application.configurationStore?.manifest?.themeColor,
+        background_color: application.configurationStore?.manifest?.backgroundColor,
         start_url: nconf.get('host')
     };
     const manifest = new WebManifest(manifestInfo).get();

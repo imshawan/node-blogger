@@ -14,7 +14,7 @@
                     <a class="nav-link active" href="/">Home</a>
                     <a class="nav-link" href="/users">Users</a>
 
-                    <% if (_meta && _meta.isAdministrator ) { %>
+                    <% if (_application && _application.isAdministrator ) { %>
                         <a class="nav-link" href="/admin">Admin</a>
                     <% } %> 
 
@@ -23,7 +23,7 @@
                     <a class="nav-link" href="/contact">contact</a>
                     <a class="nav-link" href="/about">about</a>
 
-                    <% if (!_meta.authenticated) { %>
+                    <% if (!_application.authenticated) { %>
                         <a class="nav-link" href="/signin">Sign in</a>
                     <% } else { %>
                         <%- include('/partials/loggedin_usernav'); -%>

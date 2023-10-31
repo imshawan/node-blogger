@@ -2,7 +2,7 @@ import zxcvbn from 'zxcvbn';
 import { getUserByUsername } from './data';
 import { database } from '@src/database';
 import { slugify } from '@src/utilities';
-import { meta } from '@src/meta';
+import { application } from '@src/application';
 
 interface IPasswordStrength {
     warning: string
@@ -22,9 +22,9 @@ function isValidEmail (email: string): boolean {
 };
 
 function validatePassword(password: string): void {
-    const MINIMUM_PASS_LENGTH = meta.configurationStore?.minPasswordLength || 6;
-    const MAXIMUM_PASS_LENGTH = meta.configurationStore?.maxPasswordLength || 256;
-    const MIN_STRENGTH = meta.configurationStore?.minPasswordStrength || 2;
+    const MINIMUM_PASS_LENGTH = application.configurationStore?.minPasswordLength || 6;
+    const MAXIMUM_PASS_LENGTH = application.configurationStore?.maxPasswordLength || 256;
+    const MIN_STRENGTH = application.configurationStore?.minPasswordStrength || 2;
     
     if (!password || !password.length) {
         throw new Error('Password is required');
@@ -45,7 +45,7 @@ function validatePassword(password: string): void {
 }
 
 function checkPasswordStrength(password: string): IPasswordStrength {
-    const MIN_STRENGTH = meta.configurationStore?.minPasswordStrength || 2;
+    const MIN_STRENGTH = application.configurationStore?.minPasswordStrength || 2;
     const strength = zxcvbn(password);
     let score=0, weak=false;
 
@@ -57,8 +57,8 @@ function checkPasswordStrength(password: string): IPasswordStrength {
 }
 
 async function validateUsername(username: string) {
-    const MINIMUM_USERNAME_LENGTH = meta.configurationStore?.minUsernameLength || 3;
-    const MAXIMUM_USERNAME_LENGTH = meta.configurationStore?.maxUsernameLength || 100;
+    const MINIMUM_USERNAME_LENGTH = application.configurationStore?.minUsernameLength || 3;
+    const MAXIMUM_USERNAME_LENGTH = application.configurationStore?.maxUsernameLength || 100;
 
     username = username.trim();
     if (username.length < MINIMUM_USERNAME_LENGTH) {

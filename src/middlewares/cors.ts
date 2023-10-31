@@ -1,11 +1,11 @@
 import cors from 'cors';
 import { NextFunction, Request, Response } from 'express';
 import _ from 'lodash';
-import { meta } from '@src/meta';
+import { application } from '@src/application';
 import { CorsOptions } from '@src/types';
 
 const getCorsOptions = function getCorsOptions() {
-    const corsOps: CorsOptions = meta.configurationStore?.cors || {
+    const corsOps: CorsOptions = application.configurationStore?.cors || {
         allowedHeaders: undefined,
         credentials: true
         ,
@@ -19,7 +19,7 @@ const getCorsOptions = function getCorsOptions() {
 }
 
 const corsOptionsDelegate = (req: Request, callback: Function) => {
-    const whitelist = (meta.configurationStore?.cors.whitelistOrigins || "*").split(',').map(e => e.trim());
+    const whitelist = (application.configurationStore?.cors.whitelistOrigins || "*").split(',').map(e => e.trim());
     const origin = req.header('Origin');
     var corsOriginOptions = { origin: true };
 

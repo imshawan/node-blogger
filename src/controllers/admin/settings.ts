@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { MetaKeysArray, MutableObject } from "@src/types";
+import { AppKeysArray, MutableObject } from "@src/types";
 import {data as sidebarData} from "./sidebar";
 import { SideBar } from "@src/utilities";
 import { getUsersByPagination } from "@src/user";
-import { meta } from "@src/meta";
+import { application } from "@src/application";
 
 const BASE = 'settings';
 
 const site = async function (req: Request, res: Response, next: NextFunction) {
     const sidebar = new SideBar(sidebarData);
     const pageData: MutableObject = {};
-    const siteMetaKeysArray: MetaKeysArray = [
+    const siteAppKeysArray: AppKeysArray = [
         "siteName",
         "siteNameUrl",
         "siteShortName",
@@ -23,7 +23,7 @@ const site = async function (req: Request, res: Response, next: NextFunction) {
 
     pageData.title = 'Site settings';
     pageData.sidebar = sidebar.get('settings:site');
-    pageData.data = retriveMetaPropertiesFiltered(siteMetaKeysArray);
+    pageData.data = retriveApplicationPropertiesFiltered(siteAppKeysArray);
 
     res.render(BASE + '/site/index', pageData);
 }
@@ -120,23 +120,23 @@ const cookies = async function (req: Request, res: Response, next: NextFunction)
     res.render(BASE + '/cookies', pageData);
 }
 
-function retriveMetaPropertiesFiltered(filterKeys: MetaKeysArray) {
-    const metaObject: MutableObject = {};
-    const {configurationStore} = meta;
+function retriveApplicationPropertiesFiltered(filterKeys: AppKeysArray) {
+    const applicationObject: MutableObject = {};
+    const {configurationStore} = application;
 
-    if (!configurationStore) return metaObject;
+    if (!configurationStore) return applicationObject;
 
     if (filterKeys && filterKeys.length) {
         filterKeys.forEach(key => {
             if (Object.hasOwnProperty.bind(configurationStore)(key)) {
-                metaObject[key] = configurationStore[key];
+                applicationObject[key] = configurationStore[key];
             } else {
-                metaObject[key] = null;
+                applicationObject[key] = null;
             }
         });
     }
 
-    return metaObject;
+    return applicationObject;
 }
 
 export default {

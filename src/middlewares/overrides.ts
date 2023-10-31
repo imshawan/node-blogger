@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { baseScripts, vendorScripts, adminScripts } from "@src/meta";
+import { baseScripts, vendorScripts, adminScripts } from "@src/application";
 import {siteName, paths} from '@src/constants';
 import fs from 'fs';
 import ejs from 'ejs';
-import { meta, styleSheets, getConfigurationStoreByScope } from "@src/meta";
+import { application, styleSheets, getConfigurationStoreByScope } from "@src/application";
 import path from "path";
 import { isAdministrator } from "@src/user";
 
@@ -38,7 +38,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         pageOptions.scripts = [];
         pageOptions.baseScripts = isAdminRoute ? baseScripts.concat(adminScripts) : baseScripts;
         pageOptions.pageScript = ['client/', (isAdminRoute ? 'admin/' + template : template)].join('');
-        pageOptions._meta = await parseMetaInformation(req);
+        pageOptions._application = await parseApplicationInformation(req);
         pageOptions._breadcrumb = res.locals.breadcrumb || [];
         pageOptions._csrf_token = csrfToken;
         pageOptions._isError = res.locals.error || false;
@@ -75,7 +75,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
 };
 
 export const overrideHeaders = async function (req: Request, res: Response, next: NextFunction) {
-    const xPoweredBy = meta.configurationStore?.xPoweredByHeaders || 'NodeBlogger';
+    const xPoweredBy = application.configurationStore?.xPoweredByHeaders || 'NodeBlogger';
     res.setHeader('X-Powered-By', xPoweredBy);
     next();
 }
@@ -134,7 +134,7 @@ function generatePageDataScript(options: object): string {
             </script>`
 }
 
-async function parseMetaInformation(req: Request) {
+async function parseApplicationInformation(req: Request) {
     const {user} = req;
 
     // @ts-ignore

@@ -22,7 +22,7 @@ import {RouteError} from '@src/other/classes';
 import { handleApiResponse, validateConfiguration, extractRemoteAddrFromRequest } from '@src/helpers';
 import { overrideRender, user, authentication, overrideHeaders, addUserSessionAgent } from '@src/middlewares';
 import {initializeDbConnection, mongo, database} from './database';
-import { cookies, meta, initialize as initializeMeta } from './meta';
+import { cookies, application, initialize as initializeApplicationStore } from './application';
 import config from '../config.json';
 import _ from 'lodash';
 import passport from 'passport';
@@ -68,7 +68,7 @@ const initialize = async function () {
     }
 
     await initializeDbConnection(mongoConfig);
-    await initializeMeta();
+    await initializeApplicationStore();
     await setupExpressServer(app);
 
     // Production morgan logging pattern
@@ -161,11 +161,11 @@ async function setupExpressServer(app: Application) {
 
     // Basic middleware
     app.use(express.json({
-        limit: meta.configurationStore?.maximumRequestBodySize || '1mb'
+        limit: application.configurationStore?.maximumRequestBodySize || '1mb'
     }));
     app.use(express.urlencoded({
         extended: true,
-        limit: meta.configurationStore?.maximumRequestBodySize || '1mb'
+        limit: application.configurationStore?.maximumRequestBodySize || '1mb'
     }));
 
     app.use(cookieParser(secret));
@@ -179,10 +179,10 @@ async function setupExpressServer(app: Application) {
         expressSession({
             store: mongo.sessionStore,
             secret: secret,
-            name: meta.configurationStore?.session.name,
+            name: application.configurationStore?.session.name,
             cookie: cookies.setupCookie(req, res),
-            resave: meta.configurationStore?.session.resave || false,
-            saveUninitialized: meta.configurationStore?.session.saveUninitialized || false,
+            resave: application.configurationStore?.session.resave || false,
+            saveUninitialized: application.configurationStore?.session.saveUninitialized || false,
         })(req, res, next);
     });
 

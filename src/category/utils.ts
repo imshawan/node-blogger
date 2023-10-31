@@ -1,6 +1,6 @@
 import { database } from '@src/database';
 import { slugify } from '@src/utilities';
-import { meta } from '@src/meta';
+import { application } from '@src/application';
 
 const generateCategoryslug = async function generateCategoryslug(name: string): Promise<string> {
     let slug = slugify(name);

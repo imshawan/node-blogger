@@ -8,7 +8,7 @@ import pageRouter from './pageRoutes';
 import authentication from './authentication';
 import adminPageRouter from './admin';
 import userRoutes from './user';
-import webMetaConfiguration from './web';
+import webAppConfiguration from './web';
 
 const router = Router();
 
@@ -19,7 +19,7 @@ router.use('/', initializeCors, pageRouter);
 router.use('/', initializeCors, authentication);
 
 // Handlers for contains configurations related to other various aspects of the web application
-router.use('/', webMetaConfiguration);
+router.use('/', webAppConfiguration);
 
 // Mounting the admin page routers
 router.use('/admin', initializeCors, requireLogin.bind(null, '/admin'), breadcrumbs.bind(null, '/admin'), adminPageRouter);

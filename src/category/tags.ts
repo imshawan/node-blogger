@@ -2,7 +2,7 @@ import { database } from "@src/database";
 import utilities from './utils'
 import { getISOTimestamp } from "@src/utilities";
 import _ from "lodash";
-import { meta } from "@src/meta";
+import { application } from "@src/application";
 import { ICategoryTag, ICategory } from "@src/types";
 import { validAccessUserRoles, getUserRoles } from "@src/user";
 
@@ -10,7 +10,7 @@ const MAX_TAG_SIZE = 25;
 
 const create = async function create(tagData: ICategoryTag) {
     const {name,cid,userid} = tagData;
-    var maxTagLength = meta.configurationStore?.maxCategoryBlurbLength || MAX_TAG_SIZE;
+    var maxTagLength = application.configurationStore?.maxCategoryBlurbLength || MAX_TAG_SIZE;
 
     if (!userid) {
         throw new Error('userid is required');

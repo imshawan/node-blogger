@@ -3,7 +3,7 @@ import {utils as Utils} from './utils';
 import { password as Passwords, getISOTimestamp, generateUUID } from "@src/utilities";
 import _ from "lodash";
 import { database } from "@src/database";
-import { get as getMetaInfo } from "@src/meta";
+import { get as geApplicationInfo } from "@src/application";
 
 const validUserFields = [
     "fullname",
@@ -39,28 +39,28 @@ function validateUserData(userData: IUser): boolean {
     const {fullname, bio, about} = userData;
 
     if (fullname) {
-        if (fullname.length > Number(getMetaInfo('maxFullnameLength'))) {
+        if (fullname.length > Number(geApplicationInfo('maxFullnameLength'))) {
             throw new Error('fullname too large');
         }
-        if (fullname.length < Number(getMetaInfo('minFullnameLength'))) {
+        if (fullname.length < Number(geApplicationInfo('minFullnameLength'))) {
             throw new Error('fullname too small');
         }
     }
 
     if (bio) {
-        if (bio.length > Number(getMetaInfo('maxBioLength'))) {
+        if (bio.length > Number(geApplicationInfo('maxBioLength'))) {
             throw new Error('bio too large');
         }
-        if (bio.length < Number(getMetaInfo('minBioLength'))) {
+        if (bio.length < Number(geApplicationInfo('minBioLength'))) {
             throw new Error('bio too small');
         }
     }
 
     if (about) {
-        if (about.length > Number(getMetaInfo('maxAboutLength'))) {
+        if (about.length > Number(geApplicationInfo('maxAboutLength'))) {
             throw new Error('about too large');
         }
-        if (about.length < Number(getMetaInfo('minAboutLength'))) {
+        if (about.length < Number(geApplicationInfo('minAboutLength'))) {
             throw new Error('about too small');
         }
     }
