@@ -1,55 +1,60 @@
 <div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Logo & Favicon</h5>
+  <div class="card-body">
+    <h5 class="card-title">Logo & Favicon</h5>
 
-        <form id="site-config-assets" class="row g-3">
-            <div class="col-12">
-              <label class="mb-1">Favicon</label>
-              <input type="file" name="" class="d-none" id="favicon-upload-input">
-                <div class="form-group">
-                  
-                  <div class="input-group col-12">
-                    <input type="text" class="form-control file-upload-info" value="<%= data.favicon %>" id="favicon-upload-info" disabled="" placeholder="Upload Image">
-                    <span class="input-group-append">
-                      <button id="favicon-upload-btn" style="min-width: 130px;" class="file-upload-browse btn btn-primary" data-file-target="#favicon-upload-input" type="button">Upload</button>
-                    </span>
-                  </div>
+    <form id="site-config-assets" class="row g-3">
+      <div class="col-12">
+        <label class="mb-1">Blog image</label>
+        <input type="file" name="img[]" class="d-none" id="logo-upload-input">
+        <div class="form-group">
 
-                </div>
-            </div>
+          <div class="input-group col-12">
+            <input type="text" class="form-control file-upload-info" value="<%= data.logo %>" id="logo-upload-info"
+              disabled="" placeholder="Upload Image">
+            <span class="input-group-append">
+              <button id="logo-upload-btn" style="min-width: 130px;" class="file-upload-browse btn btn-primary"
+                data-file-target="#logo-upload-input" type="button">Upload</button>
+            </span>
+          </div>
 
-            <div class="col-12">
-                <label class="mb-1">Blog image</label>
-                <input type="file" name="img[]" class="d-none" id="logo-upload-input">
-                <div class="form-group">
-                    
-                    <div class="input-group col-12">
-                      <input type="text" class="form-control file-upload-info" value="<%= data.logo %>" id="logo-upload-info" disabled="" placeholder="Upload Image">
-                      <span class="input-group-append">
-                        <button id="logo-upload-btn" style="min-width: 130px;" class="file-upload-browse btn btn-primary" data-file-target="#logo-upload-input" type="button">Upload</button>
-                      </span>
-                    </div>
+        </div>
+      </div>
 
-                  </div>
-            </div>
+      <div class="col-12">
+        <label class="mb-1">Favicon</label>
+        <input type="file" name="" class="d-none" id="favicon-upload-input">
+        <div class="form-group">
 
-            <div class="col-12">
-              <div class="form-floating">
-                  <input type="text" class="form-control" value="<%= data.altLogoText %>" id="image-alt"  name="altLogoText" placeholder="">
-                  <label for="image-alt">Alternative text for logo</label>
-                  <div id="" class="form-text">This text will be shown in case the logo fails to load</div>
-              </div>
-            </div>
+          <div class="input-group col-12">
+            <input type="text" class="form-control file-upload-info" value="<%= data.favicon %>"
+              id="favicon-upload-info" disabled="" placeholder="Upload Image">
+            <span class="input-group-append">
+              <button id="favicon-upload-btn" style="min-width: 130px;" class="file-upload-browse btn btn-primary"
+                data-file-target="#favicon-upload-input" type="button">Upload</button>
+            </span>
+          </div>
 
-            <div class="col-12">
-              <div class="form-floating">
-                  <input type="text" class="form-control" id="image-url"  name="logoRedirectionUrl" placeholder="">
-                  <label for="image-url">URL for the logo</label>
-                  <div id="" class="form-text">When clicked on the logo, the users will be redirected to this URL</div>
-              </div>
-            </div>
+        </div>
+      </div>
 
-        </form>
+      <div class="col-12">
+        <div class="form-floating">
+          <input type="text" class="form-control" value="<%= data.altLogoText %>" id="image-alt" name="altLogoText"
+            placeholder="">
+          <label for="image-alt">Alternative text for logo</label>
+          <div id="" class="form-text">This text will be shown in case the logo fails to load</div>
+        </div>
+      </div>
 
-    </div>
+      <div class="col-12">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="image-url" name="logoRedirectionUrl" placeholder="">
+          <label for="image-url">URL for the logo</label>
+          <div id="" class="form-text">When clicked on the logo, the users will be redirected to this URL</div>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
 </div>
