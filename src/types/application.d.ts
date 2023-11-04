@@ -20,6 +20,22 @@ export interface IApplication {
   robots: Robots
   xPoweredByHeaders: string
   maximumRequestBodySize: string
+  allowTags: boolean
+  allowLike: boolean
+  allowDislike: boolean
+  allowComments: boolean
+  allowGuestComments: boolean
+  minPostTitleLength: number
+  maxPostTitleLength: number
+  minPostLength: number
+  maxPostLength: number
+  minTagsPerPost: number
+  maxTagsPerPost: number
+  maxPostThumbnailSize: string
+  allowedFileTypes: string[]
+  maxFileSize: string
+  externalLinks: string
+  registerationType: string
   maxPasswordLength: number
   maxUsernameLength: number
   maxEmailLength: number

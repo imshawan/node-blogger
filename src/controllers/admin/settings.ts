@@ -6,6 +6,13 @@ import { getUsersByPagination } from "@src/user";
 import { application } from "@src/application";
 
 const BASE = 'settings';
+const sorting = {
+    "Default": "default",
+    "Most recent": "recent",
+    "Oldest": "oldest",
+    "Popularity": "popular",
+    "More posts": "posts",
+}
 
 const site = async function (req: Request, res: Response, next: NextFunction) {
     const sidebar = new SideBar(sidebarData);
@@ -34,8 +41,10 @@ const blog = async function (req: Request, res: Response, next: NextFunction) {
 
     pageData.title = 'Blog settings';
     pageData.sidebar = sidebar.get('settings:blog');
+    pageData.data = {}
+    pageData.sorting = sorting;
 
-    res.render(BASE + '/blog', pageData);
+    res.render(BASE + '/blog/index', pageData);
 }
 
 const users = async function (req: Request, res: Response, next: NextFunction) {

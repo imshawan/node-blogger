@@ -1,0 +1,54 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Content & engagement</h5>
+
+        <form id="site-config" class="row g-3">
+            <div class="col-md-12 mb-3 ">
+                <label for="floatingName">Default content sorting</label>
+                <select class="form-select my-2">
+                    <% Object.keys(sorting).forEach(key => { %>
+                        <option value="<%= sorting[key] %>"><%= key %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <input class="form-check-input me-3 position-relative switch-lg" type="checkbox" role="switch">
+                    <label class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow post likes</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <input class="form-check-input me-3 position-relative switch-lg" type="checkbox" role="switch">
+                    <label class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow people to dislike a
+                        post</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <input class="form-check-input me-3 position-relative switch-lg" type="checkbox" role="switch">
+                    <label class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow tags to be used in
+                        the blog posts</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <input class="form-check-input me-3 position-relative switch-lg" type="checkbox" role="switch">
+                    <label class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow comments</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <input class="form-check-input me-3 position-relative switch-lg" type="checkbox" role="switch">
+                    <label class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow guest users to post
+                        comments</label>
+                </div>
+                <div class="form-text mt-2"><span class="text-danger">Note: </span>Enable the functionality for visitors
+                    or individuals who are not registered users to contribute their comments or opinions on the
+                    platform.</div>
+            </div>
+
+        </form>
+
+    </div>
+</div>

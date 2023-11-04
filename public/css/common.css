@@ -528,6 +528,13 @@
     min-height: 40px!important;
     padding-top: 0.7rem!important;
 }
+
+.switch-lg {
+    width: 3em!important;
+    margin: 0;
+    height: 1.4em;
+    margin-left: 0px!important;
+}
 @media (max-width: 767px) {
     .profile-page .profile-header .cover figure {
         height: 160px;
