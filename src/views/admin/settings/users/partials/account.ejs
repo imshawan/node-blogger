@@ -1,0 +1,57 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Account Settings</h5>
+
+        <form id="account-settings" class="row g-3">
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <input id="allowUsernameChange" name="allowUsernameChange" class="form-check-input me-3 position-relative switch-lg" <%= data.allowUsernameChange ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    <label for="allowUsernameChange" class="font-weight-semibold" style="width: calc(100% - 4rem);" for="">Allow username change</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <input id="allowEmailChange" name="allowEmailChange" class="form-check-input me-3 position-relative switch-lg" <%= data.allowEmailChange ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    <label for="allowEmailChange" class="font-weight-semibold" style="width: calc(100% - 4rem);" for="">Allow email change</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <div class=""><input id="storeUsernameHistory" name="storeUsernameHistory" class="form-check-input me-3 position-relative switch-lg" <%= data.storeUsernameHistory ? 'checked=""' : '' %>" type="checkbox" role="switch"></div>
+                    <div class="">
+                        <label for="storeUsernameHistory" class="font-weight-semibold" style="width: calc(100% - 4rem);" for="">Store username change log</label>
+                        <div class="form-text mt-2">
+                            This would allow to record, showcasing a chronological log of all past username changes associated with a user's account.
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <input id="allowAccountDeletion" name="allowAccountDeletion" class="form-check-input me-3 position-relative switch-lg" <%= data.allowAccountDeletion ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    <label for="allowAccountDeletion" class="font-weight-semibold" style="width: calc(100% - 4rem);" for="">Allow users to permanently delete account</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <div class=""><input id="allowSelfSuspension" name="allowSelfSuspension" class="form-check-input me-3 position-relative switch-lg" <%= data.allowSelfSuspension ? 'checked=""' : '' %>" type="checkbox" role="switch"></div>
+                    <div class="">
+                        <label for="allowSelfSuspension" class="font-weight-semibold" style="width: calc(100% - 4rem);" for="">Self-Suspension of accounts</label>
+                        <div class="form-text mt-2">
+                            Allow users to temporarily suspend their own accounts for a specified period.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <input id="gdprConsent" name="gdprConsent" class="form-check-input me-3 position-relative switch-lg" <%= data.gdprConsent ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    <label for="gdprConsent" class="font-weight-semibold" style="width: calc(100% - 4rem);" for="">GDPR Compliance</label>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>

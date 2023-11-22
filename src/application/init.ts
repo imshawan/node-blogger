@@ -100,3 +100,16 @@ export const reInitialize = async function reInitialize() {
     const applicationInfo = await database.getObjects({_key});
     application.configurationStore = applicationInfo;
 }
+
+export const flushAndReInitialize = async function flushAndReInitialize() {
+    const _key = 'global:application';
+    const defaults =  require('../../setup/data/defaults.json');
+    const applicationInfo = _.merge({_key}, defaults);
+
+    await Promise.all([
+        database.deleteObjects({_key}), 
+        database.setObjects(applicationInfo),
+    ]);
+
+    application.configurationStore = applicationInfo;
+}

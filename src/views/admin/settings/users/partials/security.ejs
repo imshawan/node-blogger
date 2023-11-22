@@ -1,0 +1,47 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Account Security</h5>
+
+        <form id="security-settings" class="row g-3">
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="text" name="automaticLogoutDuration" value="<%= data.automaticLogoutDuration || 0 %>" class="form-control" id="" placeholder="">
+                    <label for="">Automatic logout duration (in minutes)</label>
+                    <div id="" class="form-text">Keep the value to 0 if you want to disable automatic logouts</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="text" name="maxLoginPerHour" value="<%= data.maxLoginPerHour %>" class="form-control" id="" placeholder="">
+                    <label for="">Maximum login attempts in an hour</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="text" name="maxPasswordResetRequests" value="<%= data.maxPasswordResetRequests %>" class="form-control" id="" placeholder="">
+                    <label for="">Maximum password reset attempts in an hour</label>
+                </div>
+            </div>
+            
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="text" name="accountLockDuration" value="<%= data.accountLockDuration %>" class="form-control" id="" placeholder="">
+                    <label for="">Account lock duration (in minutes)</label>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="text" name="sessionExpiryDuration" value="<%= data.sessionExpiryDuration %>" class="form-control" id="" placeholder="">
+                    <label for="">Session expiration (in days)</label>
+                    <div id="" class="form-text"><span class="text-danger">Note: </span>The Session Expiration feature automatically logs users out of their accounts after a specified period of inactivity.
+                         When users check the "Remember Me" option, the system uses specified values to determine the duration for which the user will remain logged in, even after closing the browser or navigating away from the site. </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>

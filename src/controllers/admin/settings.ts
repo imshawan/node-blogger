@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { AppKeysArray, MutableObject } from "@src/types";
+import { AppKeysArray, MutableObject, RegistrationTypes } from "@src/types";
 import {data as sidebarData} from "./sidebar";
 import { SideBar } from "@src/utilities";
-import { getUsersByPagination } from "@src/user";
 import { application } from "@src/application";
 
 const BASE = 'settings';
@@ -13,6 +12,12 @@ const sorting = {
     "Popularity": "popular",
     "More posts": "posts",
 }
+const availableRegisterationTypes: RegistrationTypes = {
+    "default": "Default",
+    "inviteOnly": "invite Only",
+    "adminInviteOnly": "Admin Invites only",
+    "disabled": "Disabled"
+};
 
 const site = async function (req: Request, res: Response, next: NextFunction) {
     const sidebar = new SideBar(sidebarData);
@@ -58,11 +63,33 @@ const blog = async function (req: Request, res: Response, next: NextFunction) {
 const users = async function (req: Request, res: Response, next: NextFunction) {
     const sidebar = new SideBar(sidebarData);
     const pageData: MutableObject = {};
+    const usersAppKeysArray: AppKeysArray = [
+      "allowUsernameChange",
+      "allowEmailChange",
+      "allowAccountDeletion",
+      "storeUsernameHistory",
+      "allowSelfSuspension",
+      "gdprConsent",
+      "automaticLogoutDuration",
+      "accountLockDuration",
+      "maxLoginPerHour",
+      "maxPasswordResetRequests",
+      "sessionExpiryDuration",
+      "maxUsernameLength",
+      "minUsernameLength",
+      "maxFullnameLength",
+      "minFullnameLength",
+      "maxEmailLength",
+      "minEmailLength",
+      "registrationType"
+    ];
 
     pageData.title = 'Users';
     pageData.sidebar = sidebar.get('settings:users');
+    pageData.data = retriveApplicationPropertiesFiltered(usersAppKeysArray);
+    pageData.registrationTypes = availableRegisterationTypes;
 
-    res.render(BASE + '/users', pageData);
+    res.render(BASE + '/users/index', pageData);
 }
 
 const categories = async function (req: Request, res: Response, next: NextFunction) {

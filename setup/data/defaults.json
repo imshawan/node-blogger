@@ -37,6 +37,17 @@
     "allowDislike": true,
     "allowComments": true,
     "allowGuestComments": true,
+    "allowUsernameChange": false,
+    "allowEmailChange": true,
+    "allowAccountDeletion": true,
+    "allowSelfSuspension": false,
+    "gdprConsent": true,
+    "storeUsernameHistory": true,
+    "automaticLogoutDuration": 0,
+    "accountLockDuration": 120,
+    "sessionExpiryDuration": "14",
+    "maxLoginPerHour": 20,
+    "maxPasswordResetRequests": 10,
     "minPostTitleLength": 2,
     "maxPostTitleLength": 250,
     "minPostLength": 250,
@@ -66,5 +77,6 @@
     "minAboutLength": 200,
     "maxTagLength": 30,
     "minTagLength": 3,
-    "sorting": "default"
+    "sorting": "default",
+    "registrationType": "default"
 }

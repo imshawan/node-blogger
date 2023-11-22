@@ -2,80 +2,98 @@
 export type AppKeysArray = Array<keyof IApplication>;
 
 export interface IApplication {
-  _id: string
-  _key: string
-  siteName: string
-  siteNameUrl: string
-  siteShortName: string
-  description: string
-  keywords: Array<string>
-  logo: string
-  favicon: string
-  altLogoText: string
-  logoRedirectionUrl: string
-  session: Session
-  cookie: Cookie
-  cors: CorsOptions
-  manifest: Manifest
-  robots: Robots
-  xPoweredByHeaders: string
-  maximumRequestBodySize: string
-  allowTags: boolean
-  allowLike: boolean
-  allowDislike: boolean
-  allowComments: boolean
-  allowGuestComments: boolean
-  minPostTitleLength: number
-  maxPostTitleLength: number
-  minPostLength: number
-  maxPostLength: number
-  minTagsPerPost: number
-  maxTagsPerPost: number
-  maxPostThumbnailSize: string
-  allowedFileTypes: string[]
-  maxFileSize: string
-  externalLinks: string
-  registerationType: string
-  maxPasswordLength: number
-  maxUsernameLength: number
-  maxEmailLength: number
-  maxCategoryBlurbLength: number
-  minPasswordLength: number
-  minUsernameLength: number
-  minEmailLength: number
-  minPasswordStrength: number
-  maxFullnameLength: number
-  minFullnameLength: number
-  maxLocationLength: number
-  minLocationLength: number
-  maxBioLength: number
-  minBioLength: number
-  maxAboutLength: number
-  minAboutLength: number
-  maxTagLength: number
-  minTagLength: number
-  sorting: string
+    _id: string
+    _key: string
+    siteName: string
+    siteNameUrl: string
+    siteShortName: string
+    description: string
+    keywords: Array<string>
+    logo: string
+    favicon: string
+    altLogoText: string
+    logoRedirectionUrl: string
+    session: Session
+    cookie: Cookie
+    cors: CorsOptions
+    manifest: Manifest
+    robots: Robots
+    xPoweredByHeaders: string
+    maximumRequestBodySize: string
+    allowTags: boolean
+    allowLike: boolean
+    allowDislike: boolean
+    allowComments: boolean
+    allowGuestComments: boolean
+    allowUsernameChange: boolean
+    allowEmailChange: boolean
+    allowAccountDeletion: boolean
+    allowSelfSuspension: boolean
+    gdprConsent: true
+    storeUsernameHistory: boolean
+    automaticLogoutDuration: Number
+    accountLockDuration: Number
+    sessionExpiryDuration: Number
+    maxLoginPerHour: Number
+    maxPasswordResetRequests: Number
+    minPostTitleLength: number
+    maxPostTitleLength: number
+    minPostLength: number
+    maxPostLength: number
+    minTagsPerPost: number
+    maxTagsPerPost: number
+    maxPostThumbnailSize: string
+    allowedFileTypes: string[]
+    maxFileSize: string
+    externalLinks: string
+    registerationType: string
+    maxPasswordLength: number
+    maxUsernameLength: number
+    maxEmailLength: number
+    maxCategoryBlurbLength: number
+    minPasswordLength: number
+    minUsernameLength: number
+    minEmailLength: number
+    minPasswordStrength: number
+    maxFullnameLength: number
+    minFullnameLength: number
+    maxLocationLength: number
+    minLocationLength: number
+    maxBioLength: number
+    minBioLength: number
+    maxAboutLength: number
+    minAboutLength: number
+    maxTagLength: number
+    minTagLength: number
+    sorting: string
+    registrationType: string
 }
 
+export interface RegistrationTypes {
+    default: string
+    inviteOnly: string
+    adminInviteOnly: string
+    disabled: string
+}
 export interface Session {
-  name: string
-  saveUninitialized: boolean
-  resave: boolean
+    name: string
+    saveUninitialized: boolean
+    resave: boolean
 }
 
 export interface Cookie {
-  maxTTLDays: number
+    maxTTLDays: number
 }
 
 export interface CorsOptions {
-  allowedHeaders: string | string[] | undefined
-  whitelistOrigins?: string | undefined
-  credentials?: boolean | undefined
+    allowedHeaders: string | string[] | undefined
+    whitelistOrigins?: string | undefined
+    credentials?: boolean | undefined
 }
 
 export interface Manifest {
-  backgroundColor: string
-  themeColor: string
+    backgroundColor: string
+    themeColor: string
 }
 
 export interface Robots {
