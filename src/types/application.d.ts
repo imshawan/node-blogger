@@ -54,6 +54,7 @@ export interface IApplication {
   minAboutLength: number
   maxTagLength: number
   minTagLength: number
+  sorting: string
 }
 
 export interface Session {

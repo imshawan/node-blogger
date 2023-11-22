@@ -38,10 +38,18 @@ const site = async function (req: Request, res: Response, next: NextFunction) {
 const blog = async function (req: Request, res: Response, next: NextFunction) {
     const sidebar = new SideBar(sidebarData);
     const pageData: MutableObject = {};
+    const blogAppkeysArray: AppKeysArray = [
+      "sorting",
+      "allowComments",
+      "allowDislike",
+      "allowGuestComments",
+      "allowLike",
+      "allowTags",
+    ];
 
     pageData.title = 'Blog settings';
     pageData.sidebar = sidebar.get('settings:blog');
-    pageData.data = {}
+    pageData.data = retriveApplicationPropertiesFiltered(blogAppkeysArray);
     pageData.sorting = sorting;
 
     res.render(BASE + '/blog/index', pageData);

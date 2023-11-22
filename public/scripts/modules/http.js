@@ -81,6 +81,12 @@ define('modules/http', () => {
   function callAjax(options, callback) {
 		options.url = options.url.startsWith('/api') ? options.url :
 			baseUrl + options.url;
+		
+		if (options.hasOwnProperty('headers')) {
+			options.headers = $.extend(options.headers, {'csrf-token': csrfToken.get()});
+		} else {
+			options.headers = {'csrf-token': csrfToken.get()}
+		}
 
 		function doAjax(cb) {
 			$.ajax(options)

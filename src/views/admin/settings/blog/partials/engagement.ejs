@@ -2,45 +2,45 @@
     <div class="card-body">
         <h5 class="card-title">Content & engagement</h5>
 
-        <form id="site-config" class="row g-3">
+        <form id="blog-settings" class="row g-3">
             <div class="col-md-12 mb-3 ">
                 <label for="floatingName">Default content sorting</label>
-                <select class="form-select my-2">
+                <select name="sorting" class="form-select my-2">
                     <% Object.keys(sorting).forEach(key => { %>
-                        <option value="<%= sorting[key] %>"><%= key %></option>
+                        <option <% if (data.sorting == sorting[key]) { %> selected <% } %> value="<%= sorting[key] %>"><%= key %></option>
                     <% }) %>
                 </select>
             </div>
             <div class="col-md-12">
                 <div class="form-check form-switch px-0 d-flex">
-                    <input class="form-check-input me-3 position-relative switch-lg" type="checkbox" role="switch">
-                    <label class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow post likes</label>
+                    <input id="allowLike" name="allowLike" class="form-check-input me-3 position-relative switch-lg" <%= data.allowLike ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    <label for="allowLike" class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow post likes</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-check form-switch px-0 d-flex">
-                    <input class="form-check-input me-3 position-relative switch-lg" type="checkbox" role="switch">
-                    <label class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow people to dislike a
+                    <input id="allowDislike" name="allowDislike" class="form-check-input me-3 position-relative switch-lg" <%= data.allowDislike ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    <label for="allowDislike" class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow people to dislike a
                         post</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-check form-switch px-0 d-flex">
-                    <input class="form-check-input me-3 position-relative switch-lg" type="checkbox" role="switch">
-                    <label class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow tags to be used in
+                    <input id="allowTags" name="allowTags" class="form-check-input me-3 position-relative switch-lg" <%= data.allowTags ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    <label for="allowTags" class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow tags to be used in
                         the blog posts</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-check form-switch px-0 d-flex">
-                    <input class="form-check-input me-3 position-relative switch-lg" type="checkbox" role="switch">
-                    <label class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow comments</label>
+                    <input id="allowComments" name="allowComments" class="form-check-input me-3 position-relative switch-lg" <%= data.allowComments ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    <label for="allowComments" class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow comments</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-check form-switch px-0 d-flex">
-                    <input class="form-check-input me-3 position-relative switch-lg" type="checkbox" role="switch">
-                    <label class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow guest users to post
+                    <input id="allowGuestComments" name="allowGuestComments" class="form-check-input me-3 position-relative switch-lg" <%= data.allowGuestComments ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    <label for="allowGuestComments" class="font-weight-bold" style="width: calc(100% - 4rem);" for="">Allow guest users to post
                         comments</label>
                 </div>
                 <div class="form-text mt-2"><span class="text-danger">Note: </span>Enable the functionality for visitors
