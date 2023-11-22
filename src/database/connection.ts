@@ -2,13 +2,14 @@ import {MongoClient, ServerApiVersion} from 'mongodb';
 import { Logger } from '@src/utilities';
 import _ from 'lodash';
 
-const connectionOptions = {
+export const connectionOptions = {
+    maxPoolSize: 10,
     connectTimeoutMS: 90000,
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }
 
-const serverApi = {
+export const serverApi = {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,

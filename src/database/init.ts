@@ -26,7 +26,7 @@ export const initializeDbConnection = async function (mongodb: any) {
     }
 
     const {client, connection, dbName} = await connect(uri, {database: db}); 
-    const sessionStore = await initializeSessionStore(connection, dbName);
+    const sessionStore = await initializeSessionStore(uri, dbName);
 
     mongo.client = client;
     mongo.connection = connection;
