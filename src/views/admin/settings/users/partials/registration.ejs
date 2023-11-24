@@ -5,45 +5,53 @@
         <form id="registration-settings" class="row g-3">
             <div class="col-md-12">
                 <label for="floatingName">Registration type</label>
-                <select name="registrationType" class="form-select my-2">
+                <select name="registrationType" class="form-select mt-2">
                     <% Object.keys(registrationTypes).forEach(key => { %>
                         <option <% if (data.registrationType == registrationTypes[key]) { %> selected <% } %> value="<%= key %>"><%= registrationTypes[key] %></option>
                     <% }) %>
                 </select>
             </div>
+            <div class="col-md-12">
+                <label for="">Password strength</label>
+                <select name="minPasswordStrength" class="form-select my-2">
+                    <% Object.keys(passwordScores).forEach(key => { %>
+                        <option <% if (data.minPasswordStrength == passwordScores[key]['strength']) { %> selected <% } %> value="<%= passwordScores[key]['strength'] %>"> <%= passwordScores[key]['strength'] %> - <%= passwordScores[key]['label'] %> </option>
+                    <% }) %>
+                </select>
+            </div>
             <div class="col-12 col-md-6">
                 <div class="form-floating">
-                    <input type="text" name="maxUsernameLength" value="<%= data.maxUsernameLength %>" class="form-control" id="" placeholder="">
+                    <input type="number" name="maxUsernameLength" value="<%= data.maxUsernameLength %>" class="form-control" id="" placeholder="">
                     <label for="">Maximum username length</label>
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="form-floating">
-                    <input type="text" name="minUsernameLength" value="<%= data.minUsernameLength %>" class="form-control" id="" placeholder="">
+                    <input type="number" name="minUsernameLength" value="<%= data.minUsernameLength %>" class="form-control" id="" placeholder="">
                     <label for="">Minimum username length</label>
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="form-floating">
-                    <input type="text" name="maxFullnameLength" value="<%= data.maxFullnameLength %>" class="form-control" id="" placeholder="">
+                    <input type="number" name="maxFullnameLength" value="<%= data.maxFullnameLength %>" class="form-control" id="" placeholder="">
                     <label for="">Maximum fullname length</label>
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="form-floating">
-                    <input type="text" name="minFullnameLength" value="<%= data.minFullnameLength %>" class="form-control" id="" placeholder="">
+                    <input type="number" name="minFullnameLength" value="<%= data.minFullnameLength %>" class="form-control" id="" placeholder="">
                     <label for="">Minimum fullname length</label>
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="form-floating">
-                    <input type="text" name="maxEmailLength" value="<%= data.maxEmailLength %>" class="form-control" id="" placeholder="">
+                    <input type="number" name="maxEmailLength" value="<%= data.maxEmailLength %>" class="form-control" id="" placeholder="">
                     <label for="">Maximum email length</label>
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="form-floating">
-                    <input type="text" name="minEmailLength" value="<%= data.minEmailLength %>" class="form-control" id="" placeholder="">
+                    <input type="number" name="minEmailLength" value="<%= data.minEmailLength %>" class="form-control" id="" placeholder="">
                     <label for="">Minimum email length</label>
                 </div>
             </div>

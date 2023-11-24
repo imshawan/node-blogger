@@ -69,7 +69,7 @@ export interface IApplication {
     registrationType: string
 }
 
-export interface RegistrationTypes {
+export interface IRegistrationTypes {
     default: string
     inviteOnly: string
     adminInviteOnly: string

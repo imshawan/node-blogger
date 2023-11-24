@@ -1,23 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { AppKeysArray, MutableObject, RegistrationTypes } from "@src/types";
+import { AppKeysArray, MutableObject } from "@src/types";
 import {data as sidebarData} from "./sidebar";
 import { SideBar } from "@src/utilities";
 import { application } from "@src/application";
+import {sorting, availableRegisterationTypes, passwordScoresWithMessage} from './common';
 
 const BASE = 'settings';
-const sorting = {
-    "Default": "default",
-    "Most recent": "recent",
-    "Oldest": "oldest",
-    "Popularity": "popular",
-    "More posts": "posts",
-}
-const availableRegisterationTypes: RegistrationTypes = {
-    "default": "Default",
-    "inviteOnly": "invite Only",
-    "adminInviteOnly": "Admin Invites only",
-    "disabled": "Disabled"
-};
 
 const site = async function (req: Request, res: Response, next: NextFunction) {
     const sidebar = new SideBar(sidebarData);
@@ -81,6 +69,7 @@ const users = async function (req: Request, res: Response, next: NextFunction) {
       "minFullnameLength",
       "maxEmailLength",
       "minEmailLength",
+      "minPasswordStrength",
       "registrationType"
     ];
 
@@ -88,6 +77,7 @@ const users = async function (req: Request, res: Response, next: NextFunction) {
     pageData.sidebar = sidebar.get('settings:users');
     pageData.data = retriveApplicationPropertiesFiltered(usersAppKeysArray);
     pageData.registrationTypes = availableRegisterationTypes;
+    pageData.passwordScores = passwordScoresWithMessage;
 
     res.render(BASE + '/users/index', pageData);
 }
