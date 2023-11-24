@@ -85,11 +85,13 @@ const users = async function (req: Request, res: Response, next: NextFunction) {
 const categories = async function (req: Request, res: Response, next: NextFunction) {
     const sidebar = new SideBar(sidebarData);
     const pageData: MutableObject = {};
+    const categoriesAppKeysArray: AppKeysArray = ["maxCategoryBlurbLength"];
 
     pageData.title = 'Category settings';
     pageData.sidebar = sidebar.get('settings:categories');
+    pageData.data = retriveApplicationPropertiesFiltered(categoriesAppKeysArray);
 
-    res.render(BASE + '/categories', pageData);
+    res.render(BASE + '/categories/index', pageData);
 }
 
 
