@@ -19,7 +19,7 @@ const logger = new Logger({prefix: 'pre-start'});
  * @description Validate whether the project was setup properly. If config file exists or not.
  */
 if (!fs.existsSync('config.json')) {
-    logger.error('Missing configuration files. Please run setup scrips for setting up the project.');
+    logger.error("Missing configuration files. Run 'npm run setup' for setting up the project.");
     process.exit(1);
 
 } else {
