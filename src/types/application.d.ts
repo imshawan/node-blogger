@@ -50,6 +50,8 @@ export interface IApplication {
     maxPasswordLength: number
     maxUsernameLength: number
     maxEmailLength: number
+    maxCategoryNameLength: number
+    maxCategoryDescriptionLength: number
     maxCategoryBlurbLength: number
     minPasswordLength: number
     minUsernameLength: number

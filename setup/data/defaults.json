@@ -62,6 +62,8 @@
     "maxPasswordLength": 128,
     "maxUsernameLength": 128,
     "maxEmailLength": 128,
+    "maxCategoryNameLength": 50,
+    "maxCategoryDescriptionLength": 500,
     "maxCategoryBlurbLength": 200,
     "minPasswordLength": 6,
     "minUsernameLength": 4,

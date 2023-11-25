@@ -85,7 +85,11 @@ const users = async function (req: Request, res: Response, next: NextFunction) {
 const categories = async function (req: Request, res: Response, next: NextFunction) {
     const sidebar = new SideBar(sidebarData);
     const pageData: MutableObject = {};
-    const categoriesAppKeysArray: AppKeysArray = ["maxCategoryBlurbLength"];
+    const categoriesAppKeysArray: AppKeysArray = [
+        "maxCategoryBlurbLength",
+        "maxCategoryNameLength",
+        "maxCategoryDescriptionLength"
+    ];
 
     pageData.title = 'Category settings';
     pageData.sidebar = sidebar.get('settings:categories');

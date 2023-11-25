@@ -3,9 +3,23 @@
         <h5 class="card-title">General</h5>
 
         <form id="category-general-settings" class="row g-3">
-            <div class="col-12">
+            <div class="col-12 col-md-6">
                 <div class="form-floating">
-                    <input type="text" name="maxCategoryBlurbLength" value="<%= data.maxCategoryBlurbLength %>" class="form-control" id="maxCategoryBlurbLength"
+                    <input type="number" name="maxCategoryNameLength" value="<%= data.maxCategoryNameLength %>" class="form-control" id="maxCategoryNameLength"
+                        placeholder="">
+                    <label for="maxCategoryNameLength">Maximum category name length</label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" name="maxCategoryDescriptionLength" value="<%= data.maxCategoryDescriptionLength %>" class="form-control" id="maxCategoryDescriptionLength"
+                        placeholder="">
+                    <label for="maxCategoryDescriptionLength">Maximum category description length</label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" name="maxCategoryBlurbLength" value="<%= data.maxCategoryBlurbLength %>" class="form-control" id="maxCategoryBlurbLength"
                         placeholder="">
                     <label for="maxCategoryBlurbLength">Maximum category blurb length</label>
                 </div>
