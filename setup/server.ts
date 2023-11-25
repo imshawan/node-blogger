@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import express, {Request, Response, NextFunction, Application} from 'express';
 import uglify from 'uglify-js';
+import ejs from 'ejs';
 
 import {Logger} from '../src/utilities';
 import {RouteError} from '../src/other/classes';
@@ -17,6 +18,7 @@ import defults from './data/defaults.json'
 const logger = new Logger({prefix: 'setup'});
 const app = express();
 const httpServer = http.createServer(app);
+const partialsDir = path.join(__dirname, 'views', 'partials');
 
 const start = async function (port: Number, callback: Function) {
 
@@ -25,6 +27,23 @@ const start = async function (port: Number, callback: Function) {
 
     app.get('/', setup);
     app.use('/setup/api', apiHandler);
+
+    app.use('/*', function (req, res) {
+        const notFoundTemplate = path.join(__dirname, '../src', 'views', '404.ejs');
+        const headerTemplate = path.join(partialsDir, 'header.ejs');
+        const footerTemplate = path.join(partialsDir, 'footer.ejs');
+        const options = {
+            title: 'Not found'
+        };
+
+        const template = fs.readFileSync(notFoundTemplate).toString()
+        const header = ejs.render(fs.readFileSync(headerTemplate).toString(), options);
+        const footer = fs.readFileSync(footerTemplate).toString();
+
+        const html = [header, template, footer].join('');
+
+        res.status(404).send(html);
+    });
     
     // Add error handler
     app.use((err: Error, _: Request, res: Response,
@@ -65,6 +84,9 @@ async function setupExpressServer(app: Application) {
 
     // Serving the common CSS for the app
     app.use('/assets/common.css', express.static(path.join(__dirname, '../public/css/common.css')));
+
+    // Serving images
+    app.use('/images', express.static(path.join(__dirname, '../public/images')))
     
     // View engine setup
     app.set('views', path.join(__dirname, 'views'));
