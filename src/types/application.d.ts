@@ -42,7 +42,7 @@ export interface IApplication {
     maxPostLength: number
     minTagsPerPost: number
     maxTagsPerPost: number
-    maxPostThumbnailSize: string
+    maxPostThumbnailSize: number
     allowedFileTypes: string[]
     maxFileSize: string
     externalLinks: string

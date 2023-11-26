@@ -102,11 +102,21 @@ const categories = async function (req: Request, res: Response, next: NextFuncti
 const posts = async function (req: Request, res: Response, next: NextFunction) {
     const sidebar = new SideBar(sidebarData);
     const pageData: MutableObject = {};
+    const postsAppKeysArray: AppKeysArray = [
+        "minPostTitleLength",
+        "maxPostTitleLength",
+        "minPostLength",
+        "maxPostLength",
+        "minTagsPerPost",
+        "maxTagsPerPost",
+        "maxPostThumbnailSize"
+    ];
 
     pageData.title = 'Posts settings';
     pageData.sidebar = sidebar.get('settings:posts');
+    pageData.data = retriveApplicationPropertiesFiltered(postsAppKeysArray);
 
-    res.render(BASE + '/posts', pageData);
+    res.render(BASE + '/posts/index', pageData);
 }
 
 

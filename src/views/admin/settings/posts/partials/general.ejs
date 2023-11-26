@@ -1,0 +1,60 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">General</h5>
+
+        <form id="posts-general-settings" class="row g-3">
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" name="maxPostTitleLength" value="<%= data.maxPostTitleLength %>"
+                        class="form-control" id="maxPostTitleLength" placeholder="">
+                    <label for="maxPostTitleLength">Maximum title length</label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" name="minPostTitleLength"
+                        value="<%= data.minPostTitleLength %>" class="form-control"
+                        id="minPostTitleLength" placeholder="">
+                    <label for="minPostTitleLength">Minimum title length</label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" name="maxPostLength" value="<%= data.maxPostLength %>"
+                        class="form-control" id="maxPostLength" placeholder="">
+                    <label for="maxPostLength">Maximum content length</label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" name="minPostLength" value="<%= data.minPostLength %>"
+                        class="form-control" id="minPostLength" placeholder="">
+                    <label for="minPostLength">Minimum content length</label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" name="maxTagsPerPost" value="<%= data.maxTagsPerPost %>"
+                        class="form-control" id="maxTagsPerPost" placeholder="">
+                    <label for="maxTagsPerPost">Maximum tags per post</label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" name="minTagsPerPost" value="<%= data.minTagsPerPost %>"
+                        class="form-control" id="minTagsPerPost" placeholder="">
+                    <label for="minTagsPerPost">Minimum tags per post</label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" name="maxPostThumbnailSize" value="<%= data.maxPostThumbnailSize %>"
+                        class="form-control" id="maxPostThumbnailSize" placeholder="">
+                    <label for="maxPostThumbnailSize">Maximum thumbnail size (Kilobytes)</label>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
