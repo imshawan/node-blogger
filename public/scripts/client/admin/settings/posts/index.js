@@ -15,7 +15,7 @@ define('client/admin/settings/posts/index', ['modules/http'], function (http) {
             
             http.PUT('/api/v1/admin/application/common', JSON.stringify(data), {contentType: 'application/json'})
                 .then(res => {
-                    $('#category-general-settings').dirrty('setClean');
+                    $('#posts-general-settings').dirrty('setClean');
 
                     if (Object.keys(res).length) {
                         Object.assign(Application._config || {}, res);
