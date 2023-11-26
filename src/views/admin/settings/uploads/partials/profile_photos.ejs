@@ -1,0 +1,61 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Profile images</h5>
+
+        <form id="profile-image-settings" class="row g-3">
+            <div class="d-flex">
+                <div class="form-floating col-8 pe-4">
+                    <input type="number" name="maxProfileImageSize" value="<%= data.maxProfileImageSize %>" class="form-control" id="maxProfileImageSize"
+                        placeholder="">
+                    <label for="maxProfileImageSize">Maximum profile image size</label>
+                </div>
+                <div class="form-floating col-4">
+                    <select name="maxProfileImageSizeUnit" class="form-select" id="maxProfileImageSizeUnit">
+                        <% Object.keys(fileSizeUnits).forEach(key => { %>
+                            <option <% if (data.maxProfileImageSizeUnit == key) { %> selected <% } %> value="<%= key %>"><%= fileSizeUnits[key] %></option>
+                        <% }) %>
+                      </select>
+                      <label for="maxProfileImageSizeUnit">Select file size unit</label>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="form-floating col-8 pe-4">
+                    <input type="number" name="maxCoverImageSize" value="<%= data.maxCoverImageSize %>" class="form-control" id="maxCoverImageSize"
+                        placeholder="">
+                    <label for="maxCoverImageSize">Maximum cover image size</label>
+                </div>
+                <div class="form-floating col-4">
+                    <select name="maxCoverImageSizeUnit" class="form-select" id="maxCoverImageSizeUnit">
+                        <% Object.keys(fileSizeUnits).forEach(key => { %>
+                            <option <% if (data.maxCoverImageSizeUnit == key) { %> selected <% } %> value="<%= key %>"><%= fileSizeUnits[key] %></option>
+                        <% }) %>
+                      </select>
+                      <label for="maxCoverImageSizeUnit">Select file size unit</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="number" name="profileImageDimension" value="<%= data.profileImageDimension %>" class="form-control" id="profileImageDimension"
+                        placeholder="">
+                    <label for="profileImageDimension">Profile image dimension</label>
+                </div>
+            </div>
+            <div class="col-md-12 mt-4">
+                <div class="form-check form-switch px-0 d-flex">
+                    <div class="">
+                        <input id="keepOldProfilePictures" name="keepOldProfilePictures" class="form-check-input me-3 position-relative switch-lg" <%= data.keepOldProfilePictures ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    </div>
+                    <div class="">
+                        <label for="keepOldProfilePictures" class="font-weight-semibold" style="width: calc(100% - 4rem);" for="">Keep old profile pictures in server</label>
+                        <div class="form-text mt-2">
+                            <span class="text-danger">Note: </span>
+                            This will retain copies of previously used profile pictures on the server, even after the users update or changes their profile image.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>

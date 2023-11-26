@@ -129,6 +129,20 @@ const uploads = async function (req: Request, res: Response, next: NextFunction)
         "allowedFileTypes",
         "stripFileMetadata",
         "enableFileCompression",
+        "maxImageFileSize",
+        "maxImageFileSizeUnit",
+        "enableImageResize",
+        "resizedImageHeight",
+        "resizedImageWidth",
+        "resizedImageQuality",
+        "keepOldProfilePictures",
+        "maxProfileImageSize",
+        "maxProfileImageSizeUnit",
+        "maxCoverImageSize",
+        "maxCoverImageSizeUnit",
+        "profileImageDimension",
+        "maxImageWidth",
+        "minImageWidth",
     ];
 
     pageData.title = 'File Uploads';

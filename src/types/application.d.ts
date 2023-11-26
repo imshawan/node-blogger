@@ -46,8 +46,22 @@ export interface IApplication {
     allowedFileTypes: string[]
     maxFileSize: number
     maxFileSizeUnit: string
+    maxImageFileSize: number
+    maxImageFileSizeUnit: string
+    maxImageWidth: number
+    minImageWidth: number
+    maxProfileImageSize: number
+    maxProfileImageSizeUnit: string
+    profileImageDimension: number
+    maxCoverImageSize: number
+    maxCoverImageSizeUnit: string
     enableFileCompression: boolean
+    enableImageResize: boolean
+    resizedImageHeight: number
+    resizedImageWidth: number
+    resizedImageQuality: number
     stripFileMetadata: boolean
+    keepOldProfilePictures: boolean
     externalLinks: string
     registerationType: string
     maxPasswordLength: number

@@ -1,0 +1,76 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Images</h5>
+
+        <form id="photo-settings" class="row g-3">
+            <div class="d-flex">
+                <div class="form-floating col-8 pe-4">
+                    <input type="number" name="maxImageFileSize" value="<%= data.maxImageFileSize %>" class="form-control" id="maxImageFileSize"
+                        placeholder="">
+                    <label for="maxImageFileSize">Maximum file size</label>
+                </div>
+                <div class="form-floating col-4">
+                    <select name="maxImageFileSizeUnit" class="form-select" id="maxImageFileSizeUnit">
+                        <% Object.keys(fileSizeUnits).forEach(key => { %>
+                            <option <% if (data.maxImageFileSizeUnit == key) { %> selected <% } %> value="<%= key %>"><%= fileSizeUnits[key] %></option>
+                        <% }) %>
+                      </select>
+                      <label for="maxImageFileSizeUnit">Select file size unit</label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" name="maxImageWidth" value="<%= data.maxImageWidth %>" class="form-control" id="maxImageWidth"
+                        placeholder="">
+                    <label for="maxImageWidth">Maximum image width</label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" name="minImageWidth" value="<%= data.minImageWidth %>" class="form-control" id="minImageWidth"
+                        placeholder="">
+                    <label for="minImageWidth">Minimum image width</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <div class="">
+                        <input id="enableImageResize" name="enableImageResize" class="form-check-input me-3 position-relative switch-lg" <%= data.enableImageResize ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    </div>
+                    <div class="">
+                        <label for="enableImageResize" class="font-weight-semibold" style="width: calc(100% - 4rem);" for="">Enable image resize</label>
+                        <div class="form-text mt-2">
+                            <span class="text-danger">Note: </span>
+                            Resize operation will modify the dimensions of images by adjusting their size, reducing the file size. it's for web optimization, storage management, or maintaining consistent aesthetics across a platform or presentation.
+                        </div>
+                        <div class="row mt-3" id="image-resize-params">
+                            <div class="col-12 col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <input <%= !data.enableImageResize ? 'disabled=""' : '' %>" type="number" name="resizedImageHeight" value="<%= data.resizedImageHeight %>" class="form-control" id="resizedImageHeight"
+                                        placeholder="">
+                                    <label for="resizedImageHeight">Resized image height</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <input <%= !data.enableImageResize ? 'disabled=""' : '' %>" type="number" name="resizedImageWidth" value="<%= data.resizedImageWidth %>" class="form-control" id="resizedImageWidth"
+                                        placeholder="">
+                                    <label for="resizedImageWidth">Resized image width</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-floating">
+                                    <input <%= !data.enableImageResize ? 'disabled=""' : '' %>" type="number" name="resizedImageQuality" value="<%= data.resizedImageQuality %>" class="form-control" id="resizedImageQuality"
+                                        placeholder="">
+                                    <label for="resizedImageQuality">Resized image quality percent</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+
+    </div>
+</div>
