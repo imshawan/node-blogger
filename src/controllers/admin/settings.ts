@@ -3,7 +3,7 @@ import { AppKeysArray, MutableObject } from "@src/types";
 import {data as sidebarData} from "./sidebar";
 import { SideBar } from "@src/utilities";
 import { application } from "@src/application";
-import {sorting, availableRegisterationTypes, passwordScoresWithMessage} from './common';
+import {sorting, availableRegisterationTypes, passwordScoresWithMessage, fileSizeUnits} from './common';
 
 const BASE = 'settings';
 
@@ -123,11 +123,20 @@ const posts = async function (req: Request, res: Response, next: NextFunction) {
 const uploads = async function (req: Request, res: Response, next: NextFunction) {
     const sidebar = new SideBar(sidebarData);
     const pageData: MutableObject = {};
+    const uploadsAppKeysArray: AppKeysArray = [
+        "maxFileSize",
+        "maxFileSizeUnit",
+        "allowedFileTypes",
+        "stripFileMetadata",
+        "enableFileCompression",
+    ];
 
     pageData.title = 'File Uploads';
     pageData.sidebar = sidebar.get('settings:file-uploads');
+    pageData.data = retriveApplicationPropertiesFiltered(uploadsAppKeysArray);
+    pageData.fileSizeUnits = fileSizeUnits;
 
-    res.render(BASE + '/uploads', pageData);
+    res.render(BASE + '/uploads/index', pageData);
 }
 
 const emails = async function (req: Request, res: Response, next: NextFunction) {

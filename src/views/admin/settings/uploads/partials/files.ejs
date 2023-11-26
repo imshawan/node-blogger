@@ -1,0 +1,60 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">File and extensions</h5>
+
+        <form id="files-settings" class="row g-3">
+            <div class="col-12 form-group mb-3">
+                <label>Allowed file  extensions</label>
+                <select name="allowedFileTypes" id="filetype-selection" tabindex="-1" class="form-control" multiple placeholder="Select...">
+                    <% if (data.allowedFileTypes && data.allowedFileTypes.length) { %>
+                        <% data.allowedFileTypes.forEach(element => { %>
+                            <option selected value="<%= element %>"><%= element %></option>
+                        <% }) %>
+                    <% } %>
+                </select>
+            </div>
+            <div class="d-flex">
+                <div class="form-floating col-8 pe-4">
+                    <input type="number" name="maxFileSize" value="<%= data.maxFileSize %>" class="form-control" id="maxFileSize"
+                        placeholder="">
+                    <label for="maxFileSize">Maximum file size</label>
+                </div>
+                <div class="form-floating col-4">
+                    <select name="maxFileSizeUnit" class="form-select" id="maxFileSizeUnit">
+                        <% Object.keys(fileSizeUnits).forEach(key => { %>
+                            <option <% if (data.maxFileSizeUnit == key) { %> selected <% } %> value="<%= key %>"><%= fileSizeUnits[key] %></option>
+                        <% }) %>
+                      </select>
+                      <label for="maxFileSizeUnit">Select file size unit</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <div class="">
+                        <input id="enableFileCompression" name="enableFileCompression" class="form-check-input me-3 position-relative switch-lg" <%= data.enableFileCompression ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    </div>
+                    <div class="">
+                        <label for="enableFileCompression" class="font-weight-semibold" style="width: calc(100% - 4rem);" for="">Enable file compression</label>
+                        <div class="form-text mt-2">Compression will reduce file sizes to optimize storage without permanently altering the original content.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-switch px-0 d-flex">
+                    <div class="">
+                        <input id="stripFileMetadata" name="stripFileMetadata" class="form-check-input me-3 position-relative switch-lg" <%= data.stripFileMetadata ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    </div>
+                    <div class="">
+                        <label for="stripFileMetadata" class="font-weight-semibold" style="width: calc(100% - 4rem);" for="">Remove file metadata</label>
+                        <div class="form-text mt-2">
+                            <span class="text-danger">Note: </span>
+                            This will sanitize files by eliminating additional embedded information (such as location, file details, author and etc), prioritizing privacy and reducing the digital footprint of shared files.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>

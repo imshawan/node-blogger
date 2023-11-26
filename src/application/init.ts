@@ -50,7 +50,13 @@ export const getCommonFields = function (): Array<keyof IApplication> {
     if (!configurationStore) return [];
 
     const keys = Object.keys(configurationStore) as (keyof IApplication)[];
-    return keys.filter((key: keyof IApplication) => typeof configurationStore[key] != 'object' && !protectedFields.includes(key));
+    return keys.filter((key: keyof IApplication) => {
+        const isArray = Array.isArray(configurationStore[key]);
+        const isNotObject = typeof configurationStore[key] !== 'object';
+        const isNotProtected = !protectedFields.includes(key);
+
+        return isNotProtected && (isArray || isNotObject);
+    });
 }
 
 export const set = function(key: keyof IApplication, value: any) {

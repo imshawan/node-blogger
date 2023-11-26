@@ -44,7 +44,10 @@ export interface IApplication {
     maxTagsPerPost: number
     maxPostThumbnailSize: number
     allowedFileTypes: string[]
-    maxFileSize: string
+    maxFileSize: number
+    maxFileSizeUnit: string
+    enableFileCompression: boolean
+    stripFileMetadata: boolean
     externalLinks: string
     registerationType: string
     maxPasswordLength: number

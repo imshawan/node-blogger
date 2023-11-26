@@ -20,6 +20,12 @@ export const availableRegisterationTypes: IRegistrationTypes = {
     "disabled": "Disabled"
 };
 
+export const fileSizeUnits = {
+    kb: "Kilobyte (KiB)",
+    mb: "Megabyte (MiB)",
+    gb: "Gigabyte (GiB)",
+};
+
 /**
  * @see {@link https://www.npmjs.com/package/zxcvbn}
  */
