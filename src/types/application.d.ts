@@ -86,6 +86,13 @@ export interface IApplication {
     minTagLength: number
     sorting: string
     registrationType: string
+    applicationEmail: string;
+    applicationEmailFromName: string;
+    emailService: string;
+    emailServiceAuthenticationType: string;
+    emailServiceUsername: string;
+    emailServicePassword: string;
+    emailServiceApiKey: string;
 }
 
 export interface IRegistrationTypes {

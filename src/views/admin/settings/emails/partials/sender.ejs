@@ -1,0 +1,28 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Sender settings</h5>
+
+        <form id="email-basic-settings" class="row g-3">
+            <div class="col-12">
+                <div class="form-floating">
+                    <input required name="applicationEmail" value="<%= data.applicationEmail %>" class="form-control" id="applicationEmail"
+                        placeholder="">
+                    <label for="applicationEmail">Enter email address for sending emails</label>
+                </div>
+                <div class="form-text">
+                    This email address is the one recipients will see in both the 'From' and 'Reply To' fields. it signifies the originator of the email, reflecting in the sender details as well as the automatic reply destination.
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-floating">
+                    <input required name="applicationEmailFromName" value="<%= data.applicationEmailFromName %>" class="form-control" id="applicationEmailFromName"
+                        placeholder="">
+                    <label for="applicationEmailFromName">From name</label>
+                </div>
+                <div id="" class="form-text">This refers to the name associated with the sender that recipients will see when they receive the email. 
+                    This field allows you to customize the display name, adding a personal touch to your messages.
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

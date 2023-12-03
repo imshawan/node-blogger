@@ -1,0 +1,57 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">SMTP settings</h5>
+
+        <form id="email-smtp-settings" class="row g-3">
+            <div class="col-12 form-group mb-3">
+                <label>Allowed file extensions</label>
+                <select required name="emailService" id="service-selection" class="form-select mt-2" placeholder="Select...">
+                    <% if (emailServices && Object.keys(emailServices).length) { %>
+                        <% Object.keys(emailServices).forEach(element => { %>
+                            <option <% if (data.emailService == element) { %> selected <% } %> value="<%= element %>"><%= emailServices[element] %></option>
+                        <% }) %>
+                    <% } %>
+                </select>
+            </div>
+            <div class="col-12 form-group mb-3">
+                <label>Service Authentication type</label>
+                <select required name="emailServiceAuthenticationType" id="auth-selection" class="form-select mt-2"
+                    placeholder="Select...">
+                    <% if (emailServiceAuthenticationTypes && Object.keys(emailServiceAuthenticationTypes).length) { %>
+                        <% Object.keys(emailServiceAuthenticationTypes).forEach(element => { %>
+                            <option <% if (data.emailServiceAuthenticationType && data.emailServiceAuthenticationType == element) { %>
+                                selected
+                            <% } %> value="<%= element %>"><%= emailServiceAuthenticationTypes[element] %></option>
+                        <% }) %>
+                    <% } %>
+                </select>
+            </div>
+            <div class="row g-2 mx-0" id="default-auth">
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input name="emailServiceUsername" value="<%= data.emailServiceUsername %>" class="form-control"
+                            id="emailServiceUsername" placeholder="">
+                        <label for="emailServiceUsername">Username</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input name="emailServicePassword" value="<%= data.emailServicePassword %>" class="form-control"
+                            id="emailServicePassword" placeholder="">
+                        <label for="emailServicePassword">Password</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12" id="apiKey-auth">
+                <div class="form-floating">
+                    <input name="emailServiceApiKey" value="<%= data.emailServiceApiKey %>" class="form-control"
+                        id="emailServiceApiKey" placeholder="">
+                    <label for="emailServiceApiKey">API key</label>
+                </div>
+                <div id="" class="form-text">This key serves as a secure authentication token, allowing seamless
+                    integration between your application and the chosen email service provider.
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -26,6 +26,16 @@ export const fileSizeUnits = {
     gb: "Gigabyte (GiB)",
 };
 
+export const availableEmailServices = {
+    sendgrid: "Sendgrid",
+    gmail: "Gmail"
+}
+
+export const emailServiceAuthenticationTypes = {
+    "default": "Username/Password",
+    "apiKey": "API Key"
+}
+
 /**
  * @see {@link https://www.npmjs.com/package/zxcvbn}
  */

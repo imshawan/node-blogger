@@ -97,5 +97,12 @@
     "maxTagLength": 30,
     "minTagLength": 3,
     "sorting": "default",
-    "registrationType": "default"
+    "registrationType": "default",
+    "applicationEmail": "",
+    "applicationEmailFromName": "",
+    "emailService": "",
+    "emailServiceAuthenticationType": "",
+    "emailServiceUsername": "",
+    "emailServicePassword": "",
+    "emailServiceApiKey": ""
 }

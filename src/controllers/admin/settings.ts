@@ -3,7 +3,8 @@ import { AppKeysArray, MutableObject } from "@src/types";
 import {data as sidebarData} from "./sidebar";
 import { SideBar } from "@src/utilities";
 import { application } from "@src/application";
-import {sorting, availableRegisterationTypes, passwordScoresWithMessage, fileSizeUnits} from './common';
+import {sorting, availableRegisterationTypes, passwordScoresWithMessage, fileSizeUnits, 
+    availableEmailServices, emailServiceAuthenticationTypes} from './common';
 
 const BASE = 'settings';
 
@@ -156,11 +157,23 @@ const uploads = async function (req: Request, res: Response, next: NextFunction)
 const emails = async function (req: Request, res: Response, next: NextFunction) {
     const sidebar = new SideBar(sidebarData);
     const pageData: MutableObject = {};
+    const emailsAppKeysArray: AppKeysArray = [
+        "applicationEmail",
+        "applicationEmailFromName",
+        "emailService",
+        "emailServiceAuthenticationType",
+        "emailServiceUsername",
+        "emailServicePassword",
+        "emailServiceApiKey",
+    ];
 
     pageData.title = 'Emails';
     pageData.sidebar = sidebar.get('settings:emails');
+    pageData.data = retriveApplicationPropertiesFiltered(emailsAppKeysArray);
+    pageData.emailServices = availableEmailServices;
+    pageData.emailServiceAuthenticationTypes = emailServiceAuthenticationTypes;
 
-    res.render(BASE + '/emails', pageData);
+    res.render(BASE + '/emails/index', pageData);
 }
 
 const notifications = async function (req: Request, res: Response, next: NextFunction) {
