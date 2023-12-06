@@ -1,0 +1,21 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Template settings</h5>
+
+        <form id="email-template-settings" class="row g-3">
+            <div class="col-12 form-group mb-2">
+                <label>Select template</label>
+                <select required name="emailService" id="service-selection" class="form-select mt-2" placeholder="Select...">
+                    <% if (emailServices && Object.keys(emailServices).length) { %>
+                        <% Object.keys(emailServices).forEach(element => { %>
+                            <option <% if (data.emailService == element) { %> selected <% } %> value="<%= element %>"><%= emailServices[element] %></option>
+                        <% }) %>
+                    <% } %>
+                </select>
+            </div>
+            <div class="position-relative" style="height: 400px;">
+                <div id="editor" class="w-100 h-100"></div>
+            </div>
+        </form>
+    </div>
+</div>

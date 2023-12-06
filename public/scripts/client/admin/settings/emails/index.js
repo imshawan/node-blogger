@@ -4,6 +4,8 @@ define('client/admin/settings/emails/index', ['client/admin/settings/utils'], fu
     emails.initialize = function () {
         const {data} = Application;
 
+        this.initializeEditor();
+
         $('#email-basic-settings').dirrty();
         $('#email-smtp-settings').dirrty();
 
@@ -13,10 +15,10 @@ define('client/admin/settings/emails/index', ['client/admin/settings/utils'], fu
 
         $('#auth-selection').on('change', function() {
             emails.handleAuthForm($(this).val());
-        })
+        });
 
         $('#save').on('click', function () {
-            let data = $.extend(
+            const data = $.extend(
                 $('#email-basic-settings').serializeObject(), 
                 $('#email-smtp-settings').serializeObject());
 
@@ -37,6 +39,23 @@ define('client/admin/settings/emails/index', ['client/admin/settings/utils'], fu
                 $(e).attr('disabled', selected != type)
             });
         });
+    }
+
+    emails.initializeEditor = function (code='') {
+        if (window.hasOwnProperty('editor') && typeof window.editor == 'object') {
+            window.editor.destroy();
+        }
+
+        const editor = ace.edit("editor");
+        editor.setTheme("ace/theme/one_dark");
+        editor.session.setMode("ace/mode/html");
+        editor.setShowPrintMargin(false);
+
+        if (code && code.length) {
+            editor.setValue(code, 1);
+        }
+
+        window.editor = editor;
     }
 
     return emails;

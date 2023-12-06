@@ -1,10 +1,15 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ace.min.js"
+    integrity="sha512-5ur89G46zAPpH0kj/TDGeB/csR1UsUNmKUf4GXNmNOwM1SoMA3IJ85jYBoHQnfDLIkfydZtsxxmGpNsY+2plqg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <section class="section">
     <div class="row">
         <div class="col-12">
             <%- include('/admin/settings/emails/partials/sender'); -%>
             <%- include('/admin/settings/emails/partials/smtp'); -%>
+            <%- include('/admin/settings/emails/partials/templates'); -%>
         </div>
-      
+
         <div class="row mx-0 justify-content-end">
             <button class="btn float-right-btn btn-primary py-2" id="save">
                 <i class="fa fa-floppy-o" aria-hidden="true"></i>
