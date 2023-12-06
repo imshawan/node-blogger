@@ -51,3 +51,14 @@ export interface IPagination {
     start: number;
     end: number;
 }
+
+export interface IEmailTemplate {
+    _id?: string
+    _key?: string
+    templateId?: number
+    name?: string
+    slug?: string
+    html?: string
+    createdAt?: string
+    updatedAt?: string
+}

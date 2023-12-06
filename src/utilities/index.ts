@@ -113,3 +113,28 @@ export const validateMongoConnectionUrl = function (url: string): IMongoConnecti
         return null;
     }
 }
+
+export const sanitizeHtml = function (inputHtml: string, unsafeTags = ['script', 'iframe']) {
+    const tagRegex = new RegExp(`<(${unsafeTags.join('|')})\\b[^<]*(?:(?!<\\/\\1>)<[^<]*)*<\\/\\1>`, 'gi');
+    const safeHtml = inputHtml.replace(tagRegex, '');
+
+    const sanitizedHtml = safeHtml.replace(/on\w+="[^"]*"/gi, '');
+  
+    // Remove attributes that may contain JavaScript code
+    const attributeRegex = /(?:\s|^)(on\w+|href|src)\s*=\s*("[^"]*"|'[^']*'|[^>\s]+)/gi;
+    const finalSanitizedHtml = sanitizedHtml.replace(
+      attributeRegex,
+      (match, attributeName, attributeValue) => {
+        if (
+          attributeName.toLowerCase() === "on" ||
+          attributeValue.toLowerCase().includes("javascript:")
+        ) {
+          return "";
+        } else {
+          return match;
+        }
+      }
+    );
+  
+    return finalSanitizedHtml;
+  }
