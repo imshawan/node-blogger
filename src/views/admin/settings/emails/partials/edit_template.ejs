@@ -1,0 +1,27 @@
+<div class="modal fade" id="edit-template-modal" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="edit-template-modal-Label" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="edit-template-modal-Label">Create edit template</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form action="" id="edit-template-modal-form">
+                    <div class="form-group">
+                        <label>Template name</label>
+                        <input type="text" required name="name" class="form-control" placeholder="Enter name">
+                    </div>
+                    <div class="form-group position-relative" style="height: 320px;" id="edit-template-code"></div>
+
+                    <div class="d-inline-flex w-100 justify-content-end">
+                        <button type="button" class="btn btn-danger me-2">Delete</button>
+                        <button type="submit" id="create-template-btn" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

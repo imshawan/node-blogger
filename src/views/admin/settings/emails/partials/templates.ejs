@@ -5,17 +5,30 @@
         <form id="email-template-settings" class="row g-3">
             <div class="col-12 form-group mb-2">
                 <label>Select template</label>
-                <select required name="emailService" id="service-selection" class="form-select mt-2" placeholder="Select...">
-                    <% if (emailServices && Object.keys(emailServices).length) { %>
-                        <% Object.keys(emailServices).forEach(element => { %>
-                            <option <% if (data.emailService == element) { %> selected <% } %> value="<%= element %>"><%= emailServices[element] %></option>
-                        <% }) %>
-                    <% } %>
+                <select id="template-selection" class="form-select mt-2" placeholder="Select...">
+
                 </select>
             </div>
-            <div class="position-relative" style="height: 400px;">
-                <div id="editor" class="w-100 h-100"></div>
+            <div class="col-12 form-row mx-0 justify-content-end mb-2">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle me-2" type="button" data-bs-toggle="dropdown">More</button>
+                <div class="dropdown-menu" x-placement="top-start"
+                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -2px, 0px);">
+                    
+                    <% if (emailTemplates.length) { %> 
+                        <a id="edit-template" class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#edit-template-modal">Edit template</a>
+                    <% } %>
+                    
+                    <a id="create-template" class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#new-template-modal">Create new</a>
+                </div>
+                <button type="submit" <% if (!emailTemplates.length) { %> disabled <% } %> class="btn text-uppercase btn-primary">Send test email</button>
             </div>
+
+            <%- include('/admin/settings/emails/partials/edit_template'); -%>
+            <%- include('/admin/settings/emails/partials/new_template'); -%>
+
+            <!-- <div class="position-relative" style="height: 400px;">
+                <div class="w-100 h-100"></div>
+            </div> -->
         </form>
     </div>
 </div>

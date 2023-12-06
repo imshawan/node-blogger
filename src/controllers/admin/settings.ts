@@ -172,6 +172,7 @@ const emails = async function (req: Request, res: Response, next: NextFunction) 
     pageData.data = retriveApplicationPropertiesFiltered(emailsAppKeysArray);
     pageData.emailServices = availableEmailServices;
     pageData.emailServiceAuthenticationTypes = emailServiceAuthenticationTypes;
+    pageData.emailTemplates = []
 
     res.render(BASE + '/emails/index', pageData);
 }
