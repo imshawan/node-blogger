@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import axios from 'axios';
 import _ from 'lodash';
 import { MutableObject, IMongoConnectionProps } from '@src/types';
+import { execSync } from 'child_process';
 
 export * from './password';
 export * from './slugify';
@@ -138,3 +139,10 @@ export const sanitizeHtml = function (inputHtml: string, unsafeTags = ['script',
   
     return finalSanitizedHtml;
   }
+
+export const openWebUrl = (url: string) => {
+    const command = process.platform === 'darwin' ? `open ${url}` : 
+        process.platform === 'win32' ? `start ${url}` : `xdg-open ${url}`;
+
+    execSync(command);
+}

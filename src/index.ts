@@ -2,12 +2,12 @@ import './pre-start'; // Must be the first import
 
 import EnvVars from '@src/constants/EnvVars';
 import server from './server';
-import {Logger, getArgv} from '@src/utilities';
+import {Logger, getArgv, openWebUrl} from '@src/utilities';
 import nconf from 'nconf';
 import { Server } from 'http';
 import { getIPv4Address } from './helpers';
 
-const {info} = new Logger();
+const {info, error} = new Logger();
 
 nconf.argv().env().file({ file: 'config.json' });
 nconf.set('env', getArgv('env'))
@@ -30,5 +30,13 @@ function onListening(httpServer: Server) {
   var IPv4Addr = ['http://', getIPv4Address(), ':',addr.port, '/'].join('');
 
   info('NodeBlogger running on ' + bind);
-  info('On your local network ' + IPv4Addr)
+  info('On your local network ' + IPv4Addr);
+
+  try {
+      if (env !== 'development') {
+          openWebUrl(bind);
+      }
+  } catch (err) {
+      error('Error while launching browser. ', err.message);
+  }
 }
