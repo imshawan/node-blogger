@@ -39,6 +39,80 @@ define('client/admin/settings/emails/index', ['client/admin/settings/utils'], fu
             });
 
         });
+
+        $('#new-template-modal-form').on('submit', function (e) {
+            e.preventDefault();
+            const form = $(this);
+            const data = form.serializeObject();
+            const html = window.editor && window.editor.getValue();
+
+            if (!html) {
+                return utilities.showToast('Email template HTML cannot be blank.', 'error');
+            }
+
+            data.html = html;
+
+            utils.createEmailTemplate(data).then((template) => {
+                $('#close-create-modal').trigger('click');
+                $('#template-selection').prepend($('<option>').attr('value', template.templateId).text(template.name));
+            });
+
+        });
+
+        $('#save-template').on('click', function () {
+            $(this).lockWithLoader();
+
+            const target = $(this);
+            const id = target.parent().data('template-id');
+            const data = {
+                name: $('#template-name').val(),
+                html: window.editor && window.editor.getValue(),
+            }
+
+            utils.updateEmailTemplate(data, id).then((template) => {
+                $('#close-edit-modal').trigger('click');
+                $('#template-selection').find(`option[value="${id}"]`).text(template.name);
+
+                target.unlockWithLoader();
+            });
+        });
+
+        $('body').on('click', '#edit-template', function () {
+            const selectedTemplateId = $('#template-selection').val();
+            utils.getEmailTemplateById(selectedTemplateId).then((template) => {
+                $('#template-name').val(template.name);
+                $('#template-form-actions').attr('data-template-id', template.templateId);
+
+                window.editor && window.editor.setValue(template.html);
+            });
+        });
+
+        $('#delete-template').on('click', function () {
+            const target = $(this);
+            const id = $(this).parent().data('template-id');
+
+            if (!confirm('Are you sure to DELETE this template?')) return;
+
+            target.lockWithLoader();
+
+            utils.deleteEmailTemplate(id).then(() => {
+                $('#close-edit-modal').trigger('click');
+                $('#template-selection').find(`option[value="${id}"]`).remove();
+
+                target.unlockWithLoader();
+            });
+        });
+
+        $('#push-test-email').on('click', function () {
+            const target = $(this);
+            const templateId = $('#template-selection').val();
+
+            target.lockWithLoader();
+            
+            utils.pushEmailByTemplateId(templateId).then(() => {
+                target.unlockWithLoader();
+            })
+        });
     }
 
     emails.handleAuthForm = function (selected) {

@@ -4,21 +4,23 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="edit-template-modal-Label">Create edit template</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="close-edit-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
-                <form action="" id="edit-template-modal-form">
+                <form id="edit-template-form">
+
                     <div class="form-group">
                         <label>Template name</label>
-                        <input type="text" required name="name" class="form-control" placeholder="Enter name">
+                        <input type="text" id="template-name" required name="name" class="form-control" placeholder="Enter name">
                     </div>
                     <div class="form-group position-relative" style="height: 320px;" id="edit-template-code"></div>
 
-                    <div class="d-inline-flex w-100 justify-content-end">
-                        <button type="button" class="btn btn-danger me-2">Delete</button>
-                        <button type="submit" id="create-template-btn" class="btn btn-primary">Save</button>
+                    <div id="template-form-actions" class="d-inline-flex w-100 justify-content-end">
+                        <button type="button" style="width: 126px;" id="delete-template" class="btn btn-danger me-2">Delete</button>
+                        <button type="button" style="width: 126px;" id="save-template" class="btn btn-primary">Save</button>
                     </div>
+
                 </form>
 
             </div>

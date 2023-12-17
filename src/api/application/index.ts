@@ -3,6 +3,7 @@ import {database} from "@src/database";
 import { IApplication, MulterFilesArray, MutableObject, ValueOf } from "@src/types";
 import { application, getCommonFields, 
     set as updateConfigurationStore, setValuesBulk, getTypeofField } from "@src/application";
+import email from "./email";
 
 const validSiteImagesArray = ['logo', 'favicon'] as const;
 
@@ -60,5 +61,5 @@ const updateSiteImages = async (req: Request, imageType: ValidSiteImageTypes) =>
 }
 
 export default {
-    updateSiteImages, updateCommonStore
+    updateSiteImages, updateCommonStore, email
   } as const;

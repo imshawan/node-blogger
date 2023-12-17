@@ -5,6 +5,7 @@ import { SideBar } from "@src/utilities";
 import { application } from "@src/application";
 import {sorting, availableRegisterationTypes, passwordScoresWithMessage, fileSizeUnits, 
     availableEmailServices, emailServiceAuthenticationTypes} from './common';
+import {get as getEmailTemplates} from "@src/application/emails";
 
 const BASE = 'settings';
 
@@ -172,7 +173,7 @@ const emails = async function (req: Request, res: Response, next: NextFunction) 
     pageData.data = retriveApplicationPropertiesFiltered(emailsAppKeysArray);
     pageData.emailServices = availableEmailServices;
     pageData.emailServiceAuthenticationTypes = emailServiceAuthenticationTypes;
-    pageData.emailTemplates = []
+    pageData.emailTemplates = await getEmailTemplates(null, null, ['templateId', 'name']);
 
     res.render(BASE + '/emails/index', pageData);
 }

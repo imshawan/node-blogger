@@ -11,7 +11,15 @@ const fileStorage = new FileStore();
 const fileuploadMiddleware = fileStorage.initialize();
 
 mountApiRoute(router, 'put', '/common', [], controllers.api.application.site.updateCommon);
+
 mountApiRoute(router, 'post', '/site/logo', [fileuploadMiddleware, checkRequiredFileFields.bind(null, ['logo'])], controllers.api.application.site.updateLogo);
 mountApiRoute(router, 'post', '/site/favicon', [fileuploadMiddleware, checkRequiredFileFields.bind(null, ['favicon'])], controllers.api.application.site.updateFavicon);
+
+mountApiRoute(router, 'get', '/email/template/:id?', [], controllers.api.application.email.getTemplates);
+mountApiRoute(router, 'post', '/email/template', [checkRequiredFields.bind(null, ['name', 'html'])], controllers.api.application.email.createTemplate);
+mountApiRoute(router, 'put', '/email/template/:id', [], controllers.api.application.email.updateTemplate);
+mountApiRoute(router, 'delete', '/email/template/:id', [], controllers.api.application.email.deleteTemplate);
+
+mountApiRoute(router, 'post', '/email/push/:id', [], controllers.api.application.email.pushEmailByTemplateId);
 
 export default router;

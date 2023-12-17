@@ -7,9 +7,12 @@ define('modules/http', () => {
 		get: () => String($('form#csrf_token > input').val())
 	};
 
-	http.GET = async (route, payload, options={}, onSuccess) => {
+	http.GET = async (route, payload={}, options={}, onSuccess) => {
 		if (!Object.keys(options).length) {
 			options = {};
+		}
+		if (!payload) {
+			payload={}
 		}
 
 		if (options.hasOwnProperty('headers')) {

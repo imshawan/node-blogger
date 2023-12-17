@@ -6,7 +6,11 @@
             <div class="col-12 form-group mb-2">
                 <label>Select template</label>
                 <select id="template-selection" class="form-select mt-2" placeholder="Select...">
-
+                    <% if (emailTemplates.length) { %>
+                        <% emailTemplates.forEach(element => { %>
+                            <option value="<%= element.templateId %>"><%= element.name %></option>
+                        <% }) %>
+                    <% } %>
                 </select>
             </div>
             <div class="col-12 form-row mx-0 justify-content-end mb-2">
@@ -20,15 +24,15 @@
                     
                     <a id="create-template" class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#new-template-modal">Create new</a>
                 </div>
-                <button type="submit" <% if (!emailTemplates.length) { %> disabled <% } %> class="btn text-uppercase btn-primary">Send test email</button>
+                <button type="button" style="width: 200px;" id="push-test-email" <% if (!emailTemplates.length) { %> disabled <% } %> class="btn text-uppercase btn-primary">Send test email</button>
             </div>
-
-            <%- include('/admin/settings/emails/partials/edit_template'); -%>
-            <%- include('/admin/settings/emails/partials/new_template'); -%>
 
             <!-- <div class="position-relative" style="height: 400px;">
                 <div class="w-100 h-100"></div>
             </div> -->
         </form>
+
+        <%- include('/admin/settings/emails/partials/edit_template'); -%>
+        <%- include('/admin/settings/emails/partials/new_template'); -%>
     </div>
 </div>

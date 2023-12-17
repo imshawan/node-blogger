@@ -3,6 +3,7 @@ import _ from 'lodash';
 import nconf from 'nconf';
 import { validateMongoConnectionUrl } from '@src/utilities';
 import { ValueError } from './errors';
+import { ExpressUser } from '@src/types';
 
 export * from './routes';
 export * from './response';
@@ -80,4 +81,55 @@ export const validatePaginationControls = function validatePaginationControls (r
         perPage: Number(perPage),
         page: Number(page),
     }
+}
+
+export const parseUserId = (req: Request): number => {
+    const user = req.user as ExpressUser;
+    if (user && Object.hasOwnProperty.bind(user)('userid')) {
+        return Number(user.userid);
+    }
+
+    return 0;
+}
+
+export const validateHtml = (html: string): Array<string> => {
+    const errors: Array<string> = [];
+    const tagsStack: Array<string> = [];
+
+    const selfClosingTags: Array<string> = [
+        'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
+        'meta', 'param', 'source', 'track', 'wbr'
+    ];
+
+    const regex = /<\s*([a-zA-Z0-9]+)[^>]*>|<\/\s*([a-zA-Z0-9]+)[^>]*>/g;
+    let match;
+
+    while ((match = regex.exec(html)) !== null) {
+        const openingTag = match[1];
+        const closingTag = match[2];
+
+        if (openingTag) {
+            if (selfClosingTags.includes(openingTag.toLowerCase())) {
+                // Self-closing tag found
+                continue;
+            }
+            tagsStack.push(openingTag.toLowerCase());
+        } else if (closingTag) {
+            const lastTag = tagsStack.pop();
+            if (!lastTag || lastTag !== closingTag.toLowerCase()) {
+                errors.push(`Mismatched tag: </${closingTag}>`);
+            }
+        }
+    }
+
+    // Check if any unclosed tags are left in the stack
+    if (tagsStack.length > 0) {
+        errors.push(`Unclosed tags: ${tagsStack.map(tag => `<${tag}>`).join(', ')}`);
+    }
+
+    return errors;
+}
+
+export const isValidHtml = (htmlString: string): boolean => {
+    return Boolean(validateHtml(htmlString).length);
 }

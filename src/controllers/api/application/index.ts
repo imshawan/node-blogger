@@ -1,5 +1,6 @@
-import site from './site'
+import site from './site';
+import email from './email';
 
 export default {
-    site
+    site, email
 } as const;
