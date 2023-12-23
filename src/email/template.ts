@@ -5,7 +5,7 @@ import { IEmailTemplate, MutableObject } from "@src/types";
 import { getISOTimestamp, slugify, sanitizeHtml } from "@src/utilities";
 import { isAdministrator } from '@src/user';
 
-export const create = async (data: IEmailTemplate, caller: number) => {
+const create = async (data: IEmailTemplate, caller: number) => {
     const {name, html} = data;
     if (!name && !name?.length) {
         throw new Error('Name is required.')
@@ -41,7 +41,7 @@ export const create = async (data: IEmailTemplate, caller: number) => {
     return acknowledgement;
 }
 
-export const update = async function (data: IEmailTemplate, id: number, caller: number) {
+const update = async function (data: IEmailTemplate, id: number, caller: number) {
     const {name, html} = data;
     const timestamp = getISOTimestamp();
     const templateData: IEmailTemplate = {};
@@ -76,7 +76,7 @@ export const update = async function (data: IEmailTemplate, id: number, caller: 
     return _.merge(template, templateData);
 }
 
-export const get = async function (perPage: number | null=15, page: number | null=1, fields: string[]=[]) {
+const get = async function (perPage: number | null=15, page: number | null=1, fields: string[]=[]) {
     // TODO need to properly write the logic with pagination and etc.
     if (!perPage) {
         perPage=15;
@@ -107,7 +107,7 @@ export const get = async function (perPage: number | null=15, page: number | nul
     return templates;
 }
 
-export const getById = async function (id: number, fields: string[]=[]): Promise<IEmailTemplate> {
+const getById = async function (id: number, fields: string[]=[]): Promise<IEmailTemplate> {
     if (!id) {
         throw new Error('id is a required parameter');
     }
@@ -124,7 +124,7 @@ export const getById = async function (id: number, fields: string[]=[]): Promise
     return await database.getObjects(query, fields);
 }
 
-export const getBySlug = async function (slug: string, fields: string[]=[]): Promise<IEmailTemplate> {
+const getBySlug = async function (slug: string, fields: string[]=[]): Promise<IEmailTemplate> {
     if (!slug) {
         throw new Error('slug is a required parameter');
     }
@@ -138,7 +138,7 @@ export const getBySlug = async function (slug: string, fields: string[]=[]): Pro
     return await database.getObjects(query, fields);
 }
 
-export const removeById = async function (id: number, caller: number) {
+const removeById = async function (id: number, caller: number) {
     if (!id) {
         throw new Error('id is a required parameter');
     }
@@ -155,4 +155,8 @@ export const removeById = async function (id: number, caller: number) {
     }
 
     await database.deleteObjects({templateId: Number(id), _key: 'email:template'});
+}
+
+export {
+    create, get, getById, getBySlug, update, removeById
 }

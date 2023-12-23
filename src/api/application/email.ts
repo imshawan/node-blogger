@@ -1,5 +1,5 @@
 import { Request } from "express";
-import * as Template from "@src/application/emails";
+import {template as Template} from "@src/email";
 import * as Helpers from "@src/helpers";
 import { IEmailTemplate } from "@src/types";
 import { sanitizeHtml } from "@src/utilities";
