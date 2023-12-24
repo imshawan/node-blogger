@@ -20,6 +20,13 @@ define('client/admin/settings/emails/index', ['client/admin/settings/utils'], fu
             emails.handleAuthForm($(this).val());
         });
 
+        $('[name="emailService"]').on('change', function () {
+            const val = $(this).val();
+            if (val == 'custom') {
+                $('#service-conf').trigger('click');
+            }
+        })
+
         $('#edit-template').on('click', function() {
             emails.initializeEditor(null, 'edit-template-code');
         });
@@ -57,6 +64,13 @@ define('client/admin/settings/emails/index', ['client/admin/settings/utils'], fu
                 $('#template-selection').prepend($('<option>').attr('value', template.templateId).text(template.name));
             });
 
+        });
+
+        $('#service-form').on('submit', function (e) {
+            e.preventDefault();
+            const form = $(this).serializeObject();
+
+            console.log(form)
         });
 
         $('#save-template').on('click', function () {

@@ -4,13 +4,23 @@
 
         <form id="email-smtp-settings" class="row g-3">
             <div class="col-12 form-group mb-3">
-                <label>Allowed file extensions</label>
+                <label>Select email service</label>
                 <select required name="emailService" id="service-selection" class="form-select mt-2" placeholder="Select...">
-                    <% if (emailServices && Object.keys(emailServices).length) { %>
-                        <% Object.keys(emailServices).forEach(element => { %>
-                            <option <% if (data.emailService == element) { %> selected <% } %> value="<%= element %>"><%= emailServices[element] %></option>
+                    <% if (!data.emailService) { %>
+                        <option selected value="">Select</option>
+                    <% } else { %>
+                        <option value="">Select</option>
+                    <% } %>
+
+                    <option value=""></option>
+                    
+                    <% if (emailServices && emailServices.length) { %>
+                        <% emailServices.forEach(element => { %>
+                            <option <% if (data.emailService == element) { %> selected <% } %> value="<%= element %>"><%= element %></option>
                         <% }) %>
                     <% } %>
+
+                    <option value="custom" class="font-weight-bold">Custom service</option>
                 </select>
             </div>
             <div class="col-12 form-group mb-3">

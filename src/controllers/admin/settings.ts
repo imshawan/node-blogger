@@ -4,8 +4,9 @@ import {data as sidebarData} from "./sidebar";
 import { SideBar } from "@src/utilities";
 import { application } from "@src/application";
 import {sorting, availableRegisterationTypes, passwordScoresWithMessage, fileSizeUnits, 
-    availableEmailServices, emailServiceAuthenticationTypes} from './common';
-import {template as Template} from "@src/email";
+    emailServiceAuthenticationTypes} from './common';
+import {Sender, template as Template} from "@src/email";
+import {emailer} from "@src/email";
 
 const BASE = 'settings';
 
@@ -171,8 +172,9 @@ const emails = async function (req: Request, res: Response, next: NextFunction) 
     pageData.title = 'Emails';
     pageData.sidebar = sidebar.get('settings:emails');
     pageData.data = retriveApplicationPropertiesFiltered(emailsAppKeysArray);
-    pageData.emailServices = availableEmailServices;
+    pageData.emailServices = emailer.getWellknownServices();
     pageData.emailServiceAuthenticationTypes = emailServiceAuthenticationTypes;
+    pageData.customEmailSecurityOptions = Sender.getSecurityOptions();
     pageData.emailTemplates = await Template.get(null, null, ['templateId', 'name']);
 
     res.render(BASE + '/emails/index', pageData);

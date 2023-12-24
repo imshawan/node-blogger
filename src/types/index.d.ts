@@ -7,6 +7,7 @@ export * from './category';
 export * from './user';
 export * from './test';
 export * from './webmanifest';
+export * from './email';
 
 export interface MutableObject { [x: string]: any; }
 
@@ -50,15 +51,4 @@ export interface IPagination {
     };
     start: number;
     end: number;
-}
-
-export interface IEmailTemplate {
-    _id?: string
-    _key?: string
-    templateId?: number
-    name?: string
-    slug?: string
-    html?: string
-    createdAt?: string
-    updatedAt?: string
 }
