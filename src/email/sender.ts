@@ -12,6 +12,13 @@ const validScurityOptions = {
     ENCRYPTED: 'Encrypted'
 };
 
+/**
+ * @date 24-12-2023
+ * @author imshawan <hello@imshawan.dev>
+ * 
+ * @class Sender
+ * @description Manages the setup and sending of emails using an SMTP transport service through Nodemailer.
+ */
 export class Sender {
     private readonly host?: string | undefined;
     private readonly port?: number | undefined;
@@ -36,6 +43,10 @@ export class Sender {
         this.services = Object.keys(services);
     }
 
+    /**
+     * Parses and configures security options based on the provided SMTP security setting.
+     * @returns Configured security options for the SMTP transporter.
+     */
     private parseSecurityOptions() {
         if (!this.security) return {};
 
@@ -71,6 +82,9 @@ export class Sender {
         }
     }
 
+    /**
+     * Initializes the SMTP transporter based on the provided configuration.
+     */
     public async initialize() {
         if (!this.transporterOptions) {
             this.transporterOptions = {};
@@ -107,14 +121,27 @@ export class Sender {
         this.transporter = transporter;
     }
 
+    /**
+     * Retrieves the available security options for SMTP connections.
+     * @returns Object containing available security options.
+     */
     public static getSecurityOptions() {
         return validScurityOptions;
     }
 
+    /**
+     * Checks if the SMTP transporter is initialized and ready for sending emails.
+     * @returns Boolean indicating the readiness of the SMTP transporter.
+     */
     public isReady() {
         return Boolean(this.transporter);
     }
 
+    /**
+     * Sends an email using the configured SMTP transporter.
+     * @param email - Email message object to be sent.
+     * @throws Error if transporter is not properly initialized or required properties are missing in the email object.
+     */
     public async sendMail(email: Mail.Options) {
         if (!this.transporter) {
             throw new Error(

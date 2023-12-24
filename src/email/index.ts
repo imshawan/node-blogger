@@ -7,6 +7,16 @@ import {setValuesBulk, get as getValueFromApplication} from '@src/application';
 import { database } from '@src/database';
 import { ICustomSMTPService, MutableObject, Security } from '@src/types';
 
+
+/**
+ * @author imshawan <hello@imshawan.dev>
+ * @description Sets up a custom SMTP service based on provided data, updating the application's settings accordingly.
+ * 
+ * @param data - Object containing information about the SMTP service (host, port, name, security, username, password).
+ * @param caller - Userid, identifying the caller initiating the setup.
+ * @throws Error if the provided data is empty, caller is not a number, or if certain data validations fail.
+ * @returns Promise that resolves to an object containing information about the configured SMTP service.
+ */
 export const setupCustomSMTPService = async function (data: ICustomSMTPService, caller: number) {
     if (!data || !Object.keys(data).length) {
         throw new Error('data cannot be empty.');
