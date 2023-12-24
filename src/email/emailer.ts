@@ -21,6 +21,12 @@ export const initializeEmailClient = async () => {
         pass: getValueByField('emailServicePassword'),
     } as SMTPConnection.Credentials;
 
+    if (emailer.transport && Object.hasOwnProperty.bind(emailer.transport)('close')) {
+        if (typeof emailer.transport.close === 'function') {
+            emailer.transport.close();
+        }
+    }
+
     const sender = new Sender({
         service: service,
         host: String(host),
