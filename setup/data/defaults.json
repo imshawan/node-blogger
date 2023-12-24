@@ -104,5 +104,10 @@
     "emailServiceAuthenticationType": "",
     "emailServiceUsername": "",
     "emailServicePassword": "",
-    "emailServiceApiKey": ""
+    "emailServiceApiKey": "",
+    "emailServiceName": "",
+    "emailServiceHost": "",
+    "emailServicePort": "",
+    "emailServiceSecurity": "",
+    "emailServicePooling": false
 }

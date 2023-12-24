@@ -93,6 +93,10 @@ export interface IApplication {
     emailServiceUsername: string;
     emailServicePassword: string;
     emailServiceApiKey: string;
+    emailServiceHost: string;
+    emailServicePort: string | number;
+    emailServiceSecurity: string;
+    emailServicePooling: boolean;
 }
 
 export interface IRegistrationTypes {

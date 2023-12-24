@@ -27,4 +27,8 @@ export default {
         handleApiResponse(HttpStatusCodes.OK, res, await api.application.email.pushEmailByTemplateId(req));
     },
 
+    setupSMTPService: async (req: Request, res: Response, next: NextFunction) => {
+        handleApiResponse(HttpStatusCodes.OK, res, await api.application.email.setupSMTPService(req));
+    },
+
 } as const

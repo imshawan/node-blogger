@@ -1,4 +1,4 @@
-define('client/admin/settings/emails/index', ['client/admin/settings/utils'], function (utils) {
+define('client/admin/settings/emails/index', ['client/admin/settings/utils', 'modules/http'], function (utils, http) {
     const emails = {};
 
     emails.initialize = function () {
@@ -68,9 +68,24 @@ define('client/admin/settings/emails/index', ['client/admin/settings/utils'], fu
 
         $('#service-form').on('submit', function (e) {
             e.preventDefault();
-            const form = $(this).serializeObject();
+            const form = $(this);
+            const formData = form.serializeObject();
 
-            console.log(form)
+            form.find('[type="submit"]').lockWithLoader();
+
+            http.PUT('/api/v1/admin/application/email/service', formData)
+                .then(res => {
+                    utilities.showToast('Service saved successfully.', 'success');
+
+                    $('#emailServiceUsername').val(formData.username);
+                    $('#emailServicePassword').val(formData.password);
+                    $('#auth-selection').find('option[value="default"]').attr('selected', true);
+                    $('#emailServiceApiKey').attr('disabled', true);
+                    
+                    $('#service-modal button[data-bs-dismiss="modal"]').trigger('click');
+                })
+                .catch(err => utilities.showToast(err.message, 'error'))
+                .finally(() => form.find('[type="submit"]').unlockWithLoader());
         });
 
         $('#save-template').on('click', function () {

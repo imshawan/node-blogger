@@ -1,5 +1,5 @@
 import { Request } from "express";
-import {template as Template} from "@src/email";
+import {Sender, template as Template, setupCustomSMTPService} from "@src/email";
 import * as Helpers from "@src/helpers";
 import { IEmailTemplate } from "@src/types";
 import { sanitizeHtml } from "@src/utilities";
@@ -102,6 +102,16 @@ const pushEmailByTemplateId = async (req: Request) => {
     // TODO: Implement email sending functionality using appropriate service provider
 }
 
+const setupSMTPService = async (req: Request) => {
+    const userid = Helpers.parseUserId(req);
+
+    if (!await isAdministrator(userid)) {
+        throw new Error('This operation requires admin privilages.');
+    }
+
+    return await setupCustomSMTPService(req.body, userid);
+}
+
 export default {
-    createTemplate, updateTemplate, getTemplates, deleteTemplate, pushEmailByTemplateId
+    createTemplate, updateTemplate, getTemplates, deleteTemplate, pushEmailByTemplateId, setupSMTPService,
 } as const

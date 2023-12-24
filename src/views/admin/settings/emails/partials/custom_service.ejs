@@ -7,37 +7,44 @@
                 <button type="button" id="close-edit-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
                 <form id="service-form">
-
                     <div class="form-group">
                         <label>Service name</label>
                         <input type="text" required name="name" class="form-control" placeholder="Enter name">
                     </div>
-                    <div class="form-group">
-                        <label>SMTP Host</label>
-                        <input type="text" required name="host" class="form-control" placeholder="smtp.example.com">
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label>SMTP Host</label>
+                            <input type="text" required name="host" class="form-control" placeholder="smtp.example.com">
+                        </div>
+                        <div class="form-group col-6">
+                            <label>Port</label>
+                            <input type="number" required name="port" class="form-control" placeholder="456">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>SMTP Port</label>
-                        <input type="number" required name="port" class="form-control" placeholder="456">
+                    <div class="form-row">
+                        <div class="form-group col-12 col-md-6">
+                            <label>Username</label>
+                            <input type="text" required name="username" class="form-control" placeholder="Username">
+                        </div>
+                        <div class="form-group col-12 col-md-6">
+                            <label>Password</label>
+                            <input type="text" required name="password" class="form-control" placeholder="Password or API Key">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Security</label>
-                        <select id="template-selection" name="security" class="form-select mt-2">
+                        <select id="template-selection" required name="security" class="form-select mt-2">
                             <% Object.keys(customEmailSecurityOptions).forEach(element => { %>
                                 <option value="<%= element %>"><%= customEmailSecurityOptions[element] %></option>
                             <% }) %>
                         </select>
                     </div>
-
                     <div id="service-form-actions" class="d-inline-flex w-100 justify-content-end">
                         <button type="button" data-bs-dismiss="modal" class="btn btn-secondary me-2">Cancel</button>
-                        <button type="submit" style="width: 126px;" class="btn btn-primary">Save</button>
+                        <button type="submit" style="width: 186px;" class="btn btn-primary">Validate & Save</button>
                     </div>
-
                 </form>
-
             </div>
         </div>
     </div>

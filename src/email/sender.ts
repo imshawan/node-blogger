@@ -1,7 +1,7 @@
 import nodemailer, { SentMessageInfo, Transporter } from "nodemailer";
 import SMTPConnection from "nodemailer/lib/smtp-connection";
 import services from "nodemailer/lib/well-known/services.json"
-import { ISMTPTransporterOptions, Security, ISender } from "@src/types";
+import { ISMTPTransporterOptions, Security, ISender, SMTPService } from "@src/types";
 import { ValueError } from "@src/helpers";
 import Mail from "nodemailer/lib/mailer";
 import _ from "lodash";
@@ -17,7 +17,7 @@ export class Sender {
     private readonly port?: number | undefined;
     private readonly security?: Security;
     private readonly pool?: boolean | undefined;
-    private readonly service?: string | undefined;
+    private readonly service?: SMTPService;
     private readonly services?: Array<string>;
     private readonly auth?: SMTPConnection.Credentials;
 
@@ -29,13 +29,11 @@ export class Sender {
         this.port = Number(options.port);
         this.security = options.security;
         this.pool = Boolean(options.pool);
-        this.service = options.service;
+        this.service = options.service as SMTPService;
         this.auth = options.auth;
         this.transporterOptions = options.transporterOptions || {};
         this.transporter = null;
         this.services = Object.keys(services);
-
-        this.initialize();
     }
 
     private parseSecurityOptions() {
@@ -73,13 +71,13 @@ export class Sender {
         }
     }
 
-    private async initialize() {
+    public async initialize() {
         if (!this.transporterOptions) {
             this.transporterOptions = {};
         }
 
         if (this.service) {
-            if (this.service == "custom") {
+            if (String(this.service).toLowerCase() == "custom") {
                 if (!Object.hasOwnProperty.bind(this.auth)("user")) {
                     throw new ValueError('Missing property: "user" from auth');
                 }
