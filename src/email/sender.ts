@@ -138,6 +138,14 @@ export class Sender {
     }
 
     /**
+     * Retrieves the configured SMTP transporter instance.
+     * @returns The SMTP transporter instance or null if not initialized.
+     */
+    public getSMTPTransport() {
+        return this.transporter;
+    }
+
+    /**
      * Sends an email using the configured SMTP transporter.
      * @param email - Email message object to be sent.
      * @throws Error if transporter is not properly initialized or required properties are missing in the email object.
