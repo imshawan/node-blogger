@@ -4,6 +4,7 @@ import * as Helpers from "@src/helpers";
 import { IEmailTemplate } from "@src/types";
 import { sanitizeHtml } from "@src/utilities";
 import { isAdministrator } from "@src/user";
+import { initializeEmailClient } from "@src/email/emailer";
 
 const getTemplates = async (req: Request) => {
     const {query} = req;
@@ -109,7 +110,10 @@ const setupSMTPService = async (req: Request) => {
         throw new Error('This operation requires admin privilages.');
     }
 
-    return await setupCustomSMTPService(req.body, userid);
+    const service = await setupCustomSMTPService(req.body, userid);
+    await initializeEmailClient();
+
+    return service;
 }
 
 export default {

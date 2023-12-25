@@ -2,23 +2,13 @@ define('client/admin/settings/emails/index', ['client/admin/settings/utils', 'mo
     const emails = {};
 
     emails.initialize = function () {
-        const {data} = Application;
-
         // this.initializeEditor();
         this.attchEvents();
-
-        if (data.emailServiceAuthenticationType) {
-            this.handleAuthForm(data.emailServiceAuthenticationType);
-        }
     }
 
     emails.attchEvents = function () {
         $('#email-basic-settings').dirrty();
         $('#email-smtp-settings').dirrty();
-
-        $('#auth-selection').on('change', function() {
-            emails.handleAuthForm($(this).val());
-        });
 
         $('[name="emailService"]').on('change', function () {
             const val = $(this).val();
@@ -141,17 +131,6 @@ define('client/admin/settings/emails/index', ['client/admin/settings/utils', 'mo
             utils.pushEmailByTemplateId(templateId).then(() => {
                 target.unlockWithLoader();
             })
-        });
-    }
-
-    emails.handleAuthForm = function (selected) {
-        const {emailServiceAuthenticationTypes} = Application;
-        const types = Object.keys(emailServiceAuthenticationTypes);
-
-        types.forEach(type => {
-            $.each($(`#${type}-auth input`), function(i, e) {
-                $(e).attr('disabled', selected != type)
-            });
         });
     }
 

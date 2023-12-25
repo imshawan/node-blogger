@@ -4,6 +4,7 @@ import { IApplication, MulterFilesArray, MutableObject, ValueOf } from "@src/typ
 import { application, getCommonFields, 
     set as updateConfigurationStore, setValuesBulk, getTypeofField } from "@src/application";
 import email from "./email";
+import { initializeEmailClient } from "@src/email/emailer";
 
 const validSiteImagesArray = ['logo', 'favicon'] as const;
 
@@ -32,6 +33,8 @@ const updateCommonStore = async (req: Request) => {
     if (Object.keys(applicationData).length) {
         await database.updateObjects({_key}, {$set: applicationData});
         setValuesBulk(applicationData);
+
+        await reinitializeEmailClientOnConfigChange(applicationData);
     }
 
     return applicationData;
@@ -58,6 +61,23 @@ const updateSiteImages = async (req: Request, imageType: ValidSiteImageTypes) =>
     }
     
     return {message: application.configurationStore};
+}
+
+const reinitializeEmailClientOnConfigChange = async (data: MutableObject) => {
+    const keysFromApplicationData = Object.keys(data) as (keyof IApplication)[];
+    const SMTPServiceFields = [
+        "emailService",
+        "emailServicePassword",
+        "emailServiceUsername"
+    ] as (keyof IApplication)[];
+
+    let serviceKeysMatch = 0;
+
+    keysFromApplicationData.forEach(elem => (SMTPServiceFields.includes(elem) && serviceKeysMatch++));
+
+    if (Boolean(serviceKeysMatch)) {
+        await initializeEmailClient();
+    }
 }
 
 export default {

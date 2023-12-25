@@ -23,19 +23,6 @@
                     <option value="custom" class="font-weight-bold">Custom service</option>
                 </select>
             </div>
-            <div class="col-12 form-group mb-3">
-                <label>Service Authentication type</label>
-                <select required name="emailServiceAuthenticationType" id="auth-selection" class="form-select mt-2"
-                    placeholder="Select...">
-                    <% if (emailServiceAuthenticationTypes && Object.keys(emailServiceAuthenticationTypes).length) { %>
-                        <% Object.keys(emailServiceAuthenticationTypes).forEach(element => { %>
-                            <option <% if (data.emailServiceAuthenticationType && data.emailServiceAuthenticationType == element) { %>
-                                selected
-                            <% } %> value="<%= element %>"><%= emailServiceAuthenticationTypes[element] %></option>
-                        <% }) %>
-                    <% } %>
-                </select>
-            </div>
             <div class="row g-2 mx-0" id="default-auth">
                 <div class="col-md">
                     <div class="form-floating">
@@ -47,20 +34,14 @@
                 <div class="col-md">
                     <div class="form-floating">
                         <input name="emailServicePassword" value="<%= data.emailServicePassword %>" class="form-control"
-                            id="emailServicePassword" placeholder="">
-                        <label for="emailServicePassword">Password</label>
+                            id="emailServicePassword" placeholder="Password or API Key">
+                        <label for="emailServicePassword">Password or API Key</label>
                     </div>
                 </div>
             </div>
-            <div class="col-12" id="apiKey-auth">
-                <div class="form-floating">
-                    <input name="emailServiceApiKey" value="<%= data.emailServiceApiKey %>" class="form-control"
-                        id="emailServiceApiKey" placeholder="">
-                    <label for="emailServiceApiKey">API key</label>
-                </div>
-                <div id="" class="form-text">This key serves as a secure authentication token, allowing seamless
-                    integration between your application and the chosen email service provider.
-                </div>
+            <div id="" class="form-text">
+                You can use your API key like a password when setting up the SMTP relay for your email service provider. 
+                Do read the SMTP relay configuration documentation provided by your provider before proceeding.
             </div>
         </form>
     </div>
