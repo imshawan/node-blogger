@@ -6,12 +6,15 @@ define('client/admin/settings/posts/index', ['modules/http'], function (http) {
         $('#posts-general-settings').dirrty();
 
         $('#save').on('click', function () {
+            const target = $(this);
             const data = $('#posts-general-settings').serializeObject();
             Object.keys(data).forEach(field => {
                 if (!isNaN(String(data[field]))) {
                     data[field] = Number(data[field]);
                 }
             });
+
+            target.lockWithLoader();
             
             http.PUT('/api/v1/admin/application/common', JSON.stringify(data), {contentType: 'application/json'})
                 .then(res => {
@@ -23,7 +26,8 @@ define('client/admin/settings/posts/index', ['modules/http'], function (http) {
 
                     utilities.showToast('Data was saved successfully.', 'success');
                 })
-                .catch(err => utilities.showToast(err.message, 'error'));
+                .catch(err => utilities.showToast(err.message, 'error'))
+                .finally(() => target.unlockWithLoader());
         });
     }
 

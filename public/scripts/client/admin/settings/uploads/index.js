@@ -18,6 +18,7 @@ define('client/admin/settings/uploads/index', ['client/admin/settings/utils'], f
         });
 
         $('#save').on('click', function () {
+            const target = $(this);
             let data = $.extend(
                 $('#files-settings').serializeObject(), 
                 $('#photo-settings').serializeObject(), 
@@ -28,6 +29,8 @@ define('client/admin/settings/uploads/index', ['client/admin/settings/utils'], f
                     data[field] = Number(data[field]);
                 }
             });
+
+            target.lockWithLoader();
             
             data = $.extend(data,
                 uploads.getCheckedValuesBySelector('#files-settings'),
@@ -38,7 +41,9 @@ define('client/admin/settings/uploads/index', ['client/admin/settings/utils'], f
                 $('#files-settings').dirrty('setClean');
                 $('#photo-settings').dirrty('setClean');
                 $('#profile-image-settings').dirrty('setClean')
-            });
+            })
+            .catch((err) => utilities.showToast(err.message, 'error'))
+            .finally(() => target.unlockWithLoader());
 
         });
     }

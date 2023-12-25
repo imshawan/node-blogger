@@ -26,14 +26,21 @@ define('client/admin/settings/emails/index', ['client/admin/settings/utils', 'mo
         });
 
         $('#save').on('click', function () {
+            const target = $(this);
             const data = $.extend(
                 $('#email-basic-settings').serializeObject(), 
-                $('#email-smtp-settings').serializeObject());
+                $('#email-smtp-settings').serializeObject(),
+                $('#email-smtp-settings').parseCheckboxes(),
+            );
+
+            target.lockWithLoader();
 
             utils.updateSettings(data).then(() => {
                 $('#email-basic-settings').dirrty('setClean');
                 $('#email-smtp-settings').dirrty('setClean');
-            });
+            })
+            .catch(err => utilities.showToast(err.message, 'error'))
+            .finally(() => target.unlockWithLoader());
 
         });
 
@@ -143,7 +150,7 @@ define('client/admin/settings/emails/index', ['client/admin/settings/utils', 'mo
         editor.setTheme("ace/theme/one_dark");
         editor.session.setMode("ace/mode/html");
         editor.setShowPrintMargin(false);
-        editor.setFontSize(14)
+        editor.setFontSize(14);
 
         if (code && code.length) {
             editor.setValue(code, 1);

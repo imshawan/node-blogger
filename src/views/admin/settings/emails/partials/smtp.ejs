@@ -43,6 +43,20 @@
                 You can use your API key like a password when setting up the SMTP relay for your email service provider. 
                 Do read the SMTP relay configuration documentation provided by your provider before proceeding.
             </div>
+            <div class="col-md-12 mt-4">
+                <div class="form-check form-switch px-0 d-flex">
+                    <div class="">
+                        <input id="emailServicePooling" name="emailServicePooling" class="form-check-input me-3 position-relative switch-lg" <%= data.emailServicePooling ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                    </div>
+                    <div class="">
+                        <label for="emailServicePooling" class="font-weight-semibold" style="width: calc(100% - 4rem);" for="">Allow SMTP Pooling</label>
+                        <div class="form-text mt-2">
+                            <span class="text-danger">Note: </span>
+                            This feature will allow for the management of multiple connections to an SMTP server. Instead of creating a new connection every time an email needs to be sent, SMTP pooling creates a pool of reusable connections.
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>

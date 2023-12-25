@@ -7,9 +7,12 @@ define('client/admin/settings/users/index', ['modules/http'], function (http) {
         $('#registration-settings').dirrty();
 
         $('#save').on('click', function () {
+            const target = $(this);
             const accountSettings = {};
             const registration = $('#registration-settings').serializeObject();
             const security = $('#security-settings').serializeObject();
+
+            target.lockWithLoader();
 
             $.each($('#account-settings input[type="checkbox"]'), function (i, e) {
                 accountSettings[e.name] = $(e).is(':checked');
@@ -34,7 +37,8 @@ define('client/admin/settings/users/index', ['modules/http'], function (http) {
 
                     utilities.showToast('Data was saved successfully.', 'success');
                 })
-                .catch(err => utilities.showToast(err.message, 'error'));
+                .catch(err => utilities.showToast(err.message, 'error'))
+                .finally(() => target.unlockWithLoader());
         });
 
     }

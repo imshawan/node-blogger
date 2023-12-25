@@ -6,6 +6,7 @@ define('client/admin/settings/blog/index', ['modules/http'], function (http) {
         $('#blog-settings').dirrty();
 
         $('#save').on('click', function () {
+            const target = $(this);
             const data = {
                 sorting: $('[name="sorting"]').val()
             };
@@ -24,7 +25,8 @@ define('client/admin/settings/blog/index', ['modules/http'], function (http) {
 
                     utilities.showToast('Data was saved successfully.', 'success');
                 })
-                .catch(err => utilities.showToast(err.message, 'error'));
+                .catch(err => utilities.showToast(err.message, 'error'))
+                .finally(() => target.unlockWithLoader());
         });
     }
 
