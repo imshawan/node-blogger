@@ -167,12 +167,18 @@ const emails = async function (req: Request, res: Response, next: NextFunction) 
         "emailServiceUsername",
         "emailServicePassword",
         "emailServiceApiKey",
+        "emailServiceName",
+        "emailServiceHost",
+        "emailServicePort",
+        "emailServiceSecurity",
+        "emailServicePooling"
     ];
+    const wellKnownServices = emailer.getWellknownServices();
 
     pageData.title = 'Emails';
     pageData.sidebar = sidebar.get('settings:emails');
     pageData.data = retriveApplicationPropertiesFiltered(emailsAppKeysArray);
-    pageData.emailServices = emailer.getWellknownServices();
+    pageData.emailServices = wellKnownServices;
     pageData.emailServiceAuthenticationTypes = emailServiceAuthenticationTypes;
     pageData.customEmailSecurityOptions = Sender.getSecurityOptions();
     pageData.emailTemplates = await Template.get(null, null, ['templateId', 'name']);

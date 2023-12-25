@@ -36,6 +36,7 @@ export interface MulterFilesArray extends Express.Multer.File {
 
 export interface ExpressUser extends Express.User {
     userid: number
+    email: string
 }
 
 export interface IPagination {

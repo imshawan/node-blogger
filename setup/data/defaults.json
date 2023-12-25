@@ -107,7 +107,7 @@
     "emailServiceApiKey": "",
     "emailServiceName": "",
     "emailServiceHost": "",
-    "emailServicePort": "",
+    "emailServicePort": 0,
     "emailServiceSecurity": "",
     "emailServicePooling": false
 }

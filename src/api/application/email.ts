@@ -1,10 +1,12 @@
 import { Request } from "express";
 import {Sender, template as Template, setupCustomSMTPService} from "@src/email";
 import * as Helpers from "@src/helpers";
-import { IEmailTemplate } from "@src/types";
+import { ExpressUser, IEmailTemplate } from "@src/types";
 import { sanitizeHtml } from "@src/utilities";
 import { isAdministrator } from "@src/user";
-import { initializeEmailClient } from "@src/email/emailer";
+import { initializeEmailClient, emailer } from "@src/email/emailer";
+import Mail from "nodemailer/lib/mailer";
+import { get as getValueByField } from "@src/application";
 
 const getTemplates = async (req: Request) => {
     const {query} = req;
@@ -80,6 +82,9 @@ const deleteTemplate = async (req: Request) => {
 const pushEmailByTemplateId = async (req: Request) => {
     const id = Number(req.params.id);
     const userid = Helpers.parseUserId(req);
+    const user = req.user as ExpressUser;
+    const from = String(getValueByField('applicationEmail'));
+    const fromName = String(getValueByField('applicationEmailFromName'));
 
     if (!await isAdministrator(userid)) {
         throw new Error('This operation requires admin privilages.');
@@ -90,17 +95,28 @@ const pushEmailByTemplateId = async (req: Request) => {
         throw new Error('No such template with the supplied id');
     }
 
-    const {html} = templateData;
+    const {html, name} = templateData;
     if (!html || !html.length) {
         throw new Error('The template is empty, nothing to send');
     }
 
     const isHtmlValid = Helpers.isValidHtml(html);
     if (!isHtmlValid) {
-        throw new Error('Sending failed. Found some issues with the template.')
+        throw new Error('Sending failed. Found some issues with the template.');
     }
 
-    // TODO: Implement email sending functionality using appropriate service provider
+    if (!from) {
+        throw new Error('Application email is not configured yet. Please enter an sender email id first for sending emails.');
+    }
+
+    const emailMessage: Mail.Options = {
+        from,
+        to: String(user.email),
+        subject: name + ' - Testing',
+        html: html,
+    };
+
+    await emailer.sendMail(emailMessage);
 }
 
 const setupSMTPService = async (req: Request) => {

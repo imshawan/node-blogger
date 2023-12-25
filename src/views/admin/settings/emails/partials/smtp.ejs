@@ -20,7 +20,7 @@
                         <% }) %>
                     <% } %>
 
-                    <option value="custom" class="font-weight-bold">Custom service</option>
+                    <option <% if (data.emailService == 'custom') { %> selected <% } %> value="custom" class="font-weight-bold">Custom service</option>
                 </select>
             </div>
             <div class="row g-2 mx-0" id="default-auth">

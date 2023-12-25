@@ -63,6 +63,7 @@ export const setupCustomSMTPService = async function (data: ICustomSMTPService, 
 
     if (sender.isReady()) {
         payload = {
+            emailService: 'custom',
             emailServiceName: name,
             emailServiceHost: host,
             emailServicePort: port,

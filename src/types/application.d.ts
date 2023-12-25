@@ -93,6 +93,7 @@ export interface IApplication {
     emailServiceUsername: string;
     emailServicePassword: string;
     emailServiceApiKey: string;
+    emailServiceName: string;
     emailServiceHost: string;
     emailServicePort: string | number;
     emailServiceSecurity: string;

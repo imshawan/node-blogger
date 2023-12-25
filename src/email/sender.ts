@@ -41,6 +41,8 @@ export class Sender {
         this.transporterOptions = options.transporterOptions || {};
         this.transporter = null;
         this.services = Object.keys(services);
+
+        this.sendMail = this.sendMail.bind(this);
     }
 
     /**
@@ -159,19 +161,16 @@ export class Sender {
         if (!email.from) {
             throw new ValueError('"from" is a required property.');
         }
+        if (!email.to) {
+            throw new ValueError('"to" is a required property.');
+        }
         if (!email.subject) {
             throw new ValueError('"subject" is a required property.');
         }
-        if (!email.from) {
-            throw new ValueError('"from" is a required property.');
-        }
-        if (!email.html || !email.text) {
+        if (!email.html && !email.text) {
             throw new Error(
                 'Nothing to send as "text" and "html" both are null.'
             );
-        }
-        if (!email.sender) {
-            email.sender = email.from;
         }
 
         await this.transporter.sendMail(email);

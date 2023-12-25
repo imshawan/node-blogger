@@ -69,8 +69,8 @@ define('client/admin/settings/emails/index', ['client/admin/settings/utils', 'mo
 
                     $('#emailServiceUsername').val(formData.username);
                     $('#emailServicePassword').val(formData.password);
-                    $('#auth-selection').find('option[value="default"]').attr('selected', true);
                     $('#emailServiceApiKey').attr('disabled', true);
+                    $('#email-smtp-settings').dirrty('setClean');
                     
                     $('#service-modal button[data-bs-dismiss="modal"]').trigger('click');
                 })

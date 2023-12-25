@@ -10,33 +10,33 @@
                 <form id="service-form">
                     <div class="form-group">
                         <label>Service name</label>
-                        <input type="text" required name="name" class="form-control" placeholder="Enter name">
+                        <input type="text" value="<%= data.emailServiceName %>" required name="name" class="form-control" placeholder="Enter name">
                     </div>
                     <div class="form-row">
                         <div class="form-group col-6">
                             <label>SMTP Host</label>
-                            <input type="text" required name="host" class="form-control" placeholder="smtp.example.com">
+                            <input type="text" value="<%= data.emailServiceHost %>" required name="host" class="form-control" placeholder="smtp.example.com">
                         </div>
                         <div class="form-group col-6">
                             <label>Port</label>
-                            <input type="number" required name="port" class="form-control" placeholder="456">
+                            <input type="number" value="<%= data.emailServicePort %>" required name="port" class="form-control" placeholder="456">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-12 col-md-6">
                             <label>Username</label>
-                            <input type="text" required name="username" class="form-control" placeholder="Username">
+                            <input type="text" value="<%= data.emailServiceUsername %>" required name="username" class="form-control" placeholder="Username">
                         </div>
                         <div class="form-group col-12 col-md-6">
                             <label>Password</label>
-                            <input type="text" required name="password" class="form-control" placeholder="Password or API Key">
+                            <input type="text" value="<%= data.emailServicePassword %>" required name="password" class="form-control" placeholder="Password or API Key">
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Security</label>
                         <select id="template-selection" required name="security" class="form-select mt-2">
                             <% Object.keys(customEmailSecurityOptions).forEach(element => { %>
-                                <option value="<%= element %>"><%= customEmailSecurityOptions[element] %></option>
+                                <option <% if (data.emailServiceSecurity == element) { %> selected <% } %> value="<%= element %>"><%= customEmailSecurityOptions[element] %></option>
                             <% }) %>
                         </select>
                     </div>

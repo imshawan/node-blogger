@@ -1,4 +1,5 @@
 import { Transporter } from "nodemailer";
+import Mail from "nodemailer/lib/mailer";
 import services from "nodemailer/lib/well-known/services.json";
 import SMTPConnection from 'nodemailer/lib/smtp-connection';
 import { Sender } from "./sender";
@@ -8,7 +9,9 @@ import { Logger } from "@src/utilities";
 
 const logger = new Logger();
 
-export const emailer: {sendMail?: Function | null | undefined, transport?: Transporter<any> | null | undefined} = {};
+export const emailer: {sendMail: Function, transport?: Transporter<any> | null | undefined} = {
+    sendMail: function (email: Mail.Options) {}
+};
 
 export const getWellknownServices = (): string[] => Object.keys(services);
 
@@ -44,6 +47,8 @@ export const initializeEmailClient = async () => {
 
         emailer.sendMail = sender.sendMail;
         emailer.transport = sender.getSMTPTransport();
+        logger.info('Email client initialized');
+        
     } catch (err) {
         logger.error('Skipping email client setup as error occured while initialization:', err.message);
     }

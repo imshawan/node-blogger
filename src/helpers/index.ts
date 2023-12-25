@@ -131,5 +131,5 @@ export const validateHtml = (html: string): Array<string> => {
 }
 
 export const isValidHtml = (htmlString: string): boolean => {
-    return Boolean(validateHtml(htmlString).length);
+    return !Boolean(validateHtml(htmlString).length);
 }
