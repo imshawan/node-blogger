@@ -4,6 +4,9 @@ import SMTPConnection from 'nodemailer/lib/smtp-connection';
 import { Sender } from "./sender";
 import {get as getValueByField} from '@src/application';
 import { SMTPService, Security } from "@src/types";
+import { Logger } from "@src/utilities";
+
+const logger = new Logger();
 
 export const emailer: {sendMail?: Function | null | undefined, transport?: Transporter<any> | null | undefined} = {};
 
@@ -17,8 +20,8 @@ export const initializeEmailClient = async () => {
     const pooling = getValueByField('emailServicePooling');
 
     const auth = {
-        user: getValueByField('emailServiceUsername'),
-        pass: getValueByField('emailServicePassword'),
+        user: String(getValueByField('emailServiceUsername')),
+        pass: String(getValueByField('emailServicePassword')),
     } as SMTPConnection.Credentials;
 
     if (emailer.transport && Object.hasOwnProperty.bind(emailer.transport)('close')) {
@@ -36,8 +39,12 @@ export const initializeEmailClient = async () => {
         pool: Boolean(pooling),
     });
 
-    await sender.initialize();
+    try {
+        await sender.initialize();
 
-    emailer.sendMail = sender.sendMail;
-    emailer.transport = sender.getSMTPTransport();
+        emailer.sendMail = sender.sendMail;
+        emailer.transport = sender.getSMTPTransport();
+    } catch (err) {
+        logger.error('Skipping email client setup as error occured while initialization:', err.message);
+    }
 }

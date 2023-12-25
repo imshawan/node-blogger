@@ -32,6 +32,7 @@ import nconf from 'nconf';
 import { Logger, getISOTimestamp } from './utilities';
 import {paths} from './constants';
 import { log } from 'console';
+import { initializeEmailClient } from './email/emailer';
 
 const logger = new Logger();
 const app = express();
@@ -69,6 +70,7 @@ const initialize = async function () {
 
     await initializeDbConnection(mongoConfig);
     await initializeApplicationStore();
+    await initializeEmailClient();
     await setupExpressServer(app);
 
     // Production morgan logging pattern
