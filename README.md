@@ -71,6 +71,10 @@ During the installation process, you'll be prompted to create the first user.
 
 ## Available Scripts
 
+### `npm run setup`
+
+Sets up a web-based installer facilitating the configuration of the application's startup and initial setup process.
+
 ### `npm run dev`
 
 Run the server in development mode.
