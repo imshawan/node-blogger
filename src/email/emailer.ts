@@ -6,6 +6,8 @@ import { Sender } from "./sender";
 import {get as getValueByField} from '@src/application';
 import { SMTPService, Security } from "@src/types";
 import { Logger } from "@src/utilities";
+import ejs from "ejs";
+import * as Helpers from "@src/helpers";
 
 const logger = new Logger();
 
@@ -52,4 +54,27 @@ export const initializeEmailClient = async () => {
     } catch (err) {
         logger.error('Skipping email client setup as error occured while initialization:', err.message);
     }
+}
+
+export const compileAndBindTemplate = (html: string, dataBindings?: object) => {
+    if (!html) {
+        return '';
+    }
+    if (!dataBindings || !Object.keys(dataBindings).length) {
+        dataBindings = {};
+    }
+
+    const isHtmlValid = Helpers.isValidHtml(html);
+    if (!isHtmlValid) {
+        throw new Error('Invalid HTML template');
+    }
+
+    let compiledHtml = '';
+    try {
+        compiledHtml = ejs.render(html, dataBindings);
+    } catch (err) {
+        logger.error('Error while rendering email template.');
+    }
+
+    return compiledHtml;
 }

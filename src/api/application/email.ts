@@ -4,7 +4,7 @@ import * as Helpers from "@src/helpers";
 import { ExpressUser, IEmailTemplate } from "@src/types";
 import { sanitizeHtml } from "@src/utilities";
 import { isAdministrator } from "@src/user";
-import { initializeEmailClient, emailer } from "@src/email/emailer";
+import { initializeEmailClient, emailer, compileAndBindTemplate } from "@src/email/emailer";
 import Mail from "nodemailer/lib/mailer";
 import { get as getValueByField } from "@src/application";
 
@@ -109,11 +109,16 @@ const pushEmailByTemplateId = async (req: Request) => {
         throw new Error('Application email is not configured yet. Please enter an sender email id first for sending emails.');
     }
 
+    const compiledHtml = compileAndBindTemplate(html);
+    if (!compiledHtml) {
+        throw new Error('Error while sending email, please verify the temlate once before trying again.');
+    }
+
     const emailMessage: Mail.Options = {
         from,
         to: String(user.email),
         subject: name + ' - Testing',
-        html: html,
+        html: compiledHtml,
     };
 
     await emailer.sendMail(emailMessage);
