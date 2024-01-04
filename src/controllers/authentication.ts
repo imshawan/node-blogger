@@ -47,6 +47,14 @@ const register = async function (req: Request, res: Response) {
     res.render('register', page);
 }
 
+const resetPassword = async function (req: Request, res: Response) {
+    const page = {
+        title: 'Reset password'
+    };
+
+    res.render('reset_password', page);
+}
+
 export default {
-    signIn, register, consent
+    signIn, register, consent, resetPassword
   } as const;

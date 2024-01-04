@@ -8,6 +8,7 @@ const router = Router();
 mountPageRoute(router, '/signin', [], controllers.authentication.signIn);
 mountPageRoute(router, '/register', [], controllers.authentication.register);
 mountPageRoute(router, '/register/complete', [requireLogin.bind(null, '/register/complete')], controllers.authentication.consent);
+mountPageRoute(router, '/password/reset', [], controllers.authentication.resetPassword);
 
 /**
  * @date 17-03-2023
@@ -22,5 +23,6 @@ mountPageRoute(router, '/register/complete', [requireLogin.bind(null, '/register
 mountApiRoute(router, 'post', '/signin', [checkRequiredFields.bind(null, ['username', 'password'])], controllers.api.authentication.signIn);
 mountApiRoute(router, 'post', '/signout', [], controllers.api.authentication.signout);
 mountApiRoute(router, 'post', '/register', [], controllers.api.authentication.register);
+mountApiRoute(router, 'post', '/password/reset', [], controllers.api.authentication.resetPassword);
 
 export default router

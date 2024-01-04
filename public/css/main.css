@@ -963,7 +963,7 @@ a.badge-light:focus, a.badge-light:hover {
   justify-content: center;
   align-items: center;
   max-width: 80rem;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 300px);
   width: 100%;
   padding: 0 2rem;
   margin: 0 auto;
@@ -998,7 +998,7 @@ a.badge-light:focus, a.badge-light:hover {
   color: var(--color-black);
 }
 .signin-page .text-normal {
-  font-size: 1rem;
+  font-size: .97rem;
   font-weight: 400;
   color: var(--color-black);
 }

@@ -62,6 +62,16 @@ const register = async (req: Request, res: Response) => {
     });
 }
 
+const resetPassword = async function (req: Request, res: Response) {
+    const {email} = req.body;
+    const pageData = {
+        title: 'Reset email sent',
+        email
+    }
+
+    res.render('reset_email_sent', pageData);
+}
+
 export default {
-    signIn, register, signout
+    signIn, register, signout, resetPassword
   } as const;
