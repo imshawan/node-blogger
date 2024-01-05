@@ -6,6 +6,7 @@ import ejs from 'ejs';
 import { application, styleSheets, getConfigurationStoreByScope } from "@src/application";
 import path from "path";
 import { isAdministrator } from "@src/user";
+import { version } from "@src/constants";
 
 export const overrideRender = (req: Request, res: Response, next: NextFunction) => {
     const render = res.render;
@@ -143,6 +144,7 @@ async function parseApplicationInformation(req: Request) {
     const obj = {
         authenticated: req.isAuthenticated(),
         isAdministrator: administrator,
+        version,
     };
 
     return obj;

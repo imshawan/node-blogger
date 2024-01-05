@@ -433,6 +433,7 @@
   
   .font-weight-bolder {
     font-weight: bolder !important; }
+    .text-small {font-size: 12px;}
 .text-normal {
     text-transform: none;
 }

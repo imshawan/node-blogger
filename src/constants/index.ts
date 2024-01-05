@@ -8,6 +8,7 @@ import path from "path";
 import nconf from "nconf";
 import {NodeEnvs} from '@src/constants/misc';
 import { ValueOf, MutableObject } from '@src/types';
+import pkg from '../../package.json';
 
 const basePaths = {
     development: path.join(__dirname, '../../'),
@@ -32,6 +33,7 @@ export const paths = {
 
 export const siteName = 'Node Blogger';
 
+export const version = pkg.version;
 
 /**
  * 
