@@ -7,11 +7,12 @@ import {sorting, availableRegisterationTypes, passwordScoresWithMessage, fileSiz
     emailServiceAuthenticationTypes} from './common';
 import {Sender, template as Template} from "@src/email";
 import {emailer} from "@src/email";
+import menus from "./sidebar/menus";
 
 const BASE = 'settings';
 
 const site = async function (req: Request, res: Response, next: NextFunction) {
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
     const pageData: MutableObject = {};
     const siteAppKeysArray: AppKeysArray = [
         "siteName",
@@ -26,13 +27,14 @@ const site = async function (req: Request, res: Response, next: NextFunction) {
 
     pageData.title = 'Site settings';
     pageData.sidebar = sidebar.get('settings:site');
+    pageData.menus = sidebar.getMenu();
     pageData.data = retriveApplicationPropertiesFiltered(siteAppKeysArray);
 
     res.render(BASE + '/site/index', pageData);
 }
 
 const blog = async function (req: Request, res: Response, next: NextFunction) {
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
     const pageData: MutableObject = {};
     const blogAppkeysArray: AppKeysArray = [
       "sorting",
@@ -45,6 +47,7 @@ const blog = async function (req: Request, res: Response, next: NextFunction) {
 
     pageData.title = 'Blog settings';
     pageData.sidebar = sidebar.get('settings:blog');
+    pageData.menus = sidebar.getMenu();
     pageData.data = retriveApplicationPropertiesFiltered(blogAppkeysArray);
     pageData.sorting = sorting;
 
@@ -52,7 +55,7 @@ const blog = async function (req: Request, res: Response, next: NextFunction) {
 }
 
 const users = async function (req: Request, res: Response, next: NextFunction) {
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
     const pageData: MutableObject = {};
     const usersAppKeysArray: AppKeysArray = [
       "allowUsernameChange",
@@ -78,6 +81,7 @@ const users = async function (req: Request, res: Response, next: NextFunction) {
 
     pageData.title = 'Users';
     pageData.sidebar = sidebar.get('settings:users');
+    pageData.menus = sidebar.getMenu();
     pageData.data = retriveApplicationPropertiesFiltered(usersAppKeysArray);
     pageData.registrationTypes = availableRegisterationTypes;
     pageData.passwordScores = passwordScoresWithMessage;
@@ -86,7 +90,7 @@ const users = async function (req: Request, res: Response, next: NextFunction) {
 }
 
 const categories = async function (req: Request, res: Response, next: NextFunction) {
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
     const pageData: MutableObject = {};
     const categoriesAppKeysArray: AppKeysArray = [
         "maxCategoryBlurbLength",
@@ -96,6 +100,7 @@ const categories = async function (req: Request, res: Response, next: NextFuncti
 
     pageData.title = 'Category settings';
     pageData.sidebar = sidebar.get('settings:categories');
+    pageData.menus = sidebar.getMenu();
     pageData.data = retriveApplicationPropertiesFiltered(categoriesAppKeysArray);
 
     res.render(BASE + '/categories/index', pageData);
@@ -103,7 +108,7 @@ const categories = async function (req: Request, res: Response, next: NextFuncti
 
 
 const posts = async function (req: Request, res: Response, next: NextFunction) {
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
     const pageData: MutableObject = {};
     const postsAppKeysArray: AppKeysArray = [
         "minPostTitleLength",
@@ -117,6 +122,7 @@ const posts = async function (req: Request, res: Response, next: NextFunction) {
 
     pageData.title = 'Posts settings';
     pageData.sidebar = sidebar.get('settings:posts');
+    pageData.menus = sidebar.getMenu();
     pageData.data = retriveApplicationPropertiesFiltered(postsAppKeysArray);
 
     res.render(BASE + '/posts/index', pageData);
@@ -124,7 +130,7 @@ const posts = async function (req: Request, res: Response, next: NextFunction) {
 
 
 const uploads = async function (req: Request, res: Response, next: NextFunction) {
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
     const pageData: MutableObject = {};
     const uploadsAppKeysArray: AppKeysArray = [
         "maxFileSize",
@@ -150,6 +156,7 @@ const uploads = async function (req: Request, res: Response, next: NextFunction)
 
     pageData.title = 'File Uploads';
     pageData.sidebar = sidebar.get('settings:file-uploads');
+    pageData.menus = sidebar.getMenu();
     pageData.data = retriveApplicationPropertiesFiltered(uploadsAppKeysArray);
     pageData.fileSizeUnits = fileSizeUnits;
 
@@ -157,7 +164,7 @@ const uploads = async function (req: Request, res: Response, next: NextFunction)
 }
 
 const emails = async function (req: Request, res: Response, next: NextFunction) {
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
     const pageData: MutableObject = {};
     const emailsAppKeysArray: AppKeysArray = [
         "applicationEmail",
@@ -177,6 +184,7 @@ const emails = async function (req: Request, res: Response, next: NextFunction) 
 
     pageData.title = 'Emails';
     pageData.sidebar = sidebar.get('settings:emails');
+    pageData.menus = sidebar.getMenu();
     pageData.data = retriveApplicationPropertiesFiltered(emailsAppKeysArray);
     pageData.emailServices = wellKnownServices;
     pageData.emailServiceAuthenticationTypes = emailServiceAuthenticationTypes;
@@ -187,31 +195,34 @@ const emails = async function (req: Request, res: Response, next: NextFunction) 
 }
 
 const notifications = async function (req: Request, res: Response, next: NextFunction) {
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
     const pageData: MutableObject = {};
 
     pageData.title = 'Notifications';
     pageData.sidebar = sidebar.get('settings:notifications');
+    pageData.menus = sidebar.getMenu();
 
     res.render(BASE + '/notifications', pageData);
 }
 
 const webAndSeo = async function (req: Request, res: Response, next: NextFunction) {
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
     const pageData: MutableObject = {};
 
     pageData.title = 'Web & SEO preferences';
     pageData.sidebar = sidebar.get('settings:web-and-seo');
+    pageData.menus = sidebar.getMenu();
 
     res.render(BASE + '/web-and-seo', pageData);
 }
 
 const cookies = async function (req: Request, res: Response, next: NextFunction) {
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
     const pageData: MutableObject = {};
 
     pageData.title = 'Cookies';
     pageData.sidebar = sidebar.get('settings:cookies');
+    pageData.menus = sidebar.getMenu();
 
     res.render(BASE + '/cookies', pageData);
 }

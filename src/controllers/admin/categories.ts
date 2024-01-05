@@ -6,13 +6,14 @@ import {data as sidebarData} from "./sidebar";
 import _ from "lodash";
 import { validatePaginationControls, ValueError } from "@src/helpers";
 import { ValidSortingTechniques, ValidSortingTechniquesWithNames } from "@src/constants";
+import menus from "./sidebar/menus";
 
 const BASE = 'categories';
 const categories: MutableObject = {}
 
 categories.get = async function get(req: Request, res: Response, next: NextFunction) {
     const pageData: MutableObject = {};
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
     const {sortBy, search} = req.query;
     const {perPage, page} = validatePaginationControls(req);
     let sortingLabel = '', categories: Array<any> = [];
@@ -39,6 +40,7 @@ categories.get = async function get(req: Request, res: Response, next: NextFunct
 
     pageData.title = 'Categories';
     pageData.sidebar = sidebar.get('manage:all-categories');
+    pageData.menus = sidebar.getMenu();
 
     pageData.categories = categories;
     pageData.search = search || '';
@@ -48,7 +50,7 @@ categories.get = async function get(req: Request, res: Response, next: NextFunct
 
 categories.getBySlug = async function get(req: Request, res: Response, next: NextFunction) {
     const pageData: MutableObject = {};
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
     const {cid, slug} = req.params;
 
     let categoryData: ICategory = {};
@@ -70,6 +72,7 @@ categories.getBySlug = async function get(req: Request, res: Response, next: Nex
 
     pageData.title = categoryData.name;
     pageData.sidebar = sidebar.get('manage:all-categories');
+    pageData.menus = sidebar.getMenu();
 
     pageData.category = categoryData;
     pageData.tags = (tags || []).map((tag: ICategoryTag) => ({id: tag.tagid, text: tag.name, selected: true}));
@@ -79,10 +82,11 @@ categories.getBySlug = async function get(req: Request, res: Response, next: Nex
 
 categories.create = async function create(req: Request, res: Response, next: NextFunction) {
     const pageData: MutableObject = {};
-    const sidebar = new SideBar(sidebarData);
+    const sidebar = new SideBar(sidebarData, menus);
 
     pageData.title = 'New category';
     pageData.sidebar = sidebar.get('manage:all-categories');
+    pageData.menus = sidebar.getMenu();
     
     res.render(BASE + '/create', pageData);
 }

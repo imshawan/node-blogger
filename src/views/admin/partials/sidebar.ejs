@@ -55,6 +55,17 @@
 
         <% }); %>
 
+        <li class="nav-heading">Others</li>
+
+        <% menus.forEach(menu => { %>
+            <li class="nav-item">
+                <a class="nav-link <% if (!menu.classes) { %> collapsed <% } %>" href="<%= menu.url %>">
+                  <i class="<%= menu.icon %>"></i>
+                  <span><%= menu.title %></span>
+                </a>
+            </li>
+        <% }) %>
+
         </ul>
     </aside>
     <!-- End Sidebar-->

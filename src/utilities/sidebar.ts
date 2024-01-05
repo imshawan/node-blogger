@@ -1,10 +1,12 @@
 import _ from "lodash";
-import { ISidebar, ISidebarMenu } from "@src/types";
+import { ISidebar, ISidebarMenuItem, MenuItems } from "@src/types";
 
 export class SideBar {
-    sidebar: Array<ISidebar>;
-    constructor(sidebarData: Array<ISidebar>) {
+    sidebar: Array<ISidebar> | undefined;
+    menus: MenuItems | {} | undefined;
+    constructor(sidebarData?: Array<ISidebar>, menus?: {}) {
         this.sidebar = sidebarData;
+        this.menus = menus;
 
         this.get = this.get.bind(this);
         this.checkForDuplicateIds = this.checkForDuplicateIds.bind(this);
@@ -20,7 +22,9 @@ export class SideBar {
     private checkForDuplicateIds(): void {
         const idSet = new Set<string>();
         const duplicateIds: string[] = [];
-        const data: Array<ISidebar> = this.sidebar;
+        const data: Array<ISidebar> | undefined = this.sidebar;
+
+        if (!data) return;
       
         function validateSidebar(sidebar: ISidebar) {
             if (idSet.has(sidebar.id)) {
@@ -108,11 +112,33 @@ export class SideBar {
         return groupedData;
     }
 
-    public get(id: string, classes?: string): {[key: string]: Array<ISidebar>;} {
-        const data = this.sidebar;
+    public getMenu(name?: string, classes?: string): Array<ISidebarMenuItem> {
+        if (!name) {
+            name = '';
+        }
+
+        const menus: MenuItems | {} = this.menus || {};
+        const menuItems = Object.keys(menus).map(item => {
+            const menu = String(item).toUpperCase() as keyof typeof menus;
+            const selected: ISidebarMenuItem = menus[menu];
+
+            if (menu == String(name).toUpperCase().trim()) {
+                selected.classes = ['active', classes].join(' ');
+            }
+
+            return selected;
+        });
+
+        return menuItems.filter(e => !e.submenus);
+    }
+
+    public get(id: string, classes?: string): {[key: string]: Array<ISidebar>;} | null {
+        const data: ISidebar[] | undefined = this.sidebar;
+
+        if (!data) return null;
 
         if (!id) {
-            throw new Error('A valid id is required');
+            id = '';
         }
 
         function updateClasses(sidebar: ISidebar) {
