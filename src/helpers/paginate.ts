@@ -1,4 +1,4 @@
-import { MutableObject, IPagination } from "@src/types";
+import { MutableObject, IPagination, IPaginationItem } from "@src/types";
 
 /**
  * 
@@ -97,4 +97,66 @@ export function urlQueryBuilder(baseURL: string, params: MutableObject = {}): st
     }
 
     return finalURL;
+}
+
+/**
+ * @date 08-01-2024
+ * @author imshawan <hello@imshawan.dev>
+ * @function generatePaginationItems
+ * @description Generates an array of pagination items based on the current page, total pages, and optional parameters.
+ *
+ * @param {number} currentPage - The current page number.
+ * @param {number} totalPages - The total number of pages.
+ * @param {number} adjacentPages - The number of page numbers to show on each side of the current page (default: 2).
+ * @returns An array of PaginationItem objects representing pagination items, including page numbers and ellipses.
+ * 
+ * @example     
+ *  const currentPage = 10;
+    const totalPages = 84;
+    const adjacentPages = 2;
+
+    const paginationItems = generatePaginationItems(currentPage, totalPages, adjacentPages);
+    console.log(paginationItems);
+ */
+
+export function generatePaginationItems(currentPage: number, totalPages: number, adjacentPages: number = 2): IPaginationItem[] {
+    if (isNaN(Number(currentPage))) {
+        throw new Error('currentPage must be a number, found ' + typeof currentPage);
+    }
+    if (isNaN(Number(totalPages))) {
+        throw new Error('totalPages must be a number, found ' + typeof totalPages);
+    }
+    if (isNaN(Number(adjacentPages))) {
+        throw new Error('adjacentPages must be a number, found ' + typeof adjacentPages);
+    }
+
+    const paginationItems: IPaginationItem[] = [];
+
+    const addPaginationItem = (pageNumber: number | string, isCurrent: boolean = false) => {
+        paginationItems.push({
+            pageNumber,
+            isCurrent,
+        });
+    };
+
+    // Add page numbers and ellipses
+    for (let i = 1; i <= totalPages; i++) {
+        if (i <= adjacentPages || i > totalPages - adjacentPages || (i >= currentPage - adjacentPages && i <= currentPage + adjacentPages)) {
+            addPaginationItem(i, i === currentPage);
+        } else if (
+            paginationItems[paginationItems.length - 1]?.pageNumber !== '...' &&
+            i > adjacentPages &&
+            i < currentPage - adjacentPages
+        ) {
+            addPaginationItem('...'); // Ellipsis before current page
+        } else if (
+            paginationItems[paginationItems.length - 1]?.pageNumber !== '...' &&
+            i > currentPage + adjacentPages &&
+            i < totalPages - adjacentPages
+        ) {
+            addPaginationItem('...'); // Ellipsis after current page
+        }
+    }
+
+    return paginationItems;
 }

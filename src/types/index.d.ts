@@ -36,3 +36,8 @@ export interface IPagination {
     start: number;
     end: number;
 }
+
+export interface IPaginationItem {
+    pageNumber: number | string;
+    isCurrent: boolean;
+}
