@@ -2,7 +2,7 @@ import menus from "./menus"
 
 export default [
     {
-      url: "/admin/categories",
+      url: "/admin/manage/categories",
       id: "manage:all-categories",
       icon: "bi bi-list-nested",
       title: "Categories",
@@ -11,7 +11,7 @@ export default [
       child: [],
     },
     {
-      url: "/admin/users",
+      url: "/admin/manage/users",
       id: "manage:users",
       icon: "bi bi-person-fill",
       title: "Users",

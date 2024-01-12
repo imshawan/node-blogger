@@ -52,7 +52,7 @@
                   <% } else { %>
                       <canvas height="36" width="36" style="border-radius: 36px;" id="cat-<%= category.cid %>" data-category-name="<%= category.name %>"></canvas>
                   <% } %>
-                  <a class="ps-3 my-auto w-100 text-ellipse-2" href="/admin/categories/<%= category.slug %>">
+                  <a class="ps-3 my-auto w-100 text-ellipse-2" href="/admin/manage/categories/<%= category.slug %>">
                     <h5 class="my-auto" style="line-height: normal;"><%= category.name %></h5>
                   </a>
                 
@@ -63,8 +63,8 @@
                   ...
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" target="_blank" href="/categories/<%= category.slug %>">View</a></li>
-                  <li><a class="dropdown-item" href="/admin/categories/<%= category.slug %>">Edit</a></li>
+                  <li><a class="dropdown-item" target="_blank" href="/manage/categories/<%= category.slug %>">View</a></li>
+                  <li><a class="dropdown-item" href="/admin/manage/categories/<%= category.slug %>">Edit</a></li>
                   <li><a class="dropdown-item" data-cid="<%= category.cid %>" data-name="<%= category.name %>" id="delete-category">Delete</a></li>
                   <!-- <li><hr class="dropdown-divider"></li> -->
                   <!-- <li><a class="dropdown-item" href="#">Separated link</a></li> -->
@@ -90,7 +90,7 @@
                             <canvas height="36" width="36" style="border-radius: 36px;" id="cat-<%= subCategory.cid %>" data-category-name="<%= subCategory.name %>"></canvas>
                         <% } %> 
                         
-                        <a class="ps-3 w-100 my-auto text-ellipse-2" href="/admin/categories/<%= subCategory.slug %>">
+                        <a class="ps-3 w-100 my-auto text-ellipse-2" href="/admin/manage/categories/<%= subCategory.slug %>">
                           <h5 class="my-auto" style="line-height: normal;"><%= subCategory.name %></h5>
                         </a>
 
@@ -101,8 +101,8 @@
                         ...
                       </button>
                       <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" target="_blank" href="/categories/<%= subCategory.slug %>">View</a></li>
-                        <li><a class="dropdown-item" href="/admin/categories/<%= subCategory.slug %>">Edit</a></li>
+                        <li><a class="dropdown-item" target="_blank" href="/manage/categories/<%= subCategory.slug %>">View</a></li>
+                        <li><a class="dropdown-item" href="/admin/manage/categories/<%= subCategory.slug %>">Edit</a></li>
                         <li><a class="dropdown-item" data-cid="<%= subCategory.cid %>" data-name="<%= subCategory.name %>" id="delete-category">Delete</a></li>
                       </ul>
                     </div>

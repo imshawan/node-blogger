@@ -13,6 +13,7 @@ users.get = async function get(req: Request, res: Response, next: NextFunction) 
 
     pageData.title = 'Users';
     pageData.sidebar = sidebar.get('manage:users');
+    pageData.menus = sidebar.getMenu();
     pageData.users = await getUsersByPagination();
 
     res.render(BASE + '/index', pageData);

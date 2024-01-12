@@ -41,7 +41,7 @@ define('client/admin/categories/list', ['client/admin/categories/utils', 'module
             let formData = $.extend(utilities.getQueryParamsFromUrl(), $(this).serializeObject());
             let query = utilities.objectToQueryString(formData);
 
-            location.href = '/admin/categories?' + query;
+            location.href = '/admin/manage/categories?' + query;
         });
 
         $.each($('canvas[data-category-name]'), function (i, elem) {

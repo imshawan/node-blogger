@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { hasAdministratorAccess, routeHelper } from '@src/middlewares';
+import manage from './manage';
 import categories from './categories';
 import users from './users';
 import settings from './settings';
@@ -13,8 +14,8 @@ router.use(function (req: Request, res: Response, next: NextFunction) {
     next();
 });
 
-router.use('/categories', hasAdministratorAccess, categories);
-router.use('/users',hasAdministratorAccess, users);
+router.use('/manage/categories', hasAdministratorAccess, categories);
+router.use('/manage', hasAdministratorAccess, manage);
 router.use('/dashboard', hasAdministratorAccess, controllers.administrator.admin.get);
 router.use('/settings', hasAdministratorAccess, settings);
 

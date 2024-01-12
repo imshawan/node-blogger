@@ -73,7 +73,7 @@ define('client/admin/categories/create', [
                     let callback;
 
                     if (res && res.slug) {
-                        callback = () => location.href = [location.origin, 'admin', 'categories', res.slug].join('/');
+                        callback = () => location.href = [location.origin, 'admin', 'manage', 'categories', res.slug].join('/');
                     }
                     dialog.hide();
                     core.alertSuccess('Category created!', callback);
