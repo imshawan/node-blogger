@@ -6,10 +6,10 @@
     </a>
     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdown-user">
         <li>
-            <a class="dropdown-item" href="#">Profile</a>
+            <a class="dropdown-item" href="/users/<%= user.username %>">Profile</a>
         </li>
         <li>
-            <a class="dropdown-item" href="#">Settings</a>
+            <a class="dropdown-item" href="/users/<%= user.username %>/edit">Settings</a>
         </li>
         <li>
             <hr class="dropdown-divider">

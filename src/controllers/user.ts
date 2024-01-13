@@ -1,8 +1,9 @@
 import { PassportUserSessionStore } from '@src/utilities';
 import { IUser, MutableObject } from '@src/types';
-import { getUserByUsername, getUsersByPagination } from '@src/user';
+import { getUserByUsername, getUsersByPagination, isAdministrator } from '@src/user';
 import { Request, Response } from 'express';
 import moment from 'moment';
+import { notFoundHandler } from '@src/middlewares';
 
 const users: MutableObject = {};
 
@@ -24,7 +25,7 @@ users.getByUsername = async function (req: Request, res: Response) {
 
     var userData: IUser = await getUserByUsername(username);
     if (!userData) {
-        throw new Error('No user found with username ' + username);
+        return notFoundHandler(req, res);
     }
 
     if (userData.joiningDate) {
@@ -39,14 +40,20 @@ users.getByUsername = async function (req: Request, res: Response) {
 
 users.edit = async function (req: Request, res: Response) {  
     // @ts-ignore
-    const userid: Number = req.user.userid;
+    const userid: Number = Number(req.user.userid);
     const {username} = req.params;
     const page: MutableObject = {};
     const sessionStore = new PassportUserSessionStore(req.sessionStore);
 
     var userData: IUser = await getUserByUsername(username);
     if (!userData) {
-        throw new Error('No user found with username ' + username);
+        return notFoundHandler(req, res)
+    }
+
+    if (userid != Number(userData.userid)) {
+        if(!await isAdministrator(userid)) {
+            return notFoundHandler(req, res);
+        }
     }
 
     if (userData.joiningDate) {
