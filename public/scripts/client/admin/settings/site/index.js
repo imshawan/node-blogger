@@ -28,6 +28,12 @@ define('client/admin/settings/site/index', ['modules/http'], function (http) {
             }
         });
 
+        $('input[type="checkbox"]').on('change', function (e) {
+            if (e.target.name) {
+                dataChanged[e.target.name] = $(e.target).is(':checked');
+            }
+        });
+
         $('#save-site-information').on('click', function () {
             const keywordsSelector = $('#site-keywords');
             if (keywordsSelector.data('is-dirrty')) {

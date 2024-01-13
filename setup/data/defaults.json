@@ -2,6 +2,8 @@
     "siteName": "Node Blogger",
     "siteNameUrl": "",
     "siteShortName": "Node Blogger",
+    "heroSection": "Welcome to our blog",
+    "capitalizeHeroSection": true,
     "description": "A simple open-source blogging application powered by MongoDB & NodeJS",
     "keywords": [],
     "logo": "",

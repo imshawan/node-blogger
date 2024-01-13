@@ -18,6 +18,8 @@ const site = async function (req: Request, res: Response, next: NextFunction) {
         "siteName",
         "siteNameUrl",
         "siteShortName",
+        "heroSection",
+        "capitalizeHeroSection",
         "description",
         "logo",
         "favicon",

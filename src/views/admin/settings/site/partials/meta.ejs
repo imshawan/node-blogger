@@ -30,12 +30,26 @@
                     <label for="descriptionArea">Blog's description</label>
                 </div>
             </div>
-
             <div class="col-12">
                 <label class="mb-1" for="site-keywords">Enter keywords that best describes your blog</label>
                 <div class="form-floating mb-3">
                     <select class="form-select" id="site-keywords" name="keywords" multiple="multiple" aria-label="State">
                     </select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="heroSectionText" value="<%= data.heroSection %>" name="heroSection"
+                        placeholder="Welcome to our application">
+                    <label for="heroSectionText">Hero section content</label>
+                </div>
+            </div>
+            <div class="col-md-12 mt-4">
+                <div class="form-check form-switch px-0 d-flex">
+                    <div class="">
+                        <input id="capitalizeHeroSection" name="capitalizeHeroSection" class="form-check-input me-3 position-relative switch-lg" <%= data.capitalizeHeroSection ? 'checked=""' : '' %>" type="checkbox" role="switch">
+                        <label for="capitalizeHeroSection" class="font-weight-semibold" style="width: calc(100% - 4rem);" for="">Hero section capitalization</label>
+                    </div>
                 </div>
             </div>
 

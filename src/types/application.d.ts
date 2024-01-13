@@ -29,6 +29,16 @@ export interface IApplication {
     siteShortName: string;
 
     /**
+     * Text for the hero section
+     */
+    heroSection: string
+
+    /**
+     * Whether to capitalize the hero section content. Default: true
+     */
+    capitalizeHeroSection: boolean;
+
+    /**
      * Description of the application/site.
      */
     description: string;
