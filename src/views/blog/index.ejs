@@ -4,9 +4,10 @@
       <div class="hero-bg"></div>
       <div class="container">
         <div class="hero-text">
-          <div class="welcome-text"><span class="big-text">WELCOME</span><span class="small-text">TO OUR BLOG</span>
+          <div class="welcome-text">
+            <span class="small-text <% if (_config.capitalizeHeroSection) { %> text-uppercase <% } %>"><%= _config.heroSection %></span>
           </div>
-          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+          <p><%= _config.description %></p>
         </div>
       </div>
       <a href="#about"><i class="fas fa-chevron-down"></i></a>

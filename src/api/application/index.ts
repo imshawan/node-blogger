@@ -11,7 +11,8 @@ const validSiteImagesArray = ['logo', 'favicon'] as const;
 type ValidSiteImageTypes = typeof validSiteImagesArray[number];
 
 const updateCommonStore = async (req: Request) => {
-    const fieldsFromRequest = Object.keys(req.body) as (keyof IApplication)[];
+    const body = parseBoolean(req.body);
+    const fieldsFromRequest = Object.keys(body) as (keyof IApplication)[];
     const commonApplicationFields = getCommonFields();
     const invalidFields: (keyof IApplication)[] = [];
     const applicationData: MutableObject = {};
@@ -24,12 +25,12 @@ const updateCommonStore = async (req: Request) => {
 
     fieldsFromRequest.forEach(field => {
         const expectedType = getTypeofField(field)
-        if (typeof req.body[field] != expectedType) {
+        if (typeof body[field] != expectedType) {
             throw new Error(`Invalid type supplied for ${field}. Expected ${expectedType} but found ${typeof req.body[field]}`);
         }
     });
 
-    fieldsFromRequest.forEach(field => applicationData[field] = req.body[field]);
+    fieldsFromRequest.forEach(field => applicationData[field] = body[field]);
     if (Object.keys(applicationData).length) {
         await database.updateObjects({_key}, {$set: applicationData});
         setValuesBulk(applicationData);
@@ -78,6 +79,19 @@ const reinitializeEmailClientOnConfigChange = async (data: MutableObject) => {
     if (Boolean(serviceKeysMatch)) {
         await initializeEmailClient();
     }
+}
+
+function parseBoolean(data: MutableObject={}) {
+    const booleanValues = ['true', 'false'];
+
+    Object.keys(data).forEach(field => {
+        const value = data[field];
+        if (typeof value == 'string' && booleanValues.includes(String(value).trim())) {
+            data[field] = JSON.parse(String(data[field]).trim().toLowerCase());
+        }
+    });
+
+    return data;
 }
 
 export default {
