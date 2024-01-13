@@ -50,7 +50,7 @@ const create = async function create(tagData: ICategoryTag) {
     return acknowledgement;
 }
 
-const getById = async function get(tagId: number, cid: number, fields?: Array<string>) {
+const getById = async function getById(tagId: number, cid: number, fields?: Array<string>) {
     if (!tagId) {
         throw new Error('A valid tag id is required')
     }
@@ -74,7 +74,7 @@ const getById = async function get(tagId: number, cid: number, fields?: Array<st
     return await database.getObjects(tagSearchKeys, fields);
 }
 
-const getByCategoryId = async function get(cid: number, fields?: Array<string>) {
+const getByCategoryId = async function getByCategoryId(cid: number, fields?: Array<string>) {
     if (!cid) {
         throw new Error('A valid category id is required')
     }
