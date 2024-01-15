@@ -153,6 +153,18 @@ label {
   font-weight: 600;
   cursor: pointer;
 }
+.button-primary {
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  background-color: var(--color-black);
+  border: 2px solid var(--color-black)!important;
+  padding: 8px 20px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  height: 35px;
+  line-height: 1.2;
+}
 
 .button-outlined {
   text-decoration: none;
@@ -182,6 +194,13 @@ label {
 .button-outlined:focus-visible, .button-outlined:active {
   color: rgb(255, 255, 255)!important;
   background-color: var(--color-gray)!important;
+}
+.button-primary:hover {
+  background-color: #424649 !important;
+  color: var(--color-white)
+}
+.button-primary:focus-visible, .button-primary:active {
+  background-color: #424649 !important;
 }
 
 .secondary-button {
@@ -1249,6 +1268,21 @@ a.badge-light:focus, a.badge-light:hover {
   filter: brightness(0.5) blur(1px);
   z-index: -1;
  }
+ .float-right-btn {
+  position: fixed;
+  bottom: 26px;
+  right: 26px;
+  z-index: 999;
+  height: 65px;
+  width: 65px;
+  border-radius: 100%;
+  box-shadow: 0 0.35rem 0.75rem 0  rgb(33, 40, 50, .55);
+  padding: 0;
+}
+
+.float-right-btn i {
+  font-size: 24px;
+}
 @media (max-width: 650px) {
   #posts .posts-container .post-content {
     font-size: 14px;

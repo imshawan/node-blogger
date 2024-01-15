@@ -1,0 +1,28 @@
+<div class="modal fade" id="create-post-dialog" tabindex="-1" aria-labelledby="create-post-dialogLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="create-post-dialogLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="create-post" class="mt-2 create-post-">
+                <div class="mb-3 form-floating">
+                    <input type="text" style="text-transform: none;" class="form-control px-0 form-control-lg border-0 border-bottom" id="post-title" placeholder="Enter your post's title here">
+                    <label for="post-title" style="left: unset;" class="form-label px-0">Enter your post's title here</label>
+                  </div>
+    
+                <textarea id="summernote" name="editordata"></textarea>
+    
+                <div class="mt-2 mb-3">
+                    <input type="text" style="text-transform: none;" class="form-control form-control-md" id="post-tags" placeholder="Tags">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm button-outlined mt-0"  data-bs-dismiss="modal">Discard</button>
+            <button class="btn btn-sm text-white border-4 button-primary mt-0 ms-2">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
