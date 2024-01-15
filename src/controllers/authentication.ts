@@ -2,12 +2,16 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { database } from '@src/database';
 import { Request, Response } from 'express';
 import { notFoundHandler } from '@src/middlewares';
+import { NavigationManager } from '@src/utilities/navigation';
 
 const signIn = async function (req: Request, res: Response) {
     const {redirect} = req.query;
+    const navigation = new NavigationManager().get();
+
     const page = {
         title: 'Sign in',
         redirect,
+        navigation,
     };
 
     res.render('signin', page);
@@ -33,7 +37,8 @@ const consent = async function (req: Request, res: Response) {
     const page = {
         title: 'consent',
         token,
-        consent: consentData
+        consent: consentData,
+        navigation: new NavigationManager().get(),
     };
 
     res.render('consent', page);
@@ -41,7 +46,8 @@ const consent = async function (req: Request, res: Response) {
 
 const register = async function (req: Request, res: Response) {
     const page = {
-        title: 'Register'
+        title: 'Register',
+        navigation: new NavigationManager().get(),
     };
 
     res.render('register', page);
@@ -49,7 +55,8 @@ const register = async function (req: Request, res: Response) {
 
 const resetPassword = async function (req: Request, res: Response) {
     const page = {
-        title: 'Reset password'
+        title: 'Reset password',
+        navigation: new NavigationManager().get(),
     };
 
     res.render('reset_password', page);

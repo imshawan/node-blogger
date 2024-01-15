@@ -4,6 +4,7 @@ import { getUserByUsername, getUsersByPagination, isAdministrator } from '@src/u
 import { Request, Response } from 'express';
 import moment from 'moment';
 import { notFoundHandler } from '@src/middlewares';
+import { NavigationManager } from '@src/utilities/navigation';
 
 const users: MutableObject = {};
 
@@ -15,6 +16,7 @@ users.get = async function (req: Request, res: Response) {
 
     pageData.title = 'Users';
     pageData.users = users;
+    pageData.navigation = new NavigationManager().get('users');
 
     res.render('users/index', pageData);
 }
@@ -34,6 +36,7 @@ users.getByUsername = async function (req: Request, res: Response) {
     
     page.title = userData.fullname || userData.username;
     page.profile = userData;
+    page.navigation =  new NavigationManager().get('users');
 
     res.render('users/profile', page);
 }
@@ -63,6 +66,7 @@ users.edit = async function (req: Request, res: Response) {
     page.title = userData.fullname || userData.username;
     page.profile = userData;
     page.sessions = await sessionStore.getCurrentUserSessions(userid);
+    page.navigation =  new NavigationManager().get('users');
 
     res.render('users/edit', page);
 }

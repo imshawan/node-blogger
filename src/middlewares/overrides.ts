@@ -50,6 +50,9 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         if (!pageOptions.sidebar) {
             pageOptions.sidebar = [];
         }
+        if (!pageOptions.navigation) {
+            pageOptions.navigation = [];
+        }
 
         const [header, body] = await Promise.all([
             renderTemplateTohtml(headerPath, pageOptions),

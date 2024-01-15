@@ -7,6 +7,7 @@ import { NodeEnvs } from '@src/constants/misc';
 import EnvVars from '@src/constants/EnvVars';
 import { MulterFilesArray } from '@src/types';
 import nconf from 'nconf';
+import { NavigationManager } from '@src/utilities/navigation';
 
 export * from './cors';
 export * from './overrides';
@@ -169,6 +170,7 @@ export function addUserSessionAgent(req: Request, res: Response, next: NextFunct
 }
 
 export const notFoundHandler = async function (req: Request, res: Response) {
+    const navigation = new NavigationManager().get();
     res.locals.error = true;
-    res.status(HttpStatusCodes.NOT_FOUND).render('404', {title: '404'});
+    res.status(HttpStatusCodes.NOT_FOUND).render('404', {title: '404', navigation});
 }

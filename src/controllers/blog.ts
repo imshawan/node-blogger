@@ -1,8 +1,10 @@
+import { NavigationManager } from '@src/utilities/navigation';
 import { Request, Response } from 'express';
 
 const get = async function (req: Request, res: Response) {  
     const page = {
-        title: 'Home'
+        title: 'Home',
+        navigation: new NavigationManager().get('home'),
     };
 
     res.render('blog/index', page);
@@ -10,7 +12,8 @@ const get = async function (req: Request, res: Response) {
 
 const create = async function (req: Request, res: Response) {  
     const page = {
-        title: 'New post'
+        title: 'New post',
+        navigation:  new NavigationManager().get('posts'),
     };
 
     res.render('blog/create', page);
@@ -18,7 +21,8 @@ const create = async function (req: Request, res: Response) {
 
 const posts = async function (req: Request, res: Response) {
     const page = {
-        title: 'Posts'
+        title: 'Posts',
+        navigation:  new NavigationManager().get('posts'),
     };
 
     res.render('blog/posts', page);

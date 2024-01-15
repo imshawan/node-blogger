@@ -352,6 +352,9 @@ nav .nav-link:hover {
   color: var(--color-white);
   font-family: 'Poppins';
 }
+#navbarNavAltMarkup .user-dropdown a,button {
+  font-size: var(--font-size-12);
+}
 
 .dark {
   background-color: black;
