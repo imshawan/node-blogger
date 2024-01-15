@@ -6,6 +6,7 @@ import { requireLogin } from '@src/middlewares';
 const router = Router();
 
 mountPageRoute(router, '/', [], controllers.blog.get);
+mountPageRoute(router, '/posts', [], controllers.blog.posts);
 mountPageRoute(router, '/posts/create', [requireLogin.bind(null, '')], controllers.blog.create);
 
 export default router

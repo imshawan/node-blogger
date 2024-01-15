@@ -57,6 +57,7 @@ h2, h3, h4, h5 {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins'!important;
 }
+/* h3 {font-size: 0ch;} */
 
 .curser-pointer {
   cursor: pointer;
@@ -1228,7 +1229,23 @@ a.badge-light:focus, a.badge-light:hover {
  .user-listing-container .stats span{
   font-size: 20px;
  }
-
+.blog-banner {
+  min-height: 250px;
+}
+ .blog-banner .image::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/pexels-pixabay-267569.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: brightness(0.5) blur(1px);
+  z-index: -1;
+ }
 @media (max-width: 650px) {
   #posts .posts-container .post-content {
     font-size: 14px;
