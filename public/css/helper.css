@@ -1,0 +1,58 @@
+:root {
+    --default-font-size: 1rem;
+    --font-size-8: calc(var(--default-font-size) * 0.5);
+    --font-size-10: calc(var(--default-font-size) * 0.625);
+    --font-size-12: calc(var(--default-font-size) * 0.75);
+    --font-size-14: calc(var(--default-font-size) * 0.875);
+    --font-size-16: calc(var(--default-font-size) * 1);
+    --font-size-18: calc(var(--default-font-size) * 1.125);
+    --font-size-20: calc(var(--default-font-size) * 1.25);
+    --font-size-22: calc(var(--default-font-size) * 1.37);
+    --font-size-24: calc(var(--default-font-size) * 1.5);
+    --font-size-26: calc(var(--default-font-size) * 1.625);
+    --font-size-28: calc(var(--default-font-size) * 1.75);
+    --font-size-30: calc(var(--default-font-size) * 1.875);
+    --font-size-32: calc(var(--default-font-size) * 2);
+    --font-size-34: calc(var(--default-font-size) * 2.125);
+    --font-size-36: calc(var(--default-font-size) * 2.25);
+    --font-size-38: calc(var(--default-font-size) * 2.375);
+    --font-size-40: calc(var(--default-font-size) * 2.5);
+    --font-size-42: calc(var(--default-font-size) * 2.625);
+    --font-size-44: calc(var(--default-font-size) * 2.75);
+    --font-size-45: calc(var(--default-font-size) * 2.8125);
+}
+
+/* Media query for screens less than 576px (example: very small screens) */
+@media screen and (max-width: 575px) {
+    :root {
+        --default-font-size: 0.9rem;
+    }
+}
+
+/* Media query for screens between 576px and 767px (example: small screens) */
+@media screen and (min-width: 576px) and (max-width: 767px) {
+    :root {
+        --default-font-size: 0.97rem;
+    }
+}
+
+/* Media query for screens between 768px and 1023px (example: tablets) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    :root {
+        --default-font-size: 1rem;
+    }
+}
+
+/* Media query for screens between 1024px and 1439.99px (example: larger tablets or small desktops) */
+@media screen and (min-width: 1024px) and (max-width: 1439.99px) {
+    :root {
+        --default-font-size: 1.2rem;
+    }
+}
+
+/* Media query for screens larger than 1439.99px (example: larger desktop screens) */
+@media screen and (min-width: 1440px) {
+    :root {
+        --default-font-size: 1.2rem;
+    }
+}

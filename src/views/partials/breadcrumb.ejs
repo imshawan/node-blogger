@@ -5,7 +5,7 @@
             <% _breadcrumb.forEach(function(item) { %>
                 <li class="breadcrumb-item <% if (item.active) { %>active<% } %>" 
                     <% if (item.active) { %> aria-current="page" <% } %> >
-                    <a href="<%- item.url %>" style="text-decoration: none; color:black; <% if (item.active) { %> color: var(--highlighting-color); <% } %>"> 
+                    <a href="<%- item.url %>" class="text-muted  <% if (item.active) { %> breadcrumb-item-active <% } %>" style="text-decoration: none; font-size: var(--font-size-12);"> 
                         <% if (item.icon) { %> 
                             <i class="fa <%- item.icon %>" aria-hidden="true"></i> 
                         <% } %> 

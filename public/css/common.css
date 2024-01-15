@@ -12,6 +12,9 @@
 .cursor-pointer {
     cursor: pointer;
 }
+.page-heading {
+    font-size: var(--font-size-32);
+}
 
 /* Global styles end here */
 
