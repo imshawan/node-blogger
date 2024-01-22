@@ -62,7 +62,7 @@ npm install
   }
   ```
 
-Run the web setup installer using the following command:
+###  Run the web setup installer using the following command:
 ```bash
 npm run setup
 ```
