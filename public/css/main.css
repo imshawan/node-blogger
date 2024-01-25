@@ -178,6 +178,9 @@ label {
   height: 35px;
   line-height: 1.2;
 }
+.search-button:hover{
+  background-color: rgb(77, 77, 77)!important;
+}
 
 .button:hover {
   background-color: rgb(77, 77, 77);

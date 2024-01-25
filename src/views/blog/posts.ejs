@@ -81,22 +81,18 @@
                         <span><i class="far fa-comment-alt"></i> 20 comments</span>
                     </div>
                 </div>
-
-                <div class="d-flex justify-content-center">
-                    <a href="blog.html" class="main-button">View all posts</a>
-                </div>
             </div>
         </div>
 
-        <div class="sidebar col-md-4">
-            <div class="input-group">
+        <div class="sidebar pt-4 col-md-4">
+            <form class="input-group">
                 <div class="form-outline">
-                    <input id="search-input" type="search" id="form1" class="form-control" placeholder="search" />
+                    <input id="search-input" type="search" name="search" class="form-control" placeholder="search" />
                 </div>
-                <button id="search-button" type="button" class="btn dark">
+                <button id="search-button" type="submit" class="btn dark search-button">
                     <i class="fas fa-search"></i>
                 </button>
-            </div>
+            </form>
             <div class="recent-posts pt-5">
                 <h4 class="mb-4 border-bottom pb-3">Posts you might like</h4>
                 <div class="post-item">
@@ -172,6 +168,6 @@
 <%- include('/blog/partials/create_post_modal'); -%>
 <div class="row mx-0 justify-content-end">
     <button type="submit" class="btn float-right-btn btn-dark py-2" data-bs-toggle="modal" data-bs-target="#create-post-dialog">
-      <i class="fa fa-plus" aria-hidden="true"></i>
+      <i class="fa fa-plus mt-1" aria-hidden="true"></i>
     </button>
   </div>

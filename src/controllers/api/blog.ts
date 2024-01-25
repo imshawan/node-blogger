@@ -7,6 +7,10 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.blog.get(req));
 }
 
+const create = async (req: Request, res: Response, next: NextFunction) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.blog.create(req));
+}
+
 export default {
-    get,
+    get, create,
   } as const;
