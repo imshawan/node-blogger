@@ -10,15 +10,6 @@ const get = async function (req: Request, res: Response) {
     res.render('blog/index', page);
 }
 
-const create = async function (req: Request, res: Response) {  
-    const page = {
-        title: 'New post',
-        navigation:  new NavigationManager().get('posts'),
-    };
-
-    res.render('blog/create', page);
-}
-
 const posts = async function (req: Request, res: Response) {
     const page = {
         title: 'Posts',
@@ -29,5 +20,5 @@ const posts = async function (req: Request, res: Response) {
 }
 
 export default {
-    get, create, posts
+    get, posts
   } as const;
