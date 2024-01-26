@@ -166,7 +166,7 @@ async function complete(req: Request, res: Response, next: NextFunction) {
 
     setTimeout(() => {
         logger.info('Stopping Web Installer');
-        process.exit(1);
+        process.exit(0);
     }, 500);
 }
 
@@ -192,12 +192,13 @@ async function createFirstUser(userdata: IUser, dbConnection: Db) {
     const timestamp = getISOTimestamp();
 
     const user: IUser = {
-        _key: 'user'
+        _scheme: 'user:userid'
     };
 
     const passwordHash = await Passwords.hash({password, rounds: 12});
     const userid = 1;
 
+    user._key = 'user:' + userid;
     user.userid = userid;
     user.username = username;
     user.email = email;
@@ -219,6 +220,7 @@ async function createFirstUser(userdata: IUser, dbConnection: Db) {
     const uniqueUUID = generateUUID();
     const newUserRegData = {
         _key: 'user:' + userid + ':registeration',
+        _scheme: 'user:userid:registeration',
         token: uniqueUUID,
         consentCompleted: false,
         consent: {

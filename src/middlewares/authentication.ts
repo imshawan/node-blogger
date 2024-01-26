@@ -17,7 +17,7 @@ const loginUser = async function loginUser (req: Request, u: string, e: string, 
     // TODO: Need to validate for max password length in future
 
     const searchkeys = {
-        _key: 'user',
+        _scheme: 'user:userid',
         // If it's a valid email, check agains't the email or else use username to check
         [UserUtils.isValidEmail(username) ? 'email' : 'username']: username,
     };

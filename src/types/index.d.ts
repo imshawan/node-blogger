@@ -9,10 +9,14 @@ export * from './test';
 export * from './webmanifest';
 export * from './email';
 export * from './sidebar';
+export * from './post';
 
 export interface MutableObject { [x: string]: any; }
 
 export type ValueOf<T> = T[keyof T];
+
+export type TimeUnitSuffix = 'ms' | 'msec' | 'milli' | 'millisecond' | 'sec' | 'second' | 'min' | 'minute' | 'hr' | 'hour';
+
 export interface MulterFilesArray extends Express.Multer.File {
     url: string
 }

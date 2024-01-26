@@ -66,7 +66,7 @@ define('client/admin/categories/edit', [
 
             edit.createTag(category.cid, {name: text}).then((res) => {
                 if (res && res._id) {
-                    $("#tagsInput option").val(text).attr('data-tag-id', res.tagid);
+                    $("#tagsInput option").val(text).attr('data-tag-id', res.tagId);
                 }
             }).catch(e => core.alertError(e.message))
         });

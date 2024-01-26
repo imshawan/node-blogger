@@ -16,7 +16,7 @@ export default async function update(data: ICategory) {
 
     const categoryData: ICategory = {};
     const timestamp = getISOTimestamp();
-    const searchKeys = {cid: Number(cid), _key: 'category'};
+    const searchKeys = {_key: 'category:' + cid};
 
     if (!userid) {
         throw new Error('userid is required');

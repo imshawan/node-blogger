@@ -56,6 +56,7 @@
     "maxPostLength": 2550,
     "minTagsPerPost": 0,
     "maxTagsPerPost": 10,
+    "maxPostBlurbSize": 35,
     "maxPostThumbnailSize": 5,
     "allowedFileTypes": ["jpg", "png", "jpeg", "gif", "bmp", "txt"],
     "maxFileSize": 50,

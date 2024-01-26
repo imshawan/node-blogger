@@ -14,6 +14,11 @@ export interface IApplication {
     _key: string;
 
     /**
+     * Scheme of how _key is declared
+     */
+    _scheme?: string
+
+    /**
      * Name of the site.
      */
     siteName: string;
@@ -212,6 +217,11 @@ export interface IApplication {
      * Maximum number of tags per post.
      */
     maxTagsPerPost: number;
+
+    /**
+     * Maximum length of the blurb size in each posts (the short description beneath each post)
+     */
+    maxPostBlurbSize: number
 
     /**
      * Maximum size for post thumbnails.

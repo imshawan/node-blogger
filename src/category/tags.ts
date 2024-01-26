@@ -1,6 +1,6 @@
 import { database } from "@src/database";
 import utilities from './utils'
-import { getISOTimestamp } from "@src/utilities";
+import { getISOTimestamp, slugify } from "@src/utilities";
 import _ from "lodash";
 import { application } from "@src/application";
 import { ICategoryTag, ICategory } from "@src/types";
@@ -39,14 +39,20 @@ const create = async function create(tagData: ICategoryTag) {
     const timestamp = getISOTimestamp();
     const tagId = await utilities.generateNextTagId();
 
-    tag._key = `category:${cid}:tag`;
+    tag._key = `category:${cid}:tag:${tagId}`;
+    tag._scheme = `category:cid:tag:tagId`;
     tag.cid = Number(cid);
-    tag.tagid = tagId;
+    tag.tagId = tagId;
     tag.userid = Number(userid);
     tag.name = name;
+    tag.posts = 0;
+    tag.slug = [tagId, slugify(name)].join('/');
     tag.createdAt = timestamp;
 
-    const acknowledgement = await database.setObjects(tag);
+    const [acknowledgement, ] = await Promise.all([
+        database.setObjects(tag),
+        onNewTag(tag),
+    ]);
     return acknowledgement;
 }
 
@@ -61,7 +67,7 @@ const getById = async function getById(tagId: number, cid: number, fields?: Arra
         throw new Error('cid must be a number, found ' + typeof cid)
     }
     if (typeof tagId != 'number') {
-        throw new Error('tagid must be a number, found ' + typeof tagId)
+        throw new Error('tagId must be a number, found ' + typeof tagId)
     }
     if (!fields) {
         fields = [];
@@ -69,9 +75,13 @@ const getById = async function getById(tagId: number, cid: number, fields?: Arra
     if (!Array.isArray(fields)) {
         fields = [];
     }
-    const tagSearchKeys = {cid: Number(cid), _key: `category:${cid}:tag`, tagid: Number(tagId)};
+    const tagSearchKeys = {cid: Number(cid), _scheme: `category:cid:tag:tagId`, tagId: Number(tagId)};
 
     return await database.getObjects(tagSearchKeys, fields);
+}
+
+const exists = async function (tagId: number, cid: number) {
+    return Boolean(await getById(tagId, cid));
 }
 
 const getByCategoryId = async function getByCategoryId(cid: number, fields?: Array<string>) {
@@ -89,11 +99,11 @@ const getByCategoryId = async function getByCategoryId(cid: number, fields?: Arr
     }
     const tagSearchKeys = {cid: Number(cid), _key: `category:${cid}:tag`};
 
-    return await database.getObjects(tagSearchKeys, ['name', 'tagid'], {multi: true});
+    return await database.getObjects(tagSearchKeys, ['name', 'tagId'], {multi: true});
 }
 
 const remove = async function remove(tagData: ICategoryTag, callerId: number) {
-    const {cid, tagid} = tagData;
+    const {cid, tagId} = tagData;
 
     if (!callerId) {
         throw new Error('callerId is required');
@@ -104,12 +114,12 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
     if (_.isNaN(cid)) {
         throw new Error('cid must be a number, found ' + typeof cid)
     }
-    if (typeof tagid != 'number') {
-        throw new Error('tagid must be a number, found ' + typeof tagid)
+    if (typeof tagId != 'number') {
+        throw new Error('tagId must be a number, found ' + typeof tagId)
     }
 
     const categorySearchKeys = {cid: Number(cid), _key: 'category'};
-    const tagSearchKeys = {cid: Number(cid), _key: `category:${cid}:tag`, tagid: Number(tagid)};
+    const tagSearchKeys = {cid: Number(cid), _key: `category:${cid}:tag`, tagId: Number(tagId)};
 
     const category: ICategory = await database.getObjects(categorySearchKeys);
     if (!category) {
@@ -118,7 +128,7 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
 
     const tag: ICategoryTag = await database.getObjects(tagSearchKeys);
     if (!tag) {
-        throw new Error('No such tag was found with tag id ' + tagid);
+        throw new Error('No such tag was found with tag id ' + tagId);
     }
 
     let permissions = 0;
@@ -134,7 +144,22 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
         throw new Error('callerId requires elevated permissions for performing this operation');
     }
 
-    await database.deleteObjects(tagSearchKeys);
+    await Promise.all([
+        database.deleteObjects(tagSearchKeys),
+        onPurgeTag(tag),
+    ]);
 }
 
-export default {getById, create, remove, getByCategoryId}
+async function onNewTag(data: ICategoryTag) {
+    const {cid} = data;
+
+    await database.incrementFieldCount('tags', 'category:' + cid);
+}
+
+async function onPurgeTag(data: ICategoryTag) {
+    const {cid} = data;
+
+    await database.decrementFieldCount('tags', 'category:' + cid);
+}
+
+export default {getById, create, remove, getByCategoryId, exists}

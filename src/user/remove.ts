@@ -30,7 +30,7 @@ async function deleteUserWithData (id: any, hard: Boolean) {
     // TODO: Implement the relative data deletion with category
 
     await Promise.all([
-        database.deleteObjects({userid: Number(id), _key: 'user'}),
+        database.deleteObjects({userid: Number(id), _key: 'user:' + id}),
         database.deleteObjects({userid: Number(id), _key: `user:${id}:registeration`}),
     ]);
 }

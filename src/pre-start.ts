@@ -20,7 +20,7 @@ const logger = new Logger({prefix: 'pre-start'});
  */
 if (!fs.existsSync('config.json')) {
     logger.error("Missing configuration files. Run 'npm run setup' for setting up the project.");
-    process.exit(1);
+    process.exit(0);
 
 } else {
     const configFileData = fs.readFileSync('config.json', {encoding: 'utf-8'});

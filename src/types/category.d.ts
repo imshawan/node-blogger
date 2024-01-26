@@ -1,5 +1,6 @@
 export interface ICategory {
     _key?: string
+    _scheme?: string
     cid?: number
     parent?: number
     userid?: number
@@ -9,7 +10,8 @@ export interface ICategory {
     slug?: string
     thumb?: string | null | undefined
     altThumb?: string | null | undefined
-    counters?: Counters
+    tags?: number
+    posts?: number
     tagsPerPost?: TagsPerPost
     isActive?: boolean
     deleted?: boolean
@@ -19,10 +21,13 @@ export interface ICategory {
 
 export interface ICategoryTag {
     _key?: string
+    _scheme?: string
     cid?: number
-    tagid?: number
+    tagId?: number
     userid?: number
     name?: string
+    slug?: string
+    posts?: number
     deleted?: boolean
     deletedAt?: string
     createdAt?: string

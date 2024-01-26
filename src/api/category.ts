@@ -158,7 +158,7 @@ categoryApi.tags.remove = async (req: Request) => {
         throw new Error('tagId id must be a number, found ' + typeof tagId);
     }
 
-    const tag = {cid: Number(id), tagid: Number(tagId)}
+    const tag = {cid: Number(id), tagId: Number(tagId)}
 
     await category.tags.remove(tag, userid);
 }

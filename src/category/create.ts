@@ -64,7 +64,8 @@ export default async function create(categoryData: ICategory) {
     const cid = await utilities.generateNextCategoryId();
     const categorySlug = [cid, '/', slug].join('');
 
-    category._key = 'category';
+    category._key = 'category:' + cid;
+    category._scheme = 'category:cid';
     category.userid = userid;
     category.cid = cid;
     category.name = name;
@@ -73,10 +74,8 @@ export default async function create(categoryData: ICategory) {
     category.slug = categorySlug;
     category.thumb = thumb || '';
     category.tagsPerPost = tagsPerPost;
-    category.counters = {
-        posts: 0,
-        tags: 0,
-    };
+    category.posts = 0,
+    category.tags = 0;
 
     if (parent){
         category.parent = Number(parent);

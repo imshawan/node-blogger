@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import axios from 'axios';
 import _ from 'lodash';
-import { MutableObject, IMongoConnectionProps } from '@src/types';
+import { MutableObject, IMongoConnectionProps, TimeUnitSuffix } from '@src/types';
 import { execSync } from 'child_process';
 
 export * from './password';
@@ -145,4 +145,43 @@ export const openWebUrl = (url: string) => {
         process.platform === 'win32' ? `start ${url}` : `xdg-open ${url}`;
 
     execSync(command);
+}
+
+export const calculateReadTime = function (content: string, suffix: TimeUnitSuffix) {
+    const averageWordsPerMinute = 185;
+    const wordCount = String(content).length;
+
+    if (!wordCount) return 0;
+
+    const readTimeInMinutes = wordCount / averageWordsPerMinute;
+
+    let readTime: number = 0;
+    switch (suffix) {
+        case 'ms':
+        case 'msec':
+            readTime = readTimeInMinutes * 60 * 1000; // Convert minutes to milliseconds
+            break;
+
+        case 'milli':
+        case 'millisecond':
+            readTime = readTimeInMinutes * 60 * 1000; // Convert minutes to milliseconds
+            break;
+
+        case 'sec':
+        case 'second':
+            readTime = readTimeInMinutes * 60; // Convert minutes to seconds
+            break;
+
+        case 'min':
+        case 'minute':
+            readTime = readTimeInMinutes;
+            break;
+
+        default:
+            readTime = readTimeInMinutes;
+            break;
+    }
+
+    const roundedReadTime = Math.ceil(readTime);
+    return roundedReadTime;
 }

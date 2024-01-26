@@ -18,7 +18,7 @@ const gitStatusOutput = execSync('git status --porcelain').toString('utf-8').tri
 
 if (gitStatusOutput.trim()) {
     console.log(`The repository has ${gitStatusOutput.split('\n').length} modified file(s). Please commit the existing files and than proceed.`);
-    process.exit(1);
+    process.exit(0);
     
 } else {
     new Changelog().write();

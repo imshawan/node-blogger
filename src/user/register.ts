@@ -30,7 +30,7 @@ export const register = async function register(userdata: IUser) {
     ])
 
     const user: IUser = {
-        _key: 'user'
+        _scheme: 'user:userid'
     };
 
     const [passwordHash, slug, userid] = await Promise.all([
@@ -39,6 +39,7 @@ export const register = async function register(userdata: IUser) {
         Utils.generateNextUserId(),
     ]);
 
+    user._key = 'user:' + userid;
     user.userid = userid;
     userFields.forEach(field => {
         // @ts-ignore
@@ -74,6 +75,7 @@ export const register = async function register(userdata: IUser) {
     const uniqueUUID = generateUUID();
     const newUserRegData = {
         _key: 'user:' + userid + ':registeration',
+        _scheme: 'user:userid:registeration',
         token: uniqueUUID,
         consentCompleted: false, // Flag to check if the user has completed the consent stage
         consent: {

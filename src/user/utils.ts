@@ -78,27 +78,25 @@ async function validateUsername(username: string) {
 async function checkEmailAvailability(email: string): Promise<void> {
     // TODO
     // Need to implement the functionality
-    const found = await database.getObjects({email, _key: 'user'});
+    const found = await database.getObjects({email,  _scheme: 'user:userid'});
     if (found && Object.keys(found)) {
         throw new Error('An account with the email already exists');
     }
 }
 
 async function generateUserslug(username: string): Promise<string> {
-    let index = 0;
+    let slug = slugify(username);
 
-    return slugify(username);
-    // while (true) {
-    //     let slug = slugify(username);
-    //     slug = index < 0 ? String(slug + '-' + index) : slug;
+    const userFound = await database.getObjects({
+        slug: { $regex: new RegExp(`^[0-9]+\/${slug}`), $options: "i" },
+        _scheme: "user:userid",
+    }, [], {multi: true});
 
-    //     const found = await database.getObjects({slug, _key: 'user'});
-    //     if (found) {
-    //         index++;
-    //     } else {
-    //         return slug;
-    //     }
-    // }
+    if (userFound && userFound.length) {
+        return String(slug + '-' + (userFound.length + 1));
+    }
+
+    return slug;
 }
 
 async function generateNextUserId() {

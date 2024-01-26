@@ -18,6 +18,7 @@ export interface ISender {
 export interface IEmailTemplate {
     _id?: string
     _key?: string
+    _scheme?: string
     templateId?: number
     name?: string
     slug?: string

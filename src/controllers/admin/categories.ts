@@ -65,7 +65,7 @@ categories.getBySlug = async function get(req: Request, res: Response, next: Nex
         throw new Error('No such category was found!')
     }
 
-    const tags = await category.tags.getByCategoryId(Number(cid), ['name', 'tagid']);
+    const tags = await category.tags.getByCategoryId(Number(cid), ['name', 'tagId']);
     if (categoryData.parent) {
         categoryData.parent = await category.data.getCategoryByCid(categoryData.parent, ['cid', 'name', 'thumb']);
     }
@@ -75,7 +75,7 @@ categories.getBySlug = async function get(req: Request, res: Response, next: Nex
     pageData.menus = sidebar.getMenu();
 
     pageData.category = categoryData;
-    pageData.tags = (tags || []).map((tag: ICategoryTag) => ({id: tag.tagid, text: tag.name, selected: true}));
+    pageData.tags = (tags || []).map((tag: ICategoryTag) => ({id: tag.tagId, text: tag.name, selected: true}));
 
     return res.render(BASE + '/edit', pageData);
 }

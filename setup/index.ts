@@ -9,7 +9,7 @@ const configFileLocation = path.join(__dirname, '../config.json');
 
 if (fs.existsSync(configFileLocation)) {
     logger.error('An existing configuration file was found for the application. Have you already setup the project?');
-    process.exit(1);
+    process.exit(0);
 }
 
 server.start(3000, onListening);

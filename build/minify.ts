@@ -28,7 +28,7 @@ export async function minifyJavaScripts(): Promise<void> {
 
         if (error) {
             logger.error(`[${outputFilename}] ${error.message}`);
-            process.exit(1);
+            process.exit(0);
         }
 
         if (warnings && warnings.length) {

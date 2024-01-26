@@ -37,5 +37,5 @@ export default async function deleteCategory(id: any, callerId: number) {
 async function deleteCategoryWithData (id: any) {
     // TODO: Implement the relative data deletion with category
 
-    await database.deleteObjects({cid: Number(id), _key: 'category'});
+    await database.deleteObjects({_key: 'category:' + id});
 }

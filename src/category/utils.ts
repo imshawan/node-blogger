@@ -7,7 +7,7 @@ const generateCategoryslug = async function generateCategoryslug(name: string): 
 
     const category = await database.getObjects({
         slug: { $regex: new RegExp(`^[0-9]+\/${slug}`), $options: "i" },
-        _key: "category",
+        _scheme: 'category:cid',
     }, [], {multi: true});
 
     if (category && category.length) {

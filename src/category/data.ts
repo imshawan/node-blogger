@@ -36,7 +36,7 @@ const getCategoriesWithData = async function getCategoriesWithData(perPage: numb
         fields = [];
     }
 
-    const query: MutableObject = {_key: 'category'};
+    const query: MutableObject = {_scheme: 'category:cid'};
     const pagination: Array<any> = [
         {
           $skip: (page - 1) * perPage,
@@ -87,7 +87,7 @@ const getAllCategories = async function getAllCategories(perPage: number=15, pag
         sorting = 'default';
     }
 
-    const searchKeys: MutableObject = {_key: 'category'};
+    const searchKeys: MutableObject = {_scheme: 'category:cid'};
     const matchOptions = {
         skip: (page - 1) * perPage,
         limit: perPage,
@@ -117,7 +117,7 @@ const getCategoryByCid = async function getCategoryByCid(id: any, fields: string
     }
 
     const cid = Number(id);
-    return await database.getObjects({cid, _key: 'category'}, fields);   
+    return await database.getObjects({cid, _key: 'category:' + cid}, fields);   
 }
 
 const getCategoryByName = async function getCategoryByName(name: string, perPage: number=15, page: number=1, fields: string[]=[], sorting: string | null='default', subCategories=true) {
@@ -147,7 +147,7 @@ const getCategoryByName = async function getCategoryByName(name: string, perPage
 
     name = String(name).trim();
 
-    const searchKeys: MutableObject = {name: {$regex: new RegExp(name), $options: 'i'}, _key: 'category'};
+    const searchKeys: MutableObject = {name: {$regex: new RegExp(name), $options: 'i'}, _scheme: 'category:cid'};
     const matchOptions: IParamOptions = {
         skip: (page - 1) * perPage,
         limit: perPage,
@@ -179,7 +179,7 @@ const getCategoryBySlug = async function getCategoryBySlug(slug: string) {
         throw new Error('slug is required');
     }
 
-    return await database.getObjects({slug, _key: 'category'});   
+    return await database.getObjects({slug, _scheme: 'category:cid'});   
 }
 
 function createAggregationPipeline (query: MutableObject, pagination: Array<MutableObject>) {
@@ -200,7 +200,7 @@ function createAggregationPipeline (query: MutableObject, pagination: Array<Muta
               {
                 $match: {
                   $expr: { $eq: ["$parent", "$$cid"] },
-                  _key: "category",
+                  _scheme: 'category:cid',
                 },
               },
             ],

@@ -23,7 +23,7 @@ export const validUserFields = [
 export async function getUsersByPagination(options={}) {
     //TODO need to implement pagination
 
-    return await database.getObjects({_key: 'user'}, validUserFields, {multi: true});
+    return await database.getObjects({ _scheme: 'user:userid'}, validUserFields, {multi: true});
 }
 
 export async function getUserByUsername(username: string): Promise<IUser> {
@@ -31,7 +31,7 @@ export async function getUserByUsername(username: string): Promise<IUser> {
         throw new Error('username is required');
     }
 
-    return await database.getObjects({username, _key: 'user'}, validUserFields);   
+    return await database.getObjects({username,  _scheme: 'user:userid'}, validUserFields);   
 }
 
 export async function getUserByEmail(email: string): Promise<IUser> {
@@ -43,7 +43,7 @@ export async function getUserByEmail(email: string): Promise<IUser> {
         throw new Error('Invalid email id');
     }
 
-    return await database.getObjects({email, _key: 'user'}, validUserFields);
+    return await database.getObjects({email,  _scheme: 'user:userid'}, validUserFields);
 }
 
 export async function getUserByUserId(userid: number): Promise<IUser> {
@@ -55,7 +55,7 @@ export async function getUserByUserId(userid: number): Promise<IUser> {
         throw new Error('Invalid userid supplied');
     }
 
-    return await database.getObjects({userid, _key: 'user'}, validUserFields);
+    return await database.getObjects({userid, _key: 'user:' + userid}, validUserFields);
 }
 
 export async function isAdministrator(userid: number | object): Promise<boolean> {
