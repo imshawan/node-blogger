@@ -3,6 +3,32 @@ define('client/blog/posts', ['modules/http'], function (http) {
 
     posts.initialize = function () {
 
+        const select2Options = {
+            placeholder: 'Select Category...',
+            width: '100%',
+            dropdownParent: $("#create-post-dialog"),
+            templateResult: posts.categoryTemplateFormatOptions,
+            templateSelection: posts.categoryTemplateFormatOptions,
+            data: Application.categories.map(e => ({id: e.cid, text: e.name})),
+            ajax: {
+                url: '/api/v1/categories?perPage=5',
+                data: function (params) {
+                    return {
+                        search: params.term,
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.payload.data.map(el => ({
+                            ...el,
+                            id: el.cid,
+                            text: el.name,
+                        }))
+                    };
+                }
+            }
+        };
+
         $('#editorarea').summernote({
             branding: false,
             placeholder: 'You can write your post here, drag images and much more...',
@@ -30,18 +56,113 @@ define('client/blog/posts', ['modules/http'], function (http) {
             }
         });
 
+        $('#category-selection').select2(select2Options);
+
         $("#tags-selection").select2({
-            placeholder: "Tags (Optional)",
+            placeholder: "Enter tags here...",
             width: '100%',
-            tags: true,
+            dropdownParent: $("#add-tags-dialog"),
+            delay: 350,
+            minimumInputLength: 2,
+            ajax: {
+                url: function (params) {
+                    return '/api/v1/categories/' + $('#category-selection').val() + '/tags/' + params.term;
+                },
+                data: function (params) {return {}},
+                processResults: function (data) {
+                    return {
+                        results: data.payload.map(el => ({
+                            ...el,
+                            id: el.cid,
+                            text: el.name,
+                        }))
+                    };
+                },
+                error: function (error) {
+                    let {responseJSON} = error;
+
+                    if (responseJSON && responseJSON.status && responseJSON.status.message) {
+                        utilities.showToast(responseJSON.status.message, 'error');
+                    }
+                }
+            }
+        });
+
+        $('#upload-cover').on('click', function() {
+            $('[name="featuredImage"]').trigger('click');
+        });
+
+        $('[name="featuredImage"]').on('change', function() {
+            let file = this.files[0];
+            let filename = '...' + file.name.slice(-9);
+            let type = file.type;
+
+            if (!String(type).includes('image')) {
+                return utilities.showToast('File must be an image.', 'error');
+            }
+
+            $('#cover').text(filename);
+            $('#action-container #clear-cover').toggleClass('d-none');
+        });
+
+        $('#add-tags').on('click', function() {
+            const {tags} = $('#tags-form').serializeObject();
+
+            $('#tags-area').empty();
+            tags.forEach(tag => $('#tags-area').append($('<div></div>', {class: 'badge badge-light', text: '#' + tag})))
+        });
+
+        $('#action-container').on('click', '#clear-cover', function() {
+            $('#cover').text('Cover Image');
+            $('#action-container form').trigger('reset');
+            $('#action-container #clear-cover').toggleClass('d-none');
         });
 
         $('#create-post').on('click', function() {
-            let data = $('#post-form').serializeObject();
+            let elem = $(this);
+            let formData = new FormData($('#post-form')[0]);
+            let featuredImage = $('[name="featuredImage"]')[0].files;
+            let categories = [$('#category-selection').val()].map(e => 'category:' + e);
+
+            categories.forEach((e, i) => formData.append(`categories[${i}]`, e));
+
+            if (featuredImage && featuredImage.length) {
+                if (featuredImage[0].type.split('/')[0] == 'image') {
+                    formData.append('featuredImage', featuredImage[0]);
+                }
+            }
+
+            elem.lockWithLoader();
             
-            http.POST('/api/v1/blog/', data).then(res => {})
-                .catch(err => {});
+            http.POST('/api/v1/blog/', formData, {
+                cache: false,
+                contentType: false,
+                processData: false,
+            }).then(res => location.href = '/posts/' + res)
+                .catch(err => utilities.showToast(err.message, 'error'))
+                .finally(() => elem.unlockWithLoader());
         });
+    }
+
+    posts.categoryTemplateFormatOptions = function (data={}) {
+        if (!data.id) {
+            return data.text;
+        }
+        
+        let $data = $('<span></span>');
+        if (data.thumb) {
+            $data.append('<img class="img-flag user-img-sm" onerror="core.imageOnError(this)" /> <span></span>')
+            $data.find("img").attr("src", data.thumb);
+            
+        } else {
+            $data.addClass('d-flex');
+            $data.append('<canvas height="36" width="36" style="border-radius: 36px;"> </canvas> <span class="my-auto ps-2"></span>')
+            core.generateAvatarFromName($data.find("canvas"), data.text || data.name);
+        }
+    
+        $data.find("span").text(data.text);
+    
+        return $data;
     }
 
     return posts;

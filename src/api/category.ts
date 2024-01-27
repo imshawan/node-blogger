@@ -2,7 +2,7 @@ import { Request } from "express";
 import category from "@src/category";
 import { MutableObject } from "@src/types";
 import _ from 'lodash';
-import { paginate } from "@src/helpers";
+import * as Helpers from "@src/helpers";
 import { isParsableJSON } from "@src/utilities";
 
 const categoryApi: MutableObject = {
@@ -52,7 +52,7 @@ categoryApi.get = async (req: Request) => {
         categories = await category.data.getAllCategories(perPage, page, categoryFields, null, includeSubCategories);
     }
 
-    return paginate(categories, perPage, page, url)
+    return Helpers.paginate(categories, perPage, page, url)
 }
 
 categoryApi.create = async (req: Request) => {
@@ -161,6 +161,17 @@ categoryApi.tags.remove = async (req: Request) => {
     const tag = {cid: Number(id), tagId: Number(tagId)}
 
     await category.tags.remove(tag, userid);
+}
+
+categoryApi.tags.getByName = async (req: Request) => {
+    const {cid, name} = req.params;
+    const userid = Helpers.parseUserId(req);
+
+    if (_.isNaN(cid)) {
+        throw new Error('category id must be a number, found ' + typeof cid);
+    }
+
+    return await category.tags.getByCategoryIdAndName(Number(cid), name);
 }
 
 export default categoryApi;

@@ -32,6 +32,10 @@ categoryControllers.tags.create = async (req: Request, res: Response) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.category.tags.create(req));
 }
 
+categoryControllers.tags.getByName = async (req: Request, res: Response) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.category.tags.getByName(req));
+}
+
 categoryControllers.tags.remove = async (req: Request, res: Response) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.category.tags.remove(req));
 }

@@ -52,7 +52,7 @@
     "maxPasswordResetRequests": 10,
     "minPostTitleLength": 2,
     "maxPostTitleLength": 250,
-    "minPostLength": 250,
+    "minPostLength": 2,
     "maxPostLength": 2550,
     "minTagsPerPost": 0,
     "maxTagsPerPost": 10,

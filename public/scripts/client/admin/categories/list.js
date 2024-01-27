@@ -90,7 +90,7 @@ define('client/admin/categories/list', ['client/admin/categories/utils', 'module
                     let callback;
 
                     if (res && res.slug) {
-                        callback = () => location.href = [location.origin, 'admin', 'categories', res.slug].join('/');
+                        callback = () => location.href = [location.origin, 'admin', 'manage', 'categories', res.slug].join('/');
                     }
                     modalClose.trigger('click');
                     core.alertSuccess('Category created!', callback);

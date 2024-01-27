@@ -1,5 +1,5 @@
 import {create} from './create';
 
-export const post = {
+export default {
     create,
-}
+} as const;

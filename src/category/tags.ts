@@ -97,9 +97,25 @@ const getByCategoryId = async function getByCategoryId(cid: number, fields?: Arr
     if (!Array.isArray(fields)) {
         fields = [];
     }
-    const tagSearchKeys = {cid: Number(cid), _key: `category:${cid}:tag`};
+    const tagSearchKeys = {cid: Number(cid), _scheme: `category:cid:tag:tagId`};
 
     return await database.getObjects(tagSearchKeys, ['name', 'tagId'], {multi: true});
+}
+
+const getByCategoryIdAndName = async function getByCategoryIdAndName(cid: number, name: string, fields?: Array<string>) {
+    if (!cid) {
+        throw new Error('A valid category is required first')
+    }
+    if (_.isNaN(cid)) {
+        throw new Error('cid must be a number, found ' + typeof cid)
+    }
+    if (!fields || !Array.isArray(fields) || !fields.length) {
+        fields = ['name', 'tagId', 'cid'];
+    }
+
+    const tagSearchKeys = {cid: Number(cid), _scheme: `category:cid:tag:tagId`, name: {$regex: new RegExp(name), $options: 'i'}};
+
+    return await database.getObjects(tagSearchKeys, fields, {multi: true});
 }
 
 const remove = async function remove(tagData: ICategoryTag, callerId: number) {
@@ -162,4 +178,4 @@ async function onPurgeTag(data: ICategoryTag) {
     await database.decrementFieldCount('tags', 'category:' + cid);
 }
 
-export default {getById, create, remove, getByCategoryId, exists}
+export default {getById, create, remove, getByCategoryId, exists, getByCategoryIdAndName}

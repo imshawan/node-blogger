@@ -1,7 +1,7 @@
 import { application } from "@src/application";
 import { IPost, Status } from "@src/types";
 import { database } from "@src/database";
-import { getISOTimestamp, calculateReadTime } from "@src/utilities";
+import { getISOTimestamp, calculateReadTime, textFromHTML } from "@src/utilities";
 import utilities from './utils';
 
 const MIN_POST_SIZE = 20;
@@ -10,8 +10,8 @@ const MIN_POST_TITLE_LENGTH = 2;
 const MAX_POST_TITLE_LENGTH = 250;
 const MAX_BLURB_SIZE = 35;
 
-export const create = async function create(data: IPost) {
-    const {title='', userid, content, featuredImage} = data;
+export const create = async function create(data: IPost): Promise<IPost> {
+    const {title='', userid, content, featuredImage, wordCount} = data;
     let {tags, categories, status} = data;
 
     const minPostLength = application.configurationStore?.minPostLength || MIN_POST_SIZE;
@@ -42,10 +42,12 @@ export const create = async function create(data: IPost) {
     if (!content) {
         throw new Error('Content is missing.');
     }
-    if (content.length < minPostLength) {
+    
+    const contentSizeInWords = String(textFromHTML(content)).split(' ').length;
+    if (contentSizeInWords < minPostLength) {
         throw new Error('Post too short.');
     }
-    if (content.length > maxPostLength) {
+    if (contentSizeInWords > maxPostLength) {
         throw new Error('Post too long.');
     }
     if (!utilities.isValidStatus(status)) {
@@ -90,7 +92,6 @@ export const create = async function create(data: IPost) {
     postData.title = title;
     postData.content = content;
     postData.slug = [postId, '/', slug].join('');
-    postData.blurb = content.substring(0, maxPostBlurbSize);
     postData.categories = categories; // WIll be an array of keys ['category:cid']
     postData.tags = tags; // WIll be an array of keys ['category:cid:tag:tagId']
     postData.views = 0;
@@ -98,7 +99,7 @@ export const create = async function create(data: IPost) {
     postData.comments = 0;
     postData.status = status;
     postData.featuredImage = featuredImage;
-    postData.wordCount = String(content).length;
+    postData.wordCount = wordCount || String(content).length;
     postData.readTime = `${readTime} ${suffix}${readTime > 1 ? 's' : ''}`;
 
     postData.createdAt = timestamp;

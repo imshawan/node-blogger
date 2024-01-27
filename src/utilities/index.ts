@@ -149,7 +149,7 @@ export const openWebUrl = (url: string) => {
 
 export const calculateReadTime = function (content: string, suffix: TimeUnitSuffix) {
     const averageWordsPerMinute = 185;
-    const wordCount = String(content).length;
+    const wordCount = String(content).split(' ').length;
 
     if (!wordCount) return 0;
 
@@ -184,4 +184,18 @@ export const calculateReadTime = function (content: string, suffix: TimeUnitSuff
 
     const roundedReadTime = Math.ceil(readTime);
     return roundedReadTime;
+}
+
+export const textFromHTML = function (html: string) {
+    if (!html) return '';
+    return html
+        .replace(/\n/ig, '')
+        .replace(/<style[^>]*>[\s\S]*?<\/style[^>]*>/ig, '')
+        .replace(/<head[^>]*>[\s\S]*?<\/head[^>]*>/ig, '')
+        .replace(/<script[^>]*>[\s\S]*?<\/script[^>]*>/ig, '')
+        .replace(/<\/\s*(?:p|div)>/ig, '\n')
+        .replace(/<br[^>]*\/?>/ig, '\n')
+        .replace(/<[^>]*>/ig, '')
+        .replace('&nbsp;', ' ')
+        .replace(/[^\S\r\n][^\S\r\n]+/ig, ' ');
 }

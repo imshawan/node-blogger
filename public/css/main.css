@@ -1286,6 +1286,15 @@ a.badge-light:focus, a.badge-light:hover {
 .float-right-btn i {
   font-size: 24px;
 }
+.floating-badge {
+  font-size: 1rem;top: -5px;right: -5px;color: white;padding-left: 3px;padding-right: 3px;border-radius: 10px;
+  position: absolute; background-color: #000;
+}
+/* Select2 */
+.select2-selection__arrow {height: 100%!important;}
+.select2-selection.select2-selection--single{padding: .45rem;}
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {background-color: #000;}
+
 @media (max-width: 650px) {
   #posts .posts-container .post-content {
     font-size: 14px;

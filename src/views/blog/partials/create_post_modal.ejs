@@ -1,4 +1,5 @@
-<style>.select2-container--default{z-index: 9999;}</style>
+<style>.select2-container--default .select2-selection--single{height: 100%;}</style>
+
 <div class="modal fade" id="create-post-dialog" tabindex="-1" aria-labelledby="create-post-dialogLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
@@ -8,23 +9,62 @@
         </div>
         <div class="modal-body">
             <form id="post-form" class="create-post-">
-                <div class="mb-3 form-floating">
-                    <input type="text" name="title" style="text-transform: none;" class="form-control px-0 form-control-lg border-0 border-bottom" id="post-title" placeholder="Enter your post's title here">
-                    <label for="post-title" id="post-title-label" style="left: unset;" class="form-label px-0">Enter your post's title here</label>
+                <div class="row">
+                  <div class="mb-3 col-12 col-md-8 col-lg-9 form-floating">
+                      <input type="text" name="title" style="text-transform: none;" class="form-control px-0 form-control-lg border-0 border-bottom" id="post-title" placeholder="Enter your post's title here">
+                      <label for="post-title" id="post-title-label" style="left: unset;" class="form-label px-0">Enter your post's title here</label>
                   </div>
+
+                  <div class="mb-3 col-12 col-md-4 col-lg-3 form-floating">
+                    <div class="form-group mt-2 h-100">
+                      <select id="category-selection" tabindex="-1" class="uneditable-input h-100 form-select">
+
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                
     
                 <textarea id="editorarea" name="content"></textarea>
+                <div class="mt-2" id="tags-area">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer justify-content-between">
+            <div class="mt-0 my-2 position-relative" id="action-container">
+              <button class="btn btn-sm button-outlined mt-0" data-bs-target="#add-tags-dialog" data-bs-toggle="modal">#Tags</button>
+              <button class="btn btn-sm button-outlined ms-1 mt-0" id="upload-cover">
+                <i class="fa fa-picture-o me-1" style="font-size: 1rem;" aria-hidden="true"></i><span id="cover">Cover Image</span>
+              </button>
+              <form><input class="d-none" name="featuredImage" type="file"></form>
+              <i class="fa fa-close d-none border border-dark curser-pointer floating-badge" id="clear-cover" aria-hidden="true"></i>
+            </div>
+            <div class="mt-0 my-2">
+              <button id="create-post" style="width: 100px;" class="btn btn-sm btn-dark text-white border-4 button-primary mt-0 ms-1">Create</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                <div class="form-group mt-2">
-                  <select id="tags-selection" name="tags" multiple="multiple" tabindex="-1" class="uneditable-input form-select">
-                      
-                  </select>
-              </div>
+  <div class="modal fade" id="add-tags-dialog" tabindex="-1" aria-labelledby="add-tags-dialogLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-capitalize" id="add-tags-dialogLabel">Add Tags to your post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#create-post-dialog" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="tags-form" class="add-tags-">
+    
+                <div class="form-group mt-3 mb-5">
+                  <select id="tags-selection" name="tags" multiple="multiple" tabindex="-1" class="uneditable-input form-select"></select>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-sm button-outlined mt-0"  data-bs-dismiss="modal">Discard</button>
-            <button id="create-post" class="btn btn-sm text-white border-4 button-primary mt-0 ms-2">Create</button>
+            <button class="btn btn-sm button-outlined mt-0" data-bs-target="#create-post-dialog" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
+            <button id="add-tags" data-bs-target="#create-post-dialog" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-sm text-white border-4 button-primary mt-0 ms-2">Save</button>
         </div>
       </div>
     </div>

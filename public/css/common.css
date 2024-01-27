@@ -542,9 +542,7 @@
     height: 1.4em;
     margin-left: 0px!important;
 }
-.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-    background-color: #000;
-}
+
 @media (max-width: 767px) {
     .profile-page .profile-header .cover figure {
         height: 160px;
