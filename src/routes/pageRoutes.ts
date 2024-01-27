@@ -7,5 +7,6 @@ const router = Router();
 
 mountPageRoute(router, '/', [], controllers.blog.get);
 mountPageRoute(router, '/posts', [], controllers.blog.posts);
+mountPageRoute(router, '/posts/:postId/:slug', [], controllers.blog.getPostBySlug);
 
 export default router

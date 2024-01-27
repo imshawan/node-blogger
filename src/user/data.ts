@@ -46,7 +46,7 @@ export async function getUserByEmail(email: string): Promise<IUser> {
     return await database.getObjects({email,  _scheme: 'user:userid'}, validUserFields);
 }
 
-export async function getUserByUserId(userid: number): Promise<IUser> {
+export async function getUserByUserId(userid: number=0): Promise<IUser> {
     if (!userid) {
         throw new Error('Userid is required');
     }

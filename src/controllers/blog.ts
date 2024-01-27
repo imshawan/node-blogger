@@ -1,6 +1,10 @@
 import { NavigationManager } from '@src/utilities/navigation';
 import { Request, Response } from 'express';
 import category from '@src/category';
+import Post from '@src/post';
+import { MutableObject } from '@src/types';
+import { notFoundHandler } from '@src/middlewares';
+import { getUserByUserId } from '@src/user';
 
 const get = async function (req: Request, res: Response) {  
     const page = {
@@ -21,6 +25,26 @@ const posts = async function (req: Request, res: Response) {
     res.render('blog/posts', page);
 }
 
+const getPostBySlug = async function (req: Request, res: Response) {
+    let {postId, slug} = req.params;
+    
+    const post = await Post.data.getPostById(Number(postId));
+    if (!post) {
+        return notFoundHandler(req, res);
+    }
+
+    const author = await getUserByUserId(post.userid);
+
+    const page = {
+        navigation:  new NavigationManager().get('posts'),
+        title: post.title,
+        post,
+        author
+    };
+
+    res.render('blog/single', page);
+}
+
 export default {
-    get, posts
+    get, posts, getPostBySlug
   } as const;

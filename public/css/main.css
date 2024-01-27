@@ -1295,6 +1295,19 @@ a.badge-light:focus, a.badge-light:hover {
 .select2-selection.select2-selection--single{padding: .45rem;}
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {background-color: #000;}
 
+/* Single Posts  */
+.post-header{
+  font-size: var(--font-size-40); color: var(--color-black);
+  font-weight: 800; font-family: 'Poppins', sans-serif;
+}
+.post-metadata {
+  font-size: var(--font-size-12);
+}
+.post-author {font-size: var(--font-size-14);}
+.post-author span{
+  font-weight: 600;
+}
+.post-likes, .post-comments {font-size: var(--font-size-12);}
 @media (max-width: 650px) {
   #posts .posts-container .post-content {
     font-size: 14px;
@@ -1446,7 +1459,11 @@ a.badge-light:focus, a.badge-light:hover {
     border: 1px solid white;
   }
 }
-
+@media (min-width:992px){
+  .post-section{max-width: 800px;}
+  .post-container{max-width: 960px;}
+  .post-header{line-height: 3.8rem;}
+}
 @media (min-width: 1200px) {
   .main-slider .hero-img {
     position: relative;
