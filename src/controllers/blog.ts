@@ -7,6 +7,7 @@ import { notFoundHandler } from '@src/middlewares';
 import { getUserByUserId } from '@src/user';
 import { clipContent, textFromHTML } from '@src/utilities';
 import { application } from "@src/application";
+import * as Helpers from "@src/helpers";
 
 const get = async function (req: Request, res: Response) {  
     const page = {
@@ -42,11 +43,14 @@ const renderPosts = async function (req: Request, res: Response) {
         return post;
     });
 
+    const totalPages = Math.ceil(postData.length / perPage);
+
     const pageData = {
         title: 'Posts',
         navigation:  new NavigationManager().get('posts'),
         categories:  await category.data.getAllCategories(5, 1, ),
         posts: postData || [],
+        pagination: Helpers.generatePaginationItems(page, totalPages),
     };
 
     res.render('blog/posts', pageData);
