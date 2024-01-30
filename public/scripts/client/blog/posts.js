@@ -2,7 +2,37 @@ define('client/blog/posts', ['modules/http'], function (http) {
     const posts = {};
 
     posts.initialize = function () {
+        const {_application} = Application;
+        if (_application && Object.keys(_application).length) {
+            if (_application.authenticated) {
+                posts.attachElevatedEvents();
+            }
+        }
+        
+    }
 
+    posts.categoryTemplateFormatOptions = function (data={}) {
+        if (!data.id) {
+            return data.text;
+        }
+        
+        let $data = $('<span></span>');
+        if (data.thumb) {
+            $data.append('<img class="img-flag user-img-sm" onerror="core.imageOnError(this)" /> <span></span>')
+            $data.find("img").attr("src", data.thumb);
+            
+        } else {
+            $data.addClass('d-flex');
+            $data.append('<canvas height="36" width="36" style="border-radius: 36px;"> </canvas> <span class="my-auto ps-2"></span>')
+            core.generateAvatarFromName($data.find("canvas"), data.text || data.name);
+        }
+    
+        $data.find("span").text(data.text);
+    
+        return $data;
+    }
+
+    posts.attachElevatedEvents = function () {
         const select2Options = {
             placeholder: 'Select Category...',
             width: '100%',
@@ -142,27 +172,6 @@ define('client/blog/posts', ['modules/http'], function (http) {
                 .catch(err => utilities.showToast(err.message, 'error'))
                 .finally(() => elem.unlockWithLoader());
         });
-    }
-
-    posts.categoryTemplateFormatOptions = function (data={}) {
-        if (!data.id) {
-            return data.text;
-        }
-        
-        let $data = $('<span></span>');
-        if (data.thumb) {
-            $data.append('<img class="img-flag user-img-sm" onerror="core.imageOnError(this)" /> <span></span>')
-            $data.find("img").attr("src", data.thumb);
-            
-        } else {
-            $data.addClass('d-flex');
-            $data.append('<canvas height="36" width="36" style="border-radius: 36px;"> </canvas> <span class="my-auto ps-2"></span>')
-            core.generateAvatarFromName($data.find("canvas"), data.text || data.name);
-        }
-    
-        $data.find("span").text(data.text);
-    
-        return $data;
     }
 
     return posts;

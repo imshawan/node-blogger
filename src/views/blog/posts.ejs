@@ -165,9 +165,13 @@
         </div>
     </div>
 </div>
-<%- include('/blog/partials/create_post_modal'); -%>
-<div class="row mx-0 justify-content-end">
-    <button type="submit" class="btn float-right-btn btn-dark py-2" data-bs-toggle="modal" data-bs-target="#create-post-dialog">
-      <i class="fa fa-plus mt-1" aria-hidden="true"></i>
-    </button>
-  </div>
+<% if (_application.authenticated) { %>
+    <%- include('/blog/partials/create_post_modal'); -%>
+
+    <div class="row mx-0 justify-content-end">
+        <button type="submit" class="btn float-right-btn btn-dark py-2" data-bs-toggle="modal" data-bs-target="#create-post-dialog">
+          <i class="fa fa-plus mt-1" aria-hidden="true"></i>
+        </button>
+    </div>
+ 
+<% } %>
