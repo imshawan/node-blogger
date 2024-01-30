@@ -8,7 +8,6 @@ const MIN_POST_SIZE = 20;
 const MAX_POST_SIZE = 2550;
 const MIN_POST_TITLE_LENGTH = 2;
 const MAX_POST_TITLE_LENGTH = 250;
-const MAX_BLURB_SIZE = 35;
 
 export const create = async function create(data: IPost): Promise<IPost> {
     const {title='', userid, content, featuredImage, wordCount} = data;
@@ -18,7 +17,6 @@ export const create = async function create(data: IPost): Promise<IPost> {
     const maxPostLength = application.configurationStore?.maxPostLength || MAX_POST_SIZE;
     const minPostTitleLength = application.configurationStore?.minPostTitleLength || MIN_POST_TITLE_LENGTH;
     const maxPostTitleLength = application.configurationStore?.maxPostTitleLength || MAX_POST_TITLE_LENGTH;
-    const maxPostBlurbSize = application.configurationStore?.maxPostBlurbSize || MAX_BLURB_SIZE;
 
     if (!status) {
         status = 'draft';

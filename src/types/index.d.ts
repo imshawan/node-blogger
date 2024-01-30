@@ -1,4 +1,5 @@
 import { Express } from 'express';
+import { ValidSortingTechniques } from "@src/constants";
 
 export * from './database';
 export * from './authentication';
@@ -16,6 +17,8 @@ export interface MutableObject { [x: string]: any; }
 export type ValueOf<T> = T[keyof T];
 
 export type TimeUnitSuffix = 'ms' | 'msec' | 'milli' | 'millisecond' | 'sec' | 'second' | 'min' | 'minute' | 'hr' | 'hour';
+
+export type ValidSortingTechniquesTypes = keyof typeof ValidSortingTechniques;
 
 export interface MulterFilesArray extends Express.Multer.File {
     url: string

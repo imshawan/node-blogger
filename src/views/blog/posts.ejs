@@ -18,69 +18,30 @@
                 similique blanditiis. Culpa hic quia, repellendus corrupti </p>
             <div class="posts-wrapper posts-container">
 
-                <div class="post-item bg-light p-3">
-                    <img src="images/staircase-274614_1920.jpg" class="card-img" alt="...">
-                    <div class="post-meta">
-                        <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i>
-                            30 07
-                            2021</span>
-                    </div>
-                    <a href="single-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.</a>
-                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-                        perspiciatis
-                        ex
-                        ipsam similique blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
-                        necessitatibus
-                        alias illo quidem. Repudiandae expedita illum aspernatur magni?</p>
-                    <div class="post-meta d-flex justify-content-between">
-                        <div>
-                            <span><i class="fa fa-comment-alt"></i> 20</span>
-                            <span><i class="fa fa-eye"></i> 200</span>
+                <% posts.forEach(post => { %>
+                    <div class="post-item bg-light p-3">
+                        <% if (post.featuredImage) { %>
+                            <img src="<%= post.featuredImage %>" class="card-img" alt="...">
+                        <% } %>
+                        <div class="post-meta">
+                            <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i>
+                                30 07
+                                2021</span>
                         </div>
-                        <div>
-                            <a class="read-more">Read more</a>
+                        <a href="/posts/<%= post.slug %>" class="post-title"><%= post.title %></a>
+                        <p class="post-content text-ellipse-4"><%= post.blurb %></p>
+                        <div class="post-meta d-flex justify-content-between">
+                            <div>
+                                <span><i class="fa fa-comment-alt"></i> 20</span>
+                                <span><i class="fa fa-eye"></i> 200</span>
+                            </div>
+                            <div>
+                                <a href="/posts/<%= post.slug %>" class="read-more">Read more</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <% }) %>
 
-                <div class="post-item">
-                    <div class="post-meta">
-                        <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i>
-                            30 07
-                            2021</span>
-                    </div>
-                    <a href="single-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.</a>
-                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-                        perspiciatis
-                        ex
-                        ipsam similique blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
-                        necessitatibus
-                        alias illo quidem. Repudiandae expedita illum aspernatur magni?</p>
-                    <div class="post-meta">
-                        <span><i class="far fa-comment-alt"></i> 20 comments</span>
-                    </div>
-                </div>
-
-                <div class="post-item">
-                    <div class="post-meta">
-                        <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i>
-                            30 07
-                            2021</span>
-                    </div>
-                    <a href="single-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.</a>
-                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-                        perspiciatis
-                        ex
-                        ipsam similique blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
-                        necessitatibus
-                        alias illo quidem. Repudiandae expedita illum aspernatur magni?</p>
-                    <div class="post-meta">
-                        <span><i class="far fa-comment-alt"></i> 20 comments</span>
-                    </div>
-                </div>
             </div>
         </div>
 

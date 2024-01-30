@@ -199,3 +199,10 @@ export const textFromHTML = function (html: string) {
         .replace('&nbsp;', ' ')
         .replace(/[^\S\r\n][^\S\r\n]+/ig, ' ');
 }
+
+export const clipContent = function (content: string, wordLimit: number) {
+    if (!content || !content.length) return '';
+
+    const match = content.match(new RegExp(`^(\\S+\\s*){1,${wordLimit}}`));
+    return match ? match[0] : content;
+}

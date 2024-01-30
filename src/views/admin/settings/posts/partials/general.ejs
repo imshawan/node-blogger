@@ -48,6 +48,13 @@
             </div>
             <div class="col-12 col-md-6">
                 <div class="form-floating">
+                    <input type="number" name="maxPostBlurbSize" value="<%= data.maxPostBlurbSize %>"
+                        class="form-control" id="maxPostBlurbSize" placeholder="">
+                    <label for="maxPostBlurbSize">Maximum blurb size for each post (in words)</label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
                     <input type="number" name="maxPostThumbnailSize" value="<%= data.maxPostThumbnailSize %>"
                         class="form-control" id="maxPostThumbnailSize" placeholder="">
                     <label for="maxPostThumbnailSize">Maximum thumbnail size (Kilobytes)</label>

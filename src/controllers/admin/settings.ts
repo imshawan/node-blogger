@@ -119,7 +119,8 @@ const posts = async function (req: Request, res: Response, next: NextFunction) {
         "maxPostLength",
         "minTagsPerPost",
         "maxTagsPerPost",
-        "maxPostThumbnailSize"
+        "maxPostThumbnailSize",
+        "maxPostBlurbSize",
     ];
 
     pageData.title = 'Posts settings';
