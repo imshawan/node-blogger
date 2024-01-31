@@ -2,12 +2,10 @@ import { NavigationManager } from '@src/utilities/navigation';
 import { Request, Response } from 'express';
 import category from '@src/category';
 import Post from '@src/post';
-import { IPost, MutableObject } from '@src/types';
 import { notFoundHandler } from '@src/middlewares';
-import { getUserByUserId } from '@src/user';
-import { clipContent, textFromHTML } from '@src/utilities';
-import { application } from "@src/application";
+import * as User from '@src/user';
 import * as Helpers from "@src/helpers";
+import moment from 'moment';
 
 const get = async function (req: Request, res: Response) {  
     const page = {
@@ -26,22 +24,20 @@ const renderPosts = async function (req: Request, res: Response) {
     let url = [req.baseUrl, req.url].join('');
 
     if (!perPage) {
-        perPage = 15;
+        perPage = 8;
     }
     if (isNaN(page) || !page) {
         page = 1;
     }
 
-    const maxPostBlurbSize = application.configurationStore?.maxPostBlurbSize || Post.data.MAX_BLURB_SIZE;
     const posts = await Post.data.getPosts({page, perPage});
-    const postData = posts.map((post: IPost) => {
-        let content = textFromHTML(post.content ?? '');
-        let clipped = clipContent(content, maxPostBlurbSize);
 
-        post.blurb = clipped.split(' ').length < maxPostBlurbSize ? clipped : (clipped.endsWith('.') ? clipped : (clipped + '...'));
+    const postData = await Promise.all(posts.map(async (post: any) => {
+        post.createdAt = moment(post.createdAt).format('DD MMM, yyyy');
+        post.user = await User.getUserWIthFields(post.userid, ['username', 'picture', 'fullname']);
 
         return post;
-    });
+    }));
 
     const totalPages = Math.ceil(postData.length / perPage);
 
@@ -64,7 +60,10 @@ const getPostBySlug = async function (req: Request, res: Response) {
         return notFoundHandler(req, res);
     }
 
-    const author = await getUserByUserId(post.userid);
+    const [author, ] = await Promise.all([
+        User.getUserByUserId(post.userid),
+        Post.utils.incrementViewCount(Number(postId), req)
+    ]);
 
     const page = {
         navigation:  new NavigationManager().get('posts'),

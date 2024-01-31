@@ -99,6 +99,10 @@ export const requireAuthentication = async function (req: Request, res: Response
     next();
 }
 
+export const isAuthenticated = function (req: Request) {
+    return req.isAuthenticated() && req.user;
+}
+
 export const verifyAdministrator = async function (req: Request, res: Response, next: NextFunction) {    
     const {user} = req;
 

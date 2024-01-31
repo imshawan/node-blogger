@@ -438,7 +438,7 @@
     font-weight: bolder !important; }
     .text-small {font-size: 12px;}
 .text-normal {
-    text-transform: none;
+    text-transform: none!important;
 }
 .text-ellipse {
     display: -webkit-box;
@@ -473,7 +473,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     -o-text-overflow: ellipsis;
-    word-break: break-all;
+    word-break: break-word;
     text-overflow: ellipsis;
 }
 .display-7 {

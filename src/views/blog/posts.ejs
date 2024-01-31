@@ -23,17 +23,18 @@
                         <% if (post.featuredImage) { %>
                             <img src="<%= post.featuredImage %>" class="card-img" alt="...">
                         <% } %>
-                        <div class="post-meta">
-                            <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i>
-                                30 07
-                                2021</span>
+                        <div class="post-meta text-normal">
+                            <span><i class="far fa-user"></i> Posted by <%= post?.user.fullname || post?.user.username %></span><span><i class="far fa-calendar"></i>
+                                <%= post.createdAt %>
+                            </span>
                         </div>
-                        <a href="/posts/<%= post.slug %>" class="post-title"><%= post.title %></a>
+                        <a href="/posts/<%= post.slug %>" class="post-title text-normal"><%= post.title %></a>
                         <p class="post-content text-ellipse-4"><%= post.blurb %></p>
                         <div class="post-meta d-flex justify-content-between">
                             <div>
-                                <span><i class="fa fa-comment-alt"></i> 20</span>
-                                <span><i class="fa fa-eye"></i> 200</span>
+                                <span><i class="fa fa-thumbs-o-up me-1"></i><%= post.likes %></span>
+                                <span><i class="fa fa-comment-alt me-1"></i><%= post.comments %></span>
+                                <span><i class="fa fa-eye me-1"></i><%= post.views %></span>
                             </div>
                             <div>
                                 <a href="/posts/<%= post.slug %>" class="read-more">Read more</a>

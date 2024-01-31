@@ -1,7 +1,8 @@
 import { Collections } from "@src/constants";
 import { mongo } from "./init";
 import { IParamOptions, IMongoInsertOptions, IMongoDeleteOptions, IMongoUpdateOptions, 
-    IMongoPaginateOptions } from "@src/types";
+    IMongoPaginateOptions, 
+    MutableObject} from "@src/types";
 import _ from "lodash";
 import { ObjectId } from "bson";
 
@@ -132,11 +133,12 @@ function filterObjectFields(object: any, fields?: Array<string>) {
     }
 
     if (fields && Array.isArray(fields) && fields.length) {
-        const obj = {};
-        fields.forEach(el => {
+        const obj: MutableObject = {};
+        fields.forEach((el: any) => {
             if (object.hasOwnProperty(el)) {
-                // @ts-ignore
                 obj[el] = object[el];
+            } else {
+                obj[el] = null;
             }
         });
         return obj;

@@ -58,6 +58,27 @@ export async function getUserByUserId(userid: number=0): Promise<IUser> {
     return await database.getObjects({userid, _key: 'user:' + userid}, validUserFields);
 }
 
+export async function getUserWIthFields(userid: number=0, fields: string[]=[]) {
+    if (!userid) {
+        throw new Error('Userid is required');
+    }
+
+    if (userid < 1) {
+        throw new Error('Invalid userid supplied');
+    }
+    if (!fields) {
+        fields = validUserFields;
+    }
+    if (!Array.isArray(fields)) {
+        fields = validUserFields;
+    }
+    if (!fields.includes('userid')) {
+        fields.push('userid');
+    }
+
+    return await database.getObjects({userid, _key: 'user:' + userid}, fields);
+}
+
 export async function isAdministrator(userid: number | object): Promise<boolean> {
     // TODo
     // Logic to be implemented

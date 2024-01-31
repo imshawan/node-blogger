@@ -2,6 +2,8 @@ import { database } from "@src/database";
 import { IParamOptions, IPost, ValidSortingTechniquesTypes } from "@src/types";
 import { ValidSortingTechniques } from "@src/constants";
 import { ValueError } from "@src/helpers";
+import { application } from "@src/application";
+import { clipContent, textFromHTML } from '@src/utilities';
 
 interface IPostOptions {
     perPage?: number; 
@@ -27,7 +29,11 @@ const getPostById = async function (id: number, fields: string[] = []): Promise<
     }
 
     const postId = Number(id);
-    return await database.getObjects({ _key: 'post:' + postId}, fields);   
+    const post: IPost = await database.getObjects({ _key: 'post:' + postId}, fields);
+
+    post.blurb = preparePostBlurb(post);
+
+    return post;
 }
 
 const getPosts = async function (options?: IPostOptions) {
@@ -60,7 +66,24 @@ const getPosts = async function (options?: IPostOptions) {
         multi: true
     };
 
-    return await database.getObjects(searchKeys, fields, matchOptions);  
+    const posts = await database.getObjects(searchKeys, fields, matchOptions);
+    
+    return posts.map((post: IPost) => {
+        post.blurb = preparePostBlurb(post);
+        return post;
+    });
+}
+
+function preparePostBlurb(postData: IPost): string {
+    let {content} = postData;
+    let maxPostBlurbSize = application.configurationStore?.maxPostBlurbSize || MAX_BLURB_SIZE;
+
+    if (!content) return '';
+    
+    content = textFromHTML(content ?? '');
+    let clipped = clipContent(content, maxPostBlurbSize);
+
+    return clipped.split(' ').length < maxPostBlurbSize ? clipped : (clipped.endsWith('.') ? clipped : (clipped + '...'));
 }
 
 export default {

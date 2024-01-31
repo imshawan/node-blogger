@@ -3,6 +3,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import { MutableObject, IMongoConnectionProps, TimeUnitSuffix } from '@src/types';
 import { execSync } from 'child_process';
+import { Request } from 'express';
 
 export * from './password';
 export * from './slugify';
@@ -14,12 +15,81 @@ export * from './changelog';
 
 export const getISOTimestamp = () => new Date().toISOString();
 
+export const ipV4Regex = /^(?:(?:\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\.){3}(?:\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])$/;
+
 export const generateUUID = () => { 
     return crypto.randomUUID();
 }
 
 export const capitalizeFirstLetter = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export const resolveIpAddrFromHeaders = function (req: Request) {
+    const headersToLookFor = [
+        'x-client-ip',
+        'x-forwarded-for',
+        'cf-connecting-ip',
+        'do-connecting-ip',
+        'fastly-client-ip',
+        'true-client-ip',
+        'x-real-ip',
+        'x-cluster-client-ip',
+        'x-forwarded',
+        'forwarded-for',
+        'forwarded',
+        'x-appengine-user-ip'
+    ];
+    const headers = req.headers;
+
+    const getClientIpFromXForwardedHeader = (header: string | string[]) => {
+        if (!header) {
+            return null;
+        }
+
+        if (Array.isArray(header)) {
+            header = header.join(',');
+        }
+    
+        const ips = header.split(',').filter(ip => ipV4Regex.test(ip));
+        const clientIp = ips[0].trim();
+        return clientIp;
+    }
+
+    if (headers['x-forwarded-for']) {
+        let headerValue = getClientIpFromXForwardedHeader(headers['x-forwarded-for']);
+        if (headerValue) return headerValue;
+    }
+
+    let value: string | string[] | undefined = '';
+    for (const element of headersToLookFor) {
+        if (headers[element]) {
+            value = headers[element];
+            break;
+        }
+    }
+
+    if (Array.isArray(value) && value.length) {
+        value = String(value[0]).trim();
+    }
+
+    if (ipV4Regex.test(String(value))) {
+        return String(value).trim();
+    } else {
+        return null;
+    }
+}
+
+export const resolveIpFromRequest = function (req: Request) {
+    let ip: string | null = req.ip;
+    if (ipV4Regex.test(ip)) {
+        return ip;
+    }
+
+    let ips = ip.split(':').find(e => ipV4Regex.test(e));
+    if (ips) {
+        return ips
+    } else return null;
 }
 
 export const resolveGeoLocation = async (ipAddr: string): Promise<{[key: string]: any;}> => {
