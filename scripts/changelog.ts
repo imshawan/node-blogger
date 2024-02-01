@@ -14,10 +14,10 @@ import { Changelog } from '../src/utilities/changelog';
 import moment from 'moment';
 import pkg from '../package.json';
 
-const gitStatusOutput: string = execSync('git status --porcelain').toString('utf-8').trim();
+const containsModifiedFiles = getModifiedFilesCount();
 
-if (gitStatusOutput.trim()) {
-    console.log(`The repository has ${gitStatusOutput.split('\n').length} modified file(s). Please commit the existing files and than proceed.`);
+if (containsModifiedFiles) {
+    console.log(`The repository has ${containsModifiedFiles} modified file(s). Please commit the existing files and than proceed.`);
     process.exit(0);
     
 } else {
@@ -25,4 +25,9 @@ if (gitStatusOutput.trim()) {
 
     execSync('git add CHANGELOG.md');
     execSync(`git commit -m "[${moment().format('DD-MM-YYYY')}] Changelog CI - Latest Changelogs for ${pkg.name} v${pkg.version}"`);
+}
+
+function getModifiedFilesCount(): number {
+    const gitStatusOutput: string = execSync('git status --porcelain').toString('utf-8').trim();
+    return gitStatusOutput.split('\n').length;
 }
