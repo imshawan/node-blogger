@@ -14,7 +14,7 @@ import { Changelog } from '../src/utilities/changelog';
 import moment from 'moment';
 import pkg from '../package.json';
 
-const gitStatusOutput = execSync('git status --porcelain').toString('utf-8').trim();
+const gitStatusOutput: string = execSync('git status --porcelain').toString('utf-8').trim();
 
 if (gitStatusOutput.trim()) {
     console.log(`The repository has ${gitStatusOutput.split('\n').length} modified file(s). Please commit the existing files and than proceed.`);
