@@ -16,7 +16,7 @@
             <p class="sup-header">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex
                 ipsam
                 similique blanditiis. Culpa hic quia, repellendus corrupti </p>
-            <div class="posts-wrapper posts-container">
+            <div class="posts-wrapper pb-0 posts-container">
 
                 <% posts.forEach(post => { %>
                     <div class="post-item bg-light p-3">
@@ -32,9 +32,9 @@
                         <p class="post-content text-ellipse-4"><%= post.blurb %></p>
                         <div class="post-meta d-flex justify-content-between">
                             <div>
-                                <span><i class="fa fa-thumbs-o-up me-1"></i><%= post.likes %></span>
-                                <span><i class="fa fa-comment-alt me-1"></i><%= post.comments %></span>
-                                <span><i class="fa fa-eye me-1"></i><%= post.views %></span>
+                                <span><i class="fa fa-thumbs-o-up me-2"></i><%= post.likes %></span>
+                                <span><i class="fa fa-comment-alt me-2"></i><%= post.comments %></span>
+                                <span><i class="fa fa-eye me-2"></i><%= post.views %></span>
                             </div>
                             <div>
                                 <a href="/posts/<%= post.slug %>" class="read-more">Read more</a>
@@ -43,6 +43,26 @@
                     </div>
                 <% }) %>
 
+            </div>
+            <div class="">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item me-3 shadow-sm">
+                        <a class="page-link me-0 <% if (!Object.keys(pagination.navigation.previous).length) { %> disabled <% } %>" href="<%= pagination?.navigation?.previous?.url || '#' %>" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <% pagination.items.forEach(item => { %>
+                        <li class="page-item mx-1 shadow-sm"><a class="page-link mx-0 <% if (item.isCurrent) { %> active <% } %>" <% if (item.url) { %> href="<%= item.url %>" <% } %> ><%= item.pageNumber %></a></li>
+                      <% }) %>
+
+                      <li class="ms-3 page-actions page-item shadow-sm">
+                        <a class="page-link ms-0 <% if (!Object.keys(pagination.navigation.next).length) { %> disabled <% } %>" href="<%= pagination?.navigation?.next?.url || '#' %>" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
             </div>
         </div>
 

@@ -7,6 +7,8 @@ import * as User from '@src/user';
 import * as Helpers from "@src/helpers";
 import moment from 'moment';
 
+const DATE_FORMAT = 'DD MMM, yyyy';
+
 const get = async function (req: Request, res: Response) {  
     const page = {
         title: 'Home',
@@ -24,29 +26,29 @@ const renderPosts = async function (req: Request, res: Response) {
     let url = [req.baseUrl, req.url].join('');
 
     if (!perPage) {
-        perPage = 8;
+        perPage = 6;
     }
     if (isNaN(page) || !page) {
         page = 1;
     }
 
-    const posts = await Post.data.getPosts({page, perPage});
+    const {posts, total} = await Post.data.getPosts({page, perPage});
 
     const postData = await Promise.all(posts.map(async (post: any) => {
-        post.createdAt = moment(post.createdAt).format('DD MMM, yyyy');
+        post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
         post.user = await User.getUserWIthFields(post.userid, ['username', 'picture', 'fullname']);
 
         return post;
     }));
 
-    const totalPages = Math.ceil(postData.length / perPage);
+    const totalPages = Math.ceil(total / perPage);
 
     const pageData = {
         title: 'Posts',
         navigation:  new NavigationManager().get('posts'),
         categories:  await category.data.getAllCategories(5, 1, ),
         posts: postData || [],
-        pagination: Helpers.generatePaginationItems(page, totalPages),
+        pagination: Helpers.generatePaginationItems(req.url, page, totalPages),
     };
 
     res.render('blog/posts', pageData);
@@ -59,6 +61,8 @@ const getPostBySlug = async function (req: Request, res: Response) {
     if (!post) {
         return notFoundHandler(req, res);
     }
+
+    post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
 
     const [author, ] = await Promise.all([
         User.getUserByUserId(post.userid),

@@ -65,13 +65,18 @@ const getPosts = async function (options?: IPostOptions) {
         limit: perPage,
         multi: true
     };
-
-    const posts = await database.getObjects(searchKeys, fields, matchOptions);
     
-    return posts.map((post: IPost) => {
+    const [posts, total] = await Promise.all([
+        database.getObjects(searchKeys, fields, matchOptions),
+        database.getObjectsCount(searchKeys)
+    ]);
+    
+    const data = posts.map((post: IPost) => {
         post.blurb = preparePostBlurb(post);
         return post;
     });
+
+    return {posts: data, total: total ?? 0}
 }
 
 function preparePostBlurb(postData: IPost): string {

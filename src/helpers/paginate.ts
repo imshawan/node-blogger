@@ -1,4 +1,5 @@
 import { MutableObject, IPagination, IPaginationItem } from "@src/types";
+import {url as Utilities} from "@src/utilities/url";
 
 /**
  * 
@@ -46,9 +47,9 @@ export function paginate(items: Array<any>, perPage: number, page: number, baseU
     const totalPages = Math.ceil(items.length / perPage);
   
     // Generate URLs for the current, next, and previous pages
-    const currentPageUrl = urlQueryBuilder(baseUrl, {page});
-    const nextPageUrl = page < totalPages ? urlQueryBuilder(baseUrl, {page: page + 1}) : null;
-    const prevPageUrl = page > 1 ? urlQueryBuilder(baseUrl, {page: page - 1}) : null;
+    const currentPageUrl = Utilities.urlQueryBuilder(baseUrl, {page});
+    const nextPageUrl = page < totalPages ? Utilities.urlQueryBuilder(baseUrl, {page: page + 1}) : null;
+    const prevPageUrl = page > 1 ? Utilities.urlQueryBuilder(baseUrl, {page: page - 1}) : null;
 
     const navigation = {current: currentPageUrl, next: nextPageUrl, previous: prevPageUrl};
   
@@ -64,40 +65,6 @@ export function paginate(items: Array<any>, perPage: number, page: number, baseU
     };
   }
   
-/**
- * 
- * @author imshawan
- * @date 03-10-2023
- * 
- * @function urlQueryBuilder
- * @param baseURL
- * @param params 
- * @description function takes a base URL with an existing query string and additional query parameters as input. 
- * It combines the base URL and the new parameters, ensuring proper formatting with encoded query parameters.
- */
-export function urlQueryBuilder(baseURL: string, params: MutableObject = {}): string {
-    if (!baseURL) {
-        throw new Error('baseUrl is a required parameter');
-    }
-    if (typeof baseURL != 'string') {
-        throw new TypeError('baseUrl must be a string, found ' + typeof baseURL);
-    }
-    if (!Object.keys(params)) {
-        return baseURL;
-    }
-
-    let finalURL = String(baseURL).trim();
-
-    const queryString = Object.keys(params)
-        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
-        .join('&');
-
-    if (queryString) {
-        finalURL += (finalURL.includes('?') ? '&' : '?') + queryString;
-    }
-
-    return finalURL;
-}
 
 /**
  * @date 08-01-2024
@@ -119,7 +86,7 @@ export function urlQueryBuilder(baseURL: string, params: MutableObject = {}): st
     console.log(paginationItems);
  */
 
-export function generatePaginationItems(currentPage: number, totalPages: number, adjacentPages: number = 2): IPaginationItem[] {
+export function generatePaginationItems(baseUrl: string, currentPage: number, totalPages: number, adjacentPages: number = 2): IPaginationItem {
     if (isNaN(Number(currentPage))) {
         throw new Error('currentPage must be a number, found ' + typeof currentPage);
     }
@@ -130,12 +97,20 @@ export function generatePaginationItems(currentPage: number, totalPages: number,
         throw new Error('adjacentPages must be a number, found ' + typeof adjacentPages);
     }
 
-    const paginationItems: IPaginationItem[] = [];
+    const paginationItems: IPaginationItem = {
+        items: [],
+        navigation: {
+            previous: {},
+            next: {}
+        }
+    };
 
     const addPaginationItem = (pageNumber: number | string, isCurrent: boolean = false) => {
-        paginationItems.push({
+        let url = isNaN(Number(pageNumber)) ? '' : Utilities.urlQueryBuilder(baseUrl, {page: pageNumber});
+        paginationItems.items.push({
             pageNumber,
             isCurrent,
+            url,
         });
     };
 
@@ -144,19 +119,39 @@ export function generatePaginationItems(currentPage: number, totalPages: number,
         if (i <= adjacentPages || i > totalPages - adjacentPages || (i >= currentPage - adjacentPages && i <= currentPage + adjacentPages)) {
             addPaginationItem(i, i === currentPage);
         } else if (
-            paginationItems[paginationItems.length - 1]?.pageNumber !== '...' &&
+            paginationItems.items[paginationItems.items.length - 1]?.pageNumber !== '...' &&
             i > adjacentPages &&
             i < currentPage - adjacentPages
         ) {
             addPaginationItem('...'); // Ellipsis before current page
         } else if (
-            paginationItems[paginationItems.length - 1]?.pageNumber !== '...' &&
+            paginationItems.items[paginationItems.items.length - 1]?.pageNumber !== '...' &&
             i > currentPage + adjacentPages &&
             i < totalPages - adjacentPages
         ) {
             addPaginationItem('...'); // Ellipsis after current page
         }
     }
+
+    paginationItems.items.forEach((item, index) => {
+        if (item.isCurrent) {
+            let previous = paginationItems.items[index - 1] || {};
+            let next = paginationItems.items[index + 1] || {};
+            
+            if (previous.pageNumber) {
+                paginationItems.navigation.previous = {
+                    pageNumber: previous.pageNumber,
+                    url: Utilities.urlQueryBuilder(baseUrl, {page: previous.pageNumber}),
+                }
+            }
+            if (next.pageNumber) {
+                paginationItems.navigation.next = {
+                    pageNumber: next.pageNumber,
+                    url: Utilities.urlQueryBuilder(baseUrl, {page: next.pageNumber}),
+                }
+            }
+        }
+    });
 
     return paginationItems;
 }

@@ -1,5 +1,5 @@
 <style>section {background-color: #f7f8f9;}</style>
-<div class="container post-container pt-5">
+<div id="posts" class="container post-container pt-5">
     <div class="row justify-content-center">
         <div class="post-header post-section col-12"><%= post.title %></div>
     </div>
@@ -9,8 +9,8 @@
                 <img crossorigin="anonymous" src="<%= author.picture %>" alt="" width="45" height="45" class="rounded-circle my-auto me-3">
                 <div class="">
                     <div class="post-author">by <span class="text-uppercase"><%= author.fullname || author.username %></span></div>
-                    <div class="post-metadata">
-                        <%= post.readTime %> read
+                    <div class="post-metadata d-flex">
+                        <%= post.createdAt %>&nbsp;<span class="dot-separator mx-2"></span><%= post.readTime %> read
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
     <% } %>
 
     <div class="row justify-content-center mb-4">
-        <div class="post-section">
+        <div class="post-section overflow-auto">
             <%- post.content %>
         </div>
     </div>

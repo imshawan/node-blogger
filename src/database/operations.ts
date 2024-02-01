@@ -12,7 +12,7 @@ const getObjects = async function (key: object, fields?: Array<string>, options?
 
     if (options.multi) {
         let data: any = [];
-        if (options.skip && options.limit) {
+        if (Object.hasOwnProperty.bind(options)('skip') && Object.hasOwnProperty.bind(options)('limit')) {
             let {skip, limit} = options;
             data = await mongo.client.collection(options.collection).find(key).sort(options.sort).skip(skip).limit(limit).toArray();
         } else {

@@ -706,6 +706,7 @@ nav .nav-link:hover {
   display: inline-block;
   margin-top: 10px;
 }
+/* Pagination */
 
 .pagination {
   margin-top: 30px;
@@ -713,15 +714,20 @@ nav .nav-link:hover {
 
 .pagination li a {
   color: black;
-  padding: 10px 15px !important;
+  padding: 10px 18px !important;
 }
 
 .pagination li a:hover {
   color: black;
 }
 
-.pagination li .active {
-  color: black !important;
+.page-item a, .page-actions a {
+  border: 0!important;
+  background-color: rgba(var(--bs-light-rgb));
+}
+.active>.page-link, .page-link.active {
+  color: var(--color-white);
+  background-color: var(--color-black);
 }
 
 .pagination li .active:hover {
@@ -1308,6 +1314,7 @@ a.badge-light:focus, a.badge-light:hover {
   font-weight: 600;
 }
 .post-likes, .post-comments {font-size: var(--font-size-12);}
+
 @media (max-width: 650px) {
   #posts .posts-container .post-content {
     font-size: 14px;

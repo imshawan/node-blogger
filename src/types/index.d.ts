@@ -45,6 +45,15 @@ export interface IPagination {
 }
 
 export interface IPaginationItem {
-    pageNumber: number | string;
-    isCurrent: boolean;
+    navigation: {
+        previous: Items;
+        next: Items
+    }
+    items: Items[]
+}
+
+interface Items {
+    pageNumber?: number | string;
+    isCurrent?: boolean;
+    url?: string
 }
