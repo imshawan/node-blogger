@@ -148,6 +148,14 @@ export const isParsableJSON = function (jsonString?: string) {
     }
 }
 
+export const filterObjectByKeys = function (obj: MutableObject, keys: string[]) {
+    if (!Object.keys(obj).length) return obj;
+    return Object.fromEntries(
+        Object.entries(obj)
+            .filter(([key]) => keys.includes(key))
+    );
+}
+
 export const getArgv = function (key: string): string | Number | Boolean {
     const args = process.argv;
     const parsedArgs: MutableObject = {};

@@ -1,6 +1,6 @@
 import { Request } from "express";
 import {database} from "@src/database";
-import { sanitizeHtml } from "@src/utilities";
+import * as Utilities from "@src/utilities";
 import * as Helpers from "@src/helpers";
 import Posts from "@src/post";
 import { IPost, MulterFilesArray } from "@src/types";
@@ -29,8 +29,8 @@ const create = async (req: Request) => {
     
     const writeData: IPost = {};
 
-    writeData.content = sanitizeHtml(content);
-    writeData.title = sanitizeHtml(title);
+    writeData.content = Utilities.sanitizeHtml(content);
+    writeData.title = Utilities.sanitizeHtml(title);
     writeData.categories = categories;
     writeData.status = status;
     writeData.tags = tags;
@@ -46,8 +46,8 @@ const create = async (req: Request) => {
 
     writeData.featuredImage = featuredImage;
 
-    const post = await Posts.create(writeData);
-    return post.slug;
+    let post = await Posts.create(writeData);
+    return Utilities.filterObjectByKeys(post, ['title', 'userid', 'slug', 'postId']);
 }
 
 export default {

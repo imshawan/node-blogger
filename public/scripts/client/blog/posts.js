@@ -168,7 +168,10 @@ define('client/blog/posts', ['modules/http'], function (http) {
                 cache: false,
                 contentType: false,
                 processData: false,
-            }).then(res => location.href = '/posts/' + res)
+            }).then(res => {
+                let slug = res.slug;
+                location.href = '/posts/' + slug;
+            })
                 .catch(err => utilities.showToast(err.message, 'error'))
                 .finally(() => elem.unlockWithLoader());
         });
