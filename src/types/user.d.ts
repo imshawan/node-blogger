@@ -1,4 +1,6 @@
 import { ObjectId } from "bson";
+import { validUserFields } from "@src/user";
+import { ValueOf } from ".";
 
 export interface IUser {
     _id?: ObjectId
@@ -33,3 +35,5 @@ export interface IRoles {
     moderator?: string | number
     globalModerator?: string | number
 }
+
+export type ValidUserFields = "userid" | "fullname" | "slug" | "username" | "email" | "birthday" | "picture" | "cover" | "location" | "bio" | "about" | "roles" | "joiningDate" | "lastOnline";

@@ -96,7 +96,7 @@ function applySort (sortingType: string): MutableObject {
     if (!sortingType) return {};
     let query: MutableObject = {};
 
-    switch(sortingType) {
+    switch(String(sortingType).toLowerCase()) {
         case 'recent':
             query = {_id: -1};
             break;

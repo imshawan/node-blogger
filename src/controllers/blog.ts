@@ -6,13 +6,34 @@ import { notFoundHandler } from '@src/middlewares';
 import * as User from '@src/user';
 import * as Helpers from "@src/helpers";
 import moment from 'moment';
+import { IPost } from '@src/types';
 
 const DATE_FORMAT = 'DD MMM, yyyy';
 
-const get = async function (req: Request, res: Response) {  
+const get = async function (req: Request, res: Response) { 
+
+    const resolve = async (post: any) => {
+        post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
+        post.author = await User.getUserWIthFields(post.userid, ['username', 'picture', 'fullname']);
+
+        return post;
+    }
+
+    const [recent, popular, categories] = await Promise.all([
+        Post.data.getPosts({page: 1, perPage: 6}),
+        Post.data.getPosts({page: 1, perPage: 6, sorting: 'POPULAR'}),
+        category.data.getAllCategories(5, 1, ),
+    ]);
+
+    const recentPosts = await Promise.all(recent.posts.map(resolve));
+    const popularPosts = await Promise.all(popular.posts.map(resolve));
+
     const page = {
         title: 'Home',
         navigation: new NavigationManager().get('home'),
+        categories,
+        recents: recentPosts, 
+        popular: popularPosts,
     };
 
     res.render('blog/index', page);
@@ -36,7 +57,7 @@ const renderPosts = async function (req: Request, res: Response) {
 
     const postData = await Promise.all(posts.map(async (post: any) => {
         post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
-        post.user = await User.getUserWIthFields(post.userid, ['username', 'picture', 'fullname']);
+        post.author = await User.getUserWIthFields(post.userid, ['username', 'picture', 'fullname']);
 
         return post;
     }));

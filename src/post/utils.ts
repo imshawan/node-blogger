@@ -1,8 +1,10 @@
 import { database } from '@src/database';
-import { resolveIpAddrFromHeaders, resolveIpFromRequest, slugify } from '@src/utilities';
+import { filterObjectByKeys, resolveIpAddrFromHeaders, resolveIpFromRequest, slugify } from '@src/utilities';
 import { Request } from 'express';
 import * as Helpers from '@src/helpers';
 import { isAuthenticated } from '@src/middlewares';
+import { IPost, ValidUserFields } from '@src/types';
+import * as User from '@src/user';
 
 const generatePostslug = async function generatePostslug(title: string): Promise<string> {
     let slug = slugify(title);
@@ -56,6 +58,22 @@ const incrementCommentCount = async function (postId: number, req: Request) {
     await incrementCountByType(req, postId, 'comments');
 }
 
+const populateUserData = async function (data: IPost, fields: ValidUserFields[]) {
+    let defaults: ValidUserFields[] = ['userid', 'fullname', 'picture', 'username'];
+    let userid = Number(data.userid);
+
+    if (isNaN(userid)) return {}
+    if (!fields || !Array.isArray(fields)) {
+        fields = defaults;
+    }
+    if (!fields.includes('userid')) {
+        fields.push('userid');
+    }
+
+    data.author = await User.getUserWIthFields(userid, fields);
+    return data;
+}
+
 async function incrementCountByType(req: Request, postId: number, field: string) {
     let userid = 0,
         postKey = getKey(postId),
@@ -84,5 +102,5 @@ async function incrementCountByType(req: Request, postId: number, field: string)
 
 export default {
     generatePostslug, generateNextPostId, isValidStatus, incrementCommentCount, incrementLikeCount,
-    incrementViewCount, getKey,
+    incrementViewCount, getKey, populateUserData
 } as const

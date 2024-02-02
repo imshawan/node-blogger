@@ -9,6 +9,7 @@ export interface IPost {
     content?: string;
     blurb?: string;
     userid?: number;
+    author?: object;
     createdAt?: string;
     updatedAt?: string;
     tags?: string[];

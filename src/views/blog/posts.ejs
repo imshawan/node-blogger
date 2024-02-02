@@ -24,7 +24,7 @@
                             <img src="<%= post.featuredImage %>" class="card-img" alt="...">
                         <% } %>
                         <div class="post-meta text-normal">
-                            <span><i class="far fa-user"></i> Posted by <%= post?.user.fullname || post?.user.username %></span><span><i class="far fa-calendar"></i>
+                            <span><i class="far fa-user"></i> Posted by <%= post?.author.fullname || post?.author.username %></span><span><i class="far fa-calendar"></i>
                                 <%= post.createdAt %>
                             </span>
                         </div>
