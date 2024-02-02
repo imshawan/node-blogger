@@ -58,7 +58,7 @@ const incrementCommentCount = async function (postId: number, req: Request) {
     await incrementCountByType(req, postId, 'comments');
 }
 
-const populateUserData = async function (data: IPost, fields: ValidUserFields[]) {
+const populateUserData = async function (data: IPost, fields?: ValidUserFields[]) {
     let defaults: ValidUserFields[] = ['userid', 'fullname', 'picture', 'username'];
     let userid = Number(data.userid);
 
