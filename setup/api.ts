@@ -130,7 +130,7 @@ async function complete(req: Request, res: Response, next: NextFunction) {
             db: baseConf.dbName
         }
         config.test = {
-            timeout: 1500,
+            timeout: 2000,
             mongodb: {
                 uri: baseConf.uri,
                 db: baseConf.testDbName
