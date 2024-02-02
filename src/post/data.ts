@@ -1,5 +1,5 @@
 import { database } from "@src/database";
-import { IParamOptions, IPost, ValidSortingTechniquesTypes } from "@src/types";
+import { IParamOptions, IPost, MutableObject, ValidSortingTechniquesTypes } from "@src/types";
 import { ValidSortingTechniques } from "@src/constants";
 import { ValueError } from "@src/helpers";
 import { application } from "@src/application";
@@ -60,10 +60,11 @@ const getPosts = async function (options?: IPostOptions) {
     }
 
     const searchKeys = {_scheme: 'post:postId'};
-    const matchOptions = {
+    const matchOptions: MutableObject = {
         skip: (page - 1) * perPage,
         limit: perPage,
-        multi: true
+        multi: true,
+        sort: applySort(sorting),
     };
     
     const [posts, total] = await Promise.all([
@@ -89,6 +90,30 @@ function preparePostBlurb(postData: IPost): string {
     let clipped = clipContent(content, maxPostBlurbSize);
 
     return clipped.split(' ').length < maxPostBlurbSize ? clipped : (clipped.endsWith('.') ? clipped : (clipped + '...'));
+}
+
+function applySort (sortingType: string): MutableObject {
+    if (!sortingType) return {};
+    let query: MutableObject = {};
+
+    switch(sortingType) {
+        case 'recent':
+            query = {_id: -1};
+            break;
+
+        case 'oldest':
+            query = {_id: 1};
+            break;
+
+        case 'popular':
+            query = {views: -1, likes: -1, comments: -1};
+            break;
+
+        default:
+            break;
+    }
+
+    return query;
 }
 
 export default {
