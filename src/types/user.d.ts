@@ -26,6 +26,7 @@ export interface IUser {
     gdprConsent?: boolean
     acceptedTnC?: boolean
     roles?: IRoles
+    followers?: number
     createdAt?: string
     updatedAt?: string
 }
