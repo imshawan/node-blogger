@@ -1,8 +1,11 @@
 import { database } from "@src/database";
-import { IParamOptions, MutableObject } from "@src/types";
+import { ICategory, IParamOptions, MutableObject } from "@src/types";
 import { ValidSortingTechniques } from "@src/constants";
 import { ValueError } from "@src/helpers";
+import { application } from "@src/application";
+import * as Utilities from "@src/utilities";
 
+const MAX_CATEGORY_BLURB_LENGTH = 30;
 const categoryFields = [
     "cid",
     "userid",
@@ -62,6 +65,16 @@ const getCategoriesWithData = async function getCategoriesWithData(perPage: numb
     const pipeline = createAggregationPipeline(query, pagination);
     var data = await database.aggregateObjects(pipeline);
 
+    if (fields.includes('blurb')) {
+        return data.map((category: any) => {
+            if (Object.hasOwnProperty.bind(category)('description')) {
+                category.blurb = category.blurb = prepareBlurb(category);
+            }
+            
+            return category;
+        });
+    }
+
     return data;
 }
 
@@ -98,7 +111,16 @@ const getAllCategories = async function getAllCategories(perPage: number=15, pag
         searchKeys.parent = {$exists: false};
     }
 
-    return await database.getObjects(searchKeys, fields, matchOptions);  
+    const data = await database.getObjects(searchKeys, fields, matchOptions);  
+
+    if (fields.includes('blurb')) {
+        return data.map((category: ICategory) => {
+            category.blurb = category.blurb = prepareBlurb(category);
+            return category;
+        });
+    }
+    
+    return data;
 }
 
 const getCategoryByCid = async function getCategoryByCid(id: any, fields: string[] = []) {
@@ -117,7 +139,12 @@ const getCategoryByCid = async function getCategoryByCid(id: any, fields: string
     }
 
     const cid = Number(id);
-    return await database.getObjects({cid, _key: 'category:' + cid}, fields);   
+    const category: ICategory = await database.getObjects({cid, _key: 'category:' + cid}, fields);
+    if (fields.includes('blurb')) {
+        category.blurb = prepareBlurb(category);
+    }
+
+    return category;   
 }
 
 const getCategoryByName = async function getCategoryByName(name: string, perPage: number=15, page: number=1, fields: string[]=[], sorting: string | null='default', subCategories=true) {
@@ -171,7 +198,19 @@ const getCategoryByName = async function getCategoryByName(name: string, perPage
         }
     }
 
-    return await database.getObjects(searchKeys, fields, matchOptions);   
+    let data: ICategory | ICategory[] = await database.getObjects(searchKeys, fields, matchOptions);  
+    if (!Array.isArray(data)) {
+        data = [data]
+    }
+
+    if (fields.includes('blurb')) {
+        return data.map((category: ICategory) => {
+            category.blurb = prepareBlurb(category);
+            return category
+        });
+    }
+
+    return data;
 }
 
 const getCategoryBySlug = async function getCategoryBySlug(slug: string) {
@@ -180,6 +219,19 @@ const getCategoryBySlug = async function getCategoryBySlug(slug: string) {
     }
 
     return await database.getObjects({slug, _scheme: 'category:cid'});   
+}
+
+function prepareBlurb(categoryData: ICategory) {
+    const maxCategoryBlurbLength = application.configurationStore?.maxCategoryBlurbLength ?? MAX_CATEGORY_BLURB_LENGTH;
+    let {description} = categoryData;
+
+    if (!description || !description.length) {
+        return ''
+    }
+    let clipped = Utilities.clipContent(description, maxCategoryBlurbLength);
+
+    return clipped.split(' ').length < maxCategoryBlurbLength ? clipped : 
+        (clipped.endsWith('.') ? clipped : (clipped + '...'));
 }
 
 function createAggregationPipeline (query: MutableObject, pagination: Array<MutableObject>) {

@@ -8,5 +8,6 @@ const router = Router();
 mountPageRoute(router, '/', [], controllers.blog.get);
 mountPageRoute(router, '/posts', [], controllers.blog.posts);
 mountPageRoute(router, '/posts/:postId/:slug', [], controllers.blog.getPostBySlug);
+mountPageRoute(router, '/categories', [], controllers.category.get);
 
 export default router

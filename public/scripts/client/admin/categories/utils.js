@@ -24,7 +24,7 @@ define('client/admin/categories/utils', ['modules/http'], function (http) {
 
     utils.deleteCategory = function (id) {
         http.DELETE('/api/v1/admin/categories/' + id).then(res => {
-            const callback = () => location.href = [location.origin, 'admin', 'categories'].join('/');
+            const callback = () => location.href = [location.origin, 'admin', 'manage', 'categories'].join('/');
 
             core.alertSuccess('Category deleted!', callback);
 

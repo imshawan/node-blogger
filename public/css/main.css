@@ -497,22 +497,22 @@ nav .nav-link:hover {
           transform: scale(1.1);
 }
 
-#posts .posts-wrapper {
+.posts-wrapper {
   padding-bottom: 30px;
 }
 
-#posts .posts-wrapper .post-item {
+.posts-wrapper .post-item {
   margin-bottom: 50px;
   /* padding-left: 20px; */
   /* border-left: 3px solid var(--highlighting-color); */
 }
 
-#posts .posts-wrapper .post-item img {
+.posts-wrapper .post-item img {
   height: 200px;
   object-fit: cover;
 }
 
-#posts .posts-wrapper .post-item .post-title {
+.posts-wrapper .post-item .post-title, .category-title {
   color: black;
   font-size: 22px;
   font-weight: 600;
@@ -520,17 +520,17 @@ nav .nav-link:hover {
   text-decoration: none;
 }
 
-#posts .posts-wrapper .post-item .post-title:hover {
+.posts-wrapper .post-item .post-title:hover, .category-title:hover {
   display: inline-block;
   background-color: black;
   color: white;
 }
 
-#posts .posts-wrapper .post-item .post-content {
+.posts-wrapper .post-item .post-content {
   padding-top: 10px;
 }
 
-#posts .posts-wrapper .main-button {
+.posts-wrapper .main-button {
   position: relative;
   float: right;
   top: 0;
@@ -706,6 +706,13 @@ nav .nav-link:hover {
   display: inline-block;
   margin-top: 10px;
 }
+/* Categories */
+.category-list .column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
 /* Pagination */
 
 .pagination {

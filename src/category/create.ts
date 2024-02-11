@@ -1,6 +1,6 @@
 import { ICategory } from "@src/types";
 import utilities from './utils'
-import { getISOTimestamp } from "@src/utilities";
+import { getISOTimestamp, generateAvatarFromInitials } from "@src/utilities";
 import _ from "lodash";
 import { application } from "@src/application";
 import { database } from "@src/database";
@@ -72,7 +72,7 @@ export default async function create(categoryData: ICategory) {
     category.description = description || '';
     category.blurb = blurb;
     category.slug = categorySlug;
-    category.thumb = thumb || '';
+    category.thumb = thumb || generateAvatarFromInitials(category.name);
     category.tagsPerPost = tagsPerPost;
     category.posts = 0,
     category.tags = 0;

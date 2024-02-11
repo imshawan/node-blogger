@@ -1,0 +1,49 @@
+<div class="container">
+    <row class="row pt-5">
+        <% if (_breadcrumb.length) { %>
+            <div class="col-12">
+                <h2 class="text-normal" style="font-size: var(--font-size-36);">
+                    <%= _breadcrumb[_breadcrumb.length - 1]['label'] %>
+                </h2>
+            </div>
+            <div class="col-12">
+                <div class="breadcrumb pt-1">
+                    <% _breadcrumb.forEach((item, index) => { %>
+                        <a href="<%= !item.active ? item.url : '#' %>" style="font-size: var(--font-size-12);" class="breadcrumb-item <% if (item.active) { %> active <% } %>" rel="nofollow"><%= item.label %></a>
+                    <% }) %>
+                </div>
+                <div style="margin-bottom: 50px;margin-top: 30px;" class="border-top"></div>
+            </div>
+        <% } %>
+    </row>
+
+    <div class="row">
+        <div class="categories-wrapper col-md-8">
+            <% if (categories.length) { %>
+             <% categories.forEach(category => { %>
+                <div class="card category-list border-0 mb-2">
+                    <div class="card-body row m-0">
+                        <div class="col-12 col-lg-4 align-self-center position-relative">
+                            <div class="" style="background-image: url('<%= category.thumb %>');background-size: cover;min-height: 150px; max-width: 220px; border-radius: 8px;background-position: center;"></div>
+                            <a style="height: 100%;width: 100%;display: block;position: absolute;top: 0;" href="/categories/<%= category.slug %>"></a>
+                        </div>
+                        <div class="col-12 col-lg-8 ps-lg-3 py-3 column">
+                            <a class="card-title category-title text-normal" href="/categories/<%= category.slug %>" style="line-height: 1.3;"><%= category.name %></a>
+                            <p class="card-text text-ellipse-2"><%= category.blurb %></p>
+
+                            <div class="d-flex">
+                                <span class="post-on">7 August</span>
+                                <span class="dot-separator mx-2"></span>
+                                <span class="time-reading"><%= category.posts %> posts</span>
+                                <span class="dot-separator mx-2"></span>
+                                <span class="post-by"><%= category.tags %> tags</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             <% }) %>
+            <% } %>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
