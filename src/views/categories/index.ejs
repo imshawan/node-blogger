@@ -25,18 +25,18 @@
                     <div class="card-body row m-0">
                         <div class="col-12 col-lg-4 align-self-center position-relative">
                             <div class="" style="background-image: url('<%= category.thumb %>');background-size: cover;min-height: 150px; max-width: 220px; border-radius: 8px;background-position: center;"></div>
-                            <a style="height: 100%;width: 100%;display: block;position: absolute;top: 0;" href="/categories/<%= category.slug %>"></a>
+                            <a style="height: 100%;width: 100%;display: block;position: absolute;top: 0;" href="/categories/<%= category.cid %>"></a>
                         </div>
                         <div class="col-12 col-lg-8 ps-lg-3 py-3 column">
-                            <a class="card-title category-title text-normal" href="/categories/<%= category.slug %>" style="line-height: 1.3;"><%= category.name %></a>
+                            <a class="card-title category-title text-normal" href="/categories/<%= category.cid %>" style="line-height: 1.3;"><%= category.name %></a>
                             <p class="card-text text-ellipse-2"><%= category.blurb %></p>
 
                             <div class="d-flex">
-                                <span class="post-on">7 August</span>
+                                <span class=""><%= category.createdAt %></span>
                                 <span class="dot-separator mx-2"></span>
-                                <span class="time-reading"><%= category.posts %> posts</span>
+                                <span class=""><%= category.posts %> posts</span>
                                 <span class="dot-separator mx-2"></span>
-                                <span class="post-by"><%= category.tags %> tags</span>
+                                <span class=""><%= category.tags %> tags</span>
                             </div>
                         </div>
                     </div>

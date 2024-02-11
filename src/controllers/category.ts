@@ -15,6 +15,7 @@ const get = async function (req: Request, res: Response) {
     categories = categories.map((category: any) => {
         category.posts = Utilities.abbreviateNumber(category.posts);
         category.tags = Utilities.abbreviateNumber(category.tags);
+        category.createdAt = moment(category.createdAt).format(DATE_FORMAT);
 
         return category;
     })
