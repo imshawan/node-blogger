@@ -1,5 +1,5 @@
 import { database } from "@src/database";
-import { IParamOptions, IPost, MutableObject, ValidSortingTechniquesTypes } from "@src/types";
+import { IParamOptions, IPost, ISortedSetKey, MutableObject, ValidSortingTechniquesTypes } from "@src/types";
 import { ValidSortingTechniques } from "@src/constants";
 import { ValueError } from "@src/helpers";
 import { application } from "@src/application";
@@ -29,7 +29,7 @@ const getPostById = async function (id: number, fields: string[] = []): Promise<
     }
 
     const postId = Number(id);
-    const post: IPost = await database.getObjects({ _key: 'post:' + postId}, fields);
+    const post: IPost = await database.getObjects('post:' + postId, fields);
 
     post.blurb = preparePostBlurb(post);
 
@@ -59,23 +59,23 @@ const getPosts = async function (options?: IPostOptions) {
         sorting = String(ValidSortingTechniques.DEFAULT) as ValidSortingTechniquesTypes;
     }
 
-    const searchKeys = {_scheme: 'post:postId'};
-    const matchOptions: MutableObject = {
+    const searchKeys = 'post:postId';
+    const matchOptions = {
         skip: (page - 1) * perPage,
         limit: perPage,
         multi: true,
         sort: applySort(sorting),
     };
     
-    const [posts, total] = await Promise.all([
-        database.getObjects(searchKeys, fields, matchOptions),
+    const [postIds, total] = await Promise.all([
+        database.fetchSortedSetsRange(searchKeys, matchOptions.skip, -1),
         database.getObjectsCount(searchKeys)
     ]);
     
-    const data = posts.map((post: IPost) => {
-        post.blurb = preparePostBlurb(post);
-        return post;
-    });
+    const data = await Promise.all(postIds.map(async (post: ISortedSetKey) => {
+        let id = String(post.value).split(':').pop();
+        return await getPostById(Number(id), fields)
+    }));
 
     return {posts: data, total: total ?? 0}
 }

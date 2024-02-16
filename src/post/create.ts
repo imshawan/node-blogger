@@ -1,7 +1,7 @@
 import { application } from "@src/application";
 import { IPost, Status } from "@src/types";
 import { database } from "@src/database";
-import { getISOTimestamp, calculateReadTime, textFromHTML } from "@src/utilities";
+import { getISOTimestamp, calculateReadTime, textFromHTML, sanitizeString } from "@src/utilities";
 import utilities from './utils';
 
 const MIN_POST_SIZE = 20;
@@ -79,12 +79,14 @@ export const create = async function create(data: IPost): Promise<IPost> {
     ])
 
     const timestamp = getISOTimestamp();
+    const now = Date.now();
     const suffix = 'minute';
     const readTime = calculateReadTime(content, suffix);
+    const key = 'post:' + postId;
 
     status = String(status).toLowerCase().trim() as Status;
 
-    postData._key = 'post:' + postId;
+    postData._key = key;
     postData.postId = postId
     postData.userid = userid;
     postData.title = title;
@@ -103,9 +105,17 @@ export const create = async function create(data: IPost): Promise<IPost> {
     postData.createdAt = timestamp;
     postData.updatedAt = timestamp;
 
-    const [acknowledgement, ] = await Promise.all([
-        database.setObjects(postData),
+    const bulkAddSets = [
+        ['post:postId', key, now],
+        ['post:slug:' + sanitizeString(slug), key, now],
+        ['post:userid:' + userid, key, now],
+        ['post:title', String(sanitizeString(title)).toLowerCase() + ':' + postId, now],
+    ];
+
+    const [acknowledgement, ,] = await Promise.all([
+        database.setObjects(key, postData),
         onNewPost(postData),
+        database.sortedSetAddKeys(bulkAddSets)
     ]);
     return acknowledgement;
 }

@@ -1,6 +1,6 @@
 import { ICategory } from "@src/types";
 import utilities from './utils'
-import { getISOTimestamp, generateAvatarFromInitials } from "@src/utilities";
+import { getISOTimestamp, generateAvatarFromInitials, sanitizeString } from "@src/utilities";
 import _ from "lodash";
 import { application } from "@src/application";
 import { database } from "@src/database";
@@ -58,13 +58,15 @@ export default async function create(categoryData: ICategory) {
     }
 
     const timestamp = getISOTimestamp();
+    const now = Date.now();
     
     const category: ICategory = {};
     const slug = await utilities.generateCategoryslug(name);
     const cid = await utilities.generateNextCategoryId();
     const categorySlug = [cid, '/', slug].join('');
+    const key = 'category:' + cid;
 
-    category._key = 'category:' + cid;
+    category._key = key;
     category._scheme = 'category:cid';
     category.userid = userid;
     category.cid = cid;
@@ -84,6 +86,23 @@ export default async function create(categoryData: ICategory) {
     category.createdAt = timestamp;
     category.updatedAt = timestamp;
 
-    const acknowledgement = await database.setObjects(category);
+    const acknowledgement = await database.setObjects(key, category);
+    const bulkAddSets = [
+        ['category:cid', key, now],
+        ['category:slug:' + sanitizeString(category.slug), key, now],
+        ['category:userid:' + userid, key, now],
+        ['category:name', String(sanitizeString(name)).toLowerCase() + ':' + cid, now],
+    ];
+    
+    if (parent) {
+        bulkAddSets.push(['category:child', key, now]);
+        bulkAddSets.push([key + ':child', 'category:' + parent, now]);
+        bulkAddSets.push(['category:name:child', String(sanitizeString(name)).toLowerCase() + ':' + cid, now])
+    } else {
+        bulkAddSets.push(['category:parent', key, now]);
+    }
+
+    await database.sortedSetAddKeys(bulkAddSets);
+
     return acknowledgement;
 }

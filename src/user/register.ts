@@ -1,6 +1,6 @@
 import { IUser, MutableObject } from "@src/types";
 import {utils as Utils} from './utils';
-import { password as Passwords, getISOTimestamp, generateUUID } from "@src/utilities";
+import { password as Passwords, getISOTimestamp, generateUUID, sanitizeString } from "@src/utilities";
 import _ from "lodash";
 import { database } from "@src/database";
 
@@ -20,6 +20,7 @@ const userFields = [
 export const register = async function register(userdata: IUser) {
     const {email='', username='', password=''} = userdata;
     const timestamp = getISOTimestamp();
+    const now = Date.now();
     var {gdprConsent, acceptedTnC} = userdata;
 
     Utils.validatePassword(password);
@@ -38,8 +39,9 @@ export const register = async function register(userdata: IUser) {
         Utils.generateUserslug(username),
         Utils.generateNextUserId(),
     ]);
+    const key = 'user:' + userid;
 
-    user._key = 'user:' + userid;
+    user._key = key;
     user.userid = userid;
     userFields.forEach(field => {
         // @ts-ignore
@@ -73,8 +75,9 @@ export const register = async function register(userdata: IUser) {
     user.updatedAt = timestamp;
 
     const uniqueUUID = generateUUID();
+    const registerKey = 'user:' + userid + ':registeration';
     const newUserRegData = {
-        _key: 'user:' + userid + ':registeration',
+        _key: registerKey,
         _scheme: 'user:userid:registeration',
         token: uniqueUUID,
         consentCompleted: false, // Flag to check if the user has completed the consent stage
@@ -86,9 +89,19 @@ export const register = async function register(userdata: IUser) {
         createdAt: timestamp,
     };
 
+    const bulkAddSets = [
+        ['user:userid', key, now],
+        ['user:slug:' + sanitizeString(slug), key, now],
+        ['user:userid:' + userid, key, now],
+        ['user:username:' + sanitizeString(username), key, now],
+        ['user:email:' + email, key, now],
+        ['user:username', String(sanitizeString(username)).toLowerCase() + ':' + userid, now],
+    ];
+
     const [data] = await Promise.all([
-        database.setObjects(user),
-        database.setObjects(newUserRegData),
+        database.setObjects(key, user),
+        database.setObjects(registerKey, newUserRegData),
+        database.sortedSetAddKeys(bulkAddSets),
     ]);
 
     const filtered: MutableObject = {};

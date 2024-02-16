@@ -30,7 +30,7 @@ export async function updateUserData(userid: number, userData: IUser) {
 
         if (Object.keys(payload)) {
             payload.updatedAt = timestamp;
-            await database.updateObjects({_key: 'user:' + userid, userid: Number(userid)}, {$set: payload});
+            await database.updateObjects('user:' + userid, payload);
         }
     }
 }

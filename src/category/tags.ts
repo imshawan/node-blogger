@@ -1,6 +1,6 @@
 import { database } from "@src/database";
 import utilities from './utils'
-import { getISOTimestamp, slugify } from "@src/utilities";
+import { getISOTimestamp, slugify, sanitizeString } from "@src/utilities";
 import _ from "lodash";
 import { application } from "@src/application";
 import { ICategoryTag, ICategory } from "@src/types";
@@ -28,7 +28,7 @@ const create = async function create(tagData: ICategoryTag) {
         throw new Error('cid must be a number, found ' + typeof cid)
     }
 
-    const categorySearchKeys = {cid: Number(cid), _key: 'category'};
+    const categorySearchKeys = 'category:' + cid;
     const category: ICategory = await database.getObjects(categorySearchKeys);
     if (!category) {
         throw new Error('No such category was found with category id ' + cid);
@@ -37,9 +37,11 @@ const create = async function create(tagData: ICategoryTag) {
     const tag: ICategoryTag = {};
 
     const timestamp = getISOTimestamp();
+    const now = Date.now();
     const tagId = await utilities.generateNextTagId();
+    const key = `category:${cid}:tag:${tagId}`;
 
-    tag._key = `category:${cid}:tag:${tagId}`;
+    tag._key = key;
     tag._scheme = `category:cid:tag:tagId`;
     tag.cid = Number(cid);
     tag.tagId = tagId;
@@ -49,8 +51,14 @@ const create = async function create(tagData: ICategoryTag) {
     tag.slug = [tagId, slugify(name)].join('/');
     tag.createdAt = timestamp;
 
+    const bulkAddSets = [
+        ['category:' + cid + ':tag', key, now],
+        ['category:' + cid + ':tag:name', String(sanitizeString(name)).toLowerCase() + ':' + key, now],
+    ];
+
     const [acknowledgement, ] = await Promise.all([
-        database.setObjects(tag),
+        database.setObjects(key, tag),
+        database.sortedSetAddKeys(bulkAddSets),
         onNewTag(tag),
     ]);
     return acknowledgement;
@@ -75,7 +83,7 @@ const getById = async function getById(tagId: number, cid: number, fields?: Arra
     if (!Array.isArray(fields)) {
         fields = [];
     }
-    const tagSearchKeys = {cid: Number(cid), _scheme: `category:cid:tag:tagId`, tagId: Number(tagId)};
+    const tagSearchKeys = `category:${cid}:tag:${tagId}`;
 
     return await database.getObjects(tagSearchKeys, fields);
 }
@@ -97,7 +105,7 @@ const getByCategoryId = async function getByCategoryId(cid: number, fields?: Arr
     if (!Array.isArray(fields)) {
         fields = [];
     }
-    const tagSearchKeys = {cid: Number(cid), _scheme: `category:cid:tag:tagId`};
+    const tagSearchKeys = `category:${cid}:tag`;
 
     return await database.getObjects(tagSearchKeys, ['name', 'tagId'], {multi: true});
 }
@@ -113,9 +121,20 @@ const getByCategoryIdAndName = async function getByCategoryIdAndName(cid: number
         fields = ['name', 'tagId', 'cid'];
     }
 
-    const tagSearchKeys = {cid: Number(cid), _scheme: `category:cid:tag:tagId`, name: {$regex: new RegExp(name), $options: 'i'}};
+    const tagSearchKeys = `category:${cid}:tag:name`;
 
-    return await database.getObjects(tagSearchKeys, fields, {multi: true});
+    const set = await database.getSortedSetsSearch({
+        match: String(name).toLowerCase(),
+        key: tagSearchKeys,
+    });
+
+    if (!set) {
+        return [];
+    }
+    let tagId = set.split(':').pop();
+
+    return await getById(Number(tagId), cid, fields);
+
 }
 
 const remove = async function remove(tagData: ICategoryTag, callerId: number) {
@@ -134,15 +153,15 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
         throw new Error('tagId must be a number, found ' + typeof tagId)
     }
 
-    const categorySearchKeys = {cid: Number(cid), _key: 'category'};
-    const tagSearchKeys = {cid: Number(cid), _key: `category:${cid}:tag`, tagId: Number(tagId)};
+    const categorySearchKey = 'category:' + cid;
+    const tagSearchKey = `category:${cid}:tag:${tagId}`;
 
-    const category: ICategory = await database.getObjects(categorySearchKeys);
+    const category: ICategory = await database.getObjects(categorySearchKey);
     if (!category) {
         throw new Error('No such category was found with category id ' + cid);
     }
 
-    const tag: ICategoryTag = await database.getObjects(tagSearchKeys);
+    const tag: ICategoryTag = await database.getObjects(tagSearchKey);
     if (!tag) {
         throw new Error('No such tag was found with tag id ' + tagId);
     }
@@ -161,7 +180,7 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
     }
 
     await Promise.all([
-        database.deleteObjects(tagSearchKeys),
+        database.deleteObjects(tagSearchKey),
         onPurgeTag(tag),
     ]);
 }

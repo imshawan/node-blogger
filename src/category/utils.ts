@@ -1,14 +1,11 @@
 import { database } from '@src/database';
-import { slugify } from '@src/utilities';
+import { sanitizeString, slugify } from '@src/utilities';
 import { application } from '@src/application';
 
 const generateCategoryslug = async function generateCategoryslug(name: string): Promise<string> {
     let slug = slugify(name);
 
-    const category = await database.getObjects({
-        slug: { $regex: new RegExp(`^[0-9]+\/${slug}`), $options: "i" },
-        _scheme: 'category:cid',
-    }, [], {multi: true});
+    const category = await database.getObjects('category:slug:' + sanitizeString(slug), [], {multi: true});
 
     if (category && category.length) {
         return String(slug + '-' + (category.length + 1));

@@ -71,7 +71,7 @@ export const setupCustomSMTPService = async function (data: ICustomSMTPService, 
             emailServicePooling: enablePooling,
         }
 
-        await database.updateObjects({_key}, {$set: payload});
+        await database.updateObjects(_key, payload);
         setValuesBulk(payload);
     }
 

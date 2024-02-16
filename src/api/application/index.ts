@@ -32,7 +32,7 @@ const updateCommonStore = async (req: Request) => {
 
     fieldsFromRequest.forEach(field => applicationData[field] = body[field]);
     if (Object.keys(applicationData).length) {
-        await database.updateObjects({_key}, {$set: applicationData});
+        await database.updateObjects(_key, applicationData);
         setValuesBulk(applicationData);
 
         await reinitializeEmailClientOnConfigChange(applicationData);
@@ -57,7 +57,7 @@ const updateSiteImages = async (req: Request, imageType: ValidSiteImageTypes) =>
 
         // TODO: Implement mimetype/filetype validation
 
-        await database.updateObjects({_key}, {$set: {[imageType]: url}})
+        await database.updateObjects(_key, {[imageType]: url})
         updateConfigurationStore(imageType, url);
     }
     

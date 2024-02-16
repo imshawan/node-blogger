@@ -100,6 +100,7 @@
     "maxTagLength": 30,
     "minTagLength": 3,
     "sorting": "default",
+    "maxItemsPerPage": 10,
     "registrationType": "default",
     "applicationEmail": "",
     "applicationEmailFromName": "",

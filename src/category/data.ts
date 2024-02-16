@@ -100,7 +100,7 @@ const getAllCategories = async function getAllCategories(perPage: number=15, pag
         sorting = 'default';
     }
 
-    const searchKeys: MutableObject = {_scheme: 'category:cid'};
+    let searchKeys = 'category:cid';
     const matchOptions = {
         skip: (page - 1) * perPage,
         limit: perPage,
@@ -108,7 +108,7 @@ const getAllCategories = async function getAllCategories(perPage: number=15, pag
     };
 
     if (!subCategories) {
-        searchKeys.parent = {$exists: false};
+        searchKeys = 'category:parent';
     }
 
     const data = await database.getObjects(searchKeys, fields, matchOptions);  
@@ -139,7 +139,7 @@ const getCategoryByCid = async function getCategoryByCid(id: any, fields: string
     }
 
     const cid = Number(id);
-    const category: ICategory = await database.getObjects({cid, _key: 'category:' + cid}, fields);
+    const category: ICategory = await database.getObjects('category:' + cid, fields);
     if (fields.includes('blurb')) {
         category.blurb = prepareBlurb(category);
     }
@@ -172,53 +172,41 @@ const getCategoryByName = async function getCategoryByName(name: string, perPage
         sorting = 'default';
     }
 
-    name = String(name).trim();
-
-    const searchKeys: MutableObject = {name: {$regex: new RegExp(name), $options: 'i'}, _scheme: 'category:cid'};
-    const matchOptions: IParamOptions = {
-        skip: (page - 1) * perPage,
-        limit: perPage,
-        multi: true
-    };
+    name = String(name).trim().toLowerCase();
+    let key = 'category:name:child';
+    let skip = (page - 1) * perPage;
 
     if (!subCategories) {
-        searchKeys.parent = {$exists: false};
+        key = 'category:name';
     }
 
-    if (sorting && sorting != 'undefined') {
-        sorting = sorting.trim();
-        
-        if (!ValidSortingTechniques.hasOwnProperty(sorting.toUpperCase())) {
-          throw new ValueError('Invalid sorting type: ' + sorting);
-        }
-
-        let sort = applySort(sorting);
-        if (Object.keys(sort).length) {
-            matchOptions.sort = sort['$sort']
-        }
-    }
-
-    let data: ICategory | ICategory[] = await database.getObjects(searchKeys, fields, matchOptions);  
+    let data: ICategory | ICategory[] = await database.getSortedSetsSearch({key: key, skip, limit: perPage, match: name}, fields); 
     if (!Array.isArray(data)) {
-        data = [data]
+        data = [data];
     }
 
     if (fields.includes('blurb')) {
         return data.map((category: ICategory) => {
             category.blurb = prepareBlurb(category);
-            return category
+            return category;
         });
     }
 
     return data;
 }
 
-const getCategoryBySlug = async function getCategoryBySlug(slug: string) {
-    if (!slug) {
-        throw new Error('slug is required');
+async function searchKeysByTitle(query: string, perPage: number) {
+    if (!query) {
+        return [];
     }
+    query = String(query).toLowerCase();
+    const min = query;
+    const max = query.substr(0, query.length - 1) + String.fromCharCode(query.charCodeAt(query.length - 1) + 1);
 
-    return await database.getObjects({slug, _scheme: 'category:cid'});   
+    const itemsPerPage = application.configurationStore?.maxItemsPerPage || 10;
+    perPage = perPage || itemsPerPage * 10;
+
+    const data = await database.getSortedSetsLexical('category:name', min, max, 0, perPage);
 }
 
 function prepareBlurb(categoryData: ICategory) {
@@ -335,6 +323,6 @@ function applySort (sortingType: string): MutableObject {
 }
 
 export default {
-    categoryFields, getCategoryByName, getCategoryBySlug, getCategoriesWithData, getCategoryByCid,
+    categoryFields, getCategoryByName, getCategoriesWithData, getCategoryByCid,
     getAllCategories
 } as const;

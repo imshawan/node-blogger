@@ -19,6 +19,7 @@ const handleApiResponse = function (code: number, response: Response, data?: any
 		payload.payload = data || {};
         
     } else if (data instanceof Error) {
+		console.log(data)
         message = data.message;
 		// @ts-ignore 
 		error = StatusCodesWithError[`_${code}`];

@@ -144,7 +144,7 @@ export class PassportUserSessionStore {
             session: {$regex: new RegExp(`\"user\":${userId}`), $options: 'i'}
         };
         
-        const sessions = await database.getObjects(sessionkey, [], {collection: 'sessions', multi: true});
+        const sessions = await database.getFromDb(sessionkey, [], {collection: 'sessions', multi: true});
         if (sessions && sessions.length) {
             return sessions.map((elem: SessionObject) => ({...elem, session: JSON.parse(elem.session)}));
         } else return sessions;

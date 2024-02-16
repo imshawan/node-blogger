@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import nconf from "nconf";
 import { database } from "@src/database";
-import { IEmailTemplate, MutableObject } from "@src/types";
-import { getISOTimestamp, slugify, sanitizeHtml } from "@src/utilities";
+import { IEmailTemplate, ISortedSetKey, MutableObject } from "@src/types";
+import { getISOTimestamp, slugify, sanitizeHtml, sanitizeString } from "@src/utilities";
 import { isAdministrator } from '@src/user';
 
 const create = async (data: IEmailTemplate, caller: number) => {
@@ -24,12 +24,14 @@ const create = async (data: IEmailTemplate, caller: number) => {
     }
 
     const timestamp = getISOTimestamp();
+    const now = Date.now();
     const slug = slugify(name, false, '_');
     const id = await database.incrementFieldCount('emailTemplate');
 
     const templateData: IEmailTemplate = {};
+    const key = 'email:template:' + id;
 
-    templateData._key = 'email:template';
+    templateData._key = key;
     templateData.templateId = Number(id);
     templateData.name = name;
     templateData.slug = slug;
@@ -37,7 +39,16 @@ const create = async (data: IEmailTemplate, caller: number) => {
     templateData.createdAt = timestamp;
     templateData.updatedAt = timestamp;
 
-    const acknowledgement = await database.setObjects(templateData);
+    const bulkAddSets = [
+        ['email:template:templateId', key, now],
+        ['email:template:slug:' + sanitizeString(slug), key, now],
+    ];
+
+    const [acknowledgement, ] = await Promise.all([
+        database.setObjects(key, templateData),
+        database.sortedSetAddKeys(bulkAddSets)
+    ]);
+
     return acknowledgement;
 }
 
@@ -63,14 +74,14 @@ const update = async function (data: IEmailTemplate, id: number, caller: number)
         throw new Error('Caller must be an administrator for performing this operation.')
     }
 
-    const template = await database.getObjects({_key: 'email:template', templateId: Number(id)});
+    const template = await database.getObjects('email:template:' + id);
     if (!template) {
         throw new Error('No template was found with the corresponding template id');
     }
 
     if (Object.keys(templateData).length) {
         templateData.updatedAt = timestamp;
-        await database.updateObjects({_key: 'email:template', templateId: Number(id)}, {$set: templateData});
+        await database.updateObjects('email:template:' + id, templateData);
 
     }
     return _.merge(template, templateData);
@@ -96,15 +107,24 @@ const get = async function (perPage: number | null=15, page: number | null=1, fi
         fields = [];
     }
 
-    const query: MutableObject = {_key: 'email:template'};
+    const query = 'email:template:templateId';
     const matchOptions = {
         skip: (page - 1) * perPage,
         limit: perPage,
         multi: true
     };
 
-    const templates = await database.getObjects(query, fields, matchOptions);
-    return templates;
+    const [templateIds, total] = await Promise.all([
+        database.fetchSortedSetsRange(query, matchOptions.skip, -1),
+        database.getObjectsCount(query),
+    ]);
+
+    const data = await Promise.all(templateIds.map(async (set: ISortedSetKey) => {
+        let id = String(set.value).split(':').pop();
+        return await database.getObjects('email:template:' + id, fields, matchOptions)
+    }));
+
+    return data;
 }
 
 const getById = async function (id: number, fields: string[]=[]): Promise<IEmailTemplate> {
@@ -120,11 +140,11 @@ const getById = async function (id: number, fields: string[]=[]): Promise<IEmail
         fields = [];
     }
 
-    const query = {_key: 'email:template', templateId: Number(id)};
+    const query = 'email:template:' + id;
     return await database.getObjects(query, fields);
 }
 
-const getBySlug = async function (slug: string, fields: string[]=[]): Promise<IEmailTemplate> {
+const getBySlug = async function (slug: string, fields: string[]=[]): Promise<IEmailTemplate | null> {
     if (!slug) {
         throw new Error('slug is a required parameter');
     }
@@ -134,8 +154,13 @@ const getBySlug = async function (slug: string, fields: string[]=[]): Promise<IE
         fields = [];
     }
 
-    const query = {_key: 'email:template', slug: String(slug).toLowerCase()};
-    return await database.getObjects(query, fields);
+    const key = 'email:template:slug:' + sanitizeString(slug);
+    const set: ISortedSetKey = await database.getObjects(key, fields);
+    if (!set) {
+        return null;
+    }
+
+    return database.getObjects(String(set.value), fields);
 }
 
 const removeById = async function (id: number, caller: number) {
@@ -149,12 +174,12 @@ const removeById = async function (id: number, caller: number) {
         throw new Error('Caller must be an administrator for performing this operation.')
     }
 
-    const exists = await database.getObjects({_key: 'email:template', templateId: Number(id)});
+    const exists = await database.getObjects('email:template:' + id);
     if (!exists) {
         throw new Error('No template was found with the corresponding template id');
     }
 
-    await database.deleteObjects({templateId: Number(id), _key: 'email:template'});
+    await database.deleteObjects('email:template:' + id);
 }
 
 export {

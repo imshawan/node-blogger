@@ -1,5 +1,5 @@
 import { database } from '@src/database';
-import { filterObjectByKeys, resolveIpAddrFromHeaders, resolveIpFromRequest, slugify } from '@src/utilities';
+import { sanitizeString, resolveIpAddrFromHeaders, resolveIpFromRequest, slugify } from '@src/utilities';
 import { Request } from 'express';
 import * as Helpers from '@src/helpers';
 import { isAuthenticated } from '@src/middlewares';
@@ -9,10 +9,7 @@ import * as User from '@src/user';
 const generatePostslug = async function generatePostslug(title: string): Promise<string> {
     let slug = slugify(title);
 
-    const post = await database.getObjects({
-        slug: { $regex: new RegExp(`^[0-9]+\/${slug}`), $options: "i" },
-        _scheme: "post:postId",
-    }, [], {multi: true});
+    const post = await database.getObjects('post:slug:' + sanitizeString(slug), [], {multi: true});
 
     if (post && post.length) {
         return String(slug + '-' + (post.length + 1));
@@ -80,23 +77,20 @@ async function incrementCountByType(req: Request, postId: number, field: string)
         ip = resolveIpAddrFromHeaders(req);
 
     if (!ip) {
-        ip = resolveIpFromRequest(req);
+        ip = resolveIpFromRequest(req) ?? '';
     }
 
     if (isAuthenticated(req)) {
         userid = Helpers.parseUserId(req);
     }
 
-    const exists = await database.getObjects({_key: postKey + ':views', user: userid, ip});
+    const key = postKey + ':' + field + ':user:' + userid
+    const exists = await database.getSortedSetValue(key, String(ip));
     if (exists) return;
 
     await Promise.all([
         database.incrementFieldCount(field, postKey),
-        database.setObjects({_key: postKey + ':' + field, _scheme: 'post:postId:' + field,
-            value: postId,
-            user: userid,
-            ip
-        }),
+        database.sortedSetAddKey(key, ip, Date.now()),
     ])
 }
 

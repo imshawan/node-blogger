@@ -1,6 +1,6 @@
 import { ICategory } from "@src/types";
 import utilities from './utils'
-import { getISOTimestamp } from "@src/utilities";
+import { getISOTimestamp, sanitizeString } from "@src/utilities";
 import _ from "lodash";
 import { application } from "@src/application";
 import { database } from "@src/database";
@@ -16,7 +16,10 @@ export default async function update(data: ICategory) {
 
     const categoryData: ICategory = {};
     const timestamp = getISOTimestamp();
-    const searchKeys = {_key: 'category:' + cid};
+    const now = Date.now();
+    const searchKeys = 'category:' + cid;
+    const bulkAddSets = [];
+    const bulkRemoveSets = [];
 
     if (!userid) {
         throw new Error('userid is required');
@@ -34,10 +37,6 @@ export default async function update(data: ICategory) {
     const category: ICategory = await database.getObjects(searchKeys);
     if (!category) {
         throw new Error('No such category was found with category id ' + cid);
-    }
-    
-    if (!name) {
-        throw new Error('category name is required');
     }
 
     if (Object.hasOwnProperty.bind(data)('description')) {
@@ -66,6 +65,11 @@ export default async function update(data: ICategory) {
         const slug = await utilities.generateCategoryslug(name);
         categoryData.name = name;
         categoryData.slug = [cid, '/', slug].join('');
+
+        bulkRemoveSets.push(['category:name', String(category.name).toLowerCase() + ':' + cid]);
+        bulkRemoveSets.push(['category:slug:' + sanitizeString(category.slug ?? ''), searchKeys]);
+        bulkAddSets.push(['category:name', String(name).toLowerCase() + ':' + cid, now]);
+        bulkAddSets.push(['category:slug:' + sanitizeString(category.slug ?? ''), searchKeys, now],)
     }
 
     if (Object.hasOwnProperty.bind(data)('thumb')) {
@@ -85,12 +89,16 @@ export default async function update(data: ICategory) {
             throw new Error('No such category exists with the parent id: ' + parent);
         }
 
-        categoryData.parent = Number(parent)
+        categoryData.parent = Number(parent);
+
+        bulkRemoveSets.push([searchKeys + ':child', 'category:' + category.parent]);
+        bulkAddSets.push([searchKeys + ':child', 'category:' + parent, now]);
     }
 
     categoryData.updatedAt = timestamp;
 
-    await database.updateObjects(searchKeys, {$set: categoryData});
+    await database.updateObjects(searchKeys, categoryData);
+    await database.sortedSetAddKeys(bulkAddSets);
 
     return _.merge(category, categoryData);
 }

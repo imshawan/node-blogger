@@ -350,3 +350,12 @@ export const generateAvatarFromInitials = function (name: string, size: number =
 
     return base64;
 }
+
+export const excapeRegExp = function (content: string) {
+    if (!content || !content.length) return content;
+    return content.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
+export const sanitizeString = function (str: string, replaceWith: string = '-') {
+    return str.replace(':', replaceWith)
+}

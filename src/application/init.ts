@@ -89,10 +89,10 @@ export const setValuesBulk = function(applicationObject: MutableObject) {
 export const initialize = async function initialize() {
     const _key = 'global:application';
     const defaults =  require('../../setup/data/defaults.json');
-    const applicationExists = await database.getObjects({_key});
+    const applicationExists = await database.getObjects(_key);
     if (!applicationExists) {
         const applicationInfo = _.merge({_key}, defaults);
-        await database.setObjects(applicationInfo);
+        await database.setObjects(_key, applicationInfo);
         application.configurationStore = applicationInfo;
     } else {
         application.configurationStore = applicationExists;
@@ -103,7 +103,7 @@ export const initialize = async function initialize() {
 
 export const reInitialize = async function reInitialize() {
     const _key = 'global:application';
-    const applicationInfo = await database.getObjects({_key});
+    const applicationInfo = await database.getObjects(_key);
     application.configurationStore = applicationInfo;
 }
 
@@ -113,8 +113,8 @@ export const flushAndReInitialize = async function flushAndReInitialize() {
     const applicationInfo = _.merge({_key}, defaults);
 
     await Promise.all([
-        database.deleteObjects({_key}), 
-        database.setObjects(applicationInfo),
+        database.deleteObjects(_key), 
+        database.setObjects(_key, applicationInfo),
     ]);
 
     application.configurationStore = applicationInfo;

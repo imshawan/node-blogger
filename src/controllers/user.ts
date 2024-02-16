@@ -25,7 +25,7 @@ users.getByUsername = async function (req: Request, res: Response) {
     const {username} = req.params;
     const page: MutableObject = {};
 
-    var userData: IUser = await getUserByUsername(username);
+    var userData: IUser | null = await getUserByUsername(username);
     if (!userData) {
         return notFoundHandler(req, res);
     }
@@ -48,7 +48,7 @@ users.edit = async function (req: Request, res: Response) {
     const page: MutableObject = {};
     const sessionStore = new PassportUserSessionStore(req.sessionStore);
 
-    var userData: IUser = await getUserByUsername(username);
+    var userData: IUser | null = await getUserByUsername(username);
     if (!userData) {
         return notFoundHandler(req, res)
     }

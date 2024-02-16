@@ -21,7 +21,7 @@ const consent = async function (req: Request, res: Response) {
     const {token} = req.query;
     // @ts-ignore
     const userid = req.user.userid;
-    const consentData = await database.getObjects({_key: 'user:' + userid + ':registeration'});
+    const consentData = await database.getObjects('user:' + userid + ':registeration');
     if (!consentData) {
         return notFoundHandler(req, res);
     }

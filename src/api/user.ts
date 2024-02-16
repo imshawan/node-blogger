@@ -90,7 +90,7 @@ const consent = async (req: Request) => {
     const {emails, data} = req.body;
     // @ts-ignore
     const userid: Number = req.user.userid;
-    const key = {_key: 'user:' + userid + ':registeration', userid};
+    const key = 'user:' + userid + ':registeration';
 
     const consentData = await database.getObjects(key);
     if (consentData && !consentData.consentCompleted) {
@@ -99,7 +99,7 @@ const consent = async (req: Request) => {
             consentCompleted: true
         }
 
-        await database.updateObjects(key, {$set: payload});
+        await database.updateObjects(key, payload);
     }
 }
 

@@ -4,11 +4,11 @@ import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 
-import {Logger, getISOTimestamp, generateUUID, slugify, password as Passwords} from '../src/utilities';
+import {Logger, getISOTimestamp, generateUUID, slugify, password as Passwords, sanitizeString} from '../src/utilities';
 import { IUser, MutableObject } from "../src/types";
 import { Collections } from "../src/constants";
 import {utils} from '../src/user';
-import server from './server';
+import {utilities as dbUtils} from '../src/database/utils';
 import defults from './data/defaults.json'
 
 const router = express.Router();
@@ -190,6 +190,7 @@ async function setupDatabaseConnection(uri: string, dbName: string) {
 async function createFirstUser(userdata: IUser, dbConnection: Db) {
     const {email='', username='', password=''} = userdata;
     const timestamp = getISOTimestamp();
+    const now = Date.now();
 
     const user: IUser = {
         _scheme: 'user:userid'
@@ -197,8 +198,9 @@ async function createFirstUser(userdata: IUser, dbConnection: Db) {
 
     const passwordHash = await Passwords.hash({password, rounds: 12});
     const userid = 1;
+    const key = 'user:' + userid;
 
-    user._key = 'user:' + userid;
+    user._key = key;
     user.userid = userid;
     user.username = username;
     user.email = email;
@@ -230,8 +232,19 @@ async function createFirstUser(userdata: IUser, dbConnection: Db) {
         userid: userid,
         createdAt: timestamp,
     };
+    const bulkAddSets = [
+        ['user:userid', key, now],
+        ['user:slug:' + sanitizeString(user.slug), key, now],
+        ['user:userid:' + userid, key, now],
+        ['user:username:' + sanitizeString(username), key, now],
+        ['user:email:' + email, key, now],
+        ['user:username', String(sanitizeString(username)).toLowerCase() + ':' + userid, now],
+    ];
 
-    await dbConnection.collection(Collections.DEFAULT).insertMany([user, newUserRegData]);
+    const sets = dbUtils.prepareSortedSetKeys(bulkAddSets);
+    const writeData = [user].concat([newUserRegData], sets)
+
+    await dbConnection.collection(Collections.DEFAULT).insertMany(writeData);
 }
 
 export default router;

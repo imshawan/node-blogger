@@ -2,7 +2,7 @@ export interface ICategory {
     _key?: string
     _scheme?: string
     cid?: number
-    parent?: number
+    parent?: number | ICategory
     userid?: number
     name?: string
     description?: string

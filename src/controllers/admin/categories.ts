@@ -53,13 +53,7 @@ categories.getBySlug = async function get(req: Request, res: Response, next: Nex
     const sidebar = new SideBar(sidebarData, menus);
     const {cid, slug} = req.params;
 
-    let categoryData: ICategory | any = {};
-
-    if (cid && slug) {
-        categoryData = await category.data.getCategoryBySlug([cid, slug].join('/'));
-    } else if (cid) {
-        categoryData = await category.data.getCategoryByCid(cid);
-    }
+    let categoryData: ICategory = await category.data.getCategoryByCid(cid);
 
     if (!categoryData) {
         throw new Error('No such category was found!')

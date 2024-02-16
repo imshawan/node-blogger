@@ -89,8 +89,23 @@ interface IMongoConnectionProps {
     clusterAddress: string;
 }
 
+interface ISortedSetKey {
+    _key: string
+    value: string | number,
+    rank?: number
+}
+
+interface ISortedSetLexicalQuery {
+    _key: string;
+    value?: {
+        $gt?: string | number;
+        $gte?: string;
+        $lt?: string;
+        $lte?: string;
+    };
+}
 
 export {
     IMongoInsertOptions, IParamOptions, IMongoDeleteOptions,
-    IMongoUpdateOptions, IMongoPaginateOptions, IMongoConnectionProps
+    IMongoUpdateOptions, IMongoPaginateOptions, IMongoConnectionProps, ISortedSetKey, ISortedSetLexicalQuery
 }

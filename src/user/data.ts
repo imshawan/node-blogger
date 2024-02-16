@@ -1,9 +1,10 @@
 import { database } from "@src/database";
 import {utils as UserUtils} from './utils'
-import { IRoles, IUser } from "@src/types";
+import { IRoles, ISortedSetKey, IUser } from "@src/types";
+import { filterObjectByKeys, sanitizeString } from "@src/utilities";
 
 export const validAccessUserRoles = ['administrator', 'globalModerator'];
-export const validUserFields = [
+export const validUserFields: (keyof IUser)[] = [
     "userid",
     "fullname",
     "slug",
@@ -18,23 +19,33 @@ export const validUserFields = [
     "roles",
     "joiningDate",
     "lastOnline"
-  ];
+  ] as (keyof IUser)[];
 
 export async function getUsersByPagination(options={}) {
     //TODO need to implement pagination
 
-    return await database.getObjects({ _scheme: 'user:userid'}, validUserFields, {multi: true});
+    return await database.getObjects('user:userid', validUserFields, {multi: true});
 }
 
-export async function getUserByUsername(username: string): Promise<IUser> {
+export async function getUserByUsername(username: string): Promise<IUser | null> {
     if (!username) {
         throw new Error('username is required');
     }
 
-    return await database.getObjects({username,  _scheme: 'user:userid'}, validUserFields);   
+    let set: ISortedSetKey = await database.getSortedSetValue('user:username', sanitizeString(username));  
+    if (!set) {
+        return null;
+    }
+
+    let data = database.getObjects(String(set.value), validUserFields) as IUser;
+    if (!data) {
+        return null;
+    }
+
+    return data;
 }
 
-export async function getUserByEmail(email: string): Promise<IUser> {
+export async function getUserByEmail(email: string): Promise<IUser | null> {
     if (!email || !email.length) {
         throw new Error('An email-id is required');
     }
@@ -43,7 +54,17 @@ export async function getUserByEmail(email: string): Promise<IUser> {
         throw new Error('Invalid email id');
     }
 
-    return await database.getObjects({email,  _scheme: 'user:userid'}, validUserFields);
+    let set: ISortedSetKey = await database.getSortedSetValue('user:email', sanitizeString(email));  
+    if (!set) {
+        return null;
+    }
+
+    let data = database.getObjects(String(set.value), validUserFields) as IUser;
+    if (!data) {
+        return null;
+    }
+
+    return data;
 }
 
 export async function getUserByUserId(userid: number=0): Promise<IUser> {
@@ -55,7 +76,7 @@ export async function getUserByUserId(userid: number=0): Promise<IUser> {
         throw new Error('Invalid userid supplied');
     }
 
-    return await database.getObjects({userid, _key: 'user:' + userid}, validUserFields);
+    return await database.getObjects('user:' + userid, validUserFields);
 }
 
 export async function getUserWIthFields(userid: number=0, fields: string[]=[]) {
@@ -76,7 +97,7 @@ export async function getUserWIthFields(userid: number=0, fields: string[]=[]) {
         fields.push('userid');
     }
 
-    return await database.getObjects({userid, _key: 'user:' + userid}, fields);
+    return await database.getObjects('user:' + userid, fields);
 }
 
 export async function isAdministrator(userid: number | object): Promise<boolean> {

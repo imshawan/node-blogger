@@ -439,6 +439,11 @@ export interface IApplication {
     sorting: string;
 
     /**
+     * Items per page (for pagination)
+     */
+    maxItemsPerPage: number
+
+    /**
      * Type of registration.
      */
     registrationType: string;

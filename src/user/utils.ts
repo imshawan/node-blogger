@@ -1,7 +1,7 @@
 import zxcvbn from 'zxcvbn';
 import { getUserByUsername } from './data';
 import { database } from '@src/database';
-import { slugify } from '@src/utilities';
+import { slugify, sanitizeString } from '@src/utilities';
 import { application } from '@src/application';
 
 interface IPasswordStrength {
@@ -76,9 +76,7 @@ async function validateUsername(username: string) {
 }
 
 async function checkEmailAvailability(email: string): Promise<void> {
-    // TODO
-    // Need to implement the functionality
-    const found = await database.getObjects({email,  _scheme: 'user:userid'});
+    const found = await database.getObjects('user:email:' + email);
     if (found && Object.keys(found)) {
         throw new Error('An account with the email already exists');
     }
@@ -87,10 +85,7 @@ async function checkEmailAvailability(email: string): Promise<void> {
 async function generateUserslug(username: string): Promise<string> {
     let slug = slugify(username);
 
-    const userFound = await database.getObjects({
-        slug: { $regex: new RegExp(`^[0-9]+\/${slug}`), $options: "i" },
-        _scheme: "user:userid",
-    }, [], {multi: true});
+    const userFound = await database.getObjects('user:username:' + sanitizeString(slug), [], {multi: true});
 
     if (userFound && userFound.length) {
         return String(slug + '-' + (userFound.length + 1));
@@ -111,7 +106,7 @@ async function hasCompletedConsent(userid: Number) {
         throw new Error(`userid must be a number found ${typeof userid} instead`);
     }
 
-    const consent = await database.getObjects({_key: 'user:' + userid + ':registeration'});
+    const consent = await database.getObjects('user:' + userid + ':registeration');
     return consent;
 }
 
