@@ -220,7 +220,15 @@ export const sanitizeHtml = function (inputHtml: string, unsafeTags = ['script',
     return finalSanitizedHtml;
   }
 
+export const isGraphicalEnvironmentAvailable = (): boolean => {
+    return !!(process.env.DISPLAY && process.env.XDG_SESSION_TYPE);
+}
+
 export const openWebUrl = (url: string) => {
+    if (!isGraphicalEnvironmentAvailable()) {
+        return;
+    }
+
     const command = process.platform === 'darwin' ? `open ${url}` : 
         process.platform === 'win32' ? `start ${url}` : `xdg-open ${url}`;
 
