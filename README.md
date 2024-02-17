@@ -5,8 +5,8 @@ Node Blogger is a simple open-source blogging platform for the ones who loves co
 ## Getting Started
 
 ### Prerequisites
-- Nodejs ≥ 16.x
-- Npm 8.x.x
+- Nodejs ≥ 18.x
+- Npm 10.x.x
 
 ## Development Setup
 
@@ -15,8 +15,8 @@ Node Blogger is a simple open-source blogging platform for the ones who loves co
 #### Linux:
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-nvm install 16
-nvm use 16
+nvm install 18
+nvm use 18
 ```
 For more details you can visit the official [NVM GitHub repository](https://github.com/nvm-sh/nvm)
 
@@ -24,8 +24,8 @@ For more details you can visit the official [NVM GitHub repository](https://gith
 Download and install NVM setup installer from: https://github.com/coreybutler/nvm-windows/releases
 
 ```bash
-nvm install 16
-nvm use 16
+nvm install 18
+nvm use 18
 ```
 
 ### 2. Clone the Repo
