@@ -2,7 +2,7 @@ import { Server } from 'http';
 import path from 'path';
 import fs from 'fs';
 import server from "./server";
-import { Logger } from "../src/utilities";
+import { Logger, openWebUrl } from "../src/utilities";
 
 const logger = new Logger({prefix: 'setup'});
 const configFileLocation = path.join(__dirname, '../config.json');
@@ -22,4 +22,10 @@ function onListening(httpServer: Server) {
     var bind = [host, port].join(':');
 
     logger.info('Web installer running on ' + bind);
+    
+    try {
+        openWebUrl(bind);
+    } catch (err) {
+        logger.error('Error occured while launching browser');
+    }
 }
