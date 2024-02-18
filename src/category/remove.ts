@@ -2,6 +2,8 @@ import { isAdministrator, getUserRoles, validAccessUserRoles } from "@src/user";
 import data from './data';
 import { database } from "@src/database";
 import nconf from 'nconf';
+import { ICategory } from "@src/types";
+import { sanitizeString } from "@src/utilities";
 
 export default async function deleteCategory(id: any, callerId: number) {
     if (isNaN(id)) {
@@ -26,16 +28,55 @@ export default async function deleteCategory(id: any, callerId: number) {
         throw new Error('caller requires elevated permissions for performing this operation');
     }
 
-    const category = await data.getCategoryByCid(id);
+    const [category, subCategoriesSet] = await Promise.all([
+        data.getCategoryByCid(id),
+        database.fetchSortedSetsRange('category:' + id + ':child', 0, -1),
+    ]);
+
     if (!category) {
         throw new Error('No such category was found with id ' + id);
     }
+
+    const subCategories = await database.getObjectsBulk(subCategoriesSet);
+    const promises = subCategories.map(async (item: ICategory) => await deleteCategoryWithData(item))
+
+    promises.push(deleteCategoryWithData(category));
     
-    await deleteCategoryWithData(id);
+    await Promise.all(promises);
 }
 
-async function deleteCategoryWithData (id: any) {
+async function deleteCategoryWithData (categoryData: ICategory) {
     // TODO: Implement the relative data deletion with category
+    let {cid, name, slug, userid, parent} = categoryData;
+    let key = 'category:' + cid;
 
-    await database.deleteObjects('category:' + id);
+    name = String(sanitizeString(name ?? '')).toLowerCase();
+    slug = String(sanitizeString(slug ?? '')).toLowerCase();
+
+    const bulkRemoveSets = [
+        ['category:cid', key],
+        ['category:slug:' + slug, key],
+        ['category:userid:' + userid, key],
+        ['category:name', name + ':' + cid],
+        ['category:child', key],
+        ['category:parent', key],
+        ['category:name:child', name + ':' + cid]
+    ]
+
+    if (parent) {
+        bulkRemoveSets.push(['category:' + parent + ':child', key]);
+    }
+
+    await Promise.all([
+        purgeAllTagsByWithCategoryId(Number(cid)),
+        database.sortedSetRemoveKeys(bulkRemoveSets),
+        database.deleteObjects('category:' + cid),
+    ]);
+}
+
+async function purgeAllTagsByWithCategoryId(categoryId: number) {
+    const tagSets = await database.fetchSortedSetsRange('category:' + categoryId + ':tag', 0, -1);
+    if (tagSets.length) {
+        await database.deleteObjectsWithKeys(tagSets);
+    }
 }

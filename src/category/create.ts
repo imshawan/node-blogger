@@ -96,8 +96,8 @@ export default async function create(categoryData: ICategory) {
     
     if (parent) {
         bulkAddSets.push(['category:child', key, now]);
-        bulkAddSets.push([key + ':child', 'category:' + parent, now]);
-        bulkAddSets.push(['category:name:child', String(sanitizeString(name)).toLowerCase() + ':' + cid, now])
+        bulkAddSets.push(['category:' + parent + ':child', 'category:' + cid, now]);
+        bulkAddSets.push(['category:name:child', String(sanitizeString(name)).toLowerCase() + ':' + cid, now]);
     } else {
         bulkAddSets.push(['category:parent', key, now]);
     }

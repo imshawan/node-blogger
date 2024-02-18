@@ -48,6 +48,33 @@ const getObjects = async function (key: string, fields?: Array<string>, options?
     return filterObjectFields(data, fields)
 }
 
+const getObjectsBulk = async function (keysArray: string[], fields?: string[], options?: IParamOptions) {
+    options = getObjectOptions(options || {});
+
+    if (!keysArray || !Array.isArray(keysArray) || !keysArray.length) {
+        return [];
+    }
+
+    if (!fields || !Array.isArray(fields)) {
+        fields = [];
+    }
+
+    const data = await mongo.client.collection(options.collection).find({_key: {$in: keysArray}}).toArray();
+    if (!fields.length) {
+        return data;
+    }
+    return data.map((item: MutableObject) => {
+        let obj: MutableObject = {};
+        (fields ?? []).forEach(field => {
+            if (item.hasOwnProperty(field)) {
+                obj[field] = item[field];
+            }
+        });
+
+        return item;
+    });
+}
+
 const getObjectsCount = async function (key: string, options?: IParamOptions) {
     options = getObjectOptions(options || {});
     
@@ -200,9 +227,11 @@ const sortedSetRemoveKeys = async function (keysArray: Array<Array<string | numb
 
     if (keysArray.length) {
         let bulk = mongo.client.collection(options.collection).initializeUnorderedBulkOp();
+
         keysArray.forEach(key => {
             if (Array.isArray(key) && key.length > 1) {
-                bulk.find({ _key: String(key[0]), value: String(key[1]) }).remove();
+                console.log({ _key: String(key[0]), value: String(key[1]) })
+                bulk.find({ _key: String(key[0]), value: String(key[1]) }).delete();
             }
         });
 
@@ -311,7 +340,7 @@ const fetchSortedSetsRange = async function fetchSortedSetsRange(
 	key: string | string[],
 	start: number,
 	stop: number,
-	min: string = 'inf',
+	min: string = '-inf',
 	max: string = '+inf',
 	sort: number = 1,
 	withRanks: boolean = false,
@@ -340,7 +369,7 @@ const fetchSortedSetsRange = async function fetchSortedSetsRange(
         query.rank = query.rank || {};
         query.rank.$lte = max;
     }
-    if (max === min) {
+    if (max === min && max !== undefined) {
         query.rank = max;
     }
 
@@ -593,7 +622,7 @@ function validateCollection(name: string) {
 }
 
 const operations = {
-    getFromDb, getObjects, setObjects, getObjectsCount, updateObjects, deleteObjects, paginateObjects, aggregateObjects, deleteObjectsWithKeys,
+    getFromDb, getObjects, getObjectsBulk, setObjects, getObjectsCount, updateObjects, deleteObjects, paginateObjects, aggregateObjects, deleteObjectsWithKeys,
     incrementFieldCount, decrementFieldCount, sortedSetAddKey, sortedSetAddKeys, getSortedSetsSearch, sortedSetRemoveKey, sortedSetRemoveKeys,
     getSortedSetsLexicalCount, getSortedSetsLexicalReverse, getSortedSetsLexical, sortedSetIntersectKeys, fetchSortedSetsRangeReverseWithRanks,
     fetchSortedSetsRangeWithRanks, fetchSortedSetsRangeReverse, fetchSortedSetsRange, getSortedSetsValue, getSortedSetValue

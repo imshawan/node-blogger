@@ -101,17 +101,18 @@ const getAllCategories = async function getAllCategories(perPage: number=15, pag
     }
 
     let searchKeys = 'category:cid';
-    const matchOptions = {
-        skip: (page - 1) * perPage,
-        limit: perPage,
-        multi: true
-    };
+    let start = (page - 1) * perPage;
+    let stop = start + perPage;
 
     if (!subCategories) {
         searchKeys = 'category:parent';
     }
 
-    const data = await database.getObjects(searchKeys, fields, matchOptions);  
+    const sets = await database.fetchSortedSetsRange(searchKeys, start, stop);
+    let data: ICategory[] = [];
+    if (sets && sets.length) {
+        data = await database.getObjectsBulk(sets) as ICategory[];
+    }
 
     if (fields.includes('blurb')) {
         return data.map((category: ICategory) => {
