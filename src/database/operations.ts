@@ -230,7 +230,6 @@ const sortedSetRemoveKeys = async function (keysArray: Array<Array<string | numb
 
         keysArray.forEach(key => {
             if (Array.isArray(key) && key.length > 1) {
-                console.log({ _key: String(key[0]), value: String(key[1]) })
                 bulk.find({ _key: String(key[0]), value: String(key[1]) }).delete();
             }
         });
