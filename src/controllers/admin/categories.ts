@@ -13,6 +13,7 @@ const categories: MutableObject = {}
 
 categories.get = async function get(req: Request, res: Response, next: NextFunction) {
     const pageData: MutableObject = {};
+    const categoryFields = ['cid', 'blurb', 'name', 'slug', 'userid', 'thumb'] as (keyof ICategory)[];
     const sidebar = new SideBar(sidebarData, menus);
     const {sortBy, search} = req.query;
     const {perPage, page} = validatePaginationControls(req);
@@ -33,9 +34,9 @@ categories.get = async function get(req: Request, res: Response, next: NextFunct
     }
 
     if (search && search.length) {
-        categories = await category.data.getCategoryByName(String(search), perPage, page, [], String(sortBy));
+        categories = await category.data.getCategoryByName(String(search), perPage, page, categoryFields, String(sortBy));
     } else {
-        categories = await category.data.getCategoriesWithData(perPage, page, [], String(sortBy));
+        categories = await category.data.getCategoriesWithData(perPage, page, categoryFields, String(sortBy));
     }
 
     pageData.title = 'Categories';

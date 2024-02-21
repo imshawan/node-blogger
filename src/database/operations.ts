@@ -71,7 +71,7 @@ const getObjectsBulk = async function (keysArray: string[], fields?: string[], o
             }
         });
 
-        return item;
+        return obj;
     });
 }
 

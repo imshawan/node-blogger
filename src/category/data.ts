@@ -174,14 +174,15 @@ const getCategoryByName = async function getCategoryByName(name: string, perPage
     }
 
     name = String(name).trim().toLowerCase();
-    let key = 'category:name:child';
+    let key = 'category:name';
     let skip = (page - 1) * perPage;
 
     if (!subCategories) {
-        key = 'category:name';
+        key = 'category:name:child';
     }
 
-    let data: ICategory | ICategory[] = await database.getSortedSetsSearch({key: key, skip, limit: perPage, match: name}, fields); 
+    // let data: ICategory | ICategory[] = await database.getSortedSetsSearch({key: key, skip, limit: perPage, match: name}, fields); 
+    let data: ICategory | ICategory[] = await searchKeysByTitle(key, name, skip, perPage, fields); 
     if (!Array.isArray(data)) {
         data = [data];
     }
@@ -196,7 +197,7 @@ const getCategoryByName = async function getCategoryByName(name: string, perPage
     return data;
 }
 
-async function searchKeysByTitle(query: string, perPage: number) {
+async function searchKeysByTitle(key: string, query: string, start: number, perPage: number, fields: string[]) {
     if (!query) {
         return [];
     }
@@ -207,7 +208,10 @@ async function searchKeysByTitle(query: string, perPage: number) {
     const itemsPerPage = application.configurationStore?.maxItemsPerPage || 10;
     perPage = perPage || itemsPerPage * 10;
 
-    const data = await database.getSortedSetsLexical('category:name', min, max, 0, perPage);
+    const sets = await database.getSortedSetsLexical(key, min, max, start, perPage);
+    const keys = sets.map((cidKey: string) => 'category:' + cidKey.split(':').pop());
+
+    return database.getObjectsBulk(keys, fields);
 }
 
 function prepareBlurb(categoryData: ICategory) {
