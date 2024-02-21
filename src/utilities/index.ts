@@ -85,7 +85,7 @@ export const resolveIpAddrFromHeaders = function (req: Request) {
 export const resolveIpFromRequest = function (req: Request) {
     let ip: string | null = req.ip;
     if (ipV4Regex.test(ip)) {
-        return ip;
+        return String(ip).trim();
     }
 
     let ips = ip.split(':').find(e => ipV4Regex.test(e));

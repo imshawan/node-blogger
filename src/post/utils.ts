@@ -80,6 +80,11 @@ async function incrementCountByType(req: Request, postId: number, field: string)
         ip = resolveIpFromRequest(req) ?? '';
     }
 
+    ip = String(ip).trim();
+    if (!ip) {
+        ip = '0.0.0.0'; // IP Anywhere (global)
+    }
+
     if (isAuthenticated(req)) {
         userid = Helpers.parseUserId(req);
     }
