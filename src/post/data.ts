@@ -72,10 +72,13 @@ const getPosts = async function (options?: IPostOptions) {
         database.getObjectsCount(searchKeys)
     ]);
     
-    const data = await Promise.all(postIds.map(async (post: ISortedSetKey) => {
-        let id = String(post.value).split(':').pop();
-        return await getPostById(Number(id), fields)
-    }));
+    let data = await database.getObjectsBulk(postIds, fields);
+    if (data.length) {
+        data = data.map((item: IPost) => {
+            item.blurb = preparePostBlurb(item);
+            return item;
+        });
+    }
 
     return {posts: data, total: total ?? 0}
 }
