@@ -78,7 +78,7 @@ const getObjectsBulk = async function (keysArray: string[], fields?: string[], o
 const getObjectsCount = async function (key: string, options?: IParamOptions) {
     options = getObjectOptions(options || {});
     
-    return await mongo.client.collection(options.collection).find({_key: key}).count();
+    return await mongo.client.collection(options.collection).find({_key: key}).countDocuments();
 }
 
 const setObjects = async function (key: string | null, data: any, options?: IParamOptions) {
