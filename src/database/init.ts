@@ -1,10 +1,16 @@
 import {connect} from './connection';
 import { initializeSessionStore } from './database';
 import { Logger } from '@src/utilities';
+import { Cache } from './cache';
 
 const logger = new Logger();
+const cache = new Cache({
+    name: 'mongodb',
+    max: 40000,
+    enabled: true
+});
 
-export const mongo: {client?: any, connection?: any, sessionStore?: any} = {};
+export const mongo: { client?: any; connection?: any; sessionStore?: any, cache: Cache } = {cache};
 
 export const initializeDbConnection = async function (mongodb: any) {
     if (!Object.keys(mongodb).length) {

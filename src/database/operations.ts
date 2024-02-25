@@ -44,8 +44,14 @@ const getObjects = async function (key: string, fields?: Array<string>, options?
         }
     }
     
-    const data = await mongo.client.collection(options.collection).findOne({_key: key});
-    return filterObjectFields(data, fields)
+    let data = mongo.cache.get(key);
+    if (!data) {
+        data = await mongo.client.collection(options.collection).findOne({_key: key});
+    }
+
+    mongo.cache.set(key, data);
+
+    return filterObjectFields(data, fields);
 }
 
 const getObjectsBulk = async function (keysArray: string[], fields?: string[], options?: IParamOptions) {
@@ -59,11 +65,20 @@ const getObjectsBulk = async function (keysArray: string[], fields?: string[], o
         fields = [];
     }
 
-    const data = await mongo.client.collection(options.collection).find({_key: {$in: keysArray}}).toArray();
-    if (!fields.length) {
-        return data;
+    let records = [];
+    const bulk = mongo.cache.getBulk(keysArray);
+
+    if (bulk && bulk.misses.length) {
+        records = await mongo.client.collection(options.collection).find({_key: {$in: bulk.misses}}).toArray();
+        if (records.length) {
+            records.forEach((record: { _key: string; }) => mongo.cache.set(record._key, record));
+        }
     }
-    return data.map((item: MutableObject) => {
+
+    if (!fields.length) {
+        return records;
+    }
+    return records.map((item: MutableObject) => {
         let obj: MutableObject = {};
         (fields ?? []).forEach(field => {
             if (item.hasOwnProperty(field)) {
@@ -78,7 +93,7 @@ const getObjectsBulk = async function (keysArray: string[], fields?: string[], o
 const getObjectsCount = async function (key: string, options?: IParamOptions) {
     options = getObjectOptions(options || {});
     
-    return await mongo.client.collection(options.collection).find({_key: key}).countDocuments();
+    return await mongo.client.collection(options.collection).countDocuments({_key: key});
 }
 
 const setObjects = async function (key: string | null, data: any, options?: IParamOptions) {
@@ -126,7 +141,11 @@ const updateObjects = async function (key: string, data: any, options?: IParamOp
         return await mongo.client.collection(options.collection).updateOne({_key: key}, {$set: data}, mongoOptions);
     }
 
-    return await mongo.client.collection(options.collection).updateMany({_key: key}, {$set: data}, mongoOptions);
+    const ack = await mongo.client.collection(options.collection).updateMany({_key: key}, {$set: data}, mongoOptions);
+
+    mongo.cache.delete(key);
+
+    return ack;
 }
 
 const deleteObjects = async function (key: string, options?: IParamOptions) {
@@ -141,7 +160,11 @@ const deleteObjects = async function (key: string, options?: IParamOptions) {
         return await mongo.client.collection(options.collection).deleteOne({_key: key});
     }
 
-    return await mongo.client.collection(options.collection).deleteMany({_key: key});
+    const ack = await mongo.client.collection(options.collection).deleteMany({_key: key});
+
+    mongo.cache.delete(key);
+
+    return ack;
 }
 
 const deleteObjectsWithKeys = async function (keysArray: string | string[], options?: IParamOptions) {
@@ -156,6 +179,8 @@ const deleteObjectsWithKeys = async function (keysArray: string | string[], opti
     }
 
     await mongo.client.collection(options.collection).deleteMany({ _key: { $in: keysArray } });
+    
+    mongo.cache.deleteBulk(keysArray);
 }
 
 const paginateObjects = async function (key: object, paginate: IMongoPaginateOptions, options?: IParamOptions) {
