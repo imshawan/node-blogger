@@ -107,7 +107,118 @@ interface ISortedSetLexicalQuery {
     };
 }
 
+interface IMongoDBStats {
+    /** MongoDB server host */
+    host: string;
+    /** MongoDB version */
+    version: string;
+    /** Uptime of the MongoDB server in seconds */
+    uptimeInSeconds: number;
+    /** Storage engine used by MongoDB */
+    storageEngine: string;
+    /** Name of the database */
+    databaseName: string;
+    /** Names of collections in the database */
+    collections: string[];
+    /** Number of collections in the database */
+    collectionsCount: number;
+    /** Number of views in the database */
+    views: number;
+    /** Total number of objects (documents) in all collections */
+    objects: number;
+    /** Average size of objects (documents) in bytes */
+    averageObjectSize: number;
+    /** Total size of data in gigabytes */
+    dataSizeGB: number;
+    /** Total size of storage allocated for data in gigabytes */
+    storageSizeGB: number;
+    /** Total free space available for storage in gigabytes */
+    totalFreeStorageSize: number;
+    /** Number of indexes in all collections */
+    indexes: number;
+    /** Total size of indexes in gigabytes */
+    indexSizeGB: number;
+    /** Total free space available for indexes in gigabytes */
+    indexFreeStorageSize: number;
+    /** Amount of resident memory used by MongoDB in gigabytes */
+    residentMemoryGB: number;
+    /** Amount of virtual memory used by MongoDB in gigabytes */
+    virtualMemoryGB: number;
+    /** Amount of mapped memory used by MongoDB in gigabytes */
+    mappedMemoryGB: number;
+    /** Amount of bytes in received by the MongoDB server in gigabytes */
+    bytesInGB: number;
+    /** Amount of bytes out sent by the MongoDB server in gigabytes */
+    bytesOutGB: number;
+    /** Total number of requests made to the MongoDB server */
+    numberOfRequests: number;
+}
+
+interface IMongoDatabaseStats {
+    /** Name of the database */
+    db: string;
+    /** Number of collections in the database */
+    collections: number;
+    /** Number of views in the database */
+    views: number;
+    /** Total number of objects (documents) in all collections */
+    objects: number;
+    /** Average size of objects (documents) in bytes */
+    avgObjSize: number;
+    /** Total size of data in bytes */
+    dataSize: number;
+    /** Total size of storage allocated for data in bytes */
+    storageSize: number;
+    /** Total free space available for storage in bytes */
+    totalFreeStorageSize: number;
+    /** Number of extents */
+    numExtents: number;
+    /** Number of indexes in all collections */
+    indexes: number;
+    /** Total size of indexes in bytes */
+    indexSize: number;
+    /** Total free space available for indexes in bytes */
+    indexFreeStorageSize: number;
+    /** Total size of database files on disk in bytes */
+    fileSize: number;
+    /** Size of namespace file in MB */
+    nsSizeMB: number;
+    /** Status of the operation (1 if successful) */
+    ok: number;
+}
+
+interface IDatabase {
+    /** Name of the database */
+    name: string;
+    /** Size of the database on disk in bytes */
+    sizeOnDisk: number;
+    /** Indicates whether the database is empty or not */
+    empty: boolean;
+}
+
+interface ICollection {
+    /** Name of the collection */
+    name: string;
+    /** Type of the collection */
+    type: string;
+    /** Options for the collection */
+    options: object;
+    /** Information about the collection */
+}
+
+interface IMongoDatabasesList {
+    /** Array of database objects */
+    databases: Database[];
+    /** Total size of all databases on disk in bytes */
+    totalSize: number;
+    /** Total size of all databases on disk in megabytes */
+    totalSizeMb: number;
+    /** Status of the operation (1 if successful) */
+    ok: number;
+}
+
 export {
     IMongoInsertOptions, IParamOptions, IMongoDeleteOptions,
-    IMongoUpdateOptions, IMongoPaginateOptions, IMongoConnectionProps, ISortedSetKey, ISortedSetLexicalQuery
+    IMongoUpdateOptions, IMongoPaginateOptions, IMongoConnectionProps, ISortedSetKey, ISortedSetLexicalQuery,
+    IMongoDatabaseStats, IMongoDatabasesList, ICollection, IMongoDBStats
 }

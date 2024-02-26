@@ -112,4 +112,14 @@ const prepareSortedSetKeys = function (keysArray: Array<Array<string | number>>)
 	return data;
 }
 
-export const utilities = {buildSearchQueryFromText, handleBatchKeysArray, mergeBatchSets, prepareSortedSetKeys}
+const parseBytes = function (bytes: number): number {
+	if (!bytes) return 0;
+	if (typeof bytes !== 'number') {
+		throw new Error('bytes must be a number, found ' + typeof bytes);
+	}
+
+	let value = Number(bytes) / (1024 * 1024 * 1024);
+	return parseFloat(value.toFixed(4));
+}
+
+export const utilities = {buildSearchQueryFromText, handleBatchKeysArray, mergeBatchSets, prepareSortedSetKeys, parseBytes}
