@@ -7,7 +7,7 @@ import { getArgv } from "@src/utilities";
 
 
 export default {
-    NodeEnv: getArgv('env') || (process.env.NODE_ENV ?? ''),
+    NodeEnv: process.env.NODE_ENV ?? '',
     Port: (process.env.PORT ?? 0),
     CookieProps: {
         Key: 'ExpressGeneratorTs',
