@@ -1,14 +1,18 @@
 import chalk from 'chalk';
+import {stream} from '@src/helpers'
 
 interface ILogger {
+    silent?: boolean;
     prefix?: string
 }
 
 export class Logger {
-    private prefix?: string
+    private readonly prefix?: string
+    private readonly silent?: boolean
     
     constructor(options: ILogger = {}) {
         this.prefix = options.prefix;
+        this.silent = options.silent ?? false;
     }
 
     private timeStamp() {
@@ -39,6 +43,19 @@ export class Logger {
         }
     }
 
+    private print(type: 'log' | 'error' | 'warn' | 'info', message: string) {
+        if (!this.silent) {
+            console[type](this.timeStamp(), message);
+        }
+
+        if (stream.logger) {
+            if (typeof stream.logger[type] === 'function') {
+                stream.logger[type].call(null, message, null);
+            }
+        }
+
+    }
+
     private parseMessage(message: Array<any>, prefix: string | undefined) {
         var parsedMessage;
         prefix = this.prefix || prefix;
@@ -55,27 +72,27 @@ export class Logger {
     }
 
     log = (...message: Array<any>) => {
-        const parsedMessage = this.parseMessage(message, this.method());
-        console.log(this.timeStamp(), parsedMessage);
+        const parsedMessage = this.parseMessage(message, this.method()) ?? '';
+        this.print('log', parsedMessage);
     }
 
     info = (...message: Array<any>) => {
         const parsedMessage = this.parseMessage(message, this.method());
-        console.info(this.timeStamp(), chalk.rgb(255,250,224)(parsedMessage));
+        this.print('info', chalk.rgb(255,250,224)(parsedMessage));
     }
 
     warn = (...message: Array<any>) => {
         const parsedMessage = this.parseMessage(message, this.method());
-        console.warn(this.timeStamp(), chalk.yellow(parsedMessage));
+        this.print('warn', chalk.yellow(parsedMessage));
     }
 
     error = (...message: Array<any>) => {
         const parsedMessage = this.parseMessage(message, this.method());
-        console.error(this.timeStamp(), chalk.redBright(parsedMessage));
+        this.print('error', chalk.redBright(parsedMessage));
     }
 
     success = (...message: Array<any>) => {
         const parsedMessage = this.parseMessage(message, this.method());
-        console.info(this.timeStamp(), chalk.greenBright(parsedMessage));
+        this.print('info', chalk.greenBright(parsedMessage));
     }
 }

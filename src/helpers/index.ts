@@ -11,6 +11,7 @@ export * from './network';
 export * from './paginate';
 export * from './errors';
 export * from './webmanifest';
+export * from './logstream';
 
 export const validateConfiguration = function validateConfiguration (configuration: any) {
     if (!Object.keys(configuration).length) {

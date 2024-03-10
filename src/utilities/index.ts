@@ -5,6 +5,7 @@ import { MutableObject, IMongoConnectionProps, TimeUnitSuffix } from '@src/types
 import { execSync } from 'child_process';
 import { Request } from 'express';
 import {createCanvas, registerFont} from 'canvas';
+import path from 'path';
 
 export * from './password';
 export * from './slugify';
@@ -366,4 +367,13 @@ export const excapeRegExp = function (content: string) {
 
 export const sanitizeString = function (str: string, replaceWith: string = '-') {
     return str.replace(':', replaceWith)
+}
+
+export const resolveFilename = (context: string, removeExt: boolean = true) => {
+    let filename = path.basename(context);
+    if (removeExt) {
+        return filename.split('.').shift();
+    }
+
+    return filename;
 }
