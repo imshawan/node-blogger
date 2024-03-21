@@ -65,7 +65,7 @@ const renderPosts = async function (req: Request, res: Response) {
     const totalPages = Math.ceil(total / perPage);
     const [categories, featured] = await Promise.all([
         category.data.getAllCategories(5, 1, ),
-        Post.data.getFeaturedPosts(5)
+        Post.data.getFeaturedPosts(5),
     ])
 
     const pageData = {
