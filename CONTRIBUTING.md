@@ -176,6 +176,7 @@ Each commit message should have a clear and concise structure, consisting of the
   - #fix: For bug fixes or issue resolutions.
   - #update: For general updates, improvements, or enhancements.
   - #misc: For miscellaneous changes or anything that doesn't fit into the above categories.
+  - #chore: For tasks like maintenance, documentation, or build adjustments, helping categorize non-feature or bug-fix changes.
 
 ### Brief Description
 - Write a concise, one-line description of the change. Start with a capital letter and do not end with a period.

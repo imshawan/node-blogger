@@ -17,6 +17,7 @@
     "dev": "nodemon",
     "test": "nodemon --config ./spec/nodemon.json",
     "test:no-reloading": "npx ts-node --files -r tsconfig-paths/register ./spec",
+    "format": "npx prettier --write .",
     "debug": "node --trace-warnings --inspect=9229 -r tsconfig-paths/register ./node_modules/ts-node/dist/bin.js ./src",
     "generate-changelog": "npx ts-node ./scripts/changelog.ts"
   },
@@ -124,6 +125,7 @@
     "eslint-plugin-node": "^11.1.0",
     "fs-extra": "^11.1.0",
     "nodemon": "^2.0.21",
+    "prettier": "^3.2.5",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.2",
     "typescript": "^4.9.5"
