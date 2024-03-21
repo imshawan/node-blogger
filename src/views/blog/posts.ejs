@@ -75,45 +75,23 @@
                     <i class="fas fa-search"></i>
                 </button>
             </form>
+            
             <div class="recent-posts pt-5">
-                <h4 class="mb-4 border-bottom pb-3">Posts you might like</h4>
-                <div class="post-item">
-                    <a href="simple-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.</a>
-                    <div class="post-meta">
-                        <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i>
-                            30 07
-                            2021</span><span><i class="far fa-comment-alt"></i> 0 comments</span>
-                    </div>
-                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-                        perspiciatis
-                        ex ipsam similique blanditiis. Culpa hic quia...</p>
-                </div>
-                <div class="post-item">
-                    <a href="simple-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.</a>
-                    <div class="post-meta">
-                        <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i>
-                            30 07
-                            2021</span><span><i class="far fa-comment-alt"></i> 0 comments</span>
-                    </div>
-                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-                        perspiciatis
-                        ex ipsam similique blanditiis. Culpa hic quia...</p>
-                </div>
-                <div class="post-item">
-                    <a href="simple-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.</a>
-                    <div class="post-meta">
-                        <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i>
-                            30 07
-                            2021</span><span><i class="far fa-comment-alt"></i> 0 comments</span>
-                    </div>
-                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-                        perspiciatis
-                        ex ipsam similique blanditiis. Culpa hic quia...</p>
-                </div>
-
+                <% if (featured.length) { %>
+                    <h4 class="mb-4 border-bottom pb-3">Posts you might like</h4>
+                    <% featured.forEach(post => { %>
+                        <div class="post-item">
+                            <a href="/posts/<%= post.slug %>" class="post-title text-capitalize"><%= post.title %></a>
+                            <div class="post-meta">
+                                <span><i class="far fa-user"></i> Posted by <%= post.author?.fullname || post.author?.username %></span><span><i class="far fa-calendar"></i>
+                                    <%= post.createdAt %>
+                                </span><span><i class="far fa-comment-alt"></i> <%= post.comments %> comments</span>
+                            </div>
+                            <p class="post-content"><%= post.blurb %></p>
+                        </div>
+                    <% }) %>
+                <% } %>
+                
                 <div class="categories pt-5">
                     <h4 class="mb-4 border-bottom pb-3">Categories</h4>
                     <ul class="list-group">

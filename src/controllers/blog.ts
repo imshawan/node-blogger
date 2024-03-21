@@ -65,14 +65,14 @@ const renderPosts = async function (req: Request, res: Response) {
     const totalPages = Math.ceil(total / perPage);
     const [categories, featured] = await Promise.all([
         category.data.getAllCategories(5, 1, ),
-        Post.data.getFeaturedPosts()
+        Post.data.getFeaturedPosts(5)
     ])
 
     const pageData = {
         title: 'Posts',
         navigation:  new NavigationManager().get('posts'),
         categories,
-        featured: featured.posts,
+        featured: featured.posts.map((post: IPost) => ({...post, createdAt: moment(post.createdAt).format(DATE_FORMAT)})),
         posts: postData || [],
         pagination: Helpers.generatePaginationItems(req.url, page, totalPages),
     };
