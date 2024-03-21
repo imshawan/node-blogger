@@ -67,19 +67,27 @@ const getObjectsBulk = async function (keysArray: string[], fields?: string[], o
         fields = [];
     }
 
-    let records = [];
+    let records: Array<object> = [],
+        project = {_id: 0, _key: 0, _scheme: 0};
+        
     const bulk = mongo.cache.getBulk(keysArray);
+    if (bulk?.data && bulk.data.length) {
+        records = bulk.data;
+    }
 
     if (bulk && bulk.misses.length) {
-        records = await mongo.client.collection(options.collection).find({_key: {$in: bulk.misses}}).toArray();
-        if (records.length) {
-            records.forEach((record: { _key: string; }) => mongo.cache.set(record._key, record));
+        let data = await mongo.client.collection(options.collection).find({_key: {$in: bulk.misses}}, { projection: project }).toArray();
+        if (data.length) {
+            data.forEach((item: { _key: string; }) => mongo.cache.set(item._key, item));
         }
+
+        records = records.concat(data);
     }
 
     if (!fields.length) {
         return records;
     }
+
     return records.map((item: MutableObject) => {
         let obj: MutableObject = {};
         (fields ?? []).forEach(field => {

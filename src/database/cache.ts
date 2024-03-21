@@ -97,7 +97,7 @@ export class Cache {
             return undefined;
         }
 
-        const hits: string[] = [], misses: string[] = [], data: MutableObject = [];
+        const hits: string[] = [], misses: string[] = [], data: Array<any> = [];
 
         keys.forEach(key => {
             let value = this.cache.get(key);
