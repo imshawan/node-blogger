@@ -110,6 +110,7 @@ export const create = async function create(data: IPost): Promise<IPost> {
         ['post:slug:' + sanitizeString(slug), key, now],
         ['post:userid:' + userid, key, now],
         ['post:title', String(sanitizeString(title)).toLowerCase() + ':' + postId, now],
+        ['post:featured', postId, 0],
     ];
 
     const [acknowledgement, ,] = await Promise.all([

@@ -3,6 +3,7 @@ export * from './StatusCodesWithMessage';
 export * from './ImageExts';
 export * from './Collections';
 export * from './sorting';
+export * from './content';
 
 import path from "path";
 import nconf from "nconf";

@@ -4,10 +4,12 @@ import { IParamOptions, IMongoInsertOptions, IMongoDeleteOptions, IMongoUpdateOp
     IMongoPaginateOptions, 
     MutableObject,
     ISortedSetKey,
-    ISortedSetLexicalQuery} from "@src/types";
+    ISortedSetLexicalQuery,
+    IOptions} from "@src/types";
 import _ from "lodash";
 import { ObjectId } from "bson";
 import { utilities as dbUtils } from "./utils";
+import { Db } from "mongodb";
 
 const getFromDb = async function (key: object, fields?: Array<string>, options?: IParamOptions) {
     options = getObjectOptions(options || {});
@@ -463,6 +465,24 @@ const getSortedSetValue = async function (key: string, value: any, withRank: boo
     return result;
 };
 
+const updateSortedSetValue = async function (key: string, value: any, data: object, options?: IParamOptions) {
+    let opts = getObjectOptions(options || {}) as IOptions;
+    if (!key || !value || !Object.keys(data).length) {
+        return null;
+    }
+
+    await (mongo.client as Db).collection(opts.collection).findOneAndUpdate({ _key: key, value: value }, {$set: data});
+}
+
+const removeSortedSetValue = async function (key: string, value: any, options?: IParamOptions) {
+    let opts = getObjectOptions(options || {}) as IOptions;
+    if (!key || !value) {
+        return null;
+    }
+
+    await (mongo.client as Db).collection(opts.collection).findOneAndDelete({ _key: key, value: value });
+}
+
 const getSortedSetsValue = async function (keys: string, value: any, withRank: boolean = false, options?: IParamOptions) {
     options = getObjectOptions(options || {});
     if (!Array.isArray(keys) || !keys.length) {
@@ -598,7 +618,7 @@ function filterObjectFields(object: any, fields?: Array<string>) {
     }
 }
 
-function getObjectOptions (options?: IParamOptions): IParamOptions {
+function getObjectOptions (options?: IParamOptions): IOptions {
     if (!options) {
         options = {};
     }
@@ -629,7 +649,7 @@ function getObjectOptions (options?: IParamOptions): IParamOptions {
         };
     }
 
-    return options;
+    return options as IOptions;
 }
 
 function validateCollection(name: string) {
@@ -646,10 +666,35 @@ function validateCollection(name: string) {
 }
 
 const operations = {
-    getFromDb, getObjects, getObjectsBulk, setObjects, getObjectsCount, updateObjects, deleteObjects, paginateObjects, aggregateObjects, deleteObjectsWithKeys,
-    incrementFieldCount, decrementFieldCount, sortedSetAddKey, sortedSetAddKeys, getSortedSetsSearch, sortedSetRemoveKey, sortedSetRemoveKeys,
-    getSortedSetsLexicalCount, getSortedSetsLexicalReverse, getSortedSetsLexical, sortedSetIntersectKeys, fetchSortedSetsRangeReverseWithRanks,
-    fetchSortedSetsRangeWithRanks, fetchSortedSetsRangeReverse, fetchSortedSetsRange, getSortedSetsValue, getSortedSetValue
+	getFromDb,
+	getObjects,
+	getObjectsBulk,
+	setObjects,
+	getObjectsCount,
+	updateObjects,
+	deleteObjects,
+	paginateObjects,
+	aggregateObjects,
+	deleteObjectsWithKeys,
+	incrementFieldCount,
+	decrementFieldCount,
+	sortedSetAddKey,
+	sortedSetAddKeys,
+	getSortedSetsSearch,
+	sortedSetRemoveKey,
+	sortedSetRemoveKeys,
+	getSortedSetsLexicalCount,
+	getSortedSetsLexicalReverse,
+	getSortedSetsLexical,
+	sortedSetIntersectKeys,
+	fetchSortedSetsRangeReverseWithRanks,
+	fetchSortedSetsRangeWithRanks,
+	fetchSortedSetsRangeReverse,
+	fetchSortedSetsRange,
+	getSortedSetsValue,
+	getSortedSetValue,
+	updateSortedSetValue,
+	removeSortedSetValue,
 };
 
 export {operations as database};

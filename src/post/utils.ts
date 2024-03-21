@@ -5,6 +5,8 @@ import * as Helpers from '@src/helpers';
 import { isAuthenticated } from '@src/middlewares';
 import { IPost, ValidUserFields } from '@src/types';
 import * as User from '@src/user';
+import Posts from './data';
+import { POST_WEIGHTS } from '@src/constants';
 
 const generatePostslug = async function generatePostslug(title: string): Promise<string> {
     let slug = slugify(title);
@@ -71,7 +73,7 @@ const populateUserData = async function (data: IPost, fields?: ValidUserFields[]
     return data;
 }
 
-async function incrementCountByType(req: Request, postId: number, field: string) {
+async function incrementCountByType(req: Request, postId: number, field: 'likes' | 'views' | 'comments') {
     let userid = 0,
         postKey = getKey(postId),
         ip = resolveIpAddrFromHeaders(req);
@@ -95,8 +97,21 @@ async function incrementCountByType(req: Request, postId: number, field: string)
 
     await Promise.all([
         database.incrementFieldCount(field, postKey),
+        database.incrementFieldCount(field, 'post:' + postId),
         database.sortedSetAddKey(key, ip, Date.now()),
+        reCalculatePostRank(postId),
     ])
+}
+
+async function reCalculatePostRank(postId: number) {
+    let post = await Posts.getPostById(postId), 
+        postUpdationTime = post.updatedAt ? new Date(post.updatedAt).getTime() : 0,
+        rank = (POST_WEIGHTS.views * (post.views ?? 0)) +
+                (POST_WEIGHTS.likes * (post.likes ?? 0)) +
+                (POST_WEIGHTS.comments * (post.comments ?? 0)) +
+                (POST_WEIGHTS.freshness * (Date.now() - postUpdationTime));
+
+    await database.updateSortedSetValue('post:featured', postId, {rank: Math.floor(rank)});
 }
 
 export default {

@@ -16,6 +16,10 @@ interface IParamOptions {
     sort?: object
 }
 
+interface IOptions extends IParamOptions {
+    collection: string
+}
+
 /**
  * @date 22-03-2023
  * @author imshawan <hello@imshawan.dev>
@@ -218,7 +222,7 @@ interface IMongoDatabasesList {
 }
 
 export {
-    IMongoInsertOptions, IParamOptions, IMongoDeleteOptions,
+    IMongoInsertOptions, IParamOptions, IMongoDeleteOptions, IOptions,
     IMongoUpdateOptions, IMongoPaginateOptions, IMongoConnectionProps, ISortedSetKey, ISortedSetLexicalQuery,
     IMongoDatabaseStats, IMongoDatabasesList, ICollection, IMongoDBStats
 }
