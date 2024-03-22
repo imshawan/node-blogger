@@ -5,6 +5,8 @@ import _ from "lodash";
 import { application } from "@src/application";
 import { ICategoryTag, ICategory } from "@src/types";
 import { validAccessUserRoles, getUserRoles } from "@src/user";
+import Tags from './tags';
+import { CATEGORY_TAG_WEIGHTS } from '@src/constants';
 
 const MAX_TAG_SIZE = 25;
 
@@ -39,10 +41,10 @@ const create = async function create(tagData: ICategoryTag) {
     const timestamp = getISOTimestamp();
     const now = Date.now();
     const tagId = await utilities.generateNextTagId();
-    const key = `category:${cid}:tag:${tagId}`;
+    const key = `tag:${tagId}`;
 
     tag._key = key;
-    tag._scheme = `category:cid:tag:tagId`;
+    tag._scheme = `tag:tagId`;
     tag.cid = Number(cid);
     tag.tagId = tagId;
     tag.userid = Number(userid);
@@ -54,6 +56,7 @@ const create = async function create(tagData: ICategoryTag) {
     const bulkAddSets = [
         ['category:' + cid + ':tag', key, now],
         ['category:' + cid + ':tag:name', String(sanitizeString(name)).toLowerCase() + ':' + key, now],
+        ['tag:popular', tagId, 0],
     ];
 
     const [acknowledgement, ] = await Promise.all([
@@ -64,15 +67,9 @@ const create = async function create(tagData: ICategoryTag) {
     return acknowledgement;
 }
 
-const getById = async function getById(tagId: number, cid: number, fields?: Array<string>) {
+const getById = async function getById(tagId: number, fields?: Array<string>) {
     if (!tagId) {
         throw new Error('A valid tag id is required')
-    }
-    if (!cid) {
-        throw new Error('A valid category id is required')
-    }
-    if (_.isNaN(cid)) {
-        throw new Error('cid must be a number, found ' + typeof cid)
     }
     if (typeof tagId != 'number') {
         throw new Error('tagId must be a number, found ' + typeof tagId)
@@ -83,13 +80,14 @@ const getById = async function getById(tagId: number, cid: number, fields?: Arra
     if (!Array.isArray(fields)) {
         fields = [];
     }
-    const tagSearchKeys = `category:${cid}:tag:${tagId}`;
+    const tagSearchKeys = `tag:${tagId}`;
 
-    return await database.getObjects(tagSearchKeys, fields);
+    const tag = await database.getObjects(tagSearchKeys, fields);
+    return tag as ICategoryTag;
 }
 
-const exists = async function (tagId: number, cid: number) {
-    return Boolean(await getById(tagId, cid));
+const exists = async function (tagId: number) {
+    return Boolean(await getById(tagId));
 }
 
 const getByCategoryId = async function getByCategoryId(cid: number, fields?: Array<string>) {
@@ -107,7 +105,10 @@ const getByCategoryId = async function getByCategoryId(cid: number, fields?: Arr
     }
     const tagSearchKeys = `category:${cid}:tag`;
 
-    return await database.getObjects(tagSearchKeys, ['name', 'tagId'], {multi: true});
+    const sets = await database.fetchSortedSetsRange(tagSearchKeys, 0, -1);
+    const tags = await database.getObjectsBulk(sets, ['name', 'tagId']);
+
+    return tags as ICategory[];
 }
 
 const getByCategoryIdAndName = async function getByCategoryIdAndName(cid: number, name: string, fields?: Array<string>) {
@@ -123,18 +124,45 @@ const getByCategoryIdAndName = async function getByCategoryIdAndName(cid: number
 
     const tagSearchKeys = `category:${cid}:tag:name`;
 
-    const set = await database.getSortedSetsSearch({
-        match: String(name).toLowerCase(),
-        key: tagSearchKeys,
-    });
+    name = String(name).toLowerCase();
+    let min = name;
+    let max = name.substr(0, name.length - 1) + String.fromCharCode(name.charCodeAt(name.length - 1) + 1);
 
-    if (!set) {
+    let sets = await database.getSortedSetsLexical(tagSearchKeys, min, max, 0, -1);
+    if (!sets || !sets.length) {
         return [];
     }
-    let tagId = set.split(':').pop();
 
-    return await getById(Number(tagId), cid, fields);
+    let tagIds = sets.map((set: string) => 'tag:' + set.split(':').pop());
+    return database.getObjectsBulk(tagIds, fields);
+}
 
+const getPopularTags = async function (perPage: number=15, page: number=1, fields: string[]=[]) {
+    if (!perPage) {
+        perPage=15;
+    }
+    if (!page) {
+        page = 1;
+    }
+    if (isNaN(perPage) || isNaN(page)) {
+        throw new TypeError('perPage and page must be a number (int)');
+    }
+    if (fields && !Array.isArray(fields)) {
+        throw new TypeError('fields must be an array, found ' + typeof fields);
+    } else if (!fields) {
+        fields = [];
+    }
+
+    let start = (page - 1) * perPage, stop = (start + perPage);
+
+    const [tagIds, total] = await Promise.all([
+        database.fetchSortedSetsRangeReverse('tag:popular', start, stop),
+        database.getObjectsCount('tag:popular')
+    ]);
+
+    let data = await database.getObjectsBulk(tagIds.map(id => 'tag:' + id), fields);
+
+    return {tags: data, total: total ?? 0};
 }
 
 const remove = async function remove(tagData: ICategoryTag, callerId: number) {
@@ -146,15 +174,12 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
     if (callerId && typeof callerId != 'number') {
         throw new TypeError(`callerId must be a number, found ${typeof callerId} instead`);
     }
-    if (_.isNaN(cid)) {
-        throw new Error('cid must be a number, found ' + typeof cid)
-    }
     if (typeof tagId != 'number') {
         throw new Error('tagId must be a number, found ' + typeof tagId)
     }
 
     const categorySearchKey = 'category:' + cid;
-    const tagSearchKey = `category:${cid}:tag:${tagId}`;
+    const tagSearchKey = `tag:${tagId}`;
 
     const category: ICategory = await database.getObjects(categorySearchKey);
     if (!category) {
@@ -179,10 +204,35 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
         throw new Error('callerId requires elevated permissions for performing this operation');
     }
 
+    const bulkRemoveSets = [
+        ['category:' + cid + ':tag', tagSearchKey],
+        ['category:' + cid + ':tag:name', String(sanitizeString(tag.name ?? '')).toLowerCase() + ':' + tagSearchKey],
+        ['tag:popular', tagId]
+    ]
+
     await Promise.all([
         database.deleteObjects(tagSearchKey),
+        database.sortedSetRemoveKeys(bulkRemoveSets),
         onPurgeTag(tag),
     ]);
+}
+
+const onNewPostWithTag = async function onNewPostWithTag(tagId: number) {
+    const tagKey = 'tag:' + tagId;
+
+    await Promise.all([
+        database.incrementFieldCount('posts', tagKey),
+        reCalculateTagPopularity(tagId),
+    ])
+}
+
+const onTagRemove = async function onTagRemove(tagId: number) {
+    const tagKey = 'tag:' + tagId;
+
+    await Promise.all([
+        database.decrementFieldCount('posts', tagKey),
+        reCalculateTagPopularity(tagId),
+    ])
 }
 
 async function onNewTag(data: ICategoryTag) {
@@ -197,4 +247,23 @@ async function onPurgeTag(data: ICategoryTag) {
     await database.decrementFieldCount('tags', 'category:' + cid);
 }
 
-export default {getById, create, remove, getByCategoryId, exists, getByCategoryIdAndName}
+async function reCalculateTagPopularity(tagId: number) {
+    let tag = await Tags.getById(tagId), 
+        tagUpdationTime = tag.updatedAt ? new Date(tag.updatedAt).getTime() : 0,
+        rank = (CATEGORY_TAG_WEIGHTS.posts * (tag.posts ?? 0)) +
+                (CATEGORY_TAG_WEIGHTS.freshness * (Date.now() - tagUpdationTime));
+
+    await database.updateSortedSetValue('tag:popular', tagId, {rank: Math.floor(rank)});
+}
+
+export default {
+	getById,
+	create,
+	remove,
+	getByCategoryId,
+	exists,
+	getByCategoryIdAndName,
+    getPopularTags,
+	onNewPostWithTag,
+	onTagRemove,
+} as const

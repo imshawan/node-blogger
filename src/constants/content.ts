@@ -4,3 +4,8 @@ export const POST_WEIGHTS = {
     comments: 0.2,
     freshness: 0.1,
 };
+
+export const CATEGORY_TAG_WEIGHTS = {
+    posts: 0.4,
+    freshness: 0.1
+}
