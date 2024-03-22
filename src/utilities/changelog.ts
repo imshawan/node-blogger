@@ -24,21 +24,26 @@ type IPaginatedCategorisedCommits = Omit<IPaginatedCommits, 'commits'> & {
 
 
 export class Changelog {
-    private readonly categories: { new: ICommit[]; features: ICommit[]; bugFixes: ICommit[]; others: ICommit[]; };
-    private readonly categoryNames: { new: string; features: string; bugFixes: string; others: string; };
+    private readonly categories: { new: ICommit[]; features: ICommit[]; updates: ICommit[]; chores: ICommit[]; bugFixes: ICommit[]; others: ICommit[]; };
+    private readonly categoryNames: { new: string; features: string; updates: string; chores: string; bugFixes: string; others: string; };
     private readonly changelogFilePath: string;
     private readonly logger: Logger;
     private readonly perPage: number;
+    
     constructor() {
         this.categories = {
             new: [] as ICommit[],
             features: [] as ICommit[],
+            updates: [] as ICommit[],
+            chores: [] as ICommit[],
             bugFixes: [] as ICommit[],
             others: [] as ICommit[],
         };
         this.categoryNames = {
             new: 'What\'s new',
             features: 'Features',
+            updates: 'Updates',
+            chores: 'Maintanence & Adjustments',
             bugFixes: 'Fixes',
             others: 'Miscellaneous'
         };
@@ -102,7 +107,7 @@ export class Changelog {
         return parsedCommits;
     }
 
-    private categorise(commitArray: Array<ICommit>): { new: ICommit[]; features: ICommit[]; bugFixes: ICommit[]; others: ICommit[]; } {
+    private categorise(commitArray: Array<ICommit>): { new: ICommit[]; features: ICommit[]; updates: ICommit[]; chores: ICommit[]; bugFixes: ICommit[]; others: ICommit[]; } {
         const categorised = this.categories;
 
         if (!Array.isArray(commitArray)) return categorised;
@@ -118,9 +123,15 @@ export class Changelog {
                 } else if (/(#new)|(add)|(addition)/i.test(commit)) {
                     category = "new";
                     commitObj.commit = commit.replace('#new:', '').trim();
-                } else if (/(#update)|(support)/i.test(commit)) {
+                } else if (/#feature/i.test(commit)) {
                     category = "features";
+                    commitObj.commit = commit.replace('#feature:', '').trim();
+                } else if (/(#update)|(support)/i.test(commit)) {
+                    category = "updates";
                     commitObj.commit = commit.replace('#update:', '').trim();
+                } else if (/#chore/i.test(commit)) {
+                    category = "chores";
+                    commitObj.commit = commit.replace('#chore:', '').trim();
                 } else if (/#fix/i.test(commit)) {
                     category = "bugFixes";
                     commitObj.commit = commit.replace('#fix"', '').trim();
@@ -185,11 +196,13 @@ export class Changelog {
         const categorisedCommits: {
             new: string[];
             features: string[];
+            updates: string[];
             bugFixes: string[];
             others: string[];
         } = {
             new: [],
             features: [],
+            updates: [],
             bugFixes: [],
             others: [],
         };
