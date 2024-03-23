@@ -35,12 +35,14 @@
         </div>
     </div>
 
-    <% if (post.tags) { %>
+    <% if (tags && tags.length) { %>
         <div class="row justify-content-center">
             <div class="post-section">
                 <h5 class="text-capitalize">Tags</h5>
                 <div class="row px-2">
-                    <a href="#" class="col-auto badge badge-light text-black">#Tag</a>
+                    <% tags.forEach(tag => { %>
+                        <a href="/tags/<%= tag.slug %>" class="col-auto badge badge-light text-black">#<%= tag.name %></a>
+                    <% }) %>
                 </div>
             </div>
         </div>

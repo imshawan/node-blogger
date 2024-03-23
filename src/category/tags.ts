@@ -217,18 +217,19 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
     ]);
 }
 
-const onNewPostWithTag = async function onNewPostWithTag(tagId: number) {
-    const tagKey = 'tag:' + tagId;
+const onNewPostWithTags = async function onNewPostWithTag(tagIds: Array<number>) {
+    const promises: Promise<any>[] = [];
 
-    await Promise.all([
-        database.incrementFieldCount('posts', tagKey),
-        reCalculateTagPopularity(tagId),
-    ])
+    if (!tagIds || !Array.isArray(tagIds) || !tagIds.length) return;
+    tagIds.forEach((tagId: number) => promises.push(reCalculateTagPopularity(tagId)));
+
+    await Promise.all(promises);
 }
 
 const onTagRemove = async function onTagRemove(tagId: number) {
-    const tagKey = 'tag:' + tagId;
+    if (!tagId) return;
 
+    const tagKey = 'tag:' + tagId;
     await Promise.all([
         database.decrementFieldCount('posts', tagKey),
         reCalculateTagPopularity(tagId),
@@ -264,6 +265,6 @@ export default {
 	exists,
 	getByCategoryIdAndName,
     getPopularTags,
-	onNewPostWithTag,
+	onNewPostWithTags,
 	onTagRemove,
 } as const

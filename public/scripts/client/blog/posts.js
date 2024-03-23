@@ -103,7 +103,7 @@ define('client/blog/posts', ['modules/http'], function (http) {
                     return {
                         results: data.payload.map(el => ({
                             ...el,
-                            id: el.tagId,
+                            id: `${el.name}:${el.tagId}`,
                             text: el.name,
                         }))
                     };
@@ -139,7 +139,14 @@ define('client/blog/posts', ['modules/http'], function (http) {
             const tags = posts.getSelectedTags();           
 
             $('#tags-area').empty();
-            tags.forEach(tag => $('#tags-area').append($('<div></div>', {class: 'badge badge-light', text: '#' + tag})))
+            tags.forEach((tag) =>
+				$('#tags-area').append(
+					$('<div></div>', {
+						class: 'badge badge-light',
+						text: '#' + String(tag).split(':').shift(),
+					})
+				)
+			)
         });
 
         $('#action-container').on('click', '#clear-cover', function() {
@@ -156,7 +163,7 @@ define('client/blog/posts', ['modules/http'], function (http) {
             let tags = posts.getSelectedTags();
 
             categories.forEach((e, i) => formData.append(`categories[${i}]`, e));
-            tags.forEach((e, i) => formData.append(`tag[${i}]`, 'tag:' + e));
+            tags.forEach((e, i) => formData.append(`tags[${i}]`, 'tag:' + String(e).split(':').pop()));
 
             if (featuredImage && featuredImage.length) {
                 if (featuredImage[0].type.split('/')[0] == 'image') {

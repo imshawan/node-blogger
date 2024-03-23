@@ -3,6 +3,7 @@ import { IPost, Status } from "@src/types";
 import { database } from "@src/database";
 import { getISOTimestamp, calculateReadTime, textFromHTML, sanitizeString } from "@src/utilities";
 import utilities from './utils';
+import Category from '@src/category';
 
 const MIN_POST_SIZE = 20;
 const MAX_POST_SIZE = 2550;
@@ -83,6 +84,7 @@ export const create = async function create(data: IPost): Promise<IPost> {
     const suffix = 'minute';
     const readTime = calculateReadTime(content, suffix);
     const key = 'post:' + postId;
+    const tagIds = tags.map((tag: string) => Number(String(tag).split(':').pop()));
 
     status = String(status).toLowerCase().trim() as Status;
 
@@ -118,6 +120,9 @@ export const create = async function create(data: IPost): Promise<IPost> {
         database.sortedSetAddKeys(bulkAddSets),
         onNewPost(postData),
     ]);
+
+    await Category.tags.onNewPostWithTags(tagIds);
+
     return acknowledgement;
 }
 
@@ -126,12 +131,12 @@ async function onNewPost(data:IPost) {
 
     const promises: Promise<any>[] = [];
 
-    if (Array.isArray(categories) && categories.length) {
+    if (categories && Array.isArray(categories) && categories.length) {
         categories.forEach(key => {
             promises.push(database.incrementFieldCount('posts', key));
         });
     }
-    if (Array.isArray(tags) && tags.length) {
+    if (tags && Array.isArray(tags) && tags.length) {
         tags.forEach(key => {
             promises.push(database.incrementFieldCount('posts', key));
         });

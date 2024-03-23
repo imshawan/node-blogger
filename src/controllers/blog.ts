@@ -88,6 +88,14 @@ const getPostBySlug = async function (req: Request, res: Response) {
         return notFoundHandler(req, res);
     }
 
+    const tagPromises: Promise<any>[] = [];
+    const tagFields = ['tagId', 'name', 'slug']
+
+    if (post.tags && post.tags.length) {
+        let tagIds = post.tags?.map((tag: string) =>  Number(String(tag).split(':').pop()));
+        tagIds.forEach((id: number) => tagPromises.push(category.tags.getById(id, tagFields)));
+    }
+
     post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
 
     const [author, ] = await Promise.all([
@@ -95,10 +103,13 @@ const getPostBySlug = async function (req: Request, res: Response) {
         Post.utils.incrementViewCount(Number(postId), req)
     ]);
 
+    const tags = await Promise.all(tagPromises);
+
     const page = {
         navigation:  new NavigationManager().get('posts'),
         title: post.title,
         post,
+        tags: tags ?? [],
         author
     };
 
