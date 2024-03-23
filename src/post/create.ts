@@ -93,7 +93,7 @@ export const create = async function create(data: IPost): Promise<IPost> {
     postData.content = content;
     postData.slug = [postId, '/', slug].join('');
     postData.categories = categories; // WIll be an array of keys ['category:cid']
-    postData.tags = tags; // WIll be an array of keys ['category:cid:tag:tagId']
+    postData.tags = tags; // WIll be an array of keys ['tag:tagId']
     postData.views = 0;
     postData.likes = 0;
     postData.comments = 0;
@@ -115,8 +115,8 @@ export const create = async function create(data: IPost): Promise<IPost> {
 
     const [acknowledgement, ,] = await Promise.all([
         database.setObjects(key, postData),
+        database.sortedSetAddKeys(bulkAddSets),
         onNewPost(postData),
-        database.sortedSetAddKeys(bulkAddSets)
     ]);
     return acknowledgement;
 }
@@ -141,7 +141,7 @@ async function onNewPost(data:IPost) {
 }
 
 function isValidTagKey(key: string) {
-    const pattern = /^category:\d+:tag:\d+$/;
+    const pattern = /^tag:\d+$/;
     return pattern.test(key);
 }
 

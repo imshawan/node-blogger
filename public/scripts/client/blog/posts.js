@@ -103,7 +103,7 @@ define('client/blog/posts', ['modules/http'], function (http) {
                     return {
                         results: data.payload.map(el => ({
                             ...el,
-                            id: el.cid,
+                            id: el.tagId,
                             text: el.name,
                         }))
                     };
@@ -136,7 +136,7 @@ define('client/blog/posts', ['modules/http'], function (http) {
         });
 
         $('#add-tags').on('click', function() {
-            const {tags} = $('#tags-form').serializeObject();
+            const tags = posts.getSelectedTags();           
 
             $('#tags-area').empty();
             tags.forEach(tag => $('#tags-area').append($('<div></div>', {class: 'badge badge-light', text: '#' + tag})))
@@ -153,8 +153,10 @@ define('client/blog/posts', ['modules/http'], function (http) {
             let formData = new FormData($('#post-form')[0]);
             let featuredImage = $('[name="featuredImage"]')[0].files;
             let categories = [$('#category-selection').val()].map(e => 'category:' + e);
+            let tags = posts.getSelectedTags();
 
             categories.forEach((e, i) => formData.append(`categories[${i}]`, e));
+            tags.forEach((e, i) => formData.append(`tag[${i}]`, 'tag:' + e));
 
             if (featuredImage && featuredImage.length) {
                 if (featuredImage[0].type.split('/')[0] == 'image') {
@@ -175,6 +177,19 @@ define('client/blog/posts', ['modules/http'], function (http) {
                 .catch(err => utilities.showToast(err.message, 'error'))
                 .finally(() => elem.unlockWithLoader());
         });
+    }
+
+    posts.getSelectedTags = function() {
+        let {tags} = $('#tags-form').serializeObject();
+        if (!tags) {
+            return [];
+        }
+
+        if (typeof tags === 'string') {
+            tags = [tags];
+        }
+
+        return tags;
     }
 
     return posts;
