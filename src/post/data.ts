@@ -64,11 +64,10 @@ const getPosts = async function (options?: IPostOptions) {
         skip: (page - 1) * perPage,
         limit: perPage,
         multi: true,
-        sort: applySort(sorting),
     };
     
     const [postIds, total] = await Promise.all([
-        database.fetchSortedSetsRange(searchKeys, matchOptions.skip, -1),
+        database.fetchSortedSetsRangeReverse(searchKeys, matchOptions.skip, (perPage + matchOptions.skip)),
         database.getObjectsCount(searchKeys)
     ]);
     

@@ -68,7 +68,7 @@ const getObjectsBulk = async function (keysArray: string[], fields?: string[], o
     }
 
     let records: Array<object> = [],
-        project = {_id: 0, _key: 0, _scheme: 0};
+        project = {_id: 0, _scheme: 0};
         
     const bulk = mongo.cache.getBulk(keysArray);
     if (bulk?.data && bulk.data.length) {
@@ -84,11 +84,15 @@ const getObjectsBulk = async function (keysArray: string[], fields?: string[], o
         records = records.concat(data);
     }
 
+    // Ensuring to return data as per sequence of elements in keysArray, so that it does not affect any previously sequenced data in keys array
+    const recordsMap = new Map(records.map((obj: any) => [obj._key, {...obj, _key: undefined}]));
+    const sortedRecordsWithKeysArray = keysArray.map(key => recordsMap.get(key));
+
     if (!fields.length) {
-        return records;
+        return sortedRecordsWithKeysArray;
     }
 
-    return records.map((item: MutableObject) => {
+    return sortedRecordsWithKeysArray.map((item: MutableObject) => {
         let obj: MutableObject = {};
         (fields ?? []).forEach(field => {
             if (item.hasOwnProperty(field)) {
