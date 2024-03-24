@@ -63,9 +63,10 @@ const renderPosts = async function (req: Request, res: Response) {
     }));
 
     const totalPages = Math.ceil(total / perPage);
-    const [categories, featured] = await Promise.all([
+    const [categories, featured, popularTags] = await Promise.all([
         category.data.getAllCategories(5, 1, ),
         Post.data.getFeaturedPosts(5),
+        category.tags.getPopularTags(8, 0, ['tagId', 'name', 'slug'])
     ])
 
     const pageData = {
@@ -74,6 +75,7 @@ const renderPosts = async function (req: Request, res: Response) {
         categories,
         featured: featured.posts.map((post: IPost) => ({...post, createdAt: moment(post.createdAt).format(DATE_FORMAT)})),
         posts: postData || [],
+        tags: (popularTags.tags ?? []).filter(e => e),
         pagination: Helpers.generatePaginationItems(req.url, page, totalPages),
     };
 

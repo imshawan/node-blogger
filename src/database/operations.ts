@@ -95,12 +95,12 @@ const getObjectsBulk = async function (keysArray: string[], fields?: string[], o
     return sortedRecordsWithKeysArray.map((item: MutableObject) => {
         let obj: MutableObject = {};
         (fields ?? []).forEach(field => {
-            if (item.hasOwnProperty(field)) {
+            if (item && item.hasOwnProperty(field)) {
                 obj[field] = item[field];
             }
         });
 
-        return obj;
+        return Object.keys(obj).length ? obj : null;
     });
 }
 

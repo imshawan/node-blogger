@@ -107,16 +107,14 @@
                 <% } %>
                 
 
-                <div class="tags pt-5">
-                    <h4 class="mb-4 border-bottom pb-3">Tag clouds</h4>
-                    <a href="#" class="badge text-black badge-light">Primary</a>
-                    <a href="#" class="badge text-black badge-light">Secondary</a>
-                    <a href="#" class="badge text-black badge-light">Success</a>
-                    <a href="#" class="badge text-black badge-light">Danger</a>
-                    <a href="#" class="badge text-black badge-light">Warning</a>
-                    <a href="#" class="badge text-black badge-light">Info</a>
-                    <a href="#" class="badge text-black badge-light">Light</a>
-                </div>
+                <% if (tags.length) { %>
+                    <div class="tags pt-5">
+                        <h4 class="mb-4 border-bottom pb-3">Tag clouds</h4>
+                        <% tags.forEach(tag => { %>
+                            <a href="/tags/<%= tag.slug %>" class="badge text-black badge-light"><%= tag.name %></a>
+                        <% }) %>
+                    </div>
+                <% } %>
 
             </div>
         </div>
