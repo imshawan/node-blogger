@@ -6,7 +6,7 @@ import { notFoundHandler } from '@src/middlewares';
 import * as User from '@src/user';
 import * as Helpers from "@src/helpers";
 import moment from 'moment';
-import { IPost } from '@src/types';
+import { ICategoryTag, IPost } from '@src/types';
 
 const DATE_FORMAT = 'DD MMM, yyyy';
 
@@ -88,12 +88,11 @@ const getPostBySlug = async function (req: Request, res: Response) {
         return notFoundHandler(req, res);
     }
 
-    const tagPromises: Promise<any>[] = [];
-    const tagFields = ['tagId', 'name', 'slug']
+    const tagFields = ['tagId', 'name', 'slug'];
+    let tags: ICategoryTag[] | Array<never> = [];
 
     if (post.tags && post.tags.length) {
-        let tagIds = post.tags?.map((tag: string) =>  Number(String(tag).split(':').pop()));
-        tagIds.forEach((id: number) => tagPromises.push(category.tags.getById(id, tagFields)));
+        tags = await category.tags.getByKeys(post.tags, tagFields);
     }
 
     post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
@@ -102,8 +101,6 @@ const getPostBySlug = async function (req: Request, res: Response) {
         User.getUserByUserId(post.userid),
         Post.utils.incrementViewCount(Number(postId), req)
     ]);
-
-    const tags = await Promise.all(tagPromises);
 
     const page = {
         navigation:  new NavigationManager().get('posts'),

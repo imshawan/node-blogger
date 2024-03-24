@@ -86,6 +86,28 @@ const getById = async function getById(tagId: number, fields?: Array<string>) {
     return tag as ICategoryTag;
 }
 
+const getByKeys = async function getByIds(keys: Array<string>, fields?: Array<string>) {
+    if (!keys || !Array.isArray(keys) || !keys.length) {
+        return [];
+    }
+
+    let tagKeyErrors = 0;
+    keys.forEach(key => !isValidTagKey(key) && tagKeyErrors++);
+
+    if (tagKeyErrors) {
+        throw new Error(tagKeyErrors + ' invalid tag(s) found, please re-try.');
+    }
+    if (!fields) {
+        fields = [];
+    }
+    if (!Array.isArray(fields)) {
+        fields = [];
+    }
+
+    const tags = await database.getObjectsBulk(keys, fields);
+    return tags as Array<ICategoryTag>;
+}
+
 const exists = async function (tagId: number) {
     return Boolean(await getById(tagId));
 }
@@ -257,8 +279,14 @@ async function reCalculateTagPopularity(tagId: number) {
     await database.updateSortedSetValue('tag:popular', tagId, {rank: Math.floor(rank)});
 }
 
+function isValidTagKey(key: string) {
+    const pattern = /^tag:\d+$/;
+    return pattern.test(key);
+}
+
 export default {
 	getById,
+    getByKeys,
 	create,
 	remove,
 	getByCategoryId,
