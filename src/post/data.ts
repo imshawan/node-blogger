@@ -82,6 +82,41 @@ const getPosts = async function (options?: IPostOptions) {
     return {posts: data, total: total ?? 0}
 }
 
+const search = async function (title: string, perPage: number=15, page: number=1, fields: string[]=[]) {
+    if (!title) {
+        throw new Error('title is required');
+    }
+    if (!perPage) {
+        perPage=15;
+    }
+    if (!page) {
+        page = 1;
+    }
+    if (isNaN(perPage)) {
+        throw new TypeError('perPage must be a number (int) found ' + typeof perPage);
+    }
+    if (isNaN(page)) {
+        throw new TypeError('page must be a number (int) found ' + typeof page);
+    }
+    if (fields && !Array.isArray(fields)) {
+        throw new TypeError('fields must be an array, found ' + typeof fields);
+    } else if (!fields) {
+        fields = [];
+    }
+
+    let skip = (page - 1) * perPage,
+        data = await searchKeysByTitle('post:title', title, skip, perPage, fields); 
+
+    if (fields.includes('blurb')) {
+        data.posts = data.posts.map((post: IPost) => {
+            post.blurb = preparePostBlurb(post);
+            return post;
+        });
+    }
+
+    return data;
+}
+
 const getFeaturedPosts = async function (perPage: number=15, page: number=1, fields: string[]=[]) {
     if (!perPage) {
         perPage=15;
@@ -152,6 +187,23 @@ function applySort (sortingType: string): MutableObject {
     return query;
 }
 
+async function searchKeysByTitle(key: string, query: string, start: number, perPage: number, fields: string[]) {
+    query = String(query).trim().toLowerCase();
+
+    const itemsPerPage = application.configurationStore?.maxItemsPerPage || 10;
+    perPage = perPage || itemsPerPage * 10;
+
+    const [sets, total] = await Promise.all([
+        database.getSortedSetsSearch({key, match: query, skip: start, limit: perPage}),
+        database.getSortedSetsSearchCount(key, query),
+    ]);
+
+    const keys = sets.map((postKey: string) => 'post:' + postKey.split(':').pop());
+    const posts = await database.getObjectsBulk(keys, fields) as IPost[];
+
+    return {posts, total: total ?? 0};
+}
+
 export default {
-    getPostById, getPosts, getFeaturedPosts, MAX_BLURB_SIZE
+    getPostById, getPosts, getFeaturedPosts, search, MAX_BLURB_SIZE
 } as const;

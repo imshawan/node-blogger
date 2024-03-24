@@ -44,7 +44,8 @@ const renderPosts = async function (req: Request, res: Response) {
     let {search, sortBy} = query;
     let perPage = Number(query.perPage);
     let page = Number(query.page);
-    let url = [req.baseUrl, req.url].join('');
+    let url = [req.baseUrl, req.url].join(''),
+        data: {posts: IPost[], total: number} = {posts: [], total: 0}
 
     if (!perPage) {
         perPage = 6;
@@ -53,16 +54,20 @@ const renderPosts = async function (req: Request, res: Response) {
         page = 1;
     }
 
-    const {posts, total} = await Post.data.getPosts({page, perPage});
+    if (search && search.length) {
+        data = await Post.data.search(String(search));
+    } else {
+        data = await Post.data.getPosts({page, perPage});
+    }
 
-    const postData = await Promise.all(posts.map(async (post: any) => {
+    const postData = await Promise.all(data.posts.map(async (post: any) => {
         post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
         post.author = await User.getUserWIthFields(post.userid, ['username', 'picture', 'fullname']);
 
         return post;
     }));
 
-    const totalPages = Math.ceil(total / perPage);
+    const totalPages = Math.ceil(data.total / perPage);
     const [categories, featured, popularTags] = await Promise.all([
         category.data.getAllCategories(5, 1, ),
         Post.data.getFeaturedPosts(5),
@@ -77,6 +82,7 @@ const renderPosts = async function (req: Request, res: Response) {
         posts: postData || [],
         tags: (popularTags.tags ?? []).filter(e => e),
         pagination: Helpers.generatePaginationItems(req.url, page, totalPages),
+        search: search ?? '',
     };
 
     res.render('blog/posts', pageData);

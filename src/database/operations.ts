@@ -314,7 +314,7 @@ const getSortedSetsSearch = async function (params: { withRanks?: boolean; match
         project.rank = 1;
     }
 
-    const match = dbUtils.buildSearchQueryFromText(params.match);
+    const match = params.match;
     let regex;
     try {
         regex = new RegExp(match);
@@ -322,7 +322,7 @@ const getSortedSetsSearch = async function (params: { withRanks?: boolean; match
         return [];
     }
 
-    const cursor = mongo.client.collection(options.collection).find({_key: key, value: { $regex: regex }}, { projection: project });
+    const cursor = mongo.client.collection(options.collection).find({_key: key, value: { $regex: regex, $options: 'i' }}, { projection: project });
     if (skip) {
         cursor.skip(skip);
     }
@@ -336,6 +336,23 @@ const getSortedSetsSearch = async function (params: { withRanks?: boolean; match
         return data.map((item: ISortedSetKey) => item.value);
     }
     return data;
+};
+
+const getSortedSetsSearchCount = async function (key: string, match: string, options?: IParamOptions) {
+    options = getObjectOptions(options || {});
+
+    if (!match || !key) {
+        throw new Error('match and key are both required parameters');
+    }
+
+    let regex;
+    try {
+        regex = new RegExp(match);
+    } catch (err) {
+        return [];
+    }
+
+    return mongo.client.collection(options.collection).countDocuments({_key: key, value: { $regex: regex }});
 };
 
 const sortedSetIntersectKeys = async function (keys: Array<any>, options?: IParamOptions) {
@@ -693,6 +710,7 @@ const operations = {
 	sortedSetAddKey,
 	sortedSetAddKeys,
 	getSortedSetsSearch,
+    getSortedSetsSearchCount,
 	sortedSetRemoveKey,
 	sortedSetRemoveKeys,
 	getSortedSetsLexicalCount,
