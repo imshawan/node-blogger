@@ -34,12 +34,12 @@ validate_commit_message() {
     commit_type=$(echo "$commit_message" | grep -o '#[^:]*' | head -n1)
 
     if [ "$commit_type" != "$(echo "$commit_type" | tr '[:upper:]' '[:lower:]')" ]; then
-        echo -e "\n${RED}Error: Commit type must be in lowercase. e.g. #feature, #chore${NC}"
+        echo -e "\n${RED}Error: Commit type must be in lowercase. e.g. #feature, #chore.${NC}"
         exit 1
     fi
 
     if ! is_valid_commit_type "$commit_type"; then
-        echo "Invalid commit type: $commit_type"
+        echo -e "\n${RED}Error: Invalid commit type: $commit_type ${NC}"
         exit 1
     fi
 
@@ -55,6 +55,12 @@ validate_commit_message() {
 
     echo -e "\n${GREEN}Success: Commit message is valid, commiting code...${NC}"
 }
+
+if [ -z "$1" ]; then
+    echo -e "\n${RED}Error: Commit message was not provided.${NC}"
+    echo "Usage: $0 <commit_message>"
+    exit 1
+fi
 
 commit_msg="$1"
 
