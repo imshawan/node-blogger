@@ -24,6 +24,14 @@ const generateNextTagId = async function generateNextTagId(): Promise<number> {
     return Number(id);
 }
 
+const onNewPostWithCategory = async function onNewPostWithCategory(postId: number, categoryId: number) {
+    if (!postId || !categoryId || !Number(postId) || !Number(categoryId)) {
+        throw new Error('postId and categoryId are required parameters and must be numbers');
+    }
+
+    const postKey = 'post:' + postId;
+}
+
 export default {
-    generateCategoryslug, generateNextCategoryId, generateNextTagId
+    generateCategoryslug, generateNextCategoryId, generateNextTagId,onNewPostWithCategory
 } as const

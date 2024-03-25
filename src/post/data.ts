@@ -151,6 +151,8 @@ const getFeaturedPosts = async function (perPage: number=15, page: number=1, fie
     return {posts: data, total: total ?? 0};
 }
 
+const getPostsByTag = async function (tagId: number, perPage: number=15, page: number=1, fields: string[]=[]) {}
+
 function preparePostBlurb(postData: IPost): string {
     let {content} = postData;
     let maxPostBlurbSize = application.configurationStore?.maxPostBlurbSize || MAX_BLURB_SIZE;

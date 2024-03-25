@@ -121,7 +121,7 @@ export const create = async function create(data: IPost): Promise<IPost> {
         onNewPost(postData),
     ]);
 
-    await Category.tags.onNewPostWithTags(tagIds);
+    await Category.tags.onNewPostWithTags(postId, tagIds);
 
     return acknowledgement;
 }

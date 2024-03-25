@@ -239,21 +239,40 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
     ]);
 }
 
-const onNewPostWithTags = async function onNewPostWithTag(tagIds: Array<number>) {
-    const promises: Promise<any>[] = [];
+const onNewPostWithTags = async function onNewPostWithTag(postId: number, tagIds: Array<number>) {
+    if (!postId || !Number(postId)) {
+        throw new Error('post id is a required parameter and must be a number');
+    }
+
+    const promises: Promise<any>[] = [], 
+        postkey = 'post:' + postId,
+        bulkAddSets: (string | number)[][] = [],
+        now = Date.now();
 
     if (!tagIds || !Array.isArray(tagIds) || !tagIds.length) return;
-    tagIds.forEach((tagId: number) => promises.push(reCalculateTagPopularity(tagId)));
+    
+    tagIds.forEach((tagId: number) => {
+        bulkAddSets.push(['tag:' + tagId + ':post', postkey, now]);
+        return promises.push(reCalculateTagPopularity(tagId));
+    });
+
+    promises.push(database.sortedSetAddKeys(bulkAddSets));
 
     await Promise.all(promises);
 }
 
-const onTagRemove = async function onTagRemove(tagId: number) {
+const onTagRemove = async function onTagRemove(postId: number, tagId: number) {
+    if (!postId || !Number(postId)) {
+        throw new Error('post id is a required parameter and must be a number');
+    }
     if (!tagId) return;
 
-    const tagKey = 'tag:' + tagId;
+    const tagKey = 'tag:' + tagId,
+        postkey = 'post:' + postId;
+
     await Promise.all([
         database.decrementFieldCount('posts', tagKey),
+        database.sortedSetRemoveKey('tag:' + tagId + ':post', postkey),
         reCalculateTagPopularity(tagId),
     ])
 }
