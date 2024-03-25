@@ -19,7 +19,8 @@
     "test:no-reloading": "npx ts-node --files -r tsconfig-paths/register ./spec",
     "format": "npx prettier --write .",
     "debug": "node --trace-warnings --inspect=9229 -r tsconfig-paths/register ./node_modules/ts-node/dist/bin.js ./src",
-    "generate-changelog": "npx ts-node ./scripts/changelog.ts"
+    "generate-changelog": "npx ts-node ./scripts/changelog.ts",
+    "prepare": "husky install"
   },
   "nodemonConfig": {
     "watch": [
@@ -31,6 +32,11 @@
     ],
     "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src",
     "delay": 1000
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": ".husky/commit-msg"
+    }
   },
   "_moduleAliases": {
     "@src": "dist"
@@ -92,6 +98,8 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.0.3",
+    "@commitlint/config-conventional": "^19.1.0",
     "@types/axios": "^0.14.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
@@ -124,6 +132,7 @@
     "eslint": "^8.36.0",
     "eslint-plugin-node": "^11.1.0",
     "fs-extra": "^11.1.0",
+    "husky": "^8.0.3",
     "nodemon": "^2.0.21",
     "prettier": "^3.2.5",
     "ts-node": "^10.9.1",
