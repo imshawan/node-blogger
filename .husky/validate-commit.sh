@@ -13,7 +13,7 @@ MAX_COMMIT_LENGTH=100
 
 is_valid_commit_type() {
     case "$1" in
-        "#ci"|"#chore"|"#docs"|"#ticket"|"feature"|"#fix"|"#perf"|"#refactor"|"#revert"|"#style"|"#new"|"#update"|"#misc")
+        "#ci"|"#chore"|"#docs"|"#ticket"|"#feature"|"#fix"|"#perf"|"#refactor"|"#revert"|"#style"|"#new"|"#update"|"#misc")
             return 0
             ;;
         *)
