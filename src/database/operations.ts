@@ -152,10 +152,10 @@ const updateObjects = async function (key: string, data: any, options?: IParamOp
     }
 
     if (options.multi) {
-        return await mongo.client.collection(options.collection).updateOne({_key: key}, {$set: data}, mongoOptions);
+        return await mongo.client.collection(options.collection).updateMany({_key: key}, {$set: data}, mongoOptions);
     }
 
-    const ack = await mongo.client.collection(options.collection).updateMany({_key: key}, {$set: data}, mongoOptions);
+    const ack = await mongo.client.collection(options.collection).updatedOne({_key: key}, {$set: data}, mongoOptions);
 
     mongo.cache.delete(key);
 
@@ -218,15 +218,17 @@ const aggregateObjects = async function (pipeline: object, options?: IParamOptio
     return await mongo.client.collection(options.collection).aggregate(pipeline).toArray();
 }
 
-const incrementFieldCount = async function (field: string, key: string = 'global:counters') {
-    return await incrementObjectFieldValueBy(key, field, 1);
+const incrementFieldCount = async function (field: string, key: string = 'global:counters', options?: IParamOptions) {
+    return await incrementObjectFieldValueBy(key, field, 1, options);
 }
 
-const decrementFieldCount = async function (field: string, key: string = 'global:counters') {
-    return await incrementObjectFieldValueBy(key, field, -1);
+const decrementFieldCount = async function (field: string, key: string = 'global:counters', options?: IParamOptions) {
+    return await incrementObjectFieldValueBy(key, field, -1, options);
 }
 
-const sortedSetAddKey = async function (key: string, value: string | number, rank: number): Promise<void> {
+const sortedSetAddKey = async function (key: string, value: string | number, rank: number, options?: IParamOptions): Promise<void> {
+    options = getObjectOptions(options || {});
+
     if (!key || !value) {
         throw new Error('key and value is a required parameter');
     }
@@ -236,25 +238,28 @@ const sortedSetAddKey = async function (key: string, value: string | number, ran
 
     await sortedSetAddKeys([
         [key, value, rank]
-    ]);
+    ], options);
 }
 
-const sortedSetAddKeys = async function (keysArray: Array<Array<string | number>>): Promise<void> {
-    const data: ISortedSetKey[] = dbUtils.prepareSortedSetKeys(keysArray)
+const sortedSetAddKeys = async function (keysArray: Array<Array<string | number>>, options?: IParamOptions): Promise<void> {
+    options = getObjectOptions(options || {});
+    const data: ISortedSetKey[] = dbUtils.prepareSortedSetKeys(keysArray);
 
     if (data.length) {
-        await setObjects(null, data, {multi: true});
+        await setObjects(null, data, _.merge(options, {multi: true}));
     }
 }
 
-const sortedSetRemoveKey =  async function (key: string, value: string | number): Promise<void> {
+const sortedSetRemoveKey =  async function (key: string, value: string | number, options?: IParamOptions): Promise<void> {
+    options = getObjectOptions(options || {});
+
     if (!key || !value) {
         throw new Error('key and value is a required parameter');
     }
 
     await sortedSetRemoveKeys([
         [key, value]
-    ]);
+    ], options);
 }
 
 const sortedSetRemoveKeys = async function (keysArray: Array<Array<string | number>>, options?: IParamOptions): Promise<void> {
@@ -296,7 +301,7 @@ const getSortedSetsLexicalReverse = async function (
 	count?: number,
 	options?: IParamOptions
 ) {
-    return await findSortedSetsLexical(key, min, max, -1, start, count, options)
+    return await findSortedSetsLexical(key, min, max, -1, start, count, options);
 };
 
 const getSortedSetsLexicalCount = async function (key: string, min: string, max: string, options?: IParamOptions) {
@@ -613,18 +618,24 @@ function mapResultsToRanks(result: ISortedSetKey[], keys: string[]): (number | n
     return keys.map(key => (map[key] ? map[key].rank : null));
 }
 
-async function incrementObjectFieldValueBy (key: string, field: string, value: number) {
+async function incrementObjectFieldValueBy (key: string, field: string, value: number, options?: IParamOptions) {
     if (!key || isNaN(value)) {
         return null;
     }
-    const options = getObjectOptions();
+    options = getObjectOptions(options);
     const increment = {
         [field]: value
     };
     const operationOptions = { returnOriginal: false, new: true, upsert: true, returnDocument : "after" }
 
     const result = await mongo.client.collection(options.collection).findOneAndUpdate({ _key: key }, { $inc: increment }, operationOptions);
-    return result && result.value ? result.value[field] : null;
+    const fieldValue = result && result.value ? result.value[field] : null;
+
+    if (!fieldValue) {
+        return await incrementObjectFieldValueBy(key, field, value, options);
+    }
+
+    return fieldValue;
 };
 
 function filterObjectFields(object: any, fields?: Array<string>) {
