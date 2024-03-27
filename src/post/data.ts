@@ -4,6 +4,7 @@ import { ValidSortingTechniques } from "@src/constants";
 import { ValueError } from "@src/helpers";
 import { application } from "@src/application";
 import { clipContent, textFromHTML } from '@src/utilities';
+import _ from "lodash";
 
 interface IPostOptions {
     perPage?: number; 
@@ -151,7 +152,57 @@ const getFeaturedPosts = async function (perPage: number=15, page: number=1, fie
     return {posts: data, total: total ?? 0};
 }
 
-const getPostsByTag = async function (tagId: number, perPage: number=15, page: number=1, fields: string[]=[]) {}
+const getPostsByTag = async function (tagId: number, perPage: number=15, page: number=1, fields: (keyof IPost)[]=[]) {
+    if (!perPage) {
+        perPage=15;
+    }
+    if (!page) {
+        page = 1;
+    }
+    if (isNaN(perPage) || isNaN(page)) {
+        throw new TypeError('perPage and page must be a number (int)');
+    }
+    if (fields && !Array.isArray(fields)) {
+        throw new TypeError('fields must be an array, found ' + typeof fields);
+    } else if (!fields) {
+        fields = [];
+    }
+
+    const key = 'tag:' + tagId + ':post',
+        start = (page - 1) * perPage, stop = (start + perPage);
+
+
+    const [postIds, total] = await Promise.all([
+        database.fetchSortedSetsRangeReverse(key, start, stop),
+        database.getObjectsCount(key)
+    ]);
+
+    let data = await database.getObjectsBulk(postIds) ?? [];
+
+    if (fields.length) {
+        data = data.map((item: IPost) => {
+            let obj: MutableObject = {};
+
+            fields.forEach(field => {
+                if (Object.hasOwnProperty.bind(item)(field)) {
+                    obj[field] = item[field];
+                } else {
+                    obj[field] = null;
+                }
+            });
+
+            if (fields.includes('blurb'))  {
+                obj.blurb = preparePostBlurb(item);
+            }
+
+            return obj;
+        });
+    } else {
+        data = data.map((item: IPost) => _.merge(item, {blurb: preparePostBlurb(item)}));
+    }
+
+    return {posts: data, total: total ?? 0};
+}
 
 function preparePostBlurb(postData: IPost): string {
     let {content} = postData;
@@ -207,5 +258,5 @@ async function searchKeysByTitle(key: string, query: string, start: number, perP
 }
 
 export default {
-    getPostById, getPosts, getFeaturedPosts, search, MAX_BLURB_SIZE
+    getPostById, getPosts, getFeaturedPosts, search, getPostsByTag, MAX_BLURB_SIZE
 } as const;

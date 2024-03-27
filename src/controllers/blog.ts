@@ -9,6 +9,19 @@ import moment from 'moment';
 import { ICategoryTag, IPost } from '@src/types';
 
 const DATE_FORMAT = 'DD MMM, yyyy';
+const DEFAULT_POST_FIELDS: (keyof IPost)[] = [
+	'postId',
+	'userid',
+	'blurb',
+	'featuredImage',
+	'readTime',
+	'likes',
+	'slug',
+	'views',
+	'createdAt',
+	'comments',
+    'title',
+]
 
 const get = async function (req: Request, res: Response) { 
 
@@ -121,6 +134,40 @@ const getPostBySlug = async function (req: Request, res: Response) {
     res.render('blog/single', page);
 }
 
+const getPostsByTag = async function (req: Request, res: Response) {
+    const {query, params} = req;
+    let {sortBy} = query;
+    let perPage = Number(query.perPage);
+    let page = Number(query.page);
+    let tagId = params.tagId;
+
+    if (!perPage) {
+        perPage = 6;
+    }
+    if (isNaN(page) || !page) {
+        page = 1;
+    }
+
+    const data = await Post.data.getPostsByTag(Number(tagId), perPage, page, DEFAULT_POST_FIELDS);
+    const totalPages = Math.ceil(data.total / perPage);
+
+    const postData = await Promise.all(data.posts.map(async (post: any) => {
+        post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
+        post.author = await User.getUserWIthFields(post.userid, ['username', 'picture', 'fullname']);
+
+        return post;
+    }));
+
+    const pageData = {
+        title: 'Posts',
+        navigation:  new NavigationManager().get('posts'),
+        posts: postData || [],
+        pagination: Helpers.generatePaginationItems(req.url, page, totalPages),
+    };
+
+    res.render('blog/posts_by_tag', pageData);
+}
+
 export default {
-    get, posts: renderPosts, getPostBySlug
+    get, posts: renderPosts, getPostBySlug, getPostsByTag,
   } as const;

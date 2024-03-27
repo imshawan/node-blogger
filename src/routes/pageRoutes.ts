@@ -9,5 +9,6 @@ mountPageRoute(router, '/', [], controllers.blog.get);
 mountPageRoute(router, '/posts', [], controllers.blog.posts);
 mountPageRoute(router, '/posts/:postId/:slug', [], controllers.blog.getPostBySlug);
 mountPageRoute(router, '/categories', [], controllers.category.get);
+mountPageRoute(router, '/tags/:tagId/:slug', [], controllers.blog.getPostsByTag);
 
 export default router
