@@ -618,9 +618,9 @@ function mapResultsToRanks(result: ISortedSetKey[], keys: string[]): (number | n
     return keys.map(key => (map[key] ? map[key].rank : null));
 }
 
-async function incrementObjectFieldValueBy (key: string, field: string, value: number, options?: IParamOptions) {
+async function incrementObjectFieldValueBy (key: string, field: string, value: number, options?: IParamOptions): Promise<number> {
     if (!key || isNaN(value)) {
-        return null;
+        return 0;
     }
     options = getObjectOptions(options);
     const increment = {
