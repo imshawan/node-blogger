@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="row pt-5">
+        <% if (_breadcrumb.length) { %>
+            <div class="col-12">
+                <h2 class="text-normal" style="font-size: var(--font-size-36);">
+                    <%= _breadcrumb[_breadcrumb.length - 1]['label'] %>
+                </h2>
+            </div>
+            <div class="col-12">
+                <div class="breadcrumb pt-1">
+                    <% _breadcrumb.forEach((item, index) => { %>
+                        <% if (isNaN(item.label)) { %>
+                            <a href="#" style="font-size: var(--font-size-12);" class="breadcrumb-item <% if (item.active) { %> active <% } %>" rel="nofollow"><%= item.label %></a>
+                        <% } %>
+                    <% }) %>
+                </div>
+                <div style="margin-bottom: 50px;margin-top: 30px;" class="border-top"></div>
+            </div>
+        <% } %>
+    </div>
+    <div class="row">
+        <div class="posts-wrapper pb-0 posts-container">
+
+            <% posts.forEach(post => { %>
+                <%- include('/blog/partials/post', {post: post}); -%>
+            <% }) %>
+
+        </div>
+    </div>
+</div>
