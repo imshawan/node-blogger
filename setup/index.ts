@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import server from "./server";
 import { Logger, openWebUrl } from "../src/utilities";
+import '../src/helpers/logstream';
 
 const logger = new Logger({prefix: 'setup'});
 const configFileLocation = path.join(__dirname, '../config.json');

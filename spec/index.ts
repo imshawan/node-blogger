@@ -6,6 +6,7 @@ import path from 'path';
 import server from '@src/server';
 import Mocha, { Test } from 'mocha';
 import { ITestConfig, ITestResult } from '@src/types';
+import '../src/helpers/logstream';
 
 const DEFAULT_MOCHA_TIMEOUT = 1000 * 10; // 10 seconds
 const FILE_FLAG = '--file=';

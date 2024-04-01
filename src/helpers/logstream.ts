@@ -21,9 +21,7 @@ const getLogFilename = function (today: Date) {
     return LOG_FILE_NAME.replace(/\{DATE\}/g, dateString);
 }
 
-export const stream: {logger?: winston.Logger | null} = {};
-
-export const initialize = function () {
+const initialize = function () {
     if (!fs.existsSync(LOGS_DIRECTORY)) {
         fs.mkdirSync(LOGS_DIRECTORY, {recursive: true});
     }
@@ -50,5 +48,7 @@ export const initialize = function () {
 
     logger.info('\n');
 
-    stream.logger = logger;
+    return logger;
 }
+
+export const stream = initialize();

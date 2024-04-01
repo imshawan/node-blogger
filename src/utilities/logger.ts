@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import {stream} from '@src/helpers'
+import {stream} from '@src/helpers/logstream'
 
 interface ILogger {
     silent?: boolean;
@@ -48,9 +48,9 @@ export class Logger {
             console[type](this.timeStamp(), message);
         }
 
-        if (stream.logger) {
-            if (typeof stream.logger[type] === 'function') {
-                stream.logger[type].call(null, message, null);
+        if (stream) {
+            if (typeof stream[type] === 'function') {
+                stream[type].call(null, message, null);
             }
         }
 

@@ -7,6 +7,7 @@ import childProcess from 'child_process';
 import {Logger} from '../src/utilities/logger';
 import {minifyJavaScripts} from './minify';
 import { capitalizeFirstLetter } from '@src/utilities';
+import '../src/helpers/logstream';
 
 const logger = new Logger({prefix: 'build'});
 const requiredConfigFields = { host: String, mongodb: Object, secret: String, env: String };
