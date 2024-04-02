@@ -1,28 +1,39 @@
 <div class="container">
-    <div class="row pt-5">
+    <div class="row py-5">
+        <div class="col-12 d-flex mx-3 mb-3 justify-content-center">
+            <a href="" class="badge text-black badge-light border-0 bg-light"><i class="fa fa-binoculars me-2" aria-hidden="true"></i>Explore more</a>
+            <% if (popularTags.length) { %>
+             <% popularTags.forEach(elem => { %>
+                <%- include('/blog/partials/tag_badge', {tag: elem, active: tag.tagId == elem.tagId}); -%>
+             <% }) %>
+            <% } %>
+        </div>
         <% if (_breadcrumb.length) { %>
-            <div class="col-12">
-                <h2 class="text-normal" style="font-size: var(--font-size-36);">
+            <div class="col-12 text-center">
+                <h2 class="text-normal mb-0" style="font-size: var(--font-size-36);">
                     <%= _breadcrumb[_breadcrumb.length - 1]['label'] %>
                 </h2>
             </div>
-            <div class="col-12">
-                <div class="breadcrumb pt-1">
-                    <% _breadcrumb.forEach((item, index) => { %>
-                        <% if (isNaN(item.label)) { %>
-                            <a href="#" style="font-size: var(--font-size-12);" class="breadcrumb-item <% if (item.active) { %> active <% } %>" rel="nofollow"><%= item.label %></a>
-                        <% } %>
-                    <% }) %>
-                </div>
-                <div style="margin-bottom: 50px;margin-top: 30px;" class="border-top"></div>
-            </div>
         <% } %>
+
+        <div class="col-12 text-black justify-content-center d-flex my-3">
+            Topic
+            <span class="dot-separator mx-2"></span>
+            <%= tag.posts %> Posts
+            <span class="dot-separator mx-2"></span>
+            <%= tag.followers ?? 0 %> Followers
+        </div>
+        <div class="col-12 d-flex justify-content-center text-black">
+            <button class="btn btn-primary button btn-sm follow">Follow</button>
+        </div>
     </div>
-    <div class="row">
+    <div class="row mt-4">
         <div class="posts-wrapper pb-0 posts-container">
 
             <% posts.forEach(post => { %>
-                <%- include('/blog/partials/post', {post: post}); -%>
+                <div class="col-12 col-md-6">
+                    <%- include('/blog/partials/post', {post: post}); -%>
+                </div>
             <% }) %>
 
         </div>

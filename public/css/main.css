@@ -253,7 +253,10 @@ label {
   background-color: white;
   color: black;
 }
-
+.btn-sm {
+  padding: 4px 10px;
+  font-size: var(--font-size-10);
+}
 .card-button {
   text-decoration: none;
   padding: 5px 15px;

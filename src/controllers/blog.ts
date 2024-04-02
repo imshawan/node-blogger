@@ -7,6 +7,7 @@ import * as User from '@src/user';
 import * as Helpers from "@src/helpers";
 import moment from 'moment';
 import { ICategoryTag, IPost } from '@src/types';
+import Tag from '@src/category/tags';
 
 const DATE_FORMAT = 'DD MMM, yyyy';
 const DEFAULT_POST_FIELDS: (keyof IPost)[] = [
@@ -140,6 +141,7 @@ const getPostsByTag = async function (req: Request, res: Response) {
     let perPage = Number(query.perPage);
     let page = Number(query.page);
     let tagId = params.tagId;
+    let tagFields = ['posts', 'tagId', 'name', 'slug', 'followers'];
 
     if (!perPage) {
         perPage = 6;
@@ -148,7 +150,11 @@ const getPostsByTag = async function (req: Request, res: Response) {
         page = 1;
     }
 
-    const data = await Post.data.getPostsByTag(Number(tagId), perPage, page, DEFAULT_POST_FIELDS);
+    const [data, tag, popular] = await Promise.all([
+        Post.data.getPostsByTag(Number(tagId), perPage, page, DEFAULT_POST_FIELDS),
+        Tag.getById(Number(tagId), tagFields),
+        category.tags.getPopularTags(15, 0, tagFields)
+    ]);
     const totalPages = Math.ceil(data.total / perPage);
 
     const postData = await Promise.all(data.posts.map(async (post: any) => {
@@ -162,6 +168,8 @@ const getPostsByTag = async function (req: Request, res: Response) {
         title: 'Posts',
         navigation:  new NavigationManager().get('posts'),
         posts: postData || [],
+        tag: tag ?? {},
+        popularTags: (popular.tags ?? []).filter(e => e),
         pagination: Helpers.generatePaginationItems(req.url, page, totalPages),
     };
 
