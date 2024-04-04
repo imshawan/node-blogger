@@ -1,6 +1,5 @@
 [
 	{
-		"userid": 1,
 		"name": "Introduction",
 		"description": "In this section, you'll find introductory information about our blog. It's like a sneak peek into what we're all about. From what topics we cover to who's behind the scenes, this is where you'll get a taste of what to expect from our blog.",
 		"tags": [
@@ -23,7 +22,6 @@
 		]
 	},
 	{
-		"userid": 1,
 		"name": "Blogs",
 		"description": "Welcome to the vibrant world of blogs! This category serves as a gateway to a diverse and dynamic landscape where ideas, opinions, experiences, and insights converge. Blogs encompass a myriad of topics, ranging from personal anecdotes and reflections to expert analyses and niche interests, providing a platform for individuals and organizations to share their thoughts with the world.",
 		"tags": [

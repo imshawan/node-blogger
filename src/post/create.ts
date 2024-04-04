@@ -85,6 +85,7 @@ export const create = async function create(data: IPost): Promise<IPost> {
     const readTime = calculateReadTime(content, suffix);
     const key = 'post:' + postId;
     const tagIds = tags.map((tag: string) => Number(String(tag).split(':').pop()));
+    const textContent = textFromHTML(content ?? '');
 
     status = String(status).toLowerCase().trim() as Status;
 
@@ -101,7 +102,7 @@ export const create = async function create(data: IPost): Promise<IPost> {
     postData.comments = 0;
     postData.status = status;
     postData.featuredImage = featuredImage;
-    postData.wordCount = wordCount || String(content).length;
+    postData.wordCount = wordCount || String(textContent).length;
     postData.readTime = `${readTime} ${suffix}${readTime > 1 ? 's' : ''}`;
 
     postData.createdAt = timestamp;

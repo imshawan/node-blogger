@@ -10,7 +10,7 @@ import { CATEGORY_TAG_WEIGHTS } from '@src/constants';
 
 const MAX_TAG_SIZE = 25;
 
-const create = async function create(tagData: ICategoryTag) {
+const create = async function create(tagData: ICategoryTag): Promise<ICategoryTag> {
     const {name,cid,userid} = tagData;
     var maxTagLength = application.configurationStore?.maxCategoryBlurbLength || MAX_TAG_SIZE;
 
@@ -64,7 +64,7 @@ const create = async function create(tagData: ICategoryTag) {
         database.sortedSetAddKeys(bulkAddSets),
         onNewTag(tag),
     ]);
-    return acknowledgement;
+    return acknowledgement as ICategoryTag;
 }
 
 const getById = async function getById(tagId: number, fields?: Array<string>) {

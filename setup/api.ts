@@ -10,6 +10,7 @@ import { Collections } from "../src/constants";
 import {utils} from '../src/user';
 import {utilities as dbUtils} from '../src/database/utils';
 import defults from './data/defaults.json'
+import * as Initializer from './initializer';
 
 const router = express.Router();
 const logger = new Logger({prefix: 'setup'});
@@ -122,13 +123,14 @@ async function complete(req: Request, res: Response, next: NextFunction) {
         const baseConf = JSON.parse(fs.readFileSync(path.join(tempFilesDir, 'database.json'), {encoding: 'utf-8'}));
         const userData: IUser = JSON.parse(fs.readFileSync(path.join(tempFilesDir, 'account.json'), {encoding: 'utf-8'}));
         const database = await setupDatabaseConnection(baseConf.uri, baseConf.dbName);
-
-        config.host = baseConf.blogUrl;
-        config.port = 3000;
-        config.mongodb = {
+        const mongodb = {
             uri: baseConf.uri,
             db: baseConf.dbName
         }
+
+        config.host = baseConf.blogUrl;
+        config.port = 3000;
+        config.mongodb = mongodb;
         config.test = {
             timeout: 2000,
             mongodb: {
@@ -146,7 +148,8 @@ async function complete(req: Request, res: Response, next: NextFunction) {
         
         await Promise.all([
             database.collection(Collections.DEFAULT).insertOne(globalCounter),
-            createFirstUser(userData, database)
+            createFirstUser(userData, database),
+            Initializer.initializeBlogWithData(userData, mongodb),
         ])
 
     } catch (err) {

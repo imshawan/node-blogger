@@ -39,8 +39,6 @@ export const initializeDbConnection = async function (mongodb: any) {
     mongo.client = client;
     mongo.connection = connection;
     mongo.sessionStore = sessionStore;
-
-    getConnectionInfo()
 }
 
 export const getConnectionInfo = async function(): Promise<IMongoDBStats | {}> {

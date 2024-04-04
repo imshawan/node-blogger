@@ -8,7 +8,7 @@ import data from "./data";
 
 const MAX_BLURB_SIZE = 250;
 
-export default async function create(categoryData: ICategory) {
+export default async function create(categoryData: ICategory): Promise<ICategory> {
     const {name='', userid, thumb} = categoryData;
     var {description='', blurb='', tagsPerPost, parent} = categoryData;
     var maxCategoryBlurbLength = application.configurationStore?.maxCategoryBlurbLength || MAX_BLURB_SIZE;
@@ -86,7 +86,7 @@ export default async function create(categoryData: ICategory) {
     category.createdAt = timestamp;
     category.updatedAt = timestamp;
 
-    const acknowledgement = await database.setObjects(key, category);
+    const acknowledgement = await database.setObjects(key, category) as ICategory;
     const bulkAddSets = [
         ['category:cid', key, now],
         ['category:slug:' + sanitizeString(category.slug), key, now],
