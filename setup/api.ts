@@ -151,7 +151,8 @@ async function complete(req: Request, res: Response, next: NextFunction) {
             createFirstUser(userData, database),
         ]);
 
-        await Initializer.initializeBlogWithData(user, mongodb);
+        await Initializer.initializeDatabaseIndexing(mongodb);
+        await Initializer.initializeBlogWithData(user);
 
     } catch (err) {
         return res.status(400).json({message: err.message})

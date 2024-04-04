@@ -4,6 +4,7 @@ import { Logger } from '@src/utilities';
 import { Cache } from './cache';
 import { ICollection, IMongoDatabaseStats, IMongoDBStats } from '@src/types';
 import {utilities as dbUtils} from './utils';
+import { Db } from 'mongodb';
 
 const logger = new Logger();
 const cache = new Cache({
@@ -14,7 +15,7 @@ const cache = new Cache({
 
 export const mongo: { client?: any; connection?: any; sessionStore?: any, cache: Cache } = {cache};
 
-export const initializeDbConnection = async function (mongodb: any) {
+export const initializeDbConnection = async function (mongodb: any): Promise<Db> {
     if (!Object.keys(mongodb).length) {
         throw new Error('Database configuration could not be loaded');
     }
@@ -39,6 +40,8 @@ export const initializeDbConnection = async function (mongodb: any) {
     mongo.client = client;
     mongo.connection = connection;
     mongo.sessionStore = sessionStore;
+
+    return client;
 }
 
 export const getConnectionInfo = async function(): Promise<IMongoDBStats | {}> {
