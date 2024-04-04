@@ -146,11 +146,12 @@ async function complete(req: Request, res: Response, next: NextFunction) {
             user: 1
         }
         
-        await Promise.all([
+        let [, user] = await Promise.all([
             database.collection(Collections.DEFAULT).insertOne(globalCounter),
             createFirstUser(userData, database),
-            Initializer.initializeBlogWithData(userData, mongodb),
-        ])
+        ]);
+
+        await Initializer.initializeBlogWithData(user, mongodb);
 
     } catch (err) {
         return res.status(400).json({message: err.message})
@@ -248,6 +249,8 @@ async function createFirstUser(userdata: IUser, dbConnection: Db) {
     const writeData = [user].concat([newUserRegData], sets)
 
     await dbConnection.collection(Collections.DEFAULT).insertMany(writeData);
+
+    return user;
 }
 
 export default router;
