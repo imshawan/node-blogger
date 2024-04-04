@@ -1,4 +1,3 @@
-import { Db } from "mongodb";
 import { ICategory, ICategoryTag, IPost, IUser } from "../src/types";
 import Category from "../src/category";
 import Post from "../src/post";
@@ -6,7 +5,7 @@ import {database, initializeDbConnection} from "../src/database";
 import data from "./data/data.json";
 import _ from "lodash";
 
-export async function initializeBlogWithData(user: IUser, databaseConf: object) {
+export async function initializeBlogWithData(user: IUser, databaseConf: {uri: string; db: string}) {
     await initializeDbConnection(databaseConf);
 
     for (let index = 0; index < data.length; index++) {
