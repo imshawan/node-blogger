@@ -4,7 +4,8 @@ import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 
-import {Logger, getISOTimestamp, generateUUID, slugify, password as Passwords, sanitizeString} from '../src/utilities';
+import {Logger, getISOTimestamp, generateUUID, slugify, 
+    url as urlUtils, password as Passwords, sanitizeString} from '../src/utilities';
 import { IUser, MutableObject } from "../src/types";
 import { Collections } from "../src/constants";
 import {utils} from '../src/user';
@@ -29,7 +30,8 @@ router.post('/account', setupAdministrator);
 router.post('/complete', complete);
 
 async function database(req: Request, res: Response, next: NextFunction) {
-    const {uri, dbName, blogUrl, testDbName} = req.body;
+    const {uri, dbName, testDbName} = req.body;
+    let blogUrl: string | null = String(req.body.blogUrl);
 
     try {
         if (!blogUrl) {
@@ -37,6 +39,12 @@ async function database(req: Request, res: Response, next: NextFunction) {
         }
 
         new URL(blogUrl); // Will throw error if is invalid.
+        
+        blogUrl = urlUtils.extractHostname(blogUrl);
+        if (!blogUrl) {
+            throw new Error('Invalid URl was supplied, please once re-verify before submitting.');
+        }
+
     } catch (err) {
         return res.status(400).json({message: err.message, field: 'blogUrl'});
     }
@@ -117,7 +125,7 @@ async function complete(req: Request, res: Response, next: NextFunction) {
     
     try {
         if (missing.length) {
-            throw new Error(`Looks like you havenn't configured ${missing.map(e => e.split('.json')).join(', ')} yet. Please restart the setup process.`);
+            throw new Error(`Looks like you haven't configured ${missing.map(e => e.split('.json')).join(', ')} yet. Please restart the setup process.`);
         }
 
         const baseConf = JSON.parse(fs.readFileSync(path.join(tempFilesDir, 'database.json'), {encoding: 'utf-8'}));

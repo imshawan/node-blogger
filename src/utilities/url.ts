@@ -81,4 +81,17 @@ const hasQueryParam = function (url: string, key: string) {
     return false;
 }
 
-export const url = {hasQueryParam, removeQueryParamByKey, urlQueryBuilder};
+const extractHostname  = function(urlString: string) {
+    if (!urlString) {
+        return null;
+    }
+
+    const regex = /^(https?:\/\/[^/]+)\//;
+    const match = urlString.match(regex);
+    if (match) {
+        return match[1];
+    }
+    return null;
+}
+
+export const url = {hasQueryParam, removeQueryParamByKey, urlQueryBuilder, extractHostname};
