@@ -1,22 +1,35 @@
 import { PassportUserSessionStore } from '@src/utilities';
 import { IUser, MutableObject } from '@src/types';
-import { getUserByUsername, getUsersByPagination, isAdministrator } from '@src/user';
+import { getUserByUsername, getUsers, isAdministrator } from '@src/user';
 import { Request, Response } from 'express';
 import moment from 'moment';
 import { notFoundHandler } from '@src/middlewares';
 import { NavigationManager } from '@src/utilities/navigation';
+import * as Helpers from "@src/helpers";
 
 const users: MutableObject = {};
 
 users.get = async function (req: Request, res: Response) {
-    var {page, limit, search} = req.query;
+    const query = req.query;
+    let perPage = Number(query.perPage);
+    let page = Number(query.page);
+
+    if (!perPage) {
+        perPage = 15;
+    }
+    if (isNaN(page) || !page) {
+        page = 1;
+    }
+
     const pageData: MutableObject = {};
 
-    const users = await getUsersByPagination();
+    const data = await getUsers({ perPage, page });
+    const totalPages = Math.ceil(data.total / perPage);
 
     pageData.title = 'Users';
-    pageData.users = users;
+    pageData.users = data.users;
     pageData.navigation = new NavigationManager().get('users');
+    pageData.pagination = Helpers.generatePaginationItems(req.url, page, totalPages);
 
     res.render('users/index', pageData);
 }
