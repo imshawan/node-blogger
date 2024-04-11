@@ -360,30 +360,6 @@ const getSortedSetsSearchCount = async function (key: string, match: string, opt
     return mongo.client.collection(options.collection).countDocuments({_key: key, value: { $regex: regex }});
 };
 
-const sortedSetIntersectKeys = async function (keys: Array<any>, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
-
-    if (!Array.isArray(keys) || !keys.length) {
-        return 0;
-    }
-    const objects = mongo.client.collection(options.collection);
-    const counts = await countSets(keys, 50000, options);
-    if (counts.minCount === 0) {
-        return 0;
-    }
-    let items = await objects.find({ _key: counts.smallestSet }, {projection: { _id: 0, value: 1 },})
-        .batchSize(counts.minCount + 1).toArray();
-
-    const otherSets = keys.filter(s => s !== counts.smallestSet);
-    for (let i = 0; i < otherSets.length; i++) {
-        const query = { _key: otherSets[i], value: { $in: items.map((item: ISortedSetKey) => item.value) } };
-        if (i === otherSets.length - 1) {
-            return await objects.countDocuments(query);
-        }
-        items = await objects.find(query, { projection: { _id: 0, value: 1 } }).batchSize(items.length + 1).toArray();
-    }
-};
-
 const fetchSortedSetsRangeReverse = async function (key: string | string[], start: number, stop: number, options?: IParamOptions) {
     return await fetchSortedSetsRange(key, start, stop, '-inf', '+inf', -1, false, options);
 };
@@ -588,24 +564,6 @@ function buildLexicalQuery(query: ISortedSetLexicalQuery, min: string | number, 
     return query;
 }
 
-async function countSets(sets: Array<any>, limit: number, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
-
-    const objects = mongo.client.collection(options.collection);
-    const counts = await Promise.all(
-        sets.map(set => objects.countDocuments({ _key: set }, {
-            limit: limit || 25000,
-        }))
-    );
-    const minCount = Math.min(...counts);
-    const index = counts.indexOf(minCount);
-    const smallestSet = sets[index];
-    return {
-        minCount: minCount,
-        smallestSet: smallestSet,
-    };
-}
-
 function mapResultsToRanks(result: ISortedSetKey[], keys: string[]): (number | null | undefined)[] {
     const map: { [key: string]: ISortedSetKey } = {};
 
@@ -727,7 +685,6 @@ const operations = {
 	getSortedSetsLexicalCount,
 	getSortedSetsLexicalReverse,
 	getSortedSetsLexical,
-	sortedSetIntersectKeys,
 	fetchSortedSetsRangeReverseWithRanks,
 	fetchSortedSetsRangeWithRanks,
 	fetchSortedSetsRangeReverse,
