@@ -27,6 +27,14 @@ const consent = async (req: Request, res: Response) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.user.consent(req));
 }
 
+const follow = async (req: Request, res: Response) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.user.followUser(req));
+}
+
+const unFollow = async (req: Request, res: Response) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.user.unFollowUser(req));
+}
+
 export default {
-    checkUsername, checkPassword, update, updatePicture, consent, deleteUser
+    checkUsername, checkPassword, update, updatePicture, consent, deleteUser, follow, unFollow
   } as const;

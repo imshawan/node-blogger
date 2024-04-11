@@ -593,6 +593,9 @@ async function incrementObjectFieldValueBy (key: string, field: string, value: n
         return await incrementObjectFieldValueBy(key, field, value, options);
     }
 
+    // Clear the cache for the key as one of the field now has been updated
+    mongo.cache.delete(key);
+
     return fieldValue;
 };
 

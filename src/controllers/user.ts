@@ -1,6 +1,6 @@
 import { PassportUserSessionStore } from '@src/utilities';
 import { IUser, MutableObject } from '@src/types';
-import { getUserByUsername, getUsers, isAdministrator } from '@src/user';
+import { followers as Followers, getUserByUsername, getUsers, isAdministrator } from '@src/user';
 import { Request, Response } from 'express';
 import moment from 'moment';
 import { notFoundHandler } from '@src/middlewares';
@@ -10,7 +10,9 @@ import * as Helpers from "@src/helpers";
 const users: MutableObject = {};
 
 users.get = async function (req: Request, res: Response) {
-    const query = req.query;
+    const query = req.query,
+        userid = Helpers.parseUserId(req);
+
     let perPage = Number(query.perPage);
     let page = Number(query.page);
 
@@ -36,6 +38,7 @@ users.get = async function (req: Request, res: Response) {
 
 users.getByUsername = async function (req: Request, res: Response) {  
     const {username} = req.params;
+    const userid = Helpers.parseUserId(req);
     const page: MutableObject = {};
 
     var userData: IUser | null = await getUserByUsername(username);
@@ -46,10 +49,16 @@ users.getByUsername = async function (req: Request, res: Response) {
     if (userData.joiningDate) {
         userData.joiningDate = moment(new Date(userData.joiningDate)).format('MMMM DD, yyyy');
     }
+
+    let isFollowing = false;
+    if (userid > 0) {
+        isFollowing = await Followers.isFollowing((userData.userid ?? 0), userid);
+    }
     
     page.title = userData.fullname || userData.username;
     page.profile = userData;
     page.navigation =  new NavigationManager().get('users');
+    page.isFollowing = isFollowing;
 
     res.render('users/profile', page);
 }

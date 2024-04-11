@@ -46,6 +46,7 @@ export interface IUser {
     acceptedTnC?: boolean
     roles?: IRoles
     followers?: number
+    posts?: number
     createdAt?: string
     updatedAt?: string
 }

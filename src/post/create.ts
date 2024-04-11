@@ -128,9 +128,11 @@ export const create = async function create(data: IPost): Promise<IPost> {
 }
 
 async function onNewPost(data:IPost) {
-    const {tags, categories} = data;
+    const {tags, categories, userid} = data;
 
     const promises: Promise<any>[] = [];
+
+    promises.push(database.incrementFieldCount('posts', 'user:' + userid));
 
     if (categories && Array.isArray(categories) && categories.length) {
         categories.forEach(key => {

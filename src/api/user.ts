@@ -1,10 +1,12 @@
 import { Request } from "express";
 import {database} from "@src/database"
 import { getUserByUsername, utils, updateUserData, isAdministrator, 
-    deleteUser as deleteUserWithData } from "@src/user";
+    deleteUser as deleteUserWithData, 
+    followers as Followers} from "@src/user";
 import { MutableObject, MulterFilesArray, ExpressUser } from "@src/types";
 import { parseBoolean } from "@src/utilities";
 import { isAuthorizedToDelete } from "@src/permissions";
+import * as Helpers from "@src/helpers";
 
 const checkUsername = async (req: Request) => {
     const {username} = req.params;
@@ -103,6 +105,36 @@ const consent = async (req: Request) => {
     }
 }
 
+const followUser = async (req: Request) => {
+    const loggedInUser = Helpers.parseUserId(req);
+    const toFollow = Number(req.params.userid);
+
+    if (!toFollow) {
+        throw new Error('Invalid userid to follow');
+    }
+
+    await Followers.follow(toFollow, loggedInUser)
+
+    return {
+        message: 'Follow successful.'
+    }
+}
+
+const unFollowUser = async (req: Request) => {
+    const loggedInUser = Helpers.parseUserId(req);
+    const toFollow = Number(req.params.userid);
+
+    if (!toFollow) {
+        throw new Error('Invalid userid to unfollow');
+    }
+
+    await Followers.unFollow(toFollow, loggedInUser);
+
+    return {
+        message: 'Unfollow successful.'
+    }
+}
+
 export default {
-    checkUsername, checkPassword, updateUser, updatePicture, deleteUser, consent
+    checkUsername, checkPassword, updateUser, updatePicture, deleteUser, consent, followUser, unFollowUser
   } as const;

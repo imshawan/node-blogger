@@ -12,6 +12,8 @@ mountApiRoute(router, 'put', '/:userid', [requireAuthentication], controllers.ap
 mountApiRoute(router, 'delete', '/:userid', [requireAuthentication], controllers.api.user.deleteUser);
 mountApiRoute(router, 'put', '/:userid/picture', [fileuploadMiddleware, requireAuthentication], controllers.api.user.updatePicture);
 mountApiRoute(router, 'post', '/:userid/consent', [requireAuthentication, checkRequiredFields.bind(null, ['data', 'emails', 'token'])], controllers.api.user.consent);
+mountApiRoute(router, 'put', '/:userid/follow', [requireAuthentication], controllers.api.user.follow);
+mountApiRoute(router, 'put', '/:userid/unfollow', [requireAuthentication], controllers.api.user.unFollow);
 
 // Public routes
 mountApiRoute(router, 'get', '/validate/username/:username', [], controllers.api.user.checkUsername);

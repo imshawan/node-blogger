@@ -3,6 +3,7 @@ import { getUserByUsername } from './data';
 import { database } from '@src/database';
 import { slugify, sanitizeString } from '@src/utilities';
 import { application } from '@src/application';
+import { IUser } from '@src/types';
 
 interface IPasswordStrength {
     warning: string
@@ -110,9 +111,17 @@ async function hasCompletedConsent(userid: Number) {
     return consent;
 }
 
+function serialize (userData: IUser) {
+    if (!userData.followers || userData.followers == -1) {
+        userData.followers = 0;
+    }
+
+    return userData;
+}
+
 const utils = {
     validatePassword, checkPasswordStrength, isValidEmail, validateUsername, checkEmailAvailability,
-    generateNextUserId, generateUserslug, hasCompletedConsent,
+    generateNextUserId, generateUserslug, hasCompletedConsent, serialize
 }
 
 export {utils};

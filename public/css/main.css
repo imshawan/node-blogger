@@ -257,6 +257,9 @@ label {
   padding: 4px 10px;
   font-size: var(--font-size-10);
 }
+.btn-dark {
+  font-weight: 600;
+}
 .card-button {
   text-decoration: none;
   padding: 5px 15px;

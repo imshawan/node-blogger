@@ -29,8 +29,12 @@
                                     </div>
                                 <% } else { %>
                                     <div class="">
-                                        <button data-userid="<%= profile.userid %>" class="btn button mt-0 btn-primary btn-icon-text btn-edit-profile">
-                                            Follow <i class="fa-solid fa-plus"></i>
+                                        <button data-action="<% if (isFollowing) { %>unfollow<% } else {%>follow<% } %>" data-user-name="<%= profile.fullname || profile.username %>" data-userid="<%= profile.userid %>" class="btn button mt-0 btn-primary btn-icon-text btn-edit-profile">
+                                            <% if (isFollowing) { %>
+                                                Following <i class="fa-fa fa-solid fa-check" aria-hidden="true"></i>
+                                                
+                                            <% } else { %> Follow <i class="fa-solid fa-plus"></i> <% } %>
+                                            
                                         </button>
                                     </div>
                                 <% } %>

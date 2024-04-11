@@ -19,7 +19,8 @@ export const validUserFields: (keyof IUser)[] = [
     "about",
     "roles",
     "joiningDate",
-    "lastOnline"
+    "lastOnline",
+    "followers"
   ] as (keyof IUser)[];
 
 interface IUserOptions {
@@ -56,7 +57,8 @@ export async function getUsers(options: IUserOptions = {}) {
         database.getObjectsCount('user:userid')
     ]);
 
-    const users = await database.getObjectsBulk(userSets, validUserFields);
+    let users = await database.getObjectsBulk(userSets, validUserFields);
+    users = users.map(UserUtils.serialize);
 
     return {users, total: total ?? 0};
 }
@@ -77,7 +79,7 @@ export async function getUserByUsername(username: string): Promise<IUser | null>
 
     let data = database.getObjects(set, validUserFields) as IUser;
 
-    return data;
+    return UserUtils.serialize(data);
 }
 
 export async function getUserByEmail(email: string): Promise<IUser | null> {
@@ -99,7 +101,7 @@ export async function getUserByEmail(email: string): Promise<IUser | null> {
         return null;
     }
 
-    return data;
+    return UserUtils.serialize(data);
 }
 
 export async function getUserByUserId(userid: number=0): Promise<IUser> {
@@ -111,7 +113,9 @@ export async function getUserByUserId(userid: number=0): Promise<IUser> {
         throw new Error('Invalid userid supplied');
     }
 
-    return await database.getObjects('user:' + userid, validUserFields);
+    const user = await database.getObjects('user:' + userid, validUserFields);
+
+    return UserUtils.serialize(user);
 }
 
 export async function getUserWIthFields(userid: number=0, fields: string[]=[]) {
@@ -132,7 +136,9 @@ export async function getUserWIthFields(userid: number=0, fields: string[]=[]) {
         fields.push('userid');
     }
 
-    return await database.getObjects('user:' + userid, fields);
+    const user = await database.getObjects('user:' + userid, fields);
+
+    return UserUtils.serialize(user);
 }
 
 export async function isAdministrator(userid: number | object): Promise<boolean> {
@@ -147,7 +153,7 @@ export async function isAdministrator(userid: number | object): Promise<boolean>
         user = await getUserByUserId(userid);
     }
 
-    if (Object.hasOwnProperty.bind(user)('roles')) {
+    if (Object.hasOwnProperty.bind(user)('roles') && user.roles) {
         const roles: IRoles = user.roles;
 
         if (Object.hasOwnProperty.bind(roles)('administrator')) {
