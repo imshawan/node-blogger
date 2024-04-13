@@ -55,7 +55,9 @@ async function handleFollowing(userid: number, caller: number, action: 'follow' 
     }
 
     const alreadyFollowing = await isFollowing(userid, caller),
-        userKey = 'user:' + userid;
+        userKey = 'user:' + userid,
+        callerKey = 'user:' + caller,
+        now = Date.now();
 
     if (action === 'follow' && alreadyFollowing) {
         return;
@@ -66,13 +68,21 @@ async function handleFollowing(userid: number, caller: number, action: 'follow' 
 
     if (action === 'follow') {
         await Promise.all([
-            database.sortedSetAddKey(userKey + ':follower', 'user:' + caller, Date.now()),
-            database.incrementFieldCount('followers', userKey)
+            database.sortedSetAddKeys([
+                [userKey + ':follower', callerKey, now],
+                [callerKey + ':following', userKey, now]
+            ]),
+            database.incrementFieldCount('followers', userKey),
+            database.incrementFieldCount('following', callerKey),
         ]);
     } else if (action === 'unfollow') {
         await Promise.all([
-            database.sortedSetRemoveKey(userKey + ':follower', 'user:' + caller),
-            database.decrementFieldCount('followers', userKey)
+            database.sortedSetRemoveKeys([
+                [userKey + ':follower', callerKey],
+                [callerKey + ':following', userKey]
+            ]),
+            database.decrementFieldCount('followers', userKey),
+            database.decrementFieldCount('following', callerKey),
         ]);
     }
 }

@@ -17,10 +17,12 @@ export const validUserFields: (keyof IUser)[] = [
     "location",
     "bio",
     "about",
+    "website",
     "roles",
     "joiningDate",
     "lastOnline",
-    "followers"
+    "followers",
+    "following"
   ] as (keyof IUser)[];
 
 interface IUserOptions {
@@ -42,8 +44,8 @@ export async function getUsers(options: IUserOptions = {}) {
     }
     if (fields && !Array.isArray(fields)) {
         throw new TypeError('fields must be an array, found ' + typeof fields);
-    } else if (!fields) {
-        fields = [];
+    } else if (!fields || !fields.length) {
+        fields = validUserFields;
     }
     if (!sorting) {
         sorting = String(ValidSortingTechniques.DEFAULT) as ValidSortingTechniquesTypes;
@@ -57,15 +59,20 @@ export async function getUsers(options: IUserOptions = {}) {
         database.getObjectsCount('user:userid')
     ]);
 
-    let users = await database.getObjectsBulk(userSets, validUserFields);
+    let users = await database.getObjectsBulk(userSets, fields);
     users = users.map(UserUtils.serialize);
 
     return {users, total: total ?? 0};
 }
 
-export async function getUserByUsername(username: string): Promise<IUser | null> {
+export async function getUserByUsername(username: string, fields?: (keyof IUser)[]): Promise<IUser | null> {
     if (!username) {
         throw new Error('username is required');
+    }
+    if (fields && !Array.isArray(fields)) {
+        throw new TypeError('fields must be an array, found ' + typeof fields);
+    } else if (!fields || !fields.length) {
+        fields = validUserFields;
     }
 
     let sets = await database.fetchSortedSetsRangeReverse('user:username:' + sanitizeString(username), 0, -1); 
@@ -77,7 +84,7 @@ export async function getUserByUsername(username: string): Promise<IUser | null>
         set = sets[0];
     }
 
-    let data = database.getObjects(set, validUserFields) as IUser;
+    const data = await database.getObjects(set, fields) as IUser;
 
     return UserUtils.serialize(data);
 }
@@ -96,7 +103,7 @@ export async function getUserByEmail(email: string): Promise<IUser | null> {
         return null;
     }
 
-    let data = database.getObjects(String(set.value), validUserFields) as IUser;
+    let data = await database.getObjects(String(set.value), validUserFields) as IUser;
     if (!data) {
         return null;
     }
@@ -126,7 +133,7 @@ export async function getUserWIthFields(userid: number=0, fields: string[]=[]) {
     if (userid < 1) {
         throw new Error('Invalid userid supplied');
     }
-    if (!fields) {
+    if (!fields || !fields.length) {
         fields = validUserFields;
     }
     if (!Array.isArray(fields)) {

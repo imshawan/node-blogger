@@ -8,6 +8,16 @@ import { NavigationManager } from '@src/utilities/navigation';
 import * as Helpers from "@src/helpers";
 
 const users: MutableObject = {};
+const userFields = [
+    "userid",
+    "fullname",
+    "slug",
+    "username",
+    "picture",
+    "about",
+    "followers",
+    "posts",
+  ] as (keyof IUser)[];
 
 users.get = async function (req: Request, res: Response) {
     const query = req.query,
@@ -25,7 +35,7 @@ users.get = async function (req: Request, res: Response) {
 
     const pageData: MutableObject = {};
 
-    const data = await getUsers({ perPage, page });
+    const data = await getUsers({ perPage, page, fields: userFields });
     const totalPages = Math.ceil(data.total / perPage);
 
     pageData.title = 'Users';

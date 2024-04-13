@@ -3,7 +3,8 @@ import { getUserByUsername } from './data';
 import { database } from '@src/database';
 import { slugify, sanitizeString } from '@src/utilities';
 import { application } from '@src/application';
-import { IUser } from '@src/types';
+import { IUser, MutableObject } from '@src/types';
+import _ from 'lodash';
 
 interface IPasswordStrength {
     warning: string
@@ -111,12 +112,18 @@ async function hasCompletedConsent(userid: Number) {
     return consent;
 }
 
-function serialize (userData: IUser) {
-    if (!userData.followers || userData.followers == -1) {
-        userData.followers = 0;
-    }
+function serialize (userData: IUser): IUser {
 
-    return userData;
+    const fields = ['followers', 'posts', 'following'] as (keyof IUser)[];
+    const serializedObj: MutableObject = Object.assign({}, userData);
+
+    fields.forEach(field => {
+        if (!userData[field] || userData[field] == -1) {
+            serializedObj[field] = 0;
+        }
+    });
+
+    return serializedObj;
 }
 
 const utils = {

@@ -39,6 +39,7 @@ export interface IUser {
     location?: string
     bio?: string
     about?: string
+    website?: string
     joiningDate?: string
     isOnline?: boolean
     lastOnline?: string
@@ -46,6 +47,7 @@ export interface IUser {
     acceptedTnC?: boolean
     roles?: IRoles
     followers?: number
+    following?: number
     posts?: number
     createdAt?: string
     updatedAt?: string
