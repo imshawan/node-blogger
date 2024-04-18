@@ -46,9 +46,6 @@ export interface IUser {
     gdprConsent?: boolean
     acceptedTnC?: boolean
     roles?: IRoles
-    followers?: number
-    following?: number
-    posts?: number
     createdAt?: string
     updatedAt?: string
 }
@@ -57,6 +54,13 @@ export interface IRoles {
     administrator?: string | number
     moderator?: string | number
     globalModerator?: string | number
+}
+
+export interface IUserMetrics {
+    _key?: string
+    followers?: number
+    following?: number
+    posts?: number
 }
 
 export type ValidUserFields = "userid" | "fullname" | "slug" | "username" | "email" | "birthday" | "picture" | "cover" | "location" | "bio" | "about" | "roles" | "joiningDate" | "lastOnline";

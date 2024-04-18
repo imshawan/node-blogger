@@ -3,7 +3,7 @@ import { getUserByUsername } from './data';
 import { database } from '@src/database';
 import { slugify, sanitizeString } from '@src/utilities';
 import { application } from '@src/application';
-import { IUser, MutableObject } from '@src/types';
+import { IUser, IUserMetrics, MutableObject } from '@src/types';
 import _ from 'lodash';
 
 interface IPasswordStrength {
@@ -112,13 +112,39 @@ async function hasCompletedConsent(userid: Number) {
     return consent;
 }
 
-function serialize (userData: IUser): IUser {
+async function getUserMetrics (userids: number[]): Promise<IUserMetrics[]> {
+    if (!userids || !userids.length) return [];
+    if (!Array.isArray(userids)) {
+        userids = [userids];
+    }
 
-    const fields = ['followers', 'posts', 'following'] as (keyof IUser)[];
-    const serializedObj: MutableObject = Object.assign({}, userData);
+    userids = _.uniq(userids);
+
+    const userSets = userids.map(userid => 'user:' + userid + ':metrics');
+    const usersMetrices: IUserMetrics[] = await database.getObjectsBulk(userSets);
+
+    return usersMetrices.filter(metric => metric);
+}
+
+function createMetricsMap(metrics: IUserMetrics[]): Map<number, IUserMetrics> {
+    const metricsMap: Map<number, IUserMetrics> = new Map();
+
+    metrics.forEach(metric => {
+        if (metric._key) {
+            metricsMap.set(Number(metric._key.slice(5, -7)), metric);
+        }
+    });
+
+    return metricsMap;
+}
+
+function serializeMetrics (userMetrics: IUserMetrics): IUserMetrics {
+
+    const fields = ['followers', 'posts', 'following'] as (keyof IUserMetrics)[];
+    const serializedObj: MutableObject = Object.assign({}, userMetrics);
 
     fields.forEach(field => {
-        if (!userData[field] || userData[field] == -1) {
+        if (!userMetrics[field] || userMetrics[field] == -1) {
             serializedObj[field] = 0;
         }
     });
@@ -128,7 +154,7 @@ function serialize (userData: IUser): IUser {
 
 const utils = {
     validatePassword, checkPasswordStrength, isValidEmail, validateUsername, checkEmailAvailability,
-    generateNextUserId, generateUserslug, hasCompletedConsent, serialize
+    generateNextUserId, generateUserslug, hasCompletedConsent, getUserMetrics, createMetricsMap, serializeMetrics,
 }
 
 export {utils};

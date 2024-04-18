@@ -132,7 +132,7 @@ async function onNewPost(data:IPost) {
 
     const promises: Promise<any>[] = [];
 
-    promises.push(database.incrementFieldCount('posts', 'user:' + userid));
+    promises.push(database.incrementFieldCount('posts', 'user:' + userid + ':metrics'));
 
     if (categories && Array.isArray(categories) && categories.length) {
         categories.forEach(key => {

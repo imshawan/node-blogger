@@ -72,8 +72,8 @@ async function handleFollowing(userid: number, caller: number, action: 'follow' 
                 [userKey + ':follower', callerKey, now],
                 [callerKey + ':following', userKey, now]
             ]),
-            database.incrementFieldCount('followers', userKey),
-            database.incrementFieldCount('following', callerKey),
+            database.incrementFieldCount('followers', userKey + ':metrics'),
+            database.incrementFieldCount('following', callerKey + ':metrics'),
         ]);
     } else if (action === 'unfollow') {
         await Promise.all([
@@ -81,8 +81,8 @@ async function handleFollowing(userid: number, caller: number, action: 'follow' 
                 [userKey + ':follower', callerKey],
                 [callerKey + ':following', userKey]
             ]),
-            database.decrementFieldCount('followers', userKey),
-            database.decrementFieldCount('following', callerKey),
+            database.decrementFieldCount('followers', userKey + ':metrics'),
+            database.decrementFieldCount('following', callerKey + ':metrics'),
         ]);
     }
 }

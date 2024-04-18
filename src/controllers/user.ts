@@ -35,7 +35,7 @@ users.get = async function (req: Request, res: Response) {
 
     const pageData: MutableObject = {};
 
-    const data = await getUsers({ perPage, page, fields: userFields });
+    const data = await getUsers({ perPage, page, fields: userFields, withMetrics: true });
     const totalPages = Math.ceil(data.total / perPage);
 
     pageData.title = 'Users';
@@ -51,7 +51,7 @@ users.getByUsername = async function (req: Request, res: Response) {
     const userid = Helpers.parseUserId(req);
     const page: MutableObject = {};
 
-    var userData: IUser | null = await getUserByUsername(username);
+    var userData: IUser | null = await getUserByUsername(username, [], true);
     if (!userData) {
         return notFoundHandler(req, res);
     }
@@ -80,7 +80,7 @@ users.edit = async function (req: Request, res: Response) {
     const page: MutableObject = {};
     const sessionStore = new PassportUserSessionStore(req.sessionStore);
 
-    var userData: IUser | null = await getUserByUsername(username);
+    var userData: IUser | null = await getUserByUsername(username, [], true);
     if (!userData) {
         return notFoundHandler(req, res)
     }

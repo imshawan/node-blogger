@@ -1,8 +1,9 @@
 import { database } from "@src/database";
 import {utils as UserUtils} from './utils'
-import { IRoles, ISortedSetKey, IUser, ValidSortingTechniquesTypes } from "@src/types";
+import { IRoles, ISortedSetKey, IUser, IUserMetrics, ValidSortingTechniquesTypes } from "@src/types";
 import { filterObjectByKeys, sanitizeString } from "@src/utilities";
 import { ValidSortingTechniques } from "@src/constants";
+import _ from "lodash";
 
 export const validAccessUserRoles = ['administrator', 'globalModerator'];
 export const validUserFields: (keyof IUser)[] = [
@@ -21,18 +22,17 @@ export const validUserFields: (keyof IUser)[] = [
     "roles",
     "joiningDate",
     "lastOnline",
-    "followers",
-    "following"
   ] as (keyof IUser)[];
 
 interface IUserOptions {
     perPage?: number; 
     page?: number; 
     fields?: string[]; sorting?: ValidSortingTechniquesTypes
+    withMetrics?: boolean;
 }
 
 export async function getUsers(options: IUserOptions = {}) {
-    let {page, perPage, fields, sorting} = options ?? {};
+    let {page, perPage, fields, sorting, withMetrics} = options ?? {};
     if (!perPage) {
         perPage=15;
     }
@@ -60,12 +60,20 @@ export async function getUsers(options: IUserOptions = {}) {
     ]);
 
     let users = await database.getObjectsBulk(userSets, fields);
-    users = users.map(UserUtils.serialize);
+    if (withMetrics) {
+        const metrics = await UserUtils.getUserMetrics(users.map(({userid}) => Number(userid)));
+        const metricsMap = UserUtils.createMetricsMap(metrics);
+
+        users.forEach((user) => {
+            let metrics = metricsMap.get(Number(user.userid));
+            return  _.merge(user, UserUtils.serializeMetrics(metrics ?? {}));
+        });
+    }
 
     return {users, total: total ?? 0};
 }
 
-export async function getUserByUsername(username: string, fields?: (keyof IUser)[]): Promise<IUser | null> {
+export async function getUserByUsername(username: string, fields?: (keyof IUser)[], withMetrics: boolean = false): Promise<IUser | null> {
     if (!username) {
         throw new Error('username is required');
     }
@@ -86,10 +94,15 @@ export async function getUserByUsername(username: string, fields?: (keyof IUser)
 
     const data = await database.getObjects(set, fields) as IUser;
 
-    return UserUtils.serialize(data);
+    if (withMetrics) {
+        let metrics = await UserUtils.getUserMetrics([Number(data.userid)]);
+        return _.merge(data, UserUtils.serializeMetrics(metrics.length ? metrics[0] : {}));
+    }
+
+    return data;
 }
 
-export async function getUserByEmail(email: string): Promise<IUser | null> {
+export async function getUserByEmail(email: string, withMetrics: boolean = false): Promise<IUser | null> {
     if (!email || !email.length) {
         throw new Error('An email-id is required');
     }
@@ -108,10 +121,15 @@ export async function getUserByEmail(email: string): Promise<IUser | null> {
         return null;
     }
 
-    return UserUtils.serialize(data);
+    if (withMetrics) {
+        let metrics = await UserUtils.getUserMetrics([Number(data.userid)]);
+        return _.merge(data, UserUtils.serializeMetrics(metrics.length ? metrics[0] : {}));
+    }
+
+    return data;
 }
 
-export async function getUserByUserId(userid: number=0): Promise<IUser> {
+export async function getUserByUserId(userid: number=0, withMetrics: boolean = false): Promise<IUser> {
     if (!userid) {
         throw new Error('Userid is required');
     }
@@ -122,10 +140,15 @@ export async function getUserByUserId(userid: number=0): Promise<IUser> {
 
     const user = await database.getObjects('user:' + userid, validUserFields);
 
-    return UserUtils.serialize(user);
+    if (withMetrics) {
+        let metrics = await UserUtils.getUserMetrics([Number(user.userid)]);
+        return _.merge(user, UserUtils.serializeMetrics(metrics.length ? metrics[0] : {}));
+    }
+
+    return user;
 }
 
-export async function getUserWIthFields(userid: number=0, fields: string[]=[]) {
+export async function getUserWIthFields(userid: number=0, fields: string[]=[], withMetrics: boolean = false) {
     if (!userid) {
         throw new Error('Userid is required');
     }
@@ -145,7 +168,12 @@ export async function getUserWIthFields(userid: number=0, fields: string[]=[]) {
 
     const user = await database.getObjects('user:' + userid, fields);
 
-    return UserUtils.serialize(user);
+    if (withMetrics) {
+        let metrics = await UserUtils.getUserMetrics([Number(user.userid)]);
+        return _.merge(user, UserUtils.serializeMetrics(metrics.length ? metrics[0] : {}));
+    }
+
+    return user;
 }
 
 export async function isAdministrator(userid: number | object): Promise<boolean> {
