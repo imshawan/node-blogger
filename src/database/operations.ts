@@ -155,7 +155,7 @@ const updateObjects = async function (key: string, data: any, options?: IParamOp
         return await mongo.client.collection(options.collection).updateMany({_key: key}, {$set: data}, mongoOptions);
     }
 
-    const ack = await mongo.client.collection(options.collection).updatedOne({_key: key}, {$set: data}, mongoOptions);
+    const ack = await mongo.client.collection(options.collection).updateOne({_key: key}, {$set: data}, mongoOptions);
 
     mongo.cache.delete(key);
 

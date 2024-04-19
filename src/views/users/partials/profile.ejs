@@ -1,32 +1,32 @@
-<div class="card-body">
+<div class="card-body px-4">
     <form id="profile-update-form">
-        <div class="form-group my-1">
+        <div class="form-group my-2">
             <label for="fullName">Full Name</label>
             <input type="text" class="form-control" id="fullName" aria-describedby="fullNameHelp"
                 name="fullname" placeholder="Enter your fullname" value="<%= profile.fullname %>">
             <small id="fullNameHelp" class="form-text text-muted">Your name may appear around
                 here where you are mentioned. You can change or remove it at any time.</small>
         </div>
-        <div class="form-group my-1">
+        <div class="form-group my-2">
             <label for="about">About you</label>
             <input type="text" name="about" value="<%= profile.about %>" class="form-control autosize" id="about" placeholder="What do you do?">
         </div>
-        <div class="form-group my-1">
+        <div class="form-group my-2">
             <label for="bio">Your Bio</label>
             <textarea type="text" name="bio" class="form-control autosize" id="bio" placeholder="Write something about you"
                 style="overflow: hidden; overflow-wrap: break-word; resize: none; height: 62px;"><%= profile.bio %></textarea>
         </div>
-        <div class="form-group my-1">
+        <div class="form-group my-2">
             <label for="url">URL</label>
             <input name="website" type="text" class="form-control" id="url" placeholder="Enter your website address"
                 value="<%= profile.website %>">
         </div>
-        <div class="form-group my-1">
+        <div class="form-group my-2">
             <label for="location">Location</label>
             <input name="location" type="text" class="form-control" id="location" placeholder="Enter your location"
                 value="<%= profile.location %>">
         </div>
-        <div class="form-group my-1 small text-muted">
+        <div class="form-group my-2 small text-muted">
             All of the fields on this page are optional and can be deleted at any time, and by
             filling them out, you're giving us consent to share this data wherever your user
             profile appears.
