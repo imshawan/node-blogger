@@ -1,7 +1,7 @@
 import { Request } from "express";
 import {database} from "@src/database"
 import { getUserByUsername, utils, updateUserData, isAdministrator, 
-    deleteUser as deleteUserWithData, 
+    deleteUser as deleteUserWithData, changeUsername as updateExistingUserUsername,
     followers as Followers} from "@src/user";
 import { MutableObject, MulterFilesArray, ExpressUser } from "@src/types";
 import { parseBoolean } from "@src/utilities";
@@ -135,6 +135,17 @@ const unFollowUser = async (req: Request) => {
     }
 }
 
+const changeUsername = async (req: Request) => {
+    const userid = Helpers.parseUserId(req);
+    const {username, password} = req.body;
+
+    await updateExistingUserUsername({userid, username, password});
+
+    return {
+        message: 'Username change successful'
+    }
+}
+
 export default {
-    checkUsername, checkPassword, updateUser, updatePicture, deleteUser, consent, followUser, unFollowUser
+    checkUsername, checkPassword, updateUser, updatePicture, deleteUser, consent, followUser, unFollowUser, changeUsername
   } as const;

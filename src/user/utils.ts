@@ -1,7 +1,7 @@
 import zxcvbn from 'zxcvbn';
 import { getUserByUsername } from './data';
 import { database } from '@src/database';
-import { slugify, sanitizeString } from '@src/utilities';
+import { slugify, sanitizeString, password as Password } from '@src/utilities';
 import { application } from '@src/application';
 import { IUser, IUserMetrics, MutableObject } from '@src/types';
 import _ from 'lodash';
@@ -152,9 +152,31 @@ function serializeMetrics (userMetrics: IUserMetrics): IUserMetrics {
     return serializedObj;
 }
 
+async function isValidUserPassword(userid: number, currentPassword: string): Promise<boolean> {
+    if (!userid || !currentPassword) {
+        throw new Error('userid and currentPassword are required parameters');
+    }
+    if (typeof userid !== 'number') {
+        throw new Error(`userid must be a number found ${typeof userid} instead`);
+    }
+    if (typeof currentPassword !== 'string') {
+        throw new Error(`currentPassword must be a string found ${typeof currentPassword} instead`);
+    }
+
+    const user = await database.getObjects('user:' + userid, ['passwordHash']);
+    if (!user) {
+        throw new Error('User not found');
+    }
+    const passwordHash = user.passwordHash;
+    return await Password.compare({
+        password: currentPassword,
+        hash: passwordHash,
+    });
+}
+
 const utils = {
     validatePassword, checkPasswordStrength, isValidEmail, validateUsername, checkEmailAvailability,
-    generateNextUserId, generateUserslug, hasCompletedConsent, getUserMetrics, createMetricsMap, serializeMetrics,
+    generateNextUserId, generateUserslug, hasCompletedConsent, getUserMetrics, createMetricsMap, serializeMetrics, isValidUserPassword,
 }
 
 export {utils};

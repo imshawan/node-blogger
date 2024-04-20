@@ -35,6 +35,10 @@ const unFollow = async (req: Request, res: Response) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.user.unFollowUser(req));
 }
 
+const changeUsername = async (req: Request, res: Response) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.user.changeUsername(req));
+}
+
 export default {
-    checkUsername, checkPassword, update, updatePicture, consent, deleteUser, follow, unFollow
+    checkUsername, checkPassword, update, updatePicture, consent, deleteUser, follow, unFollow, changeUsername
   } as const;

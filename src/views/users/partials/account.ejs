@@ -1,19 +1,30 @@
 <div class="card-body px-4">
-    <form>
+    <form id="change-username-form">
         <div class="form-group my-1">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" value="<%= profile.username %>"
-                aria-describedby="usernameHelp" placeholder="Enter your username"
+            <label for="current-username">Change Username</label>
+            <input type="text" class="form-control" id="current-username" value="<%= profile.username %>"
+                aria-describedby="usernameHelp" placeholder="Enter your username" name="username"
                 value="<%= profile.username %>">
-            <small id="usernameHelp" class="form-text text-muted">After changing your username,
-                your old username becomes available for anyone else to claim.</small>
+            <p id="usernameHelp" data-default="After changing your username, your old username becomes available for anyone else to claim." class="form-text text-muted">After changing your username,
+                your old username becomes available for anyone else to claim.</p>
         </div>
-        <hr>
+        <div class="form-group my-1">
+            <label for="current-password">Current Password</label>
+            <input required type="text" class="form-control" id="current-password" placeholder="Enter password for changing username" name="password">
+        </div>
+
+
+        <div id="change-username" class="pt-3   " style="display: none;">
+            <button class="btn btn-dark font-weight-semibold" type="submit">Change Username</button>
+        </div>
+    </form>
+    <hr>
+    <form>
         <div class="form-group my-1">
             <label class="d-block text-danger">Delete Account</label>
             <p class="text-muted font-size-sm">Once you delete your account, there is no going
                 back. Please be certain.</p>
         </div>
-        <button class="btn btn-danger" type="button">Delete Account</button>
+        <button class="btn btn-danger font-weight-semibold" type="button">Delete Account</button>
     </form>
 </div>

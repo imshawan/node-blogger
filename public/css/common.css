@@ -367,6 +367,7 @@
     font-weight: 500!important;
     text-transform: none;
     cursor: pointer;
+    padding: 8px 20px!important;
 }
 
 .common-styles-css nav .active::after {

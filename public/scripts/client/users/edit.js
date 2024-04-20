@@ -26,7 +26,38 @@ define('client/users/edit', ['modules/http'], function (http) {
             edit.setImage(file, '#user-cover-image');
             edit.updateUserImage('#cover-image-form');
         });
+
+        $('#current-username').on('keyup', function () {
+            let value = $(this).val(),
+                helpTextElem = $('#usernameHelp'),
+                currentUsername = Application.profile.username,
+                formBtn = $('#change-username');
+
+            if (!value.length || (value == currentUsername)) {
+                helpTextElem.text(helpTextElem.data('default'));
+                formBtn.hide();
+                return;
+            }
+
+            edit.validateUsername(value);
+
+            formBtn.show();
+        });
     }
+
+    edit.validateUsername = $.debounce(500, function (username) {
+        let helpTextElem = $('#usernameHelp');
+
+        http.GET('/user/validate/username/' + username , {})
+                .then(res => {
+                    helpTextElem.text(`Cool! People can now mention you with @${username}`)
+                        .css({color: 'rgb(98, 98, 98)'}).show();
+                })
+                .catch(err => {
+                    helpTextElem.text(err.message)
+                        .css({color: 'red'}).show();
+                });
+    });
 
     edit.profileUpdateEvents = function () {
         const {user} = Application;
@@ -49,6 +80,15 @@ define('client/users/edit', ['modules/http'], function (http) {
                 .finally(() => {
                     form.find('[type="submit"]').attr('disabled', false);
                 })
+        });
+
+        $('#change-username-form').on('submit', function(e) {
+            e.preventDefault();
+
+            const formData = $(this).serializeObject();
+            http.PUT(`/user/${Application.user.userid}/username`, formData)
+                .then(res => utilities.showToast(res.message, 'success'))
+                .catch(error => utilities.showToast(error.message, 'error'));
         });
     }
 
