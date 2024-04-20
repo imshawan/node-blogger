@@ -257,6 +257,7 @@ label {
 }
 .btn-dark {
   font-weight: 600;
+  border: none;
 }
 .card-button {
   text-decoration: none;
