@@ -176,7 +176,7 @@ export async function getUserWIthFields(userid: number=0, fields: string[]=[], w
     return user;
 }
 
-export async function isAdministrator(userid: number | IUser): Promise<boolean> {
+export async function isAdministrator(userid: number | object): Promise<boolean> {
     // TODo
     // Logic to be implemented
 
