@@ -139,7 +139,7 @@ const changeUsername = async (req: Request) => {
     const userid = Helpers.parseUserId(req);
     const {username, password} = req.body;
 
-    await updateExistingUserUsername({userid, username, password});
+    await updateExistingUserUsername({userid, username, password}, userid);
 
     return {
         message: 'Username change successful'

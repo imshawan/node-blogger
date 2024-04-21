@@ -152,22 +152,19 @@ function serializeMetrics (userMetrics: IUserMetrics): IUserMetrics {
     return serializedObj;
 }
 
-async function isValidUserPassword(userid: number, currentPassword: string): Promise<boolean> {
-    if (!userid || !currentPassword) {
-        throw new Error('userid and currentPassword are required parameters');
+async function isValidUserPassword(user: IUser, currentPassword: string): Promise<boolean> {
+    if (!user || !currentPassword) {
+        throw new Error('user and currentPassword are required parameters');
     }
-    if (typeof userid !== 'number') {
-        throw new Error(`userid must be a number found ${typeof userid} instead`);
+    if (typeof user !== 'object') {
+        throw new Error(`user must be a object found ${typeof user} instead`);
     }
     if (typeof currentPassword !== 'string') {
         throw new Error(`currentPassword must be a string found ${typeof currentPassword} instead`);
     }
 
-    const user = await database.getObjects('user:' + userid, ['passwordHash']);
-    if (!user) {
-        throw new Error('User not found');
-    }
-    const passwordHash = user.passwordHash;
+    const passwordHash = (user.passwordHash ?? '');
+    
     return await Password.compare({
         password: currentPassword,
         hash: passwordHash,

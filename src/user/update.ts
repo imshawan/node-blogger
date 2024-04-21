@@ -4,6 +4,7 @@ import { password as Passwords, getISOTimestamp, generateUUID, sanitizeString } 
 import _ from "lodash";
 import { database } from "@src/database";
 import { get as getApplicationInfo } from "@src/application";
+import { isAdministrator } from "./data";
 
 const validUserFields = [
     "fullname",
@@ -35,19 +36,35 @@ export async function updateUserData(userid: number, userData: IUser) {
     }
 }
 
-export async function changeUsername(data: {username: string; password: string; userid: number;}) {
+export async function changeUsername(data: {username: string; password: string; userid: number;}, caller: number) {
     const {username, password, userid} = data;
     const key = 'user:' + userid;
+    const now = Date.now();
 
-    if (!username || !password || !userid) {
-        throw new Error('username, password and userid are required');
+    if (!username || !password || !userid || caller) {
+        throw new Error('username, password, userid and caller are required');
+    }
+    if (typeof caller !== 'number') {
+        throw new Error(`caller must be a number found ${typeof caller} instead`);
     }
     if (typeof password !== 'string' || typeof username !== 'string') {
         throw new Error(`password and username must be a string found ${typeof password} and ${typeof username} instead`);
     }
 
+    const user = await database.getObjects('user:' + userid, ['passwordHash', 'roles', 'userid']) as IUser;
+    if (!user) {
+        throw new Error('User not found');
+    }
+    if (Number(user.userid) !== Number(caller)) {
+        let isAdmin = await isAdministrator(user);
+        if (!isAdmin) {
+            throw new Error('You are not authorized to perform this action');
+        }
+    }
+
     await Utils.validateUsername(username);
-    const isValid = await Utils.isValidUserPassword(userid, password);
+
+    const isValid = await Utils.isValidUserPassword(user, password);
     if (!isValid) {
         throw new Error('Invalid password');
     }
@@ -57,12 +74,17 @@ export async function changeUsername(data: {username: string; password: string; 
         updatedAt: getISOTimestamp(),
     }
     const bulkRemoveSets = [
-        ['user:username:' + sanitizeString(username), key],
-        ['user:username', String(sanitizeString(username)).toLowerCase() + ':' + userid]
-    ]
+        ['user:username:' + sanitizeString(user.username ?? ''), key],
+        ['user:username', String(sanitizeString(user.username ?? '')).toLowerCase() + ':' + userid]
+    ], bulkAddSets = [
+        ['user:username:' + sanitizeString(username), key, now],
+        ['user:username', String(sanitizeString(username)).toLowerCase() + ':' + userid, now]
+    ];
+
     await Promise.all([
         database.updateObjects('user:' + userid, writeData),
         database.sortedSetRemoveKeys(bulkRemoveSets),
+        database.sortedSetAddKeys(bulkAddSets),
     ]);
 }
 
