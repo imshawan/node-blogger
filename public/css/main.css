@@ -171,7 +171,7 @@ label {
   padding: 8px 20px;
   font-weight: 600;
   cursor: pointer;
-  line-height: 1.2;
+  /* line-height: 1.2; */
 }
 .search-button:hover{
   background-color: rgb(77, 77, 77)!important;
@@ -249,14 +249,14 @@ label {
   color: black;
 }
 .btn {
-  padding: 8px 20px;
+  padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
+  font-weight: 500;
 }
 .btn-sm {
   padding: 4px 10px;
   font-size: var(--font-size-10);
 }
 .btn-dark {
-  font-weight: 600;
   border: none;
 }
 .card-button {
@@ -1195,11 +1195,15 @@ a.badge-light:focus, a.badge-light:hover {
 /* Global classes */
 
 .font-heading-4 {
-  font-size: 20px;
+  font-size: var(--font-size-18);
   color: var(--color-black);
 }
 .font-heading-5 {
-  font-size: 18px;
+  font-size:  var(--font-size-16);
+  color: var(--color-black);
+}
+.font-heading-6 {
+  font-size:  var(--font-size-14);
   color: var(--color-black);
 }
 .username, .font-body {
@@ -1216,13 +1220,13 @@ a.badge-light:focus, a.badge-light:hover {
 /* User list cards */
 
 .user-listing-container .card{
-  width: 275px;
+  width: 240px;
   border: none;
   border-radius: 10px;
   padding: 8px;
   background-color: #fff;
   position: relative;
-  height: 350px;
+  height: 280px;
  }
 
  .user-listing-container .upper{
@@ -1241,8 +1245,8 @@ a.badge-light:focus, a.badge-light:hover {
  }
 
  .user-listing-container .profile img{
-  height: 100px;
-  width: 100px;
+  height: 80px;
+  width: 80px;
   margin-top:2px;
  }
 
@@ -1267,10 +1271,6 @@ a.badge-light:focus, a.badge-light:hover {
   padding-right: 20px;
   height: 35px;
   line-height: 1.2;
- }
-
- .user-listing-container .stats span{
-  font-size: 20px;
  }
 .blog-banner {
   min-height: 250px;

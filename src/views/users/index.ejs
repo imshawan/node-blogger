@@ -4,32 +4,32 @@
         <% if (users && users.length) { %>
             <% users.forEach(element => { %>
                 <div class="card p-0 shadow border m-3">
-                    <div class="user mt-4 mb-2 text-center">
+                    <div class="user mt-2 mb-2 text-center">
                       <div class="profile d-flex justify-content-center w-100">
                         <img crossorigin="anonymous" data-onerror="/images/default-user.jpg" onerror="core.imageOnError(this)" src="<%= element.picture %>" class="rounded-circle" width="80">
                       </div>
                     </div>
     
                     <div class="mt- px-3 text-center position-relative  ">
-                      <h5 class="mb-0 user-name" style="text-transform: none;">
+                      <h6 class="mb-0 font-heading-5 user-name" style="text-transform: none;">
                         <%= element.fullname || element.username %>
-                      </h5>
-                      <span class="text-muted text-ellipse-2 px-3 mb-2">
+                      </h6>
+                      <span class="text-muted text-small text-ellipse-2 pt-1 px-2 mb-2">
                         <%= element.about %>
                       </span>
 
                       <div class="position-absolute w-100" style="top: 75px;left: 0;">
                         <div class="d-flex mt-2 justify-content-evenly">
-                          <a href="/users/<%= element.username %>" class="btn pt-2 btn-primary button-outlined btn-sm">Visit Profile</a>
+                          <a href="/users/<%= element.username %>" class="btn btn-primary button-outlined w-100 mx-4 btn-sm">Visit Profile</a>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center mt-4 px-4">
+                        <div class="d-flex justify-content-between align-items-center my-2 px-4">
                           <div class="stats">
-                            <h6 class="mb-0">Followers</h6>
-                            <span><%= element.followers %></span>
+                            <div class="mb-0 text-black-50 font-heading-6">Followers</div>
+                            <span class="font-small text-black-50"><%= element.followers %></span>
                           </div>
                           <div class="stats">
-                            <h6 class="mb-0">Posts</h6>
-                            <span><%= element.posts %></span>
+                            <div class="mb-0 text-black-50 font-heading-6">Posts</div>
+                            <span class="font-small text-black-50"><%= element.posts %></span>
                           </div>
                         </div>
                       </div>

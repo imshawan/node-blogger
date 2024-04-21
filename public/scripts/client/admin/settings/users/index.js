@@ -11,6 +11,7 @@ define('client/admin/settings/users/index', ['modules/http'], function (http) {
             const accountSettings = {};
             const registration = $('#registration-settings').serializeObject();
             const security = $('#security-settings').serializeObject();
+            const userData = $('#data-settings').serializeObject();
 
             target.lockWithLoader();
 
@@ -18,7 +19,7 @@ define('client/admin/settings/users/index', ['modules/http'], function (http) {
                 accountSettings[e.name] = $(e).is(':checked');
             });
 
-            const data = $.extend(accountSettings, registration, security);
+            const data = $.extend(accountSettings, registration, security, userData);
             Object.keys(data).forEach(field => {
                 if (!isNaN(String(data[field]))) {
                     data[field] = Number(data[field]);

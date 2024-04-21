@@ -77,6 +77,12 @@ const users = async function (req: Request, res: Response, next: NextFunction) {
       "minFullnameLength",
       "maxEmailLength",
       "minEmailLength",
+      "maxAboutLength",
+      "minAboutLength",
+      "maxLocationLength",
+      "minLocationLength",
+      "maxBioLength",
+      "minBioLength",
       "minPasswordStrength",
       "registrationType"
     ];

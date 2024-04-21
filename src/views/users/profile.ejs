@@ -18,7 +18,7 @@
                             <% if (user && user.userid) { %>
                                 <% if (profile.userid == user.userid) { %>
                                     <div class="d-none d-md-block">
-                                        <a href="/users/<%= profile.username %>/edit" class="btn btn-dark btn-icon-text btn-edit-profile">
+                                        <a href="/users/<%= profile.username %>/edit" class="btn btn-dark btn-icon-text px-3 btn-edit-profile">
                                             <i class="fa-regular fa-pen-to-square"></i> Edit profile
                                         </a>
                                     </div>
@@ -29,7 +29,7 @@
                                     </div>
                                 <% } else { %>
                                     <div class="">
-                                        <button data-action="<% if (isFollowing) { %>unfollow<% } else {%>follow<% } %>" data-user-name="<%= profile.fullname || profile.username %>" data-userid="<%= profile.userid %>" class="btn mt-0 btn-dark btn-icon-text btn-edit-profile">
+                                        <button data-action="<% if (isFollowing) { %>unfollow<% } else {%>follow<% } %>" data-user-name="<%= profile.fullname || profile.username %>" data-userid="<%= profile.userid %>" class="btn mt-0 btn-dark px-3 btn-icon-text btn-edit-profile">
                                             <% if (isFollowing) { %>
                                                 Following <i class="fa-fa fa-solid fa-check" aria-hidden="true"></i>
                                                 
