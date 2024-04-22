@@ -102,6 +102,11 @@
         $('body').on('click', '.toggle-sidebar-btn', function () {
             $('body').toggleClass('toggle-sidebar');
         });
+
+        $('body').on('click', '[data-copy]', function () {
+            const text = $(this).data('copy');
+            utilities.copyToClipboard(text);
+        })
     }
 
     core.generateAvatarFromName = function generateAvatarFromName(canvasId, name='Unknown name') {

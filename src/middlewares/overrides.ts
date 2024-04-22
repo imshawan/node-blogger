@@ -24,6 +24,7 @@ import fs from 'fs';
 import ejs from 'ejs';
 import { application, styleSheets, getConfigurationStoreByScope } from "@src/application";
 import path from "path";
+import nconf from 'nconf';
 import { isAdministrator } from "@src/user";
 import { version } from "@src/constants";
 
@@ -63,6 +64,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         pageOptions._csrf_token = csrfToken;
         pageOptions._isError = res.locals.error || false;
         pageOptions._config = getConfigurationStoreByScope(isAdminRoute ? 'admin' : 'client');
+        pageOptions._host = nconf.get('host') || '';
         pageOptions.hidePageHeader = pageOptions.hidePageHeader || false;
         res.locals.csrftoken = csrfToken;
 

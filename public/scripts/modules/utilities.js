@@ -145,5 +145,14 @@
         new bootstrap.Toast($(`#${id}`)[0]).show();
     }
 
+    utilities.copyToClipboard = async function(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            utilities.showToast('Copied to clipboard', 'success');
+        } catch (err) {
+            utilities.showToast('Failed to copy to clipboard', 'error');
+        }
+    }
+
     return utilities;
 }));
