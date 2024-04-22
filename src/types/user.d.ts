@@ -58,6 +58,7 @@ export interface IRoles {
 
 export interface IUserMetrics {
     _key?: string
+    userid?: number
     followers?: number
     following?: number
     posts?: number

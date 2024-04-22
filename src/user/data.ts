@@ -129,7 +129,7 @@ export async function getUserByEmail(email: string, withMetrics: boolean = false
     return data;
 }
 
-export async function getUserByUserId(userid: number=0, withMetrics: boolean = false): Promise<IUser> {
+export async function getUserByUserId(userid: number=0, fields?: (keyof IUser)[], withMetrics: boolean = false): Promise<IUser> {
     if (!userid) {
         throw new Error('Userid is required');
     }
@@ -137,8 +137,13 @@ export async function getUserByUserId(userid: number=0, withMetrics: boolean = f
     if (userid < 1) {
         throw new Error('Invalid userid supplied');
     }
+    if (fields && !Array.isArray(fields)) {
+        throw new TypeError('fields must be an array, found ' + typeof fields);
+    } else if (!fields || !fields.length) {
+        fields = validUserFields;
+    }
 
-    const user = await database.getObjects('user:' + userid, validUserFields);
+    const user = await database.getObjects('user:' + userid, fields);
 
     if (withMetrics) {
         let metrics = await UserUtils.getUserMetrics([Number(user.userid)]);
@@ -146,6 +151,34 @@ export async function getUserByUserId(userid: number=0, withMetrics: boolean = f
     }
 
     return user;
+}
+
+export async function getUsersById(userIdArray: number[], fields?: (keyof IUser)[], withMetrics: boolean = false): Promise<IUser[]> {
+    if (!Array.isArray(userIdArray) && typeof userIdArray === 'number') {
+        userIdArray = [userIdArray];
+    }
+    if (!userIdArray) {
+        throw new Error('userIdArray is required');
+    }
+    if (!userIdArray.length) {
+        return [];
+    }
+    if (fields && !Array.isArray(fields)) {
+        throw new TypeError('fields must be an array, found ' + typeof fields);
+    } else if (!fields || !fields.length) {
+        fields = validUserFields;
+    }
+
+    let users = await database.getObjectsBulk(userIdArray.map(id => 'user:' + id), fields) as IUser[];
+
+    if (withMetrics) {
+        let usersMetrics = await UserUtils.getUserMetrics(userIdArray);
+        let usersMetricsMap = UserUtils.createMetricsMap(usersMetrics);
+
+        users = users.map((user: IUser) => ({ ...user, ...usersMetricsMap.get(Number(user.userid)) }));
+    }
+
+    return users;
 }
 
 export async function getUserWIthFields(userid: number=0, fields: string[]=[], withMetrics: boolean = false) {

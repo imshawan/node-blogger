@@ -1,5 +1,5 @@
 import { database } from '@src/database';
-import { sanitizeString, resolveIpAddrFromHeaders, resolveIpFromRequest, slugify } from '@src/utilities';
+import { sanitizeString, resolveIpAddrFromHeaders, resolveIpFromRequest, slugify, clipContent, textFromHTML } from '@src/utilities';
 import { Request } from 'express';
 import * as Helpers from '@src/helpers';
 import { isAuthenticated } from '@src/middlewares';
@@ -7,6 +7,9 @@ import { IPost, ValidUserFields } from '@src/types';
 import * as User from '@src/user';
 import Posts from './data';
 import { POST_WEIGHTS } from '@src/constants';
+import { application } from '@src/application';
+
+const MAX_BLURB_SIZE = 35;
 
 const generatePostslug = async function generatePostslug(title: string): Promise<string> {
     let slug = slugify(title);
@@ -73,6 +76,18 @@ const populateUserData = async function (data: IPost, fields?: ValidUserFields[]
     return data;
 }
 
+const preparePostBlurb = function (postData: IPost): string {
+    let {content} = postData;
+    let maxPostBlurbSize = application.configurationStore?.maxPostBlurbSize || MAX_BLURB_SIZE;
+
+    if (!content) return '';
+    
+    content = textFromHTML(content ?? '');
+    let clipped = clipContent(content, maxPostBlurbSize);
+
+    return clipped.split(' ').length < maxPostBlurbSize ? clipped : (clipped.endsWith('.') ? clipped : (clipped + '...'));
+}
+
 async function incrementCountByType(req: Request, postId: number, field: 'likes' | 'views' | 'comments') {
     let userid = 0,
         postKey = getKey(postId),
@@ -116,5 +131,5 @@ async function reCalculatePostRank(postId: number) {
 
 export default {
     generatePostslug, generateNextPostId, isValidStatus, incrementCommentCount, incrementLikeCount,
-    incrementViewCount, getKey, populateUserData
+    incrementViewCount, getKey, populateUserData, preparePostBlurb
 } as const

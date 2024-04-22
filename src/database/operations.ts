@@ -85,7 +85,7 @@ const getObjectsBulk = async function (keysArray: string[], fields?: string[], o
     }
 
     // Ensuring to return data as per sequence of elements in keysArray, so that it does not affect any previously sequenced data in keys array
-    const recordsMap = new Map(records.map((obj: any) => [obj._key, {...obj, _key: undefined}]));
+    const recordsMap = new Map(records.map((obj: any) => [obj._key, obj]));
     const sortedRecordsWithKeysArray = keysArray.map(key => recordsMap.get(key));
 
     if (!fields.length) {

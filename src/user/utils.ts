@@ -123,16 +123,22 @@ async function getUserMetrics (userids: number[]): Promise<IUserMetrics[]> {
     const userSets = userids.map(userid => 'user:' + userid + ':metrics');
     const usersMetrices: IUserMetrics[] = await database.getObjectsBulk(userSets);
 
-    return usersMetrices.filter(metric => metric);
+    let filtered = usersMetrices.filter(metric => metric);
+
+    return filtered.map((metric: IUserMetrics) => {
+        if (metric._key) {
+            let userKey = Number(metric._key.slice(5, -8));
+            return {...metric, userid: userKey, _key: undefined};
+        }
+        return metric;
+    });
 }
 
 function createMetricsMap(metrics: IUserMetrics[]): Map<number, IUserMetrics> {
     const metricsMap: Map<number, IUserMetrics> = new Map();
 
     metrics.forEach(metric => {
-        if (metric._key) {
-            metricsMap.set(Number(metric._key.slice(5, -7)), metric);
-        }
+        metricsMap.set(Number(metric.userid), metric);
     });
 
     return metricsMap;

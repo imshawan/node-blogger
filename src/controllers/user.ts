@@ -1,11 +1,12 @@
 import { PassportUserSessionStore } from '@src/utilities';
-import { IUser, MutableObject } from '@src/types';
+import { IPost, IUser, MutableObject } from '@src/types';
 import { followers as Followers, getUserByUsername, getUsers, isAdministrator } from '@src/user';
 import { Request, Response } from 'express';
 import moment from 'moment';
 import { notFoundHandler } from '@src/middlewares';
 import { NavigationManager } from '@src/utilities/navigation';
 import * as Helpers from "@src/helpers";
+import Posts from '@src/post';
 
 const users: MutableObject = {};
 const userFields = [
@@ -18,6 +19,18 @@ const userFields = [
     "followers",
     "posts",
   ] as (keyof IUser)[];
+const postFields = [
+    "postId", 
+    "blurb",
+    "title",
+    "author",
+    "comments", 
+    "likes", 
+    "slug",
+    "readTime",
+    "featuredImage",
+    "views"
+] as (keyof IPost)[];
 
 users.get = async function (req: Request, res: Response) {
     const query = req.query,
@@ -56,6 +69,8 @@ users.getByUsername = async function (req: Request, res: Response) {
         return notFoundHandler(req, res);
     }
 
+    const userPosts = await Posts.user.getUserPosts(Number(userData.userid), {fields: postFields});
+
     if (userData.joiningDate) {
         userData.joiningDate = moment(new Date(userData.joiningDate)).format('MMMM DD, yyyy');
     }
@@ -67,6 +82,7 @@ users.getByUsername = async function (req: Request, res: Response) {
     
     page.title = userData.fullname || userData.username;
     page.profile = userData;
+    page.posts = userPosts.posts;
     page.navigation =  new NavigationManager().get('users');
     page.isFollowing = isFollowing;
 
