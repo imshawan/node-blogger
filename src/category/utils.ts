@@ -1,6 +1,10 @@
 import { database } from '@src/database';
 import { sanitizeString, slugify } from '@src/utilities';
 import { application } from '@src/application';
+import { ICategory } from '@src/types';
+import * as Utilities from "@src/utilities";
+
+const MAX_CATEGORY_BLURB_LENGTH = 30;
 
 const generateCategoryslug = async function generateCategoryslug(name: string): Promise<string> {
     let slug = slugify(name);
@@ -59,6 +63,19 @@ const onRemovePostWithCategory = async function onRemovePostWithCategory(postId:
     ])
 }
 
+const prepareBlurb = function (categoryData: ICategory) {
+    const maxCategoryBlurbLength = application.configurationStore?.maxCategoryBlurbLength ?? MAX_CATEGORY_BLURB_LENGTH;
+    let {description} = categoryData;
+
+    if (!description || !description.length) {
+        return ''
+    }
+    let clipped = Utilities.clipContent(description, maxCategoryBlurbLength);
+
+    return clipped.split(' ').length < maxCategoryBlurbLength ? clipped : 
+        (clipped.endsWith('.') ? clipped : (clipped + '...'));
+}
+
 export default {
-    generateCategoryslug, generateNextCategoryId, generateNextTagId, onNewPostWithCategory, onRemovePostWithCategory,
+    generateCategoryslug, generateNextCategoryId, generateNextTagId, onNewPostWithCategory, onRemovePostWithCategory, prepareBlurb
 } as const

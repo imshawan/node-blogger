@@ -4,9 +4,10 @@ import { ValidSortingTechniques } from "@src/constants";
 import { ValueError } from "@src/helpers";
 import { application } from "@src/application";
 import * as Utilities from "@src/utilities";
+import categoryUtils from "./utils";
 
 const MAX_CATEGORY_BLURB_LENGTH = 30;
-const categoryFields = [
+export const categoryFields = [
     "cid",
     "userid",
     "name",
@@ -17,7 +18,7 @@ const categoryFields = [
     "altThumb",
     "tagsPerPost",
     "counters"
-];
+] as (keyof ICategory)[];
 
 const getCategoriesWithData = async function getCategoriesWithData(perPage: number=15, page: number=1, fields: string[]=[], sorting: string='default') {
     // TODO need to properly write the logic with pagination and etc.
@@ -68,7 +69,7 @@ const getCategoriesWithData = async function getCategoriesWithData(perPage: numb
     if (fields.includes('blurb')) {
         return data.map((category: any) => {
             if (Object.hasOwnProperty.bind(category)('description')) {
-                category.blurb = category.blurb = prepareBlurb(category);
+                category.blurb = category.blurb = categoryUtils.prepareBlurb(category);
             }
             
             return category;
@@ -116,7 +117,7 @@ const getAllCategories = async function getAllCategories(perPage: number=15, pag
 
     if (fields.includes('blurb')) {
         return data.map((category: ICategory) => {
-            category.blurb = category.blurb = prepareBlurb(category);
+            category.blurb = category.blurb = categoryUtils.prepareBlurb(category);
             return category;
         });
     }
@@ -142,7 +143,7 @@ const getCategoryByCid = async function getCategoryByCid(id: any, fields: string
     const cid = Number(id);
     const category: ICategory = await database.getObjects('category:' + cid, fields);
     if (fields.includes('blurb')) {
-        category.blurb = prepareBlurb(category);
+        category.blurb = categoryUtils.prepareBlurb(category);
     }
 
     return category;   
@@ -189,7 +190,7 @@ const getCategoryByName = async function getCategoryByName(name: string, perPage
 
     if (fields.includes('blurb')) {
         return data.map((category: ICategory) => {
-            category.blurb = prepareBlurb(category);
+            category.blurb = categoryUtils.prepareBlurb(category);
             return category;
         });
     }
@@ -212,19 +213,6 @@ async function searchKeysByTitle(key: string, query: string, start: number, perP
     const keys = sets.map((cidKey: string) => 'category:' + cidKey.split(':').pop());
 
     return database.getObjectsBulk(keys, fields);
-}
-
-function prepareBlurb(categoryData: ICategory) {
-    const maxCategoryBlurbLength = application.configurationStore?.maxCategoryBlurbLength ?? MAX_CATEGORY_BLURB_LENGTH;
-    let {description} = categoryData;
-
-    if (!description || !description.length) {
-        return ''
-    }
-    let clipped = Utilities.clipContent(description, maxCategoryBlurbLength);
-
-    return clipped.split(' ').length < maxCategoryBlurbLength ? clipped : 
-        (clipped.endsWith('.') ? clipped : (clipped + '...'));
 }
 
 function createAggregationPipeline (query: MutableObject, pagination: Array<MutableObject>) {

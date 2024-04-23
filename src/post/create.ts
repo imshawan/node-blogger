@@ -130,13 +130,14 @@ export const create = async function create(data: IPost): Promise<IPost> {
 async function onNewPost(data:IPost) {
     const {tags, categories, userid} = data;
 
-    const promises: Promise<any>[] = [];
-
-    promises.push(database.incrementFieldCount('posts', 'user:' + userid + ':metrics'));
+    const promises: Promise<any>[] = [
+        database.incrementFieldCount('posts', 'user:' + userid + ':metrics'),
+    ];
 
     if (categories && Array.isArray(categories) && categories.length) {
         categories.forEach(key => {
             promises.push(database.incrementFieldCount('posts', key));
+            promises.push(database.incrementFieldCountByKeyAndValue('rank', 'user:' + userid + ':category:post', key));
         });
     }
     if (tags && Array.isArray(tags) && tags.length) {

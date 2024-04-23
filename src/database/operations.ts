@@ -226,6 +226,14 @@ const decrementFieldCount = async function (field: string, key: string = 'global
     return await incrementObjectFieldValueBy(key, field, -1, options);
 }
 
+const incrementFieldCountByKeyAndValue = async function (field: string, key: string = 'global:counters', value: string | number, options?: IParamOptions) {
+    return await incrementObjectFieldWithKeyAndValueBy(key, value, field, 1, options);
+}
+
+const decrementFieldCountByKeyAndValue = async function (field: string, key: string = 'global:counters', value: string | number, options?: IParamOptions) {
+    return await incrementObjectFieldWithKeyAndValueBy(key, value, field, -1, options);
+}
+
 const sortedSetAddKey = async function (key: string, value: string | number, rank: number, options?: IParamOptions): Promise<void> {
     options = getObjectOptions(options || {});
 
@@ -576,6 +584,29 @@ function mapResultsToRanks(result: ISortedSetKey[], keys: string[]): (number | n
     return keys.map(key => (map[key] ? map[key].rank : null));
 }
 
+async function incrementObjectFieldWithKeyAndValueBy (key: string, value: string | number, field: string, by: number, options?: IParamOptions): Promise<number> {
+    if (!key || isNaN(by)) {
+        return 0;
+    }
+    options = getObjectOptions(options);
+    const increment = {
+        [field]: by
+    };
+    const operationOptions = { returnOriginal: false, new: true, upsert: true, returnDocument : "after" }
+
+    const result = await mongo.client.collection(options.collection).findOneAndUpdate({ _key: key, value }, { $inc: increment }, operationOptions);
+    const fieldValue = result && result.value ? result.value[field] : null;
+
+    if (!fieldValue) {
+        return await incrementObjectFieldWithKeyAndValueBy(key, value, field, by, options);
+    }
+
+    // Clear the cache for the key as one of the field now has been updated
+    mongo.cache.delete(key);
+
+    return fieldValue;
+};
+
 async function incrementObjectFieldValueBy (key: string, field: string, value: number, options?: IParamOptions): Promise<number> {
     if (!key || isNaN(value)) {
         return 0;
@@ -678,7 +709,9 @@ const operations = {
 	aggregateObjects,
 	deleteObjectsWithKeys,
 	incrementFieldCount,
+    incrementFieldCountByKeyAndValue,
 	decrementFieldCount,
+    decrementFieldCountByKeyAndValue,
 	sortedSetAddKey,
 	sortedSetAddKeys,
 	getSortedSetsSearch,
