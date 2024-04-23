@@ -251,6 +251,7 @@ label {
 .btn {
   padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
   font-weight: 500;
+  border-radius: 0!important;
 }
 .btn-sm {
   padding: 4px 10px;
@@ -1271,6 +1272,10 @@ a.badge-light:focus, a.badge-light:hover {
   padding-right: 20px;
   height: 35px;
   line-height: 1.2;
+ }
+ .no-post img {
+  width: 200px;
+  opacity: .5;
  }
 .blog-banner {
   min-height: 250px;
