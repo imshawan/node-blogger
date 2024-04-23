@@ -4,7 +4,7 @@ import _ from "lodash";
 import { categoryFields } from "./data";
 import categoryUtils from "./utils";
 
-const getMostContributed = async function (userid: number, fields: (keyof ICategory)[], page: number, perPage: number) {
+const getMostContributed = async function (userid: number, fields?: (keyof ICategory)[], page?: number, perPage?: number) {
     if (!perPage) {
         perPage=15;
     }
@@ -51,7 +51,7 @@ const getMostContributed = async function (userid: number, fields: (keyof ICateg
         });
     }
 
-    return {posts: data, total: total ?? 0}
+    return {categories: data, total: total ?? 0}
 }
 
 export default {getMostContributed} as const;

@@ -7,6 +7,7 @@ import { notFoundHandler } from '@src/middlewares';
 import { NavigationManager } from '@src/utilities/navigation';
 import * as Helpers from "@src/helpers";
 import Posts from '@src/post';
+import category from '@src/category';
 
 const users: MutableObject = {};
 const userFields = [
@@ -69,7 +70,10 @@ users.getByUsername = async function (req: Request, res: Response) {
         return notFoundHandler(req, res);
     }
 
-    const userPosts = await Posts.user.getUserPosts(Number(userData.userid), {fields: postFields});
+    const [userPosts, mostContributed] = await Promise.all([
+        Posts.user.getUserPosts(Number(userData.userid), {fields: postFields}),
+        category.user.getMostContributed(Number(userData.userid))
+    ]);
 
     if (userData.joiningDate) {
         userData.joiningDate = moment(new Date(userData.joiningDate)).format('MMMM DD, yyyy');
@@ -83,6 +87,7 @@ users.getByUsername = async function (req: Request, res: Response) {
     page.title = userData.fullname || userData.username;
     page.profile = userData;
     page.posts = userPosts.posts;
+    page.categories = mostContributed.categories;
     page.navigation =  new NavigationManager().get('users');
     page.isFollowing = isFollowing;
 

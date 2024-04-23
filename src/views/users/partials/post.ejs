@@ -18,8 +18,10 @@
                 <%= post.title %>
             </h6>
             <p class="mb-3 tx-14 text-ellipse-2"><%= post.blurb %></p>
-            <% if (post.featuredImage) { %>
-                <img class="img-fluid" src="<%= post.featuredImage %>" alt>
+            <% if (post.featuredImage && post.featuredImage.length) { %>
+                <div class="post-image-wrapper">
+                    <img class="img-fluid" onerror="core.imageOnError(this)" src="<%= post.featuredImage %>" alt>
+                </div>
             <% } %>
         </div>
         <div class="card-footer">

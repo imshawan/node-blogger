@@ -174,60 +174,21 @@
                             <h6 class="card-title">Most contributed categories</h6>
                             <div class="latest-photos">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <figure>
-                                            <img class="img-fluid"
-                                                src="https://bootdey.com/img/Content/avatar/avatar1.png" alt>
-                                        </figure>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <figure>
-                                            <img class="img-fluid"
-                                                src="https://bootdey.com/img/Content/avatar/avatar2.png" alt>
-                                        </figure>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <figure>
-                                            <img class="img-fluid"
-                                                src="https://bootdey.com/img/Content/avatar/avatar3.png" alt>
-                                        </figure>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <figure>
-                                            <img class="img-fluid"
-                                                src="https://bootdey.com/img/Content/avatar/avatar4.png" alt>
-                                        </figure>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <figure>
-                                            <img class="img-fluid"
-                                                src="https://bootdey.com/img/Content/avatar/avatar5.png" alt>
-                                        </figure>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <figure>
-                                            <img class="img-fluid"
-                                                src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
-                                        </figure>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <figure class="mb-0">
-                                            <img class="img-fluid"
-                                                src="https://bootdey.com/img/Content/avatar/avatar7.png" alt>
-                                        </figure>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <figure class="mb-0">
-                                            <img class="img-fluid"
-                                                src="https://bootdey.com/img/Content/avatar/avatar8.png" alt>
-                                        </figure>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <figure class="mb-0">
-                                            <img class="img-fluid"
-                                                src="https://bootdey.com/img/Content/avatar/avatar9.png" alt>
-                                        </figure>
-                                    </div>
+
+                                    <% if (categories.length) { %>
+                                        <% categories.forEach(category => { %>
+                                            <div class="col-md-4 cursor-pointer">
+                                                <figure title="<%= category.name %>">
+                                                    <a href="/categories/<%= category.slug %>">
+                                                        <img class="img-fluid" onerror="core.imageOnError(this)"
+                                                            src="<%= category.thumb %>" alt>
+                                                    </a>
+                                                </figure>
+                                            </div>
+                                        <% }) %>
+                                    <% } %>
+                                    
+                                    
                                 </div>
                             </div>
                         </div>

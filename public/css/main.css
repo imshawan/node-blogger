@@ -535,7 +535,7 @@ nav .nav-link:hover {
 .posts-wrapper .post-item .post-content {
   padding-top: 10px;
 }
-
+.post-image-wrapper {height: 300px; overflow: hidden;}
 .posts-wrapper .main-button {
   position: relative;
   float: right;
