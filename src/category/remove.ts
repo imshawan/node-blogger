@@ -71,6 +71,7 @@ async function deleteCategoryWithData (categoryData: ICategory) {
         purgeAllTagsByWithCategoryId(Number(cid)),
         database.sortedSetRemoveKeys(bulkRemoveSets),
         database.deleteObjects('category:' + cid),
+        database.removeSortedSetValue(/user:(.*):category:post/, key),
     ]);
 }
 

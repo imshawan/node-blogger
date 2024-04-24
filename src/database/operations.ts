@@ -492,7 +492,7 @@ const updateSortedSetValue = async function (key: string, value: any, data: obje
     await (mongo.client as Db).collection(opts.collection).findOneAndUpdate({ _key: key, value: value }, {$set: data});
 }
 
-const removeSortedSetValue = async function (key: string, value: any, options?: IParamOptions) {
+const removeSortedSetValue = async function (key: string | RegExp, value: any, options?: IParamOptions) {
     let opts = getObjectOptions(options || {}) as IOptions;
     if (!key || !value) {
         return null;
