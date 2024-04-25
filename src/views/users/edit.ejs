@@ -1,4 +1,4 @@
-<div class="profile-page">
+<div class="profile-page profile-page-edit">
     <div class="row g-0">
         <div class="col-12">
             <div class="profile-header">
@@ -58,31 +58,31 @@
             <%- include('/users/partials/navigation/mobile'); -%>
 
             <div class="tab-content">
-                <div class="tab-pane active" id="profile">
+                <div class="tab-pane <% if (section==='profile') { %> active show <% } %>" id="profile">
 
                     <div class="card-header">Your Profile Information</div>
                     <%- include('/users/partials/profile'); -%>
 
                 </div>
-                <div class="tab-pane" id="account">
+                <div class="tab-pane <% if (section==='account') { %> active show <% } %>" id="account">
 
                     <div class="card-header">Account Settings</div>
                     <%- include('/users/partials/account'); -%>
                     
                 </div>
-                <div class="tab-pane" id="passwords">
+                <div class="tab-pane <% if (section==='passwords') { %> active show <% } %>" id="passwords">
 
                     <div class="card-header">Password Settings</div>
                     <%- include('/users/partials/passwords'); -%>
                     
                 </div>
-                <div class="tab-pane" id="security">
+                <div class="tab-pane <% if (section==='security') { %> active show <% } %>" id="security">
 
                     <div class="card-header">Security Settings</div>
                     <%- include('/users/partials/security'); -%>
                     
                 </div>
-                <div class="tab-pane" id="notification">
+                <div class="tab-pane <% if (section==='notification') { %> active show <% } %>" id="notification">
 
                     <div class="card-header">Notification Settings</div>
                     <%- include('/users/partials/notifications'); -%>

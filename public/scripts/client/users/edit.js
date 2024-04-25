@@ -43,6 +43,12 @@ define('client/users/edit', ['modules/http'], function (http) {
 
             formBtn.show();
         });
+
+        $('.profile-page-edit').on('click', '[data-href-target]', function () {
+            let loc = $(this).data('href-target'),
+                base = '/users/' + (Application.profile.username) + '/edit';
+            window.history.pushState(null, '', Application._host + base + loc);
+        });
     }
 
     edit.validateUsername = $.debounce(500, function (username) {

@@ -1,7 +1,7 @@
 <div class="card-header border-bottom mb-3 d-flex d-md-none">
     <ul class="nav nav-tabs card-header-tabs nav-gap-x-1" role="tablist">
         <li class="nav-item">
-            <a data-bs-target="#profile" data-bs-toggle="tab" class="ms-0 nav-link has-icon active"><svg
+            <a data-bs-target="#profile" data-href-target="/profile" data-bs-toggle="tab" class="ms-0 nav-link has-icon <% if (section==='profile') { %> active <% } %>"><svg
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" class="feather feather-user">
@@ -10,7 +10,7 @@
                 </svg></a>
         </li>
         <li class="nav-item">
-            <a data-bs-target="#account" data-bs-toggle="tab" class="ms-0 nav-link has-icon"><svg
+            <a data-bs-target="#account" data-href-target="/account" data-bs-toggle="tab" class="ms-0 nav-link <% if (section==='account') { %> active <% } %> has-icon"><svg
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" class="feather feather-settings">
@@ -21,11 +21,11 @@
                 </svg></a>
         </li>
         <li class="nav-item">
-            <a data-bs-target="#passwords" data-bs-toggle="tab" class="ms-0 nav-link has-icon">
+            <a data-bs-target="#passwords" data-href-target="/passwords" data-bs-toggle="tab" class="ms-0 <% if (section==='passwords') { %> active <% } %> nav-link has-icon">
                 <span class="material-symbols-outlined" style="font-size: 26px;">lock</span></a>
         </li>
         <li class="nav-item">
-            <a data-bs-target="#security" data-bs-toggle="tab" class="ms-0 nav-link has-icon"><svg
+            <a data-bs-target="#security" data-href-target="/security" data-bs-toggle="tab" class="ms-0 <% if (section==='security') { %> active <% } %> nav-link has-icon"><svg
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" class="feather feather-shield">
@@ -33,7 +33,7 @@
                 </svg></a>
         </li>
         <li class="nav-item">
-            <a data-bs-target="#notification" data-bs-toggle="tab" class="ms-0 nav-link has-icon"><svg
+            <a data-bs-target="#notification" data-href-target="/notification" data-bs-toggle="tab" class="ms-0 nav-link <% if (section==='notification') { %> active <% } %> has-icon"><svg
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" class="feather feather-bell">

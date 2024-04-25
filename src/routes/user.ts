@@ -7,6 +7,6 @@ const router = Router();
 
 mountPageRoute(router, '/', [requireLogin], controllers.users.get);
 mountPageRoute(router, '/:username', [requireLogin], controllers.users.getByUsername);
-mountPageRoute(router, '/:username/edit', [requireLogin], controllers.users.edit);
+mountPageRoute(router, '/:username/edit/:section?', [requireLogin], controllers.users.edit);
 
 export default router;

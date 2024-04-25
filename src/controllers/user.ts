@@ -100,6 +100,12 @@ users.edit = async function (req: Request, res: Response) {
     const {username} = req.params;
     const page: MutableObject = {};
     const sessionStore = new PassportUserSessionStore(req.sessionStore);
+    const validSections = ['profile', 'account', 'passwords', 'security', 'notification'];
+
+    let section = req.params.section;
+    if (!section || !validSections.includes(section)) {
+        section = 'profile';
+    }
 
     var userData: IUser | null = await getUserByUsername(username, [], true);
     if (!userData) {
@@ -118,6 +124,7 @@ users.edit = async function (req: Request, res: Response) {
     
     page.title = userData.fullname || userData.username;
     page.profile = userData;
+    page.section = section;
     page.sessions = await sessionStore.getCurrentUserSessions(userid);
     page.navigation =  new NavigationManager().get('users');
 
