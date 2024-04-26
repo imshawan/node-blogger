@@ -49,7 +49,7 @@ We welcome contributions from the community! Whether you're a developer, designe
 
 ## License
 
-NodeBlogger is open-source software licensed under the [GNU General Public License Version 3](./LICENSE.md). Feel free to use, modify, and distribute it according to the terms of the license.
+NodeBlogger is open-source software licensed under the [GNU General Public License Version 3](./LICENSE). Feel free to use, modify, and distribute it according to the terms of the license.
 
 
 ---
