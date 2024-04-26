@@ -11,7 +11,7 @@
   --color-light: #f1f5f9;
   --color-black: #121212;
   --color-night: #001632;
-  --color-red: #f44336;
+  --color-red: #dc3545;
   --color-green: #32cd32;
   --color-blue: #1a73e8;
   --color-gray: #80868b;
@@ -1561,4 +1561,10 @@ a.badge-light:focus, a.badge-light:hover {
   .new-articles .card {
     width: 400px;
   }
+}
+
+/* Modal */
+
+.bootbox .modal-content {
+  background-color: var(--color-white);
 }

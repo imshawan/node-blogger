@@ -20,6 +20,10 @@
     --font-size-42: calc(var(--default-font-size) * 2.625);
     --font-size-44: calc(var(--default-font-size) * 2.75);
     --font-size-45: calc(var(--default-font-size) * 2.8125);
+
+
+    /* Colors */
+    --color-danger: #dc3545;
 }
 
 /* Media query for screens less than 576px (example: very small screens) */

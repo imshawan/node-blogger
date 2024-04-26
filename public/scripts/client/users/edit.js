@@ -1,4 +1,4 @@
-define('client/users/edit', ['modules/http'], function (http) {
+define('client/users/edit', ['modules/http', 'client/users/delete'], function (http, deleteModule) {
     const edit = {};
 
     edit.initialize = function () {
@@ -49,6 +49,10 @@ define('client/users/edit', ['modules/http'], function (http) {
                 base = '/users/' + (Application.profile.username) + '/edit';
             window.history.pushState(null, '', Application._host + base + loc);
         });
+
+        $('#delete-account').on('click', function () {
+           deleteModule.perform(Application.profile);
+        })
     }
 
     edit.validateUsername = $.debounce(500, function (username) {
