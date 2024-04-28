@@ -24,7 +24,7 @@ NodeBlogger aims to simplify the process of setting up and managing a blog. It o
 - **Powerful Admin Controls:** Robust administrative features for managing users, posts, comments, and settings.
 - **SEO Optimization:** Built-in tools to optimize your content for search engines and maximize visibility.
 - **Responsive Design:** Ensures your blog looks great on any device, providing an optimal viewing experience for your readers.
-- **Markdown Support:** Write posts using Markdown for easy formatting and styling.
+- **HTML Support:** Write posts using HTML for easy formatting and styling.
 - **Comment Management:** Moderate comments efficiently to maintain a healthy and engaging community.
 - **Tagging and Categorization:** Organize your content with tags and categories for easy navigation.
 - **RSS Feeds:** Automatically generate RSS feeds to keep your audience updated with new content.
