@@ -3,6 +3,7 @@ import { database } from '@src/database';
 import { Request, Response } from 'express';
 import { notFoundHandler } from '@src/middlewares';
 import { NavigationManager } from '@src/utilities/navigation';
+import { utils as UserUtilities } from '@src/user';
 
 const signIn = async function (req: Request, res: Response) {
     const {redirect} = req.query;
@@ -62,6 +63,23 @@ const resetPassword = async function (req: Request, res: Response) {
     res.render('reset_password', page);
 }
 
+const validateTokenAndSecret = async function (req: Request, res: Response) {
+    const {secret} = req.query;
+    const {token} = req.params;
+
+    const jwtPayload = UserUtilities.validatePasswordResetToken(token, String(secret));
+    if (!jwtPayload) {
+        throw new Error('The link is invalid or might have been expired, please try again later');
+    }
+
+    const page = {
+        title: 'Reset password',
+        navigation: new NavigationManager().get(),
+    };
+
+    res.render('reset_password', page);
+}
+
 export default {
-    signIn, register, consent, resetPassword
+    signIn, register, consent, resetPassword, validateTokenAndSecret
   } as const;

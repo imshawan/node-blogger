@@ -9,6 +9,7 @@ mountPageRoute(router, '/signin', [], controllers.authentication.signIn);
 mountPageRoute(router, '/register', [], controllers.authentication.register);
 mountPageRoute(router, '/register/complete', [requireLogin.bind(null, '/register/complete')], controllers.authentication.consent);
 mountPageRoute(router, '/password/reset', [], controllers.authentication.resetPassword);
+mountPageRoute(router, '/password/reset/:token', [], controllers.authentication.validateTokenAndSecret);
 
 /**
  * @date 17-03-2023

@@ -1,10 +1,14 @@
 import zxcvbn from 'zxcvbn';
 import { getUserByUsername } from './data';
 import { database } from '@src/database';
-import { slugify, sanitizeString, password as Password } from '@src/utilities';
+import { slugify, sanitizeString, password as Password, generateTOTP } from '@src/utilities';
 import { application } from '@src/application';
 import { IUser, IUserMetrics, MutableObject } from '@src/types';
 import _ from 'lodash';
+import Jwt from 'jsonwebtoken';
+import nconf from 'nconf';
+import Mail from 'nodemailer/lib/mailer';
+import { emailer } from '@src/email/emailer';
 
 interface IPasswordStrength {
     warning: string
@@ -177,9 +181,89 @@ async function isValidUserPassword(user: IUser, currentPassword: string): Promis
     });
 }
 
+async function sendPasswordResetEmail(userData: IUser, expiresIn: number = 300) {
+    if (!userData || !Object.keys(userData).length) {
+        throw new Error('userData is a required parameter and cannot be empty');
+    }
+
+    if (!expiresIn || typeof expiresIn !== 'number') {
+        throw new Error('expiresIn is a required parameter and must be a number, found ' + typeof expiresIn);
+    }
+
+    const {userid, email} = userData;
+
+    if (!await canGenerateResetToken(Number(userid))) {
+        throw new Error('You have reached the maximum number of password reset attempts per day');
+    }
+
+    const payload = { email, userid };
+    const secretKey = generateTOTP(8);
+    const sender = application.configurationStore?.applicationEmail,
+        senderName = application.configurationStore?.applicationEmailFromName;
+
+    const token = Jwt.sign(payload, secretKey, { expiresIn });
+    const now = Math.round(Date.now() / 1000);
+
+    let resetUrl = `${nconf.get('host')}/password/reset/${token}&secret=${secretKey}`;
+    let emailMessage: Mail.Options = {
+        from: sender,
+        to: email,
+        subject: 'Password reset',
+        html: `<p>Please click on the following link to reset your password:</p>
+               <p><a href="${resetUrl}">${resetUrl}</a></p>`
+    };
+
+    await emailer.sendMail(emailMessage);
+
+    let tokenKey = `${token}:${secretKey}`,
+        userKey = 'user:' + userid + ':reset';
+    
+    await database.sortedSetAddKey(userKey, tokenKey, now);
+}
+
+async function canGenerateResetToken(userid: number) {
+    // Max attempts per 3 hours
+    const maxAttempts = application.configurationStore?.maxPasswordResetAttempts ?? 15;
+    const resetRequests = await database.fetchSortedSetsRangeReverseWithRanks('user:' + userid + ':reset', 0, maxAttempts);
+    
+    const now = new Date();
+    const end = Math.round(now.getTime() / 1000);
+    const start = Math.round(end - (3 * 60 * 60 * 1000)); // 3 hours (in milliseconds)
+    
+    let attempts = 0;
+    
+    resetRequests.forEach((request: {value: any, rank: number}) => {
+        let rank = Number(request.rank);
+        if (rank >= start && rank <= end) {
+            attempts++;
+        }
+    });
+
+    console.log(attempts)
+
+    return attempts < maxAttempts;
+}
+
+function validatePasswordResetToken(token: string, secretKey: string) {
+    if (!token || !secretKey) {
+        throw new Error('token and secretKey are required parameters');
+    }
+    if (typeof token !== 'string') {
+        throw new Error(`token must be a string found ${typeof token} instead`);
+    }
+    
+    try {
+        const decoded = Jwt.verify(token, secretKey);
+        return decoded;
+    } catch (error) {
+        return null;
+    }
+}
+
 const utils = {
     validatePassword, checkPasswordStrength, isValidEmail, validateUsername, checkEmailAvailability,
     generateNextUserId, generateUserslug, hasCompletedConsent, getUserMetrics, createMetricsMap, serializeMetrics, isValidUserPassword,
+    sendPasswordResetEmail, validatePasswordResetToken,
 }
 
 export {utils};

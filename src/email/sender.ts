@@ -112,13 +112,14 @@ export class Sender {
         }
 
         if (this.service) {
+            if (!Object.hasOwnProperty.bind(this.auth)("user")) {
+                throw new ValueError('Missing property: "user" from auth');
+            }
+            if (!Object.hasOwnProperty.bind(this.auth)("pass")) {
+                throw new ValueError('Missing property: "pass" from auth');
+            }
+            
             if (String(this.service).toLowerCase() == "custom") {
-                if (!Object.hasOwnProperty.bind(this.auth)("user")) {
-                    throw new ValueError('Missing property: "user" from auth');
-                }
-                if (!Object.hasOwnProperty.bind(this.auth)("pass")) {
-                    throw new ValueError('Missing property: "pass" from auth');
-                }
                 if (!this.port || isNaN(this.port)) {
                     throw new ValueError("Incorrect value for port");
                 }
@@ -133,6 +134,7 @@ export class Sender {
                 this.transporterOptions.pool = Boolean(this.pool);
             } else {
                 this.transporterOptions.service = this.service;
+                this.transporterOptions.auth = this.auth;
             }
         }
 

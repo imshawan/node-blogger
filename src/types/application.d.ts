@@ -358,6 +358,11 @@ export interface IApplication {
     maxPasswordLength: number;
 
     /**
+     * Maximum attempts to reset password per 3 hours
+     */
+    maxPasswordResetAttempts: number;
+
+    /**
      * Maximum username length.
      */
     maxUsernameLength: number;

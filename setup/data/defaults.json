@@ -80,6 +80,7 @@
     "externalLinks": "_blank",
     "registerationType": "normal",
     "maxPasswordLength": 128,
+    "maxPasswordResetAttempts": 5,
     "maxUsernameLength": 128,
     "maxEmailLength": 128,
     "maxCategoryNameLength": 10,

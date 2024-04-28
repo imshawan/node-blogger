@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { handleApiResponse } from "@src/helpers";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
-import { utils, register as RegisterUser, getUserByEmail } from "@src/user";
+import { utils as UserUtilities, register as RegisterUser, getUserByEmail } from "@src/user";
 import { IUserRegisteration } from "@src/types";
 import passport from "passport";
 import { renderError } from "@src/middlewares";
@@ -21,7 +21,7 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
         req.logIn(userData, async function(err) {
             if (err) { return next(err); }
 
-            const consent: any = await utils.hasCompletedConsent(userData.userid);
+            const consent: any = await UserUtilities.hasCompletedConsent(userData.userid);
             if (consent && !consent.consentCompleted) {
                 const {token} = consent;
                 return res.json({next: `register/complete?token=${token}`, user: userData});
@@ -43,11 +43,11 @@ const register = async (req: Request, res: Response) => {
     const userData: IUserRegisteration = req.body;
     let {username, email, password, confirmpassword} = userData;
 
-    utils.validatePassword(password);
-    await utils.validateUsername(username);
-    await utils.checkEmailAvailability(email);
+    UserUtilities.validatePassword(password);
+    await UserUtilities.validateUsername(username);
+    await UserUtilities.checkEmailAvailability(email);
 
-    if (!utils.isValidEmail(email)) {
+    if (!UserUtilities.isValidEmail(email)) {
         throw new Error('Invalid email id');
     }
     if (password != confirmpassword) {
@@ -71,7 +71,7 @@ const resetPassword = async function (req: Request, res: Response) {
     }
 
     try {
-        if (!utils.isValidEmail(email)) {
+        if (!UserUtilities.isValidEmail(email)) {
             throw new Error('Invalid email id supplied');
         }
 
@@ -80,6 +80,7 @@ const resetPassword = async function (req: Request, res: Response) {
             return res.render('reset_email_sent', pageData);
         }
 
+        await UserUtilities.sendPasswordResetEmail(user);
 
     } catch (error) {
         return renderError(req, res, error);

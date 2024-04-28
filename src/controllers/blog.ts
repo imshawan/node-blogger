@@ -27,7 +27,10 @@ const DEFAULT_POST_FIELDS: (keyof IPost)[] = [
 const get = async function (req: Request, res: Response) { 
 
     const resolve = async (post: any) => {
-        post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
+        try {
+            post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
+        } catch (e) {}
+        
         post.author = await User.getUserWIthFields(post.userid, ['username', 'picture', 'fullname']);
 
         return post;
