@@ -178,3 +178,18 @@ export const notFoundHandler = async function (req: Request, res: Response) {
     res.locals.error = true;
     res.status(HttpStatusCodes.NOT_FOUND).render('404', {title: '404', navigation});
 }
+
+export const renderError = async function (req: Request, res: Response, error: Error) {
+    const navigation = new NavigationManager().get();
+    const pageData = {
+        title: 'Error',
+        path: req.url,
+        navigation,
+        error: {
+            message: error.message,
+        }
+    };
+
+    res.locals.error = true;
+    res.status(HttpStatusCodes.BAD_REQUEST).render('error', pageData);
+}

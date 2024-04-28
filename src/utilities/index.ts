@@ -377,3 +377,43 @@ export const resolveFilename = (context: string, removeExt: boolean = true) => {
 
     return filename;
 }
+
+
+/**
+ * @date 28-04-2024
+ * @author imshawan <hello@imshawan.dev>
+ * 
+ * @function generateTOTP
+ * @description Generates a time-based one-time password (TOTP) with an additional random alphabet inserted at a random position.
+ * @param {number} length - The length of the OTP to be generated.
+ * @returns {string} The generated OTP with the specified length.
+ */
+export const generateTOTP = function (length: number = 6): string {
+    const timestamp = Date.now();
+    const maxOTPValue = Math.pow(10, length - 1) - 1;
+    const randomOTP = Math.floor(Math.random() * maxOTPValue).toString().padStart(length - 1, '0');
+
+    // Convert timestamp to a string and extract last 'length' digits
+    const timeComponent = (timestamp % Math.pow(10, length)).toString().padStart(length, '0');
+
+    // Combine random OTP and time-based component
+    let otp = '';
+    for (let i = 0; i < length; i++) {
+        otp += randomOTP[i % (length - 1)] + timeComponent[i];
+    }
+
+    // Determine the frequency of the extra alphabet
+    const frequency = Math.min(Math.floor(length / 4), 4);
+
+    // Generate alphabets with the determined frequency
+    let alphabets = '';
+    for (let i = 0; i < frequency; i++) {
+        alphabets += String.fromCharCode(Math.floor(Math.random() * 26) + 65);
+    }
+
+    // Generate a random position to insert the alphabets
+    const position = Math.floor(Math.random() * length);
+    const otpWithAlphabets = otp.slice(0, position) + alphabets + otp.slice(position);
+
+    return String(otpWithAlphabets).substring(0, length);
+}

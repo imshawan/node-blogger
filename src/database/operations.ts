@@ -466,6 +466,23 @@ const fetchSortedSetsRange = async function fetchSortedSetsRange(
     return result;
 }
 
+const getSortedSet = async function (key: string, withRank: boolean = false, options?: IParamOptions) {
+    options = getObjectOptions(options || {});
+    if (!key) {
+        return null;
+    }
+
+    const result = await mongo.client.collection(options.collection).findOne({ _key: key }, { projection: { _id: 0, _key: 0 } });
+    if (!result) {
+        return null;
+    }
+    if (withRank) {
+        return result.rank;
+    }
+
+    return result;
+};
+
 const getSortedSetValue = async function (key: string, value: any, withRank: boolean = false, options?: IParamOptions) {
     options = getObjectOptions(options || {});
     if (!key) {
@@ -725,6 +742,7 @@ const operations = {
 	fetchSortedSetsRangeWithRanks,
 	fetchSortedSetsRangeReverse,
 	fetchSortedSetsRange,
+    getSortedSet,
 	getSortedSetsValue,
 	getSortedSetValue,
 	updateSortedSetValue,

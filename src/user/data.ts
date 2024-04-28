@@ -111,7 +111,7 @@ export async function getUserByEmail(email: string, withMetrics: boolean = false
         throw new Error('Invalid email id');
     }
 
-    let set: ISortedSetKey = await database.getSortedSetValue('user:email', sanitizeString(email));  
+    let set: ISortedSetKey = await database.getSortedSet('user:email:' + sanitizeString(email));  
     if (!set) {
         return null;
     }

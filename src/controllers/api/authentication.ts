@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { handleApiResponse } from "@src/helpers";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
-import { utils, register as RegisterUser } from "@src/user";
+import { utils, register as RegisterUser, getUserByEmail } from "@src/user";
 import { IUserRegisteration } from "@src/types";
 import passport from "passport";
+import { renderError } from "@src/middlewares";
 
 const signIn = async (req: Request, res: Response, next: NextFunction) => {
     var {redirect} = req.body;
@@ -67,6 +68,21 @@ const resetPassword = async function (req: Request, res: Response) {
     const pageData = {
         title: 'Reset email sent',
         email
+    }
+
+    try {
+        if (!utils.isValidEmail(email)) {
+            throw new Error('Invalid email id supplied');
+        }
+
+        const user = await getUserByEmail(email);
+        if (!user) {
+            return res.render('reset_email_sent', pageData);
+        }
+
+
+    } catch (error) {
+        return renderError(req, res, error);
     }
 
     res.render('reset_email_sent', pageData);
