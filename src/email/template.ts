@@ -2,7 +2,7 @@ import _ from 'lodash';
 import nconf from "nconf";
 import { database } from "@src/database";
 import { IEmailTemplate, ISortedSetKey, MutableObject } from "@src/types";
-import { getISOTimestamp, slugify, sanitizeHtml, sanitizeString } from "@src/utilities";
+import { getISOTimestamp, slugify, sanitizeHtml, sanitizeString, types } from "@src/utilities";
 import { isAdministrator } from '@src/user';
 
 const create = async (data: IEmailTemplate, caller: number) => {
@@ -27,6 +27,7 @@ const create = async (data: IEmailTemplate, caller: number) => {
     const now = Date.now();
     const slug = slugify(name, false, '_');
     const id = await database.incrementFieldCount('emailTemplate');
+    const canDelete = types.isBoolean(data.canDelete) ? types.parseBoolean(data.canDelete) : true;
 
     const templateData: IEmailTemplate = {};
     const key = 'email:template:' + id;
@@ -36,7 +37,7 @@ const create = async (data: IEmailTemplate, caller: number) => {
     templateData.name = name;
     templateData.slug = slug;
     templateData.html = sanitizeHtml(html);
-    templateData.canDelete = Object.hasOwnProperty.bind(data)('canDelete') || true;
+    templateData.canDelete = canDelete;
     templateData.createdAt = timestamp;
     templateData.updatedAt = timestamp;
 

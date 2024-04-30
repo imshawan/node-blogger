@@ -2,7 +2,7 @@ import { Request } from "express";
 import {Sender, template as Template, setupCustomSMTPService} from "@src/email";
 import * as Helpers from "@src/helpers";
 import { ExpressUser, IEmailTemplate } from "@src/types";
-import { sanitizeHtml } from "@src/utilities";
+import { sanitizeHtml, types } from "@src/utilities";
 import { isAdministrator } from "@src/user";
 import { initializeEmailClient, emailer, compileAndBindTemplate } from "@src/email/emailer";
 import Mail from "nodemailer/lib/mailer";
@@ -32,12 +32,16 @@ const getTemplates = async (req: Request) => {
 }
 
 const createTemplate = async (req: Request) => {
-    const {name, html} = req.body;
+    const {name, html, canDelete} = req.body;
     const userid = Helpers.parseUserId(req);
     const writeData: IEmailTemplate = {};
 
     writeData.name = String(name).trim();
     writeData.html = sanitizeHtml(html);
+
+    if (types.isBoolean(canDelete)) {
+        writeData.canDelete = canDelete;
+    }
 
     const template = await Template.create(writeData, Number(userid));
     return template;

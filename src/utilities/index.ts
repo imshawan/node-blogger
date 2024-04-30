@@ -15,6 +15,7 @@ export * from './sidebar';
 export * from './sessionstore';
 export * from './changelog';
 export * from './url';
+export * from './types';
 
 export const getISOTimestamp = () => new Date().toISOString();
 
