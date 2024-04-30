@@ -6,7 +6,7 @@ import { getISOTimestamp, slugify, sanitizeHtml, sanitizeString, types } from "@
 import { isAdministrator } from '@src/user';
 
 const create = async (data: IEmailTemplate, caller: number) => {
-    const {name, html} = data;
+    const {name, html, defaults} = data;
     if (!name && !name?.length) {
         throw new Error('Name is required.')
     }
@@ -37,6 +37,7 @@ const create = async (data: IEmailTemplate, caller: number) => {
     templateData.name = name;
     templateData.slug = slug;
     templateData.html = sanitizeHtml(html);
+    templateData.defaults = types.object.isNotEmpty(defaults) ? defaults : {};
     templateData.canDelete = canDelete;
     templateData.createdAt = timestamp;
     templateData.updatedAt = timestamp;
@@ -55,7 +56,7 @@ const create = async (data: IEmailTemplate, caller: number) => {
 }
 
 const update = async function (data: IEmailTemplate, id: number, caller: number) {
-    const {name, html} = data;
+    const {name, html, defaults} = data;
     const timestamp = getISOTimestamp();
     const templateData: IEmailTemplate = {};
     
@@ -71,6 +72,9 @@ const update = async function (data: IEmailTemplate, id: number, caller: number)
             throw new Error('html must be a string, found ' + typeof html);
         }
         templateData.html = sanitizeHtml(html);
+    }
+    if (defaults && types.object.isNotEmpty(defaults)) {
+        templateData.defaults = defaults;
     }
     if (!await isAdministrator(caller) && nconf.get('env') != 'test') {
         throw new Error('Caller must be an administrator for performing this operation.')

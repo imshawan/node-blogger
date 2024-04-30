@@ -45,10 +45,10 @@ const parseBoolean = (value: any) => {
 }
 
 const object = {
-    isEmpty: (value: object) => Object.keys(value).length === 0,
-    isNotEmpty: (value: object) => Object.keys(value).length !== 0,
-    hasKey: (value: object, key: string) => Object.keys(value).includes(key),
-    hasKeys: (value: object, keys: string[]) => keys.every(key => Object.keys(value).includes(key)),
+    isEmpty: (value: any) => Object.keys(value).length === 0,
+    isNotEmpty: (value: any) => Object.keys(value).length !== 0,
+    hasKey: (value: any, key: string) => Object.keys(value).includes(key),
+    hasKeys: (value: any, keys: string[]) => keys.every(key => Object.keys(value).includes(key)),
 }
 
 export const types = {

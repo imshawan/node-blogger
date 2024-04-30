@@ -1,12 +1,18 @@
 import { ICategory, ICategoryTag, IPost, IUser } from "../src/types";
 import Category from "../src/category";
 import Post from "../src/post";
+import {template as Template} from "../src/email";
 import {database, initializeDbConnection} from "../src/database";
 import data from "./data/data.json";
+import emailTemplates from "./data/email-templates.json";
 import _ from "lodash";
+import path from "path";
+import fs from "fs";
 import { Collections } from "../src/constants";
 
-export async function initializeBlogWithData(user: IUser) {
+const defaultTemplatesDir = path.join('data', 'templates');
+
+export async function initializeBlogWithData(user: IUser): Promise<void> {
     for (let index = 0; index < data.length; index++) {
         const element = data[index];
         const {userid} = user;
@@ -40,7 +46,18 @@ export async function initializeBlogWithData(user: IUser) {
     }
 }
 
-export async function initializeDatabaseIndexing(databaseConf: {uri: string; db: string}) {
+export async function initializeDefaultEmailTemplates (userid: number): Promise<void> {
+    for (let index = 0; index < emailTemplates.length; index++) {
+        const template = emailTemplates[index];
+        const templateSlug = template.slug;
+
+        template.html = fs.readFileSync(path.join(defaultTemplatesDir, templateSlug + '.hbs'), 'utf8');
+
+        await Template.create(template, userid)
+    }
+}
+
+export async function initializeDatabaseIndexing(databaseConf: {uri: string; db: string}): Promise<void> {
     const Client = await initializeDbConnection(databaseConf);
     const collection = Client.collection(Collections.DEFAULT);
 

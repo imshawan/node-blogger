@@ -161,6 +161,7 @@ async function complete(req: Request, res: Response, next: NextFunction) {
 
         await Initializer.initializeDatabaseIndexing(mongodb);
         await Initializer.initializeBlogWithData(user);
+        await Initializer.initializeDefaultEmailTemplates(Number(user.userid));
 
     } catch (err) {
         return res.status(400).json({message: err.message})

@@ -32,7 +32,7 @@ const getTemplates = async (req: Request) => {
 }
 
 const createTemplate = async (req: Request) => {
-    const {name, html, canDelete} = req.body;
+    const {name, html, canDelete, defaults} = req.body;
     const userid = Helpers.parseUserId(req);
     const writeData: IEmailTemplate = {};
 
@@ -41,6 +41,10 @@ const createTemplate = async (req: Request) => {
 
     if (types.isBoolean(canDelete)) {
         writeData.canDelete = canDelete;
+    }
+
+    if (types.object.isNotEmpty(defaults)) {
+        writeData.defaults = defaults;
     }
 
     const template = await Template.create(writeData, Number(userid));

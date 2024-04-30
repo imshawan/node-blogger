@@ -42,6 +42,7 @@ export interface IEmailTemplate {
     name?: string
     slug?: string
     html?: string
+    defaults?: object
     canDelete?: boolean
     createdAt?: string
     updatedAt?: string
