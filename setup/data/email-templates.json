@@ -1,0 +1,17 @@
+[
+	{
+		"name": "Password Reset",
+		"canDelete": false,
+		"defaults": {
+			"name": "John Doe",
+			"productName": "Node Blogger",
+			"os": "Windows NT",
+			"browser": "Chrome",
+			"resetUrl": "#",
+			"expiresIn": "1 hour(s)",
+			"companyAddr": "",
+			"supportUrl": "#"
+		},
+		"html": ""
+	}
+]

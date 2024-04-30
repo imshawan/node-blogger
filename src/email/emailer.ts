@@ -25,7 +25,7 @@ import { Sender } from "./sender";
 import {get as getValueByField} from '@src/application';
 import { SMTPService, Security } from "@src/types";
 import { Logger } from "@src/utilities";
-import ejs from "ejs";
+import Handlebars from 'handlebars';
 import * as Helpers from "@src/helpers";
 
 const logger = new Logger();
@@ -90,7 +90,8 @@ export const compileAndBindTemplate = (html: string, dataBindings?: object) => {
 
     let compiledHtml = '';
     try {
-        compiledHtml = ejs.render(html, dataBindings);
+        let temlateFn = Handlebars.compile(html);
+        compiledHtml = temlateFn(dataBindings);
     } catch (err) {
         logger.error('Error while rendering email template.');
     }

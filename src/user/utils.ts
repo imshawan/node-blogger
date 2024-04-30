@@ -3,12 +3,15 @@ import { getUserByUsername } from './data';
 import { database } from '@src/database';
 import { slugify, sanitizeString, password as Password, generateTOTP } from '@src/utilities';
 import { application } from '@src/application';
-import { IUser, IUserMetrics, MutableObject } from '@src/types';
+import { IUser, IUserAgent, IUserMetrics, MutableObject } from '@src/types';
+import { Request } from 'express';
 import _ from 'lodash';
 import Jwt from 'jsonwebtoken';
+import Handlebars from 'handlebars';
 import nconf from 'nconf';
 import Mail from 'nodemailer/lib/mailer';
 import { emailer } from '@src/email/emailer';
+import {template as Template} from "@src/email";
 
 interface IPasswordStrength {
     warning: string
@@ -181,7 +184,18 @@ async function isValidUserPassword(user: IUser, currentPassword: string): Promis
     });
 }
 
-async function sendPasswordResetEmail(userData: IUser, expiresIn: number = 300) {
+/**
+ * 
+ * @date 28-04-2023
+ * @author imshawan <hello@imshawan.dev>
+ * 
+ * @function sendPasswordResetEmail
+ * @param req Incoming request
+ * @param userData User data
+ * @param expiresIn expressed in seconds or a string describing a time span.  Eg: 60.
+ */
+
+async function sendPasswordResetEmail(req: Request, userData: IUser, expiresIn: number = 3600) {
     if (!userData || !Object.keys(userData).length) {
         throw new Error('userData is a required parameter and cannot be empty');
     }
@@ -190,7 +204,7 @@ async function sendPasswordResetEmail(userData: IUser, expiresIn: number = 300) 
         throw new Error('expiresIn is a required parameter and must be a number, found ' + typeof expiresIn);
     }
 
-    const {userid, email} = userData;
+    const {userid, email, username, fullname} = userData;
 
     if (!await canGenerateResetToken(Number(userid))) {
         throw new Error('You have reached the maximum number of password reset attempts per day');
@@ -203,14 +217,28 @@ async function sendPasswordResetEmail(userData: IUser, expiresIn: number = 300) 
 
     const token = Jwt.sign(payload, secretKey, { expiresIn });
     const now = Math.round(Date.now() / 1000);
+    const useragent = req.useragent || {} as IUserAgent;
+    const templateSource = await Template.getBySlug('password_reset', ['html']);
 
-    let resetUrl = `${nconf.get('host')}/password/reset/${token}&secret=${secretKey}`;
+    const templateDataBinder = Handlebars.compile(templateSource?.html ?? '')
+
+    let resetUrl = `${nconf.get('host')}/password/reset/${token}`;
+    let html = templateDataBinder({
+        name: fullname || username,
+        productName: application.configurationStore?.siteName,
+        os: useragent.os,
+        browser: useragent.browser,
+        resetUrl,
+        expiresIn: Math.floor(expiresIn / 3600),
+        companyAddr: '',
+        supportUrl: '#',
+    });
+
     let emailMessage: Mail.Options = {
         from: sender,
         to: email,
         subject: 'Password reset',
-        html: `<p>Please click on the following link to reset your password:</p>
-               <p><a href="${resetUrl}">${resetUrl}</a></p>`
+        html: html,
     };
 
     await emailer.sendMail(emailMessage);
@@ -239,9 +267,23 @@ async function canGenerateResetToken(userid: number) {
         }
     });
 
-    console.log(attempts)
-
     return attempts < maxAttempts;
+}
+
+function decodeToken (token: string): {userid: number; email: string;} | null {
+    if (!token) {
+        throw new Error('token is a required parameter and cannot be empty');
+    }
+
+    if (typeof token !== 'string') {
+        throw new Error(`token must be a string found ${typeof token} instead`);
+    }
+
+    try {
+        return Jwt.decode(token) as {userid: number; email: string;};
+    } catch (error) {
+        return null;
+    }
 }
 
 function validatePasswordResetToken(token: string, secretKey: string) {
@@ -263,7 +305,7 @@ function validatePasswordResetToken(token: string, secretKey: string) {
 const utils = {
     validatePassword, checkPasswordStrength, isValidEmail, validateUsername, checkEmailAvailability,
     generateNextUserId, generateUserslug, hasCompletedConsent, getUserMetrics, createMetricsMap, serializeMetrics, isValidUserPassword,
-    sendPasswordResetEmail, validatePasswordResetToken,
+    sendPasswordResetEmail, validatePasswordResetToken, decodeToken
 }
 
 export {utils};

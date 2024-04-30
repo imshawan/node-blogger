@@ -36,6 +36,7 @@ const create = async (data: IEmailTemplate, caller: number) => {
     templateData.name = name;
     templateData.slug = slug;
     templateData.html = sanitizeHtml(html);
+    templateData.canDelete = Object.hasOwnProperty.bind(data)('canDelete') || true;
     templateData.createdAt = timestamp;
     templateData.updatedAt = timestamp;
 
@@ -119,10 +120,7 @@ const get = async function (perPage: number | null=15, page: number | null=1, fi
         database.getObjectsCount(query),
     ]);
 
-    const data = await Promise.all(templateIds.map(async (set: ISortedSetKey) => {
-        let id = String(set.value).split(':').pop();
-        return await database.getObjects('email:template:' + id, fields, matchOptions)
-    }));
+    const data = await database.getObjectsBulk(templateIds, fields);
 
     return data;
 }
@@ -155,7 +153,7 @@ const getBySlug = async function (slug: string, fields: string[]=[]): Promise<IE
     }
 
     const key = 'email:template:slug:' + sanitizeString(slug);
-    const set: ISortedSetKey = await database.getObjects(key, fields);
+    const set: ISortedSetKey = await database.getSortedSet(key);
     if (!set) {
         return null;
     }
@@ -177,6 +175,10 @@ const removeById = async function (id: number, caller: number) {
     const exists = await database.getObjects('email:template:' + id);
     if (!exists) {
         throw new Error('No template was found with the corresponding template id');
+    }
+
+    if (!exists.canDelete) {
+        throw new Error('Template cannot be deleted.');
     }
 
     await database.deleteObjects('email:template:' + id);

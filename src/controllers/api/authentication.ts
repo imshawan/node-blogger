@@ -80,7 +80,7 @@ const resetPassword = async function (req: Request, res: Response) {
             return res.render('reset_email_sent', pageData);
         }
 
-        await UserUtilities.sendPasswordResetEmail(user);
+        await UserUtilities.sendPasswordResetEmail(req, user);
 
     } catch (error) {
         return renderError(req, res, error);

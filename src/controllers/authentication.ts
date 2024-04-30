@@ -64,12 +64,24 @@ const resetPassword = async function (req: Request, res: Response) {
 }
 
 const validateTokenAndSecret = async function (req: Request, res: Response) {
-    const {secret} = req.query;
     const {token} = req.params;
+    const invalidLinkError = new Error('The link is invalid or might have been expired, please try again later');
 
-    const jwtPayload = UserUtilities.validatePasswordResetToken(token, String(secret));
+    const decoded = UserUtilities.decodeToken(token);
+    if (!decoded || !Object.keys(decoded).length) {
+        throw invalidLinkError;
+    }
+
+    const userid = decoded.userid;
+    const secretExists = await database.getSortedSetValue('user:' + userid + ':reset', new RegExp('^' + token + ':*')) as {value: string; rank: number};
+    if (!secretExists) {
+        throw invalidLinkError;
+    }
+
+    const secret = secretExists.value.split(':')
+    const jwtPayload = UserUtilities.validatePasswordResetToken(token, secret.length > 1 ? secret[1] : '');
     if (!jwtPayload) {
-        throw new Error('The link is invalid or might have been expired, please try again later');
+        throw invalidLinkError;
     }
 
     const page = {

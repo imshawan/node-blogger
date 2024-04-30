@@ -489,7 +489,7 @@ const getSortedSetValue = async function (key: string, value: any, withRank: boo
         return null;
     }
 
-    const result = await mongo.client.collection(options.collection).findOne({ _key: key, value: value }, { projection: { _id: 0, _key: 0, value: 0 } });
+    const result = await mongo.client.collection(options.collection).findOne({ _key: key, value: value }, { projection: { _id: 0, _key: 0 } });
     if (!result) {
         return null;
     }
