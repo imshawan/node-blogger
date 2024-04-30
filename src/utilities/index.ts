@@ -366,6 +366,16 @@ export const excapeRegExp = function (content: string) {
     return content.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
+export const encodeToBase64 = function (string: string) {
+    if (!string || !string.length) return string;
+    return Buffer.from(string).toString('base64');
+}
+
+export const decodeBase64ToString = function (base64Data: string) {
+    if (!base64Data || !base64Data.length) return base64Data;
+    return Buffer.from(base64Data, 'base64').toString('utf-8');
+}
+
 export const sanitizeString = function (str: string, replaceWith: string = '-') {
     return str.replace(':', replaceWith)
 }

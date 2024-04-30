@@ -1,6 +1,7 @@
 [
 	{
 		"name": "Password Reset",
+		"slug": "password_reset",
 		"canDelete": false,
 		"defaults": {
 			"name": "John Doe",
@@ -11,7 +12,6 @@
 			"expiresIn": "1 hour(s)",
 			"companyAddr": "",
 			"supportUrl": "#"
-		},
-		"html": ""
+		}
 	}
 ]
