@@ -29,5 +29,23 @@
 			"supportUrl": "#"
 		},
 		"html": ""
+	},
+	{
+		"name": "Password change alert",
+		"slug": "password_change_alert",
+		"canDelete": false,
+		"defaults": {
+			"name": "Shawan Mandal",
+			"productName": "Node Blogger",
+			"eventTime": "Thu, May 2, 2024, 12:07 AM IST",
+			"eventLocation": "Assam, IN",
+			"eventDevice":  "Chrome using Linux x64",
+			"accountReviewUrl": "#",
+			"emailPreferenceUrl": "#",
+			"unsubscribeUrl": "#",
+			"companyAddr": "",
+			"supportUrl": "#"
+		},
+		"html": ""
 	}
 ]
