@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { notFoundHandler } from '@src/middlewares';
 import { NavigationManager } from '@src/utilities/navigation';
 import { utils as UserUtilities } from '@src/user';
+import { ISortedSetKey } from '@src/types';
 
 const signIn = async function (req: Request, res: Response) {
     const {redirect} = req.query;
@@ -73,12 +74,12 @@ const validateTokenAndSecret = async function (req: Request, res: Response) {
     }
 
     const userid = decoded.userid;
-    const secretExists = await database.getSortedSetValue('user:' + userid + ':reset', new RegExp('^' + token + ':*')) as {value: string; rank: number};
+    const secretExists = await database.getSortedSetValue('user:' + userid + ':reset', new RegExp('^' + token + ':*')) as ISortedSetKey;
     if (!secretExists) {
         throw invalidLinkError;
     }
 
-    const secret = secretExists.value.split(':')
+    const secret = String(secretExists.value).split(':')
     const jwtPayload = UserUtilities.validatePasswordResetToken(token, secret.length > 1 ? secret[1] : '');
     if (!jwtPayload) {
         throw invalidLinkError;
@@ -89,7 +90,7 @@ const validateTokenAndSecret = async function (req: Request, res: Response) {
         navigation: new NavigationManager().get(),
     };
 
-    res.render('reset_password', page);
+    res.render('set_password', page);
 }
 
 export default {

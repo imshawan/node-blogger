@@ -208,6 +208,11 @@ export interface IApplication {
     maxPasswordResetRequests: Number;
 
     /**
+     * Password reset link expiration time (in seconds)
+     */
+    passwordResetTokenExpirySecs: number
+
+    /**
      * Minimum length for post titles.
      */
     minPostTitleLength: number;

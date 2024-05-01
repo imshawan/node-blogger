@@ -251,12 +251,13 @@ async function sendPasswordResetEmail(req: Request, userData: IUser, expiresIn: 
 
 async function canGenerateResetToken(userid: number) {
     // Max attempts per 3 hours
-    const maxAttempts = application.configurationStore?.maxPasswordResetAttempts ?? 15;
+    const maxAttempts = application.configurationStore?.maxPasswordResetAttempts ?? 4;
+    const expirySeconds = application.configurationStore?.passwordResetTokenExpirySecs ?? 3600;
     const resetRequests = await database.fetchSortedSetsRangeReverseWithRanks('user:' + userid + ':reset', 0, maxAttempts);
     
     const now = new Date();
     const end = Math.round(now.getTime() / 1000);
-    const start = Math.round(end - (3 * 60 * 60 * 1000)); // 3 hours (in milliseconds)
+    const start = Math.round(end - expirySeconds);
     
     let attempts = 0;
     

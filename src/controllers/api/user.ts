@@ -39,6 +39,11 @@ const changeUsername = async (req: Request, res: Response) => {
     handleApiResponse(HttpStatusCodes.OK, res, await api.user.changeUsername(req));
 }
 
+const resetPassword = async (req: Request, res: Response) => {
+    handleApiResponse(HttpStatusCodes.OK, res, await api.user.resetPassword(req));
+}
+
 export default {
-    checkUsername, checkPassword, update, updatePicture, consent, deleteUser, follow, unFollow, changeUsername
+    checkUsername, checkPassword, update, updatePicture, consent, deleteUser, follow, unFollow, changeUsername,
+    resetPassword,
   } as const;

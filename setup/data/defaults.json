@@ -81,6 +81,7 @@
     "registerationType": "normal",
     "maxPasswordLength": 128,
     "maxPasswordResetAttempts": 5,
+    "passwordResetTokenExpirySecs": 3600,
     "maxUsernameLength": 128,
     "maxEmailLength": 128,
     "maxCategoryNameLength": 10,

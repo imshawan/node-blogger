@@ -88,6 +88,65 @@ export async function changeUsername(data: {username: string; password: string; 
     ]);
 }
 
+export async function resetPassword(userid: number, password: string, caller: number): Promise<void> {
+    if (!password || !userid || !caller) {
+        throw new Error('password, userid and caller are required');
+    }
+    if (typeof caller !== 'number' || typeof userid !== 'number') {
+        throw new Error(`caller must be a numbers`);
+    }
+
+    const user = await database.getObjects('user:' + userid, ['roles', 'userid']) as IUser;
+    if (!user) {
+        throw new Error('User not found');
+    }
+    if (userid != caller) {
+        let isAdmin = await isAdministrator(user);
+        if (!isAdmin) {
+            throw new Error('You are not authorized to perform this action');
+        }
+    }
+
+    Utils.validatePassword(password);
+    Utils.checkPasswordStrength(password);
+
+    const passwordHash = await Passwords.hash({password, rounds: 12});
+
+    await database.updateObjects('user:' + userid, {passwordHash});
+    await database.deleteObjects('user:' + userid + ':reset', {multi: true});
+}
+
+export async function changePassword(userid: number, oldPassword: string, password: string, caller: number): Promise<void> {
+    if (!password || !userid || !caller || !oldPassword) {
+        throw new Error('password, oldPassword, userid and caller are required');
+    }
+    if (typeof caller !== 'number' || typeof userid !== 'number') {
+        throw new Error(`caller must be a numbers`);
+    }
+
+    const user = await database.getObjects('user:' + userid, ['roles', 'userid']) as IUser;
+    if (!user) {
+        throw new Error('User not found');
+    }
+    if (userid != caller) {
+        let isAdmin = await isAdministrator(user);
+        if (!isAdmin) {
+            throw new Error('You are not authorized to perform this action');
+        }
+    }
+    const isValid = await Utils.isValidUserPassword(user, oldPassword);
+    if (!isValid) {
+        throw new Error('Invalid old password');
+    }
+
+    Utils.validatePassword(password);
+    Utils.checkPasswordStrength(password);
+
+    const passwordHash = await Passwords.hash({password, rounds: 12});
+
+    await database.updateObjects('user:' + userid, {passwordHash});
+}
+
 function validateUserData(userData: IUser): boolean {
     const {fullname, bio, about} = userData;
 

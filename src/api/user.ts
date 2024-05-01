@@ -2,8 +2,10 @@ import { Request } from "express";
 import {database} from "@src/database"
 import { getUserByUsername, utils, updateUserData, isAdministrator, 
     deleteUser as deleteUserWithData, changeUsername as updateExistingUserUsername,
-    followers as Followers} from "@src/user";
-import { MutableObject, MulterFilesArray, ExpressUser } from "@src/types";
+    followers as Followers,
+    resetPassword as resetUserPassword} from "@src/user";
+import {utils as UserUtilities} from "@src/user"
+import { MutableObject, MulterFilesArray, ExpressUser, ISortedSetKey } from "@src/types";
 import { parseBoolean } from "@src/utilities";
 import { isAuthorizedToDelete } from "@src/permissions";
 import * as Helpers from "@src/helpers";
@@ -146,6 +148,40 @@ const changeUsername = async (req: Request) => {
     }
 }
 
+const resetPassword = async (req: Request) => {
+    const {password, token} = req.body;
+    const AuthorizationError = new Error('Invalid token! Please retry this process once again.');
+
+    if (typeof password !== 'string' ||  typeof token !== 'string') {
+        throw new Error(`Password and token must be a string`);
+    }
+
+    const decoded = UserUtilities.decodeToken(token);
+    if (!decoded || !Object.keys(decoded).length) {
+        throw AuthorizationError;
+    }
+
+    const userid = decoded.userid;
+    const secretExists = await database.getSortedSetValue('user:' + userid + ':reset', new RegExp('^' + token + ':*')) as ISortedSetKey;
+    if (!secretExists) {
+        throw AuthorizationError;
+    }
+
+    const secret = String(secretExists.value).split(':')
+    const jwtPayload = UserUtilities.validatePasswordResetToken(token, secret.length > 1 ? secret[1] : '');
+    if (!jwtPayload) {
+        throw AuthorizationError;
+    }
+
+    await resetUserPassword(userid, password, userid);
+
+    return {
+        message: 'Password reset successful'
+    };
+}
+
+
 export default {
-    checkUsername, checkPassword, updateUser, updatePicture, deleteUser, consent, followUser, unFollowUser, changeUsername
+    checkUsername, checkPassword, updateUser, updatePicture, deleteUser, consent, followUser, unFollowUser, changeUsername,
+    resetPassword,
   } as const;
