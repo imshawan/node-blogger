@@ -14,5 +14,20 @@
 			"supportUrl": "#"
 		},
 		"html": ""
+	},
+	{
+		"name": "Welcome",
+		"slug": "welcome",
+		"canDelete": false,
+		"defaults": {
+			"name": "John Doe",
+			"productName": "Node Blogger",
+			"blogUrl": "#",
+			"emailPreferenceUrl": "#",
+			"unsubscribeUrl": "#",
+			"companyAddr": "",
+			"supportUrl": "#"
+		},
+		"html": ""
 	}
 ]

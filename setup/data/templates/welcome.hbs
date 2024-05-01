@@ -2,11 +2,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta name="viewport"/>
+    <meta name="viewport" c />
     <meta name="x-apple-disable-message-reformatting" />
-    <meta http-equiv="Content-Type"/>
-    <meta name="color-scheme"/>
-    <meta name="supported-color-schemes"/>
+    <meta http-equiv="Content-Type" c />
+    <meta name="color-scheme" c />
+    <meta name="supported-color-schemes" c />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -91,32 +92,31 @@
                   <tr>
                     <td class="content-cell">
                       <div class="f-fallback">
-                        <h1>Hi {{name}},</h1>
-                        <p>You recently requested to reset your password for your {{productName}} account. Use the button below to reset it. <strong>This password reset is only valid for the next {{expiresIn}} hour(s).</strong></p>
+                        <h1 style="margin-bottom: 0px;">Welcome to</h1>
+                        <h1>{{productName}}!</h1>
+                        <p>Thank you {{name}} for signing up on our platform. we are really excited to have you on board.</p>
+                        <p>Click on the link below to visit our blog and get started!</p>
+                        <!-- Action -->
                         <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
                             <td align="center">
                               <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
                                 <tr>
                                   <td align="center">
-                                    <a style="color: #fff;"  href="{{resetUrl}}" class="f-fallback button button-outlined" target="_blank">Reset your password</a>
+                                    <a style="color: #fff;"  href="{{blogUrl}}" class="f-fallback button button-outlined" target="_blank">Visit Blog</a>
                                   </td>
                                 </tr>
                               </table>
                             </td>
                           </tr>
                         </table>
-                        <p>For security, this request was received from a <strong>{{os}}</strong> device using <strong>{{browser}}</strong>. If you did not request a password reset, please ignore this email or <a href="{{supportUrl}}">contact support</a> if you have questions.</p>
+                        <p>If you need any help, don’t hesitate to reach out to us at <a href="{{supportUrl}}">contact support</a>.</p>
                         <p>Thanks,
                           <br>Team {{productName}}</p>
-                        <!-- Sub copy -->
                         <table class="body-sub" role="presentation">
                           <tr>
                             <td>
-                              <p class="f-fallback sub">If you’re having trouble with the button above, copy and paste the URL below into your web browser.</p>
-                              <p class="f-fallback sub">
-                                  <a style="font-size: 12px;" href="{{resetUrl}}">{{resetUrl}}</a>
-                                </p>
+                              <p class="f-fallback sub">Update your <a style="font-size: 12px;" href="#">email preferences</a> to choose the types of emails you receive, or you can <a href="#">unsubscribe</a> from all future emails.</p>
                             </td>
                           </tr>
                         </table>
