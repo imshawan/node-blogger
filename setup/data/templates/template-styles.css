@@ -1,0 +1,37 @@
+body,
+p {font-family: "Open Sans", sans-serif;  color: #51545e;}
+body {width: 100% !important;height: 100%;margin: 0;-webkit-text-size-adjust: none;background-color: #f2f4f6;}
+a {color: #3869d4;}
+a img {border: none;}
+td {word-break: break-word;}
+body,td,h1,th {font-family: "Poppins", Helvetica, Arial, sans-serif;}
+h1 {margin-top: 0;color: #333;font-size: 24px;font-weight: 600;text-align: left;}
+td,th {font-size: 16px;}
+blockquote,ol,p,ul {margin: .4em 0 1.1875em;font-size: 14px;line-height: 1.625;}
+p.sub {font-size: 13px;}
+.button-outlined {background-color: #000;padding: 14px 30px;font-size: 14px; color: #fff;font-weight: 500;text-decoration: none;transition: .3s;cursor: pointer;}
+.button-outlined:hover {background-color: #4d4d4d;}
+@media only screen and (max-width:500px) {.button {width: 100% !important;text-align: center !important;} }
+.email-body,
+.email-content,
+.email-wrapper {width: 100%;margin: 0;padding: 0;-premailer-width: 100%;-premailer-cellpadding: 0;-premailer-cellspacing: 0}
+.body-action,
+.email-footer,
+.email-masthead {text-align: center}
+.email-wrapper {background-color: #f2f4f6;}
+.email-masthead {padding: 25px 0;}
+.email-masthead_logo {width: 94px}
+.email-body_inner,
+.email-footer {width: 570px;margin: 0 auto;-premailer-width: 570px;padding: 0;-premailer-cellpadding: 0;-premailer-cellspacing: 0}
+.email-masthead_name {font-size: 16px;font-weight: 700;color: #a8aaaf;text-decoration: none;text-shadow: 0 1px 0 #fff}
+.email-body_inner {background-color: #fff}
+.email-footer p {color: #a8aaaf}
+.body-action {width: 100%;margin: 30px auto;padding: 0;-premailer-width: 100%;-premailer-cellpadding: 0;-premailer-cellspacing: 0}
+.body-sub {margin-top: 25px;padding-top: 25px;border-top: 1px solid #eaeaec}
+.content-cell {padding: 45px}
+@media only screen and (max-width:600px) { .email-body_inner,.email-footer {width: 100% !important} }
+@media (prefers-color-scheme:dark) {
+    .email-body,.email-body_inner,.email-content,.email-footer,.email-masthead,.email-wrapper,blockquote,body,h1,h2,h3,ol,p,span,ul {color: #333 !important}
+.email-masthead_name {text-shadow: none !important;}
+}
+:root {color-scheme: light dark;supported-color-schemes: light dark;}

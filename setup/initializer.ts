@@ -47,11 +47,15 @@ export async function initializeBlogWithData(user: IUser): Promise<void> {
 }
 
 export async function initializeDefaultEmailTemplates (userid: number): Promise<void> {
+    const templateStyles = fs.readFileSync(path.join(defaultTemplatesDir, 'template-styles.css'), 'utf8');
+
     for (let index = 0; index < emailTemplates.length; index++) {
         const template = emailTemplates[index];
         const templateSlug = template.slug;
 
-        template.html = fs.readFileSync(path.join(defaultTemplatesDir, templateSlug + '.hbs'), 'utf8');
+        let html = fs.readFileSync(path.join(defaultTemplatesDir, templateSlug + '.hbs'), 'utf8');
+
+        template.html = html.replace('[[template-styles]]', templateStyles)
 
         await Template.create(template, userid)
     }
