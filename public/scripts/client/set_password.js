@@ -1,6 +1,5 @@
-define('client/set_password', ['modules/http'], function (http) {
+define('client/set_password', ['modules/http', 'client/utils'], function (http, utils) {
     const setPassword = {};
-    const MIN_PASSWORD_LENGTH = 6;
 
     setPassword.initialize = function () {
         $('#set-password-form').on('submit', function (e) {
@@ -12,7 +11,7 @@ define('client/set_password', ['modules/http'], function (http) {
             const urlParts = String(window.location.pathname).split('/');
             const token = urlParts[urlParts.length - 1];
             
-            if (!setPassword.validatePassword(formdata)) {
+            if (!utils.validatePassword(formdata)) {
                 return;
             }
 
@@ -52,43 +51,6 @@ define('client/set_password', ['modules/http'], function (http) {
                         .css({color: 'red'}).show();
                 });
         }));
-    }
-
-    setPassword.validatePassword = function (formData={}) {
-        const passwordStatus = $('#password-status');
-        const passwordConfirmStatus = $('#confirm-status');
-
-        const doNotMatch = 'Paswords do not match';
-        const lengthIssue = `Passwords must be atleast ${MIN_PASSWORD_LENGTH} characters long`;
-
-        const {password, confirmPassword} = formData;
-        let errors = 0;
-
-        if (password != confirmPassword) {
-            passwordStatus.empty().text(doNotMatch).show();
-            passwordConfirmStatus.empty().text(doNotMatch).show();
-            errors++;
-        } 
-
-        if (password.length < MIN_PASSWORD_LENGTH) {
-            passwordStatus.empty().text(lengthIssue).show();
-            errors++;
-        } 
-        
-        if (confirmPassword.length < MIN_PASSWORD_LENGTH) {
-            passwordConfirmStatus.empty().text(lengthIssue).show();
-            errors++;
-
-        } 
-        
-        if (!errors) {
-            passwordStatus.hide();
-            passwordConfirmStatus.hide();
-
-            return true;
-        }
-
-        return false;
     }
 
     return setPassword;

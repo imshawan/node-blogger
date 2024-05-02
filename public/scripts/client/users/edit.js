@@ -1,4 +1,4 @@
-define('client/users/edit', ['modules/http', 'client/users/delete'], function (http, deleteModule) {
+define('client/users/edit', ['modules/http', 'client/users/delete', 'client/utils'], function (http, deleteModule, utils) {
     const edit = {};
 
     edit.initialize = function () {
@@ -52,7 +52,58 @@ define('client/users/edit', ['modules/http', 'client/users/delete'], function (h
 
         $('#delete-account').on('click', function () {
            deleteModule.perform(Application.profile);
-        })
+        });
+
+        $('#password-change-form').on('submit', function (e) {
+            e.preventDefault();
+
+            const form = $(this),
+                formData = form.serializeObject(),
+                submitBtn = form.find('[type="submit"]');
+
+            if (!formData.oldPassword) {
+                return;
+            }
+
+            if (!utils.validatePassword(formData)) {
+                return;
+            }
+
+            submitBtn.lockWithLoader();
+
+            http.PUT(`/user/${Application.user.userid}/password`, formData)
+                .then(res => {
+                    const {message} = res;
+                    
+                    form.trigger('reset');
+                    utilities.showToast(message, 'success');
+                })
+                .catch(err => {
+                    const {message} = err;
+                    utilities.showToast(message || 'Something went wrong', 'error');
+                }).finally(() => {
+                    submitBtn.unlockWithLoader();
+                });
+        });
+
+        $('#new-password').on('keyup', $.debounce(500, function () {
+            const password = $(this).val();
+            http.POST('/user/validate/password', {password})
+                .then(res => {
+                    const {suggestions} = res;
+                    $('#password-status').hide();
+
+                    if (suggestions && suggestions.length) {
+                        let html = `Suggestions: `;
+                        html += suggestions.join('<br />');
+                        $('#password-strength-text').html(html).show();
+                    }
+                })
+                .catch(err => {
+                    $('#password-status').text(err.message)
+                        .css({color: 'red'}).show();
+                });
+        }));
     }
 
     edit.validateUsername = $.debounce(500, function (username) {
