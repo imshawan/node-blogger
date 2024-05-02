@@ -7,7 +7,7 @@
                         src="<%= post.author?.picture %>" alt>
                     <div class="ms-2">
                         <p class="mb-1 font-heading-5"><%= post.author?.fullname || post.author?.username %></p>
-                        <p class="tx-11 text-muted mb-0 font-small">1 min ago</p>
+                        <p class="tx-11 text-muted mb-0 font-small"><%= post.timeAgo %></p>
                     </div>
                 </div>
                 <%- include('/users/partials/dropdown', {post: post}); -%>

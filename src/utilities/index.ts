@@ -428,3 +428,33 @@ export const generateTOTP = function (length: number = 6): string {
 
     return String(otpWithAlphabets).substring(0, length);
 }
+
+export const timeAgo = function (date: Date | number | string) {
+    if (typeof date === 'number' || typeof date === 'string') {
+        date = new Date(date);
+    }
+
+    const seconds: number = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+    const intervals: { [key: string]: number } = {
+        year: 31536000,
+        month: 2592000,
+        week: 604800,
+        day: 86400,
+        hour: 3600,
+        minute: 60,
+        second: 1
+    };
+
+    let interval: string;
+    for (interval in intervals) {
+        const timePeriod: number = Math.floor(seconds / intervals[interval]);
+        if (timePeriod >= 1) {
+            if (timePeriod > 1) {
+                return `${timePeriod} ${interval}s ago`;
+            } else {
+                return `${timePeriod} ${interval} ago`;
+            }
+        }
+    }
+    return 'Just now';
+}

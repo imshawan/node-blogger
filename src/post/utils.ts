@@ -1,5 +1,6 @@
 import { database } from '@src/database';
-import { sanitizeString, resolveIpAddrFromHeaders, resolveIpFromRequest, slugify, clipContent, textFromHTML } from '@src/utilities';
+import { sanitizeString, resolveIpAddrFromHeaders, resolveIpFromRequest, slugify, clipContent, textFromHTML, 
+    timeAgo as calculateTimeAgo } from '@src/utilities';
 import { Request } from 'express';
 import * as Helpers from '@src/helpers';
 import { isAuthenticated } from '@src/middlewares';
@@ -8,6 +9,7 @@ import * as User from '@src/user';
 import Posts from './data';
 import { POST_WEIGHTS } from '@src/constants';
 import { application } from '@src/application';
+import _ from 'lodash';
 
 const MAX_BLURB_SIZE = 35;
 
@@ -88,6 +90,15 @@ const preparePostBlurb = function (postData: IPost): string {
     return clipped.split(' ').length < maxPostBlurbSize ? clipped : (clipped.endsWith('.') ? clipped : (clipped + '...'));
 }
 
+const timeAgo = (postData: IPost): IPost => {
+    let {createdAt} = postData;
+    if (!createdAt) return postData;
+
+    const _timeAgo = calculateTimeAgo(new Date(createdAt));
+
+    return _.merge(postData, {timeAgo: _timeAgo});
+}
+
 async function incrementCountByType(req: Request, postId: number, field: 'likes' | 'views' | 'comments') {
     let userid = 0,
         postKey = getKey(postId),
@@ -131,5 +142,5 @@ async function reCalculatePostRank(postId: number) {
 
 export default {
     generatePostslug, generateNextPostId, isValidStatus, incrementCommentCount, incrementLikeCount,
-    incrementViewCount, getKey, populateUserData, preparePostBlurb
+    incrementViewCount, getKey, populateUserData, preparePostBlurb, timeAgo
 } as const

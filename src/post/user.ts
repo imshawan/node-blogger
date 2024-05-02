@@ -4,6 +4,7 @@ import { ValueError } from "@src/helpers";
 import PostUtils from './utils';
 import { getUsersById, getUserByUserId } from "@src/user";
 import _ from "lodash";
+import postUtils from './utils';
 
 interface IUserPostOptions {
     perPage?: number; 
@@ -49,6 +50,9 @@ const getUserPosts = async function (userid: number, options?: IUserPostOptions)
     if (fields.includes('blurb') && !requiresContent) {
         fields.push('content');
     }
+    if (!fields.includes('createdAt')) {
+        fields.push('createdAt');
+    }
 
     const searchKeys = 'post:userid:' + userid,
         start = (page - 1) * perPage,
@@ -79,7 +83,7 @@ const getUserPosts = async function (userid: number, options?: IUserPostOptions)
         });
     }
 
-    return {posts: data, total: total ?? 0}
+    return {posts: data.map(postUtils.timeAgo), total: total ?? 0}
 }
 
 export default {getUserPosts} as const;
