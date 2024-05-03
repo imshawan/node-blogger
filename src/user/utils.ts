@@ -184,6 +184,10 @@ async function isValidUserPassword(user: IUser, currentPassword: string): Promis
     });
 }
 
+async function compareOldAndNewPasswords(user: IUser, newPassword: string) {
+    return isValidUserPassword(user, String(newPassword));
+}
+
 /**
  * 
  * @date 28-04-2023
@@ -306,7 +310,7 @@ function validatePasswordResetToken(token: string, secretKey: string) {
 const utils = {
     validatePassword, checkPasswordStrength, isValidEmail, validateUsername, checkEmailAvailability,
     generateNextUserId, generateUserslug, hasCompletedConsent, getUserMetrics, createMetricsMap, serializeMetrics, isValidUserPassword,
-    sendPasswordResetEmail, validatePasswordResetToken, decodeToken
+    sendPasswordResetEmail, validatePasswordResetToken, decodeToken, compareOldAndNewPasswords,
 }
 
 export {utils};

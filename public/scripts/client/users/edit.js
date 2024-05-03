@@ -71,7 +71,7 @@ define('client/users/edit', ['modules/http', 'client/users/delete', 'client/util
 
             submitBtn.lockWithLoader();
 
-            http.PUT(`/user/${Application.user.userid}/password`, formData)
+            http.PUT(`/user/password/change`, formData)
                 .then(res => {
                     const {message} = res;
                     

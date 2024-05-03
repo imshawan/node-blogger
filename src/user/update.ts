@@ -124,7 +124,7 @@ export async function changePassword(userid: number, oldPassword: string, passwo
         throw new Error(`caller must be a numbers`);
     }
 
-    const user = await database.getObjects('user:' + userid, ['roles', 'userid']) as IUser;
+    const user = await database.getObjects('user:' + userid, ['passwordHash', 'roles', 'userid']) as IUser;
     if (!user) {
         throw new Error('User not found');
     }
@@ -137,6 +137,11 @@ export async function changePassword(userid: number, oldPassword: string, passwo
     const isValid = await Utils.isValidUserPassword(user, oldPassword);
     if (!isValid) {
         throw new Error('Invalid old password');
+    }
+
+    const isSame = await Utils.compareOldAndNewPasswords(user, password);
+    if (isSame) {
+        throw new Error('New password cannot be the same as the old password');
     }
 
     Utils.validatePassword(password);

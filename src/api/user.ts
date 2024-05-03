@@ -2,7 +2,7 @@ import { Request } from "express";
 import {database} from "@src/database"
 import { getUserByUsername, utils, updateUserData, isAdministrator, 
     deleteUser as deleteUserWithData, changeUsername as updateExistingUserUsername,
-    followers as Followers,
+    followers as Followers, changePassword as changeExistingUserPassword,
     resetPassword as resetUserPassword} from "@src/user";
 import {utils as UserUtilities} from "@src/user"
 import { MutableObject, MulterFilesArray, ExpressUser, ISortedSetKey } from "@src/types";
@@ -180,8 +180,26 @@ const resetPassword = async (req: Request) => {
     };
 }
 
+const changePassword = async (req: Request) => {
+    const userid = Helpers.parseUserId(req);
+    const {password, oldPassword} = req.body;
+
+    if (typeof oldPassword != 'string' || typeof password != 'string') {
+        throw new Error(`Password and old password must be a string`);
+    }
+    if (password == oldPassword) {
+        throw new Error(`New password must be different from old password`);
+    }
+
+    await changeExistingUserPassword(userid, oldPassword, password, userid);
+
+    return {
+        message: 'Password change successful'
+    }
+}
+
 
 export default {
     checkUsername, checkPassword, updateUser, updatePicture, deleteUser, consent, followUser, unFollowUser, changeUsername,
-    resetPassword,
+    resetPassword, changePassword,
   } as const;
