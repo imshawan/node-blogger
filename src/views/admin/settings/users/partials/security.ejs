@@ -5,37 +5,44 @@
         <form id="security-settings" class="row g-3">
             <div class="col-12">
                 <div class="form-floating">
-                    <input type="number" name="automaticLogoutDuration" value="<%= data.automaticLogoutDuration || 0 %>" class="form-control" id="" placeholder="">
-                    <label for="">Automatic logout duration (in minutes)</label>
+                    <input type="number" name="automaticLogoutDuration" value="<%= data.automaticLogoutDuration || 0 %>" class="form-control">
+                    <label>Automatic logout duration (in minutes)</label>
                     <div id="" class="form-text">Keep the value to 0 if you want to disable automatic logouts</div>
                 </div>
             </div>
 
             <div class="col-12 col-md-6">
                 <div class="form-floating">
-                    <input type="number" name="maxLoginPerHour" value="<%= data.maxLoginPerHour %>" class="form-control" id="" placeholder="">
-                    <label for="">Maximum login attempts in an hour</label>
+                    <input type="number" name="maxLoginPerHour" value="<%= data.maxLoginPerHour %>" class="form-control">
+                    <label>Maximum login attempts in an hour</label>
                 </div>
             </div>
 
             <div class="col-12 col-md-6">
                 <div class="form-floating">
-                    <input type="number" name="maxPasswordResetRequests" value="<%= data.maxPasswordResetRequests %>" class="form-control" id="" placeholder="">
-                    <label for="">Maximum password reset attempts in an hour</label>
+                    <input type="number" name="maxPasswordResetRequests" value="<%= data.maxPasswordResetRequests %>" class="form-control">
+                    <label>Maximum password reset attempts in an hour</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" name="passwordResetTokenExpirySecs" value="<%= data.passwordResetTokenExpirySecs %>" class="form-control">
+                    <label>Password reset token expiry (in seconds)</label>
                 </div>
             </div>
             
             <div class="col-12 col-md-6">
                 <div class="form-floating">
-                    <input type="number" name="accountLockDuration" value="<%= data.accountLockDuration %>" class="form-control" id="" placeholder="">
-                    <label for="">Account lock duration (in minutes)</label>
+                    <input type="number" name="accountLockDuration" value="<%= data.accountLockDuration %>" class="form-control">
+                    <label>Account lock duration (in minutes)</label>
                 </div>
             </div>
 
             <div class="col-12">
                 <div class="form-floating">
-                    <input type="number" name="sessionExpiryDuration" value="<%= data.sessionExpiryDuration %>" class="form-control" id="" placeholder="">
-                    <label for="">Session expiration (in days)</label>
+                    <input type="number" name="sessionExpiryDuration" value="<%= data.sessionExpiryDuration %>" class="form-control">
+                    <label>Session expiration (in days)</label>
                     <div id="" class="form-text"><span class="text-danger">Note: </span>The Session Expiration feature automatically logs users out of their accounts after a specified period of inactivity.
                          When users check the "Remember Me" option, the system uses specified values to determine the duration for which the user will remain logged in, even after closing the browser or navigating away from the site. </div>
                 </div>
