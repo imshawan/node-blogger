@@ -17,6 +17,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+
 /**
  * @date 04-10-2023
  * @author imshawan
@@ -136,3 +138,14 @@ export class DuplicateEntryError extends Error {
       this.name = 'DuplicateEntryError';
     }
 }
+
+/**
+ * Error with status code and message
+ */
+export class RouteError extends Error {
+    status: HttpStatusCodes;
+    constructor(status: HttpStatusCodes, message: string) {
+      super(message);
+      this.status = status;
+    }
+  }

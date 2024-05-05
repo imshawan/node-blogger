@@ -76,3 +76,8 @@ interface Items {
     isCurrent?: boolean;
     url?: string
 }
+
+export type Immutable<T> = {
+    readonly [K in keyof T]: Immutable<T[K]>;
+  };
+  
