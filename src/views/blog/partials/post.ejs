@@ -11,9 +11,19 @@
     <p class="post-content text-ellipse-4"><%= post.blurb %></p>
     <div class="post-meta d-flex justify-content-between">
         <div>
-            <span><i class="fa fa-thumbs-o-up me-2"></i><%= post.likes %></span>
-            <span><i class="fa fa-comment-alt me-2"></i><%= post.comments %></span>
-            <span><i class="fa fa-eye me-2"></i><%= post.views %></span>
+            <% if (_application.authenticated) { %>
+                <span>
+                    <i data-post-id="<%= post.postId %>" data-post-action="<% if (post.hasLiked) { %>unlike<% } else { %>like<% } %>" 
+                        class="fa <% if (post.hasLiked) { %> fa-thumbs-up <% } else { %> fa-thumbs-o-up <% } %> cursor-pointer me-2"></i>
+                    <span><%= post.likes %></span>
+                </span>
+            <% } %>
+            <span><i class="fa fa-comment-alt me-2"></i>
+                <span><%= post.comments %></span>
+            </span>
+            <span><i class="fa fa-eye me-2"></i>
+                <span><%= post.views %></span>
+            </span>
         </div>
         <div>
             <a href="/posts/<%= post.slug %>" class="read-more">Read more</a>

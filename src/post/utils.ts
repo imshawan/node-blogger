@@ -4,7 +4,7 @@ import { sanitizeString, resolveIpAddrFromHeaders, resolveIpFromRequest, slugify
 import { Request } from 'express';
 import * as Helpers from '@src/helpers';
 import { isAuthenticated } from '@src/middlewares';
-import { IPost, ValidUserFields } from '@src/types';
+import { IPost, MutableObject, ValidUserFields } from '@src/types';
 import * as User from '@src/user';
 import Posts from './data';
 import { POST_WEIGHTS } from '@src/constants';
@@ -99,6 +99,19 @@ const timeAgo = (postData: IPost): IPost => {
     return _.merge(postData, {timeAgo: _timeAgo});
 }
 
+const serializePost = function (post: IPost): IPost {
+    const fields = ['likes', 'comments', 'views'] as (keyof IPost)[];
+    const serializedObj: MutableObject = Object.assign({}, post);
+
+    fields.forEach(field => {
+        if (!post[field] || post[field] == -1) {
+            serializedObj[field] = 0;
+        }
+    });
+
+    return serializedObj;
+}
+
 async function incrementCountByType(req: Request, postId: number, field: 'likes' | 'views' | 'comments') {
     let userid = 0,
         postKey = getKey(postId),
@@ -142,5 +155,5 @@ async function reCalculatePostRank(postId: number) {
 
 export default {
     generatePostslug, generateNextPostId, isValidStatus, incrementCommentCount, incrementLikeCount,
-    incrementViewCount, getKey, populateUserData, preparePostBlurb, timeAgo
+    incrementViewCount, getKey, populateUserData, preparePostBlurb, timeAgo, serializePost,
 } as const

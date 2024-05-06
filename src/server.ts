@@ -18,7 +18,7 @@ import baseRouter from '@src/routes';
 import EnvVars from '@src/constants/EnvVars';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import {NodeEnvs} from '@src/constants/misc';
-import {RouteError} from '@src/other/classes';
+import {RouteError} from '@src/helpers';
 import { handleApiResponse, validateConfiguration, extractRemoteAddrFromRequest } from '@src/helpers';
 import { overrideRender, user, authentication, overrideHeaders, addUserSessionAgent } from '@src/middlewares';
 import {initializeDbConnection, mongo, database} from './database';

@@ -5,6 +5,7 @@ import { ValueError } from "@src/helpers";
 import { application } from "@src/application";
 import { clipContent, textFromHTML } from '@src/utilities';
 import _ from "lodash";
+import PostUtils from './utils'
 
 interface IPostOptions {
     perPage?: number; 
@@ -76,7 +77,7 @@ const getPosts = async function (options?: IPostOptions) {
     if (data.length) {
         data = data.map((item: IPost) => {
             item.blurb = preparePostBlurb(item);
-            return item;
+            return _.merge(item, PostUtils.serializePost(item));
         });
     }
 

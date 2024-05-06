@@ -3,14 +3,24 @@ import { handleApiResponse } from "@src/helpers";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import api from "@src/api";
 
-const get = async (req: Request, res: Response, next: NextFunction) => {
-    handleApiResponse(HttpStatusCodes.OK, res, await api.blog.get(req));
-}
-
-const create = async (req: Request, res: Response, next: NextFunction) => {
-    handleApiResponse(HttpStatusCodes.OK, res, await api.blog.create(req));
-}
-
 export default {
-    get, create,
+    get: async (req: Request, res: Response, next: NextFunction) => {
+        handleApiResponse(HttpStatusCodes.OK, res, await api.blog.get(req));
+    }, 
+
+    create: async (req: Request, res: Response, next: NextFunction) => {
+        handleApiResponse(HttpStatusCodes.OK, res, await api.blog.create(req));
+    }, 
+
+    like: async (req: Request, res: Response, next: NextFunction) => {
+        handleApiResponse(HttpStatusCodes.OK, res, await api.blog.handleLikes(req, 'like'));
+    },
+
+    unlike: async (req: Request, res: Response, next: NextFunction) => {
+        handleApiResponse(HttpStatusCodes.OK, res, await api.blog.handleLikes(req, 'unlike'));
+    },
+    
+    getLikes: async (req: Request, res: Response, next: NextFunction) => {
+        handleApiResponse(HttpStatusCodes.OK, res, await api.blog.getLikes(req));
+    }
   } as const;

@@ -8,19 +8,19 @@ const validActions = ['like', 'unlike'];
 const userFields = ['userid', 'username', 'fullname', 'picture', 'slug'] as (keyof IUser)[];
 
 const like = async function (postId: number, caller: number) {
-    await handleLikes(postId, caller, 'like');
+    return await handleLikes(postId, caller, 'like');
 }
 
 const unlike = async function (postId: number, caller: number) {
-    await handleLikes(postId, caller, 'unlike');
+    return await handleLikes(postId, caller, 'unlike');
 }
 
-const getLikes = async function (postId: number, page: number = 1, perPage: number = 10, fields?: (keyof IUser)[]) {
+const get = async function (postId: number, page: number = 1, perPage: number = 10, fields?: (keyof IUser)[]) {
     if (isNaN(postId)) {
         throw new TypeError('postId must be a number.');
     }
     if (postId < 1) {
-        return [];
+        return {users: [], total: 0};
     }
     if (!perPage) {
         perPage=15;
@@ -52,7 +52,7 @@ const getLikes = async function (postId: number, page: number = 1, perPage: numb
     return {users, total: (total ?? 0) as number};
 }
 
-const getLikesCount = async function (postId: number): Promise<number> {
+const getCount = async function (postId: number): Promise<number> {
     if (isNaN(postId)) {
         throw new Error('postId must be a number.');
     }
@@ -124,9 +124,11 @@ async function handleLikes(postId: number, caller: number, action: 'like' | 'unl
         promises.push(database.decrementFieldCount('likes', postKey));
     }
 
-    await Promise.all(promises);
+    const [, count] = await Promise.all(promises);
+
+    return (!count || count < 1) ? 0 : count;
 }
 
 export default {
-    like, unlike, hasLiked, getLikes, getLikesCount,
+    like, unlike, hasLiked, get, getCount,
 } as const;

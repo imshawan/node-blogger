@@ -184,6 +184,26 @@ define('client/blog/posts', ['modules/http'], function (http) {
                 .catch(err => utilities.showToast(err.message, 'error'))
                 .finally(() => elem.unlockWithLoader());
         });
+
+        $('#posts').on('click', '[data-post-action]', function() {
+            const target = $(this);
+            const postId = target.attr('data-post-id'),
+                postAction = target.attr('data-post-action');
+            
+            http.POST(`/api/v1/blog/posts/${postId}/${postAction}`).then(res => {
+                utilities.showToast(res.message, 'success');
+                target.parent().find('span').text(res.count);
+                target.attr('data-post-action', postAction == 'like' ? 'unlike' : 'like');
+
+                if (postAction == 'like') {
+                    target.removeClass('fa-thumbs-o-up').addClass('fa-thumbs-up');
+                }
+                if (postAction == 'unlike') {
+                    target.removeClass('fa-thumbs-up').addClass('fa-thumbs-o-up');
+                }
+                
+            }).catch(err => utilities.showToast(err.message, 'error'));
+        });
     }
 
     posts.getSelectedTags = function() {

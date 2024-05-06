@@ -25,13 +25,22 @@ const DEFAULT_POST_FIELDS: (keyof IPost)[] = [
 ]
 
 const get = async function (req: Request, res: Response) { 
+    const userid = Helpers.parseUserId(req);
 
     const resolve = async (post: any) => {
         try {
             post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
         } catch (e) {}
+
+        const promises: (Promise<any>)[] = [
+            User.getUserWIthFields(post.userid, ['username', 'picture', 'fullname'])
+        ]
         
-        post.author = await User.getUserWIthFields(post.userid, ['username', 'picture', 'fullname']);
+        if (userid) {
+            promises.push(Post.likes.hasLiked(post.postId, userid));
+        }
+
+        [post.author, post.hasLiked] = await Promise.all(promises);
 
         return post;
     }
@@ -58,6 +67,8 @@ const get = async function (req: Request, res: Response) {
 
 const renderPosts = async function (req: Request, res: Response) {
     const {query, params} = req;
+    const userid = Helpers.parseUserId(req);
+
     let {search, sortBy} = query;
     let perPage = Number(query.perPage);
     let page = Number(query.page);
@@ -78,8 +89,12 @@ const renderPosts = async function (req: Request, res: Response) {
     }
 
     const postData = await Promise.all(data.posts.map(async (post: any) => {
-        post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
+        post.createdAt = moment(new Date(String(post.createdAt))).format(DATE_FORMAT);
         post.author = await User.getUserWIthFields(post.userid, ['username', 'picture', 'fullname']);
+
+        if (userid) {
+            post.hasLiked = await Post.likes.hasLiked(post.postId, userid);
+        }
 
         return post;
     }));
@@ -95,7 +110,7 @@ const renderPosts = async function (req: Request, res: Response) {
         title: 'Posts',
         navigation:  new NavigationManager().get('posts'),
         categories,
-        featured: featured.posts.map((post: IPost) => ({...post, createdAt: moment(post.createdAt).format(DATE_FORMAT)})),
+        featured: featured.posts.map((post: IPost) => ({...post, createdAt: moment(new Date(String(post.createdAt))).format(DATE_FORMAT)})),
         posts: postData || [],
         tags: (popularTags.tags ?? []).filter(e => e),
         pagination: Helpers.generatePaginationItems(req.url, page, totalPages),
