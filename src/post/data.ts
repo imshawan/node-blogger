@@ -15,6 +15,24 @@ interface IPostOptions {
 
 const MAX_BLURB_SIZE = 35;
 
+const validPostFields = [
+    "author",
+    "blurb",
+    "categories",
+    "comments",
+    "content",
+    "createdAt",
+    "featuredImage",
+    "likes",
+    "postId",
+    "readTime",
+    "slug",
+    "title",
+    "userid",
+    "views",
+    "wordCount",
+] as (keyof IPost)[];
+
 const getPostById = async function (id: number, fields: string[] = []): Promise<IPost> {
     if (!id) {
         throw new Error('id is required');
@@ -259,5 +277,5 @@ async function searchKeysByTitle(key: string, query: string, start: number, perP
 }
 
 export default {
-    getPostById, getPosts, getFeaturedPosts, search, getPostsByTag, MAX_BLURB_SIZE
+    getPostById, getPosts, getFeaturedPosts, search, getPostsByTag, MAX_BLURB_SIZE, validPostFields
 } as const;

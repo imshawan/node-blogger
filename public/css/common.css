@@ -778,7 +778,7 @@
         padding: 15px 26px; }
   
   @media (min-width: 576px) {
-    .modal-dialog {
+    .modal-dialog:not(.modal-fullscreen) {
       max-width: 500px;
       margin: 30px auto; }
     .modal-dialog-scrollable {
