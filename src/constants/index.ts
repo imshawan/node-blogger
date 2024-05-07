@@ -5,6 +5,7 @@ export * from './Collections';
 export * from './sorting';
 export * from './content';
 export * from './Paths';
+export * from './Ansi';
 
 import pkg from '../../package.json';
 

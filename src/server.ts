@@ -11,6 +11,7 @@ import http from 'http';
 import useragent from 'express-useragent';
 import expressSession from 'express-session';
 import chalk from 'chalk';
+import ReadLine from 'readline';
 
 import 'express-async-errors';
 
@@ -18,6 +19,7 @@ import baseRouter from '@src/routes';
 import EnvVars from '@src/constants/EnvVars';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import {NodeEnvs} from '@src/constants/misc';
+import { ANSI } from './constants/Ansi';
 import {RouteError} from '@src/helpers';
 import { handleApiResponse, validateConfiguration, extractRemoteAddrFromRequest } from '@src/helpers';
 import { overrideRender, user, authentication, overrideHeaders, addUserSessionAgent } from '@src/middlewares';
@@ -29,7 +31,7 @@ import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
 import flash from 'express-flash';
 import nconf from 'nconf';
-import { Logger, getISOTimestamp } from './utilities';
+import { Logger, getISOTimestamp, isPortAvailable } from './utilities';
 import {paths} from './constants';
 import { log } from 'console';
 import { initializeEmailClient } from './email/emailer';
@@ -55,6 +57,34 @@ const start = async function (port: Number, callback: Function) {
     app.listen(port, () => {
         if (callback && typeof callback == 'function') {
             callback(httpServer);
+        }
+    }).on('error', function(err){
+        if (String(err.message).includes('EADDRINUSE')) {
+            
+            const readlineInterface = ReadLine.createInterface({
+                input: process.stdin,
+                output: process.stdout
+            });
+
+            logger.warn('Port ' + port + ' is already in use.');
+
+            readlineInterface.question(`${ANSI.BOLD}Do you want to choose a different port? (yes/no) ${ANSI.RESET}`, async (answer) => {
+                if (answer.toLowerCase() === 'yes' || answer.toLowerCase() === 'y') {
+                    let isAvailable = false;
+
+                    while (!isAvailable) {
+                        port = Number(port) + 1;
+                        isAvailable = await isPortAvailable(Number(port));
+                    }
+
+                    start(port, callback);
+                } else {
+                    console.log('Exiting...');
+                    process.exit(0);
+                }
+
+                readlineInterface.close();
+            });
         }
     });
 }
