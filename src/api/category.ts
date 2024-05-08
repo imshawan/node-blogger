@@ -1,6 +1,6 @@
 import { Request } from "express";
 import category from "@src/category";
-import { MutableObject } from "@src/types";
+import { ICategory, MutableObject } from "@src/types";
 import _ from 'lodash';
 import * as Helpers from "@src/helpers";
 import { isParsableJSON } from "@src/utilities";
@@ -8,7 +8,7 @@ import { isParsableJSON } from "@src/utilities";
 const categoryApi: MutableObject = {
     tags: {}
 };
-const categoryFields = ['name', 'cid', 'thumb', 'parent'];
+const categoryFields = ['name', 'cid', 'thumb', 'parent'] as (keyof ICategory)[];
 
 categoryApi.get = async (req: Request) => {
     const {query, params} = req;

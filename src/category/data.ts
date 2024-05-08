@@ -79,7 +79,7 @@ const getCategoriesWithData = async function getCategoriesWithData(perPage: numb
     return data;
 }
 
-const getAllCategories = async function getAllCategories(perPage: number=15, page: number=1, fields: string[]=[], sorting: string | null='default', subCategories=true) {
+const getAllCategories = async function getAllCategories(perPage: number=15, page: number=1, fields?: (keyof ICategory)[], sorting: string | null='default', subCategories=true) {
     if (!perPage) {
         perPage=15;
     }
@@ -112,7 +112,7 @@ const getAllCategories = async function getAllCategories(perPage: number=15, pag
     const sets = await database.fetchSortedSetsRange(searchKeys, start, stop);
     let data: ICategory[] = [];
     if (sets && sets.length) {
-        data = await database.getObjectsBulk(sets) as ICategory[];
+        data = await database.getObjectsBulk(sets, fields) as ICategory[];
     }
 
     if (fields.includes('blurb')) {

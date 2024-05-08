@@ -112,7 +112,7 @@ const exists = async function (tagId: number) {
     return Boolean(await getById(tagId));
 }
 
-const getByCategoryId = async function getByCategoryId(cid: number, fields?: Array<string>) {
+const getByCategoryId = async function getByCategoryId(cid: number, fields?: (keyof ICategoryTag)[]) {
     if (!cid) {
         throw new Error('A valid category id is required')
     }
@@ -128,7 +128,7 @@ const getByCategoryId = async function getByCategoryId(cid: number, fields?: Arr
     const tagSearchKeys = `category:${cid}:tag`;
 
     const sets = await database.fetchSortedSetsRange(tagSearchKeys, 0, -1);
-    const tags = await database.getObjectsBulk(sets, ['name', 'tagId']);
+    const tags = await database.getObjectsBulk(sets, fields);
 
     return tags as ICategory[];
 }

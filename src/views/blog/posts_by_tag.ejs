@@ -27,15 +27,11 @@
             <button class="btn btn-primary button btn-sm follow">Follow</button>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="posts-wrapper pb-0 posts-container">
+    <div class="posts-wrapper row mt-4 pb-0 posts-container">
 
-            <% posts.forEach(post => { %>
-                <div class="col-12 col-md-6">
-                    <%- include('/blog/partials/post', {post: post}); -%>
-                </div>
-            <% }) %>
+        <% posts.forEach(post => { %>
+                <%- include('/partials/post', {post: post}); -%>
+        <% }) %>
 
-        </div>
     </div>
 </div>

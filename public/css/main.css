@@ -1328,6 +1328,8 @@ a.badge-light:focus, a.badge-light:hover {
   font-weight: 600;
 }
 .post-likes, .post-comments {font-size: var(--font-size-12);}
+.category-selection-container span.select2-container--default {height: 100%;}
+.category-selection-container .select2-container--default .select2-selection--single .select2-selection__rendered {margin-top: 2px;}
 
 @media (max-width: 650px) {
   #posts .posts-container .post-content {

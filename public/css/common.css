@@ -18,6 +18,7 @@
 
 /* Buttons */
 .btn-border-2-danger {border: 2px solid var(--color-danger);}
+.btn-rounded {border-radius: 50%!important;}
 
 /* Global styles end here */
 

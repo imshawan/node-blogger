@@ -49,9 +49,11 @@ const getPostsByCategory = async function (req: Request, res: Response) {
         throw new ValueError('Invalid category id');
     }
 
-    const [data, category] = await Promise.all([
+    const [data, category, tags, categories] = await Promise.all([
         Category.post.getPosts(categoryId, {perPage, page}),
-        Category.data.getCategoryByCid(categoryId)
+        Category.data.getCategoryByCid(categoryId),
+        Category.tags.getByCategoryId(categoryId, ['name', 'posts', 'slug', 'tagId']),
+        Category.data.getAllCategories(10, 1, ['name', 'posts', 'cid']),
     ]);
 
     const totalPages = Math.ceil(data.total / perPage);
@@ -68,7 +70,9 @@ const getPostsByCategory = async function (req: Request, res: Response) {
         title: category.name + ' - Posts',
         navigation:  new NavigationManager().get('posts'),
         posts: posts,
+        tags: (tags || []).filter(t => t),
         category: category ?? {},
+        categories: categories ?? [],
         pagination: Helpers.generatePaginationItems(req.url, page, totalPages),
     };
 
