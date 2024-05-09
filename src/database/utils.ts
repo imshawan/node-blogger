@@ -17,8 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ISortedSetKey } from "@src/types";
+import { IOptions, IParamOptions, ISortedSetKey } from "@src/types";
 import * as Utilities from "@src/utilities";
+import { Collections } from "@src/constants";
 
 const buildSearchQueryFromText = function (text: string) {
 	let search = text;
@@ -141,4 +142,51 @@ const parseBytes = function (bytes: number): number {
 	return parseFloat(value.toFixed(4));
 }
 
-export const utilities = {buildSearchQueryFromText, handleBatchKeysArray, mergeBatchSets, prepareSortedSetKeys, parseBytes}
+const validateCollection =  function(name: string) {
+    name = name.trim();
+    const collections = Object.values(Collections).map(el => String(el));
+
+    if (!name) {
+        throw new Error('A valid collection name is required');
+    }
+
+    if (!collections.includes(name)) {
+        throw new Error('Permission denied! Tried using an invalid collection name')
+    } 
+}
+
+const getObjectOptions = function (options?: IParamOptions): IOptions {
+    if (!options) {
+        options = {};
+    }
+
+    if (options && Object.keys(options).length) {
+        if (!options.hasOwnProperty('multi')) {
+            options.multi = false;
+        }
+        if (!options.hasOwnProperty('collection')) {
+            options.collection = Collections.DEFAULT;
+        }
+        if (options.hasOwnProperty('mongoOptions') && typeof options.mongoOptions !== 'object') {
+            options.mongoOptions = {};
+        }
+
+        if (options.collection) {
+            validateCollection(options.collection);
+        }
+        if (!options.sort || !Object.keys(options.sort).length) {
+            options.sort = {$natural: -1}
+        }
+
+    } else {
+        options = {
+            multi: false,
+            collection: Collections.DEFAULT,
+            sort: {$natural: -1}
+        };
+    }
+
+    return options as IOptions;
+}
+
+export const utilities = {buildSearchQueryFromText, handleBatchKeysArray, mergeBatchSets, prepareSortedSetKeys, parseBytes, validateCollection, getObjectOptions}

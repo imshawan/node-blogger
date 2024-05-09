@@ -1,3 +1,5 @@
+import { Locks } from '@src/constants';
+
 export * from './cache';
 
 /**
@@ -221,8 +223,17 @@ interface IMongoDatabasesList {
     ok: number;
 }
 
+interface ILockData {
+    _key: string;
+    type: keyof typeof Locks;
+    caller: number;
+    lockedAt: Date;
+    expiresAt: number;
+  }
+  
+
 export {
     IMongoInsertOptions, IParamOptions, IMongoDeleteOptions, IOptions,
     IMongoUpdateOptions, IMongoPaginateOptions, IMongoConnectionProps, ISortedSetKey, ISortedSetLexicalQuery,
-    IMongoDatabaseStats, IMongoDatabasesList, ICollection, IMongoDBStats
+    IMongoDatabaseStats, IMongoDatabasesList, ICollection, IMongoDBStats, ILockData
 }

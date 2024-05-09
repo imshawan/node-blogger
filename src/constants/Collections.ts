@@ -13,4 +13,5 @@
 export enum Collections {
     DEFAULT = 'objects',
     SESSIONS = 'sessions',
-  }
+    LOCKS = 'locks'
+}

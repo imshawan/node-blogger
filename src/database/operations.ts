@@ -10,9 +10,10 @@ import _ from "lodash";
 import { ObjectId } from "bson";
 import { utilities as dbUtils } from "./utils";
 import { Db } from "mongodb";
+import lock from "./lock";
 
 const getFromDb = async function (key: object, fields?: Array<string>, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
 
     if (options.multi) {
         let data: any = await mongo.client.collection(options.collection).find(key).sort(options.sort).toArray();
@@ -28,7 +29,7 @@ const getFromDb = async function (key: object, fields?: Array<string>, options?:
 }
 
 const getObjects = async function (key: string, fields?: Array<string>, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
 
     if (options.multi) {
         let data: any = [];
@@ -57,7 +58,7 @@ const getObjects = async function (key: string, fields?: Array<string>, options?
 }
 
 const getObjectsBulk = async function (keysArray: string[], fields?: string[], options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
 
     if (!keysArray || !Array.isArray(keysArray) || !keysArray.length) {
         return [];
@@ -105,13 +106,13 @@ const getObjectsBulk = async function (keysArray: string[], fields?: string[], o
 }
 
 const getObjectsCount = async function (key: string, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
     
     return await mongo.client.collection(options.collection).countDocuments({_key: key});
 }
 
 const setObjects = async function (key: string | null, data: any, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
     let mongoOptions: IMongoInsertOptions = options.mongoOptions || {};
 
     if (!mongoOptions || !Object.keys(mongoOptions).length) {
@@ -144,7 +145,7 @@ const setObjects = async function (key: string | null, data: any, options?: IPar
 }
 
 const updateObjects = async function (key: string, data: any, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
     let mongoOptions: IMongoUpdateOptions = options.mongoOptions || {};
 
     if (!mongoOptions || !Object.keys(mongoOptions).length) {
@@ -163,7 +164,7 @@ const updateObjects = async function (key: string, data: any, options?: IParamOp
 }
 
 const deleteObjects = async function (key: string, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
     let mongoOptions: IMongoDeleteOptions = options.mongoOptions || {};
 
     if (!mongoOptions || !Object.keys(mongoOptions).length) {
@@ -182,7 +183,7 @@ const deleteObjects = async function (key: string, options?: IParamOptions) {
 }
 
 const deleteObjectsWithKeys = async function (keysArray: string | string[], options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
 
     if (!keysArray) {
         return;
@@ -201,7 +202,7 @@ const paginateObjects = async function (key: object, paginate: IMongoPaginateOpt
     const {limit, page} = paginate;
     let order = paginate.order || {};
 
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
 
     if (!Object.keys(order).length) {
         order = {$natural: -1}
@@ -213,7 +214,7 @@ const paginateObjects = async function (key: object, paginate: IMongoPaginateOpt
 }
 
 const aggregateObjects = async function (pipeline: object, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
 
     return await mongo.client.collection(options.collection).aggregate(pipeline).toArray();
 }
@@ -235,7 +236,7 @@ const decrementFieldCountByKeyAndValue = async function (field: string, key: str
 }
 
 const sortedSetAddKey = async function (key: string, value: string | number, rank: number, options?: IParamOptions): Promise<void> {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
 
     if (!key || !value) {
         throw new Error('key and value is a required parameter');
@@ -250,7 +251,7 @@ const sortedSetAddKey = async function (key: string, value: string | number, ran
 }
 
 const sortedSetAddKeys = async function (keysArray: Array<Array<string | number>>, options?: IParamOptions): Promise<void> {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
     const data: ISortedSetKey[] = dbUtils.prepareSortedSetKeys(keysArray);
 
     if (data.length) {
@@ -259,7 +260,7 @@ const sortedSetAddKeys = async function (keysArray: Array<Array<string | number>
 }
 
 const sortedSetRemoveKey =  async function (key: string, value: string | number, options?: IParamOptions): Promise<void> {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
 
     if (!key || !value) {
         throw new Error('key and value is a required parameter');
@@ -271,7 +272,7 @@ const sortedSetRemoveKey =  async function (key: string, value: string | number,
 }
 
 const sortedSetRemoveKeys = async function (keysArray: Array<Array<string | number>>, options?: IParamOptions): Promise<void> {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
 
     if (!Array.isArray(keysArray)) {
         keysArray = [keysArray];
@@ -313,13 +314,13 @@ const getSortedSetsLexicalReverse = async function (
 };
 
 const getSortedSetsLexicalCount = async function (key: string, min: string, max: string, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
     let data = await findSortedSetsLexical(key, min, max, 1, 0, 0, options);
     return data && data.length ? data.length : 0;
 }
 
 const getSortedSetsSearch = async function (params: { withRanks?: boolean; match: string; key: string; skip?:number, limit?: number; }, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
     const project: {_id: number, value: number, rank?: number} = { _id: 0, value: 1 };
     let {key, limit, withRanks, skip} = params;
 
@@ -352,7 +353,7 @@ const getSortedSetsSearch = async function (params: { withRanks?: boolean; match
 };
 
 const getSortedSetsSearchCount = async function (key: string, match: string, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
 
     if (!match || !key) {
         throw new Error('match and key are both required parameters');
@@ -390,7 +391,7 @@ const fetchSortedSetsRange = async function fetchSortedSetsRange(
 	withRanks: boolean = false,
 	options?: IParamOptions
 ) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
 
     if (!key || (Array.isArray(key) && (start < 0 && start > stop || key.length === 0))) {
         return [];
@@ -467,7 +468,7 @@ const fetchSortedSetsRange = async function fetchSortedSetsRange(
 }
 
 const getSortedSet = async function (key: string, withRank: boolean = false, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
     if (!key) {
         return null;
     }
@@ -484,7 +485,7 @@ const getSortedSet = async function (key: string, withRank: boolean = false, opt
 };
 
 const getSortedSetValue = async function (key: string, value: any, withRank: boolean = false, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
     if (!key) {
         return null;
     }
@@ -501,7 +502,7 @@ const getSortedSetValue = async function (key: string, value: any, withRank: boo
 };
 
 const updateSortedSetValue = async function (key: string, value: any, data: object, options?: IParamOptions) {
-    let opts = getObjectOptions(options || {}) as IOptions;
+    let opts = dbUtils.getObjectOptions(options || {}) as IOptions;
     if (!key || !value || !Object.keys(data).length) {
         return null;
     }
@@ -510,7 +511,7 @@ const updateSortedSetValue = async function (key: string, value: any, data: obje
 }
 
 const removeSortedSetValue = async function (key: string | RegExp, value: any, options?: IParamOptions) {
-    let opts = getObjectOptions(options || {}) as IOptions;
+    let opts = dbUtils.getObjectOptions(options || {}) as IOptions;
     if (!key || !value) {
         return null;
     }
@@ -519,7 +520,7 @@ const removeSortedSetValue = async function (key: string | RegExp, value: any, o
 }
 
 const getSortedSetsValue = async function (keys: string, value: any, withRank: boolean = false, options?: IParamOptions) {
-    options = getObjectOptions(options || {});
+    options = dbUtils.getObjectOptions(options || {});
     if (!Array.isArray(keys) || !keys.length) {
         return [];
     }
@@ -545,7 +546,7 @@ async function findSortedSetsLexical (
 	limit?: number,
 	options?: IParamOptions
 ) {
-	options = getObjectOptions(options || {});
+	options = dbUtils.getObjectOptions(options || {});
 
 	var query: ISortedSetLexicalQuery = { _key: key, value: {} };
 	start = start ?? 0;
@@ -605,7 +606,7 @@ async function incrementObjectFieldWithKeyAndValueBy (key: string, value: string
     if (!key || isNaN(by)) {
         return 0;
     }
-    options = getObjectOptions(options);
+    options = dbUtils.getObjectOptions(options);
     const increment = {
         [field]: by
     };
@@ -628,7 +629,7 @@ async function incrementObjectFieldValueBy (key: string, field: string, value: n
     if (!key || isNaN(value)) {
         return 0;
     }
-    options = getObjectOptions(options);
+    options = dbUtils.getObjectOptions(options);
     const increment = {
         [field]: value
     };
@@ -667,53 +668,6 @@ function filterObjectFields(object: any, fields?: Array<string>) {
     }
 }
 
-function getObjectOptions (options?: IParamOptions): IOptions {
-    if (!options) {
-        options = {};
-    }
-
-    if (options && Object.keys(options).length) {
-        if (!options.hasOwnProperty('multi')) {
-            options.multi = false;
-        }
-        if (!options.hasOwnProperty('collection')) {
-            options.collection = Collections.DEFAULT;
-        }
-        if (options.hasOwnProperty('mongoOptions') && typeof options.mongoOptions !== 'object') {
-            options.mongoOptions = {};
-        }
-
-        if (options.collection) {
-            validateCollection(options.collection);
-        }
-        if (!options.sort || !Object.keys(options.sort).length) {
-            options.sort = {$natural: -1}
-        }
-
-    } else {
-        options = {
-            multi: false,
-            collection: Collections.DEFAULT,
-            sort: {$natural: -1}
-        };
-    }
-
-    return options as IOptions;
-}
-
-function validateCollection(name: string) {
-    name = name.trim();
-    const collections = Object.values(Collections).map(el => String(el));
-
-    if (!name) {
-        throw new Error('A valid collection name is required');
-    }
-
-    if (!collections.includes(name)) {
-        throw new Error('Permission denied! Tried using an invalid collection name')
-    } 
-}
-
 const operations = {
 	getFromDb,
 	getObjects,
@@ -747,6 +701,7 @@ const operations = {
 	getSortedSetValue,
 	updateSortedSetValue,
 	removeSortedSetValue,
+    ...lock,
 };
 
 export {operations as database};
