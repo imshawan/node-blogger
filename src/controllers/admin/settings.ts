@@ -24,7 +24,13 @@ const site = async function (req: Request, res: Response, next: NextFunction) {
         "logo",
         "favicon",
         "altLogoText",
-        "logoRedirectionUrl"
+        "logoRedirectionUrl",
+        "ctaSectionLeftHeader",
+        "ctaSectionRightHeader",
+        "ctaSectionRightSubHeader",
+        "ctaSectionRightText",
+        "ctaSectionRightButton",
+        "ctaSectionRightButtonLink"
     ];
 
     pageData.title = 'Site settings';

@@ -67,6 +67,36 @@ export interface IApplication {
      */
     description: string;
 
+     /**
+     * The header text for the left section of the CTA.
+     */
+    ctaSectionLeftHeader: string;
+
+    /**
+     * The header text for the right section of the CTA.
+     */
+    ctaSectionRightHeader: string;
+
+    /**
+     * The subheader text for the right section of the CTA.
+     */
+    ctaSectionRightSubHeader: string;
+
+    /**
+     * The main body text for the right section of the CTA, including HTML markup.
+     */
+    ctaSectionRightText: string;
+
+    /**
+     * The label text for the button in the right section of the CTA.
+     */
+    ctaSectionRightButton: string;
+
+    /**
+     * The link URL for the button in the right section of the CTA.
+     */
+    ctaSectionRightButtonLink: string;
+
     /**
      * Array of keywords associated with the site.
      */

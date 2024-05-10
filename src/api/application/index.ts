@@ -25,7 +25,7 @@ const updateCommonStore = async (req: Request) => {
 
     fieldsFromRequest.forEach(field => {
         const expectedType = getTypeofField(field)
-        if (typeof body[field] != expectedType) {
+        if (expectedType !== 'undefined' && typeof body[field] != expectedType) {
             throw new Error(`Invalid type supplied for ${field}. Expected ${expectedType} but found ${typeof req.body[field]}`);
         }
     });

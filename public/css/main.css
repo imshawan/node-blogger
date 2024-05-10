@@ -463,23 +463,23 @@ nav .nav-link:hover {
   font-family: 'Poppins';
 }
 
-.aboutus {
+.cta-section-home {
   position: relative;
 }
 
-.aboutus .right {
+.cta-section-home .right {
   padding: 70px 30px 90px;
   background-color: black;
   margin-bottom: 40px;
 }
 
-.aboutus .right p {
+.cta-section-home .right p {
   font-size: 25px;
   color: white;
   z-index: 5;
 }
 
-.aboutus .left .main-button {
+.cta-section-home .left .main-button {
   display: inline-block;
   margin-top: 20px;
 }
@@ -1400,10 +1400,10 @@ a.badge-light:focus, a.badge-light:hover {
     font-size: 76px;
     margin-top: -20px;
   }
-  .aboutus {
+  .cta-section-home {
     position: relative;
   }
-  .aboutus .black-div {
+  .cta-section-home .black-div {
     position: absolute;
     z-index: -1;
     top: 0;
@@ -1411,31 +1411,31 @@ a.badge-light:focus, a.badge-light:hover {
     height: 100%;
     background-color: black;
   }
-  .aboutus .left {
+  .cta-section-home .left {
     position: relative;
     padding-left: 30px;
     height: 100%;
   }
-  .aboutus .left h2 {
+  .cta-section-home .left h2 {
     margin-top: 0;
   }
-  .aboutus .right .text-right p {
+  .cta-section-home .right .text-right p {
     font-size: 45px;
   }
-  .aboutus .new-articles .card-img-overlay .card-text {
+  .cta-section-home .new-articles .card-img-overlay .card-text {
     font-size: 12px;
   }
-  .aboutus .new-articles .card-img-overlay .card-title {
+  .cta-section-home .new-articles .card-img-overlay .card-title {
     font-size: 18px;
   }
-  .aboutus .new-articles .card-img-overlay .line {
+  .cta-section-home .new-articles .card-img-overlay .line {
     width: 200px;
     height: 2px;
     background-color: var(--highlighting-color);
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  .aboutus .new-articles .card-img-overlay .card-button {
+  .cta-section-home .new-articles .card-img-overlay .card-button {
     padding: 5px 15px;
     background-color: transparent;
     color: white;

@@ -34,6 +34,22 @@ define('client/admin/settings/site/index', ['modules/http'], function (http) {
             }
         });
 
+        $('#ctaSectionRightTextArea').summernote({
+            branding: false,
+            placeholder: 'Enter section text here...',
+            tabsize: 2,
+            height: 200,
+            width: '100%',
+            toolbar: [
+                ['view', ['fullscreen', 'codeview']]
+            ],
+            callbacks: {
+                onChange: function(contents, $editable) {
+                    dataChanged['ctaSectionRightText'] = contents;
+                }
+            }
+        });
+
         $('#save-site-information').on('click', function () {
             const keywordsSelector = $('#site-keywords');
             if (keywordsSelector.data('is-dirrty')) {

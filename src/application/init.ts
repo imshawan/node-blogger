@@ -64,7 +64,8 @@ export const getConfigurationStoreByScope = function (scope?: 'admin' | 'client'
 }
 
 export const getCommonFields = function (): Array<keyof IApplication> {
-    const {configurationStore} = application;
+    const defaults =  require('../../setup/data/defaults.json');
+    const configurationStore = _.merge(defaults, application.configurationStore);
     const protectedFields = [...filterApplicationKeys, ...imageFields];
     if (!configurationStore) return [];
 

@@ -10,30 +10,24 @@
           <p><%= _config.description %></p>
         </div>
       </div>
-      <a href="#about"><i class="fas fa-chevron-down"></i></a>
+      <a href="#cta-section-home"><i class="fas fa-chevron-down"></i></a>
     </div>
   </section>
-  <section id="about" class="aboutus">
+  <section id="cta-section-home" class="cta-section-home">
     <div class="container">
       <div class="row">
         <div class="right col-md-6">
           <div class="text-right">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam</p>
+            <p><%= ctaSectionLeftHeader %></p>
           </div>
         </div>
         <div class="left col-md-6">
           <div class="text-left">
-            <h2 class="underscore">about us</h2>
-            <p class="sup-header">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex
-              ipsam similique blanditiis. Culpa hic quia, repellendus corrupti </p>
-            <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam
-              similique blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium necessitatibus alias
-              illo quidem. Repudiandae expedita illum aspernatur magni?
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam similique
-              blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium necessitatibus alias illo
-              quidem. Repudiandae expedita illum aspernatur magni?</p>
+            <h2 class="underscore"><%= ctaSectionRightHeader %></h2>
+            <p class="sup-header"><%= ctaSectionRightSubHeader %></p>
+            <%- ctaSectionRightText %>
           </div>
-          <a href="contact.html" class="main-button">Let’s work together</a>
+          <a href="<%= ctaSectionRightButtonLink %>" class="main-button"><%= ctaSectionRightButton %></a>
         </div>
       </div>
     </div>

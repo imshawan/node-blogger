@@ -6,8 +6,9 @@ import { notFoundHandler } from '@src/middlewares';
 import * as User from '@src/user';
 import * as Helpers from "@src/helpers";
 import moment from 'moment';
-import { ICategoryTag, IPost } from '@src/types';
+import { IApplication, ICategoryTag, IPost, MutableObject } from '@src/types';
 import Tag from '@src/category/tags';
+import * as application from '@src/application';
 
 const DATE_FORMAT = 'DD MMM, yyyy';
 const DEFAULT_POST_FIELDS: (keyof IPost)[] = [
@@ -29,7 +30,7 @@ const get = async function (req: Request, res: Response) {
 
     const resolve = async (post: any) => {
         try {
-            post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
+            post.createdAt = moment(new Date(String(post.createdAt))).format(DATE_FORMAT);
         } catch (e) {}
 
         const promises: (Promise<any>)[] = [
@@ -54,13 +55,22 @@ const get = async function (req: Request, res: Response) {
     const recentPosts = await Promise.all(recent.posts.map(resolve));
     const popularPosts = await Promise.all(popular.posts.map(resolve));
 
-    const page = {
+    const page: MutableObject = {
         title: 'Home',
         navigation: new NavigationManager().get('home'),
         categories,
         recents: recentPosts, 
         popular: popularPosts,
     };
+
+    const appKeys = ["ctaSectionLeftHeader",
+        "ctaSectionRightHeader",
+        "ctaSectionRightSubHeader",
+        "ctaSectionRightText",
+        "ctaSectionRightButton",
+        "ctaSectionRightButtonLink"] as (keyof IApplication)[];
+
+    appKeys.forEach(item => (page[item] = application.get(item)));
 
     res.render('blog/index', page);
 }

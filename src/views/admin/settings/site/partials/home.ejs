@@ -1,0 +1,51 @@
+<div id="homepage-settings" class="card">
+    <div class="card-body">
+        <h5 class="card-title">Homepage</h5>
+
+        <form id="site-config" class="row g-3">
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" name="ctaSectionLeftHeader" value="<%= data.ctaSectionLeftHeader %>" class="form-control" id="leaf-header" placeholder="">
+                    <label for="leaf-header">Left section text</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" name="ctaSectionRightHeader" value="<%= data.ctaSectionRightHeader %>" class="form-control" id="right-header"
+                        placeholder="">
+                    <label for="right-header">Right section header text</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="ctaSectionRightSubHeader" value="<%= data.ctaSectionRightSubHeader %>" name="ctaSectionRightSubHeader"
+                        placeholder="">
+                    <label for="ctaSectionRightSubHeader">Sub-Header for right section</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <label class="mb-2 mt-4">Right CTA section text</label>
+                <div class="form-floating">
+                    <textarea class="form-control" name="ctaSectionRightText" placeholder="" id="ctaSectionRightTextArea"
+                        style="height: 100px;"><%= data.ctaSectionRightText %></textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="ctaSectionRightButton" value="<%= data.ctaSectionRightButton %>" name="ctaSectionRightButton"
+                        placeholder="">
+                    <label for="ctaSectionRightButton">CTA button text</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="ctaSectionRightButtonLink" value="<%= data.ctaSectionRightButtonLink %>" name="ctaSectionRightButtonLink"
+                        placeholder="">
+                    <label for="ctaSectionRightButtonLink">CTA button link</label>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
