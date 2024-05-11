@@ -10,29 +10,14 @@
           <p><%= _config.description %></p>
         </div>
       </div>
-      <a href="#cta-section-home"><i class="fas fa-chevron-down"></i></a>
+      <a href="<% if (_application.authenticated) { %>#contact<% } else { %>#cta-section-home<% } %>"><i class="fas fa-chevron-down"></i></a>
     </div>
   </section>
-  <section id="cta-section-home" class="cta-section-home">
-    <div class="container">
-      <div class="row">
-        <div class="right col-md-6">
-          <div class="text-right">
-            <p><%= ctaSectionLeftHeader %></p>
-          </div>
-        </div>
-        <div class="left col-md-6">
-          <div class="text-left">
-            <h2 class="underscore"><%= ctaSectionRightHeader %></h2>
-            <p class="sup-header"><%= ctaSectionRightSubHeader %></p>
-            <%- ctaSectionRightText %>
-          </div>
-          <a href="<%= ctaSectionRightButtonLink %>" class="main-button"><%= ctaSectionRightButton %></a>
-        </div>
-      </div>
-    </div>
-    <div class="black-div"></div>
-  </section>
+
+  <% if (!_application.authenticated) { %>
+    <%- include('/blog/partials/cta_section'); -%>
+  <% } %>
+  
   <section id="contact" class="social-media">
     <div class="container">
       <h2 class="underscore">Popular and Trending blogs</h2>
