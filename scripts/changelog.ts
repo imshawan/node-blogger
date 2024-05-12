@@ -2,7 +2,7 @@
 
 /**
  * @date 28-09-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * 
  * @description Changelog generator Script
  * This Node.js process script uses the Changelog class from the 'utilities' module to generate and write a changelog file.

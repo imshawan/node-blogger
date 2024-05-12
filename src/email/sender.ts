@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Shawan Mandal <hello@imshawan.dev>.
+ * Copyright (C) 2024 Shawan Mandal <github@imshawan.dev>.
  *
  * Licensed under the GNU General Public License v3, 29 June 2007
  *
@@ -33,7 +33,7 @@ const validScurityOptions = {
 
 /**
  * @date 24-12-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * 
  * @class Sender
  * @description Manages the setup and sending of emails using an SMTP transport service through Nodemailer.

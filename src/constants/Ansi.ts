@@ -1,6 +1,6 @@
 /**
  * @date 07-05-2024
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * 
  * @description Defines ANSI escape codes for text styling in the terminal as an enum.
  * ANSI escape codes allow styling text in terminal interfaces by manipulating text attributes.

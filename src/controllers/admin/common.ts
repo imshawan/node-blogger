@@ -1,6 +1,6 @@
 /**
  * @date 24-11-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @description This file contains all the common constants required by the admin controllers to work
  */
 

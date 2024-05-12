@@ -1,7 +1,7 @@
 /**
  * 
  * @date 21-03-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @description Contains the list of valid collections that are going to be used by this application
  * for smooth data retrival and storage.
  * 

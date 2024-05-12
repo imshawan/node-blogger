@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Author: imshawan <hello@imshawan.dev>
+# Author: imshawan <github@imshawan.dev>
 # Date: 25-03-2024
 # Description: Script to validate the format and content of git commit messages, ensuring adherence to specified conventions and length limits.
 

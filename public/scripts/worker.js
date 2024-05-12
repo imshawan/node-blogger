@@ -1,5 +1,5 @@
 /**
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @date 01-10-2023
  * @description Service Worker Configuration
  * 

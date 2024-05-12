@@ -1,6 +1,6 @@
 /**
  * @date 10-09-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * 
  * This TypeScript file contains type declarations and interfaces specific to our testing suite.
  * It serves as a central location for defining custom types that are used throughout our testing

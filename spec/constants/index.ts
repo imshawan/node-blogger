@@ -1,6 +1,6 @@
 /**
  * @date 10-09-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @description Constants required for the testing suite of NodeBlogger
  * 
  * This constant file contains predefined user credentials and other required constants for testing purposes. 

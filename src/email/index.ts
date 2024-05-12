@@ -9,7 +9,7 @@ import { ICustomSMTPService, MutableObject, Security } from '@src/types';
 
 
 /**
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @description Sets up a custom SMTP service based on provided data, updating the application's settings accordingly.
  * 
  * @param data - Object containing information about the SMTP service (host, port, name, security, username, password).

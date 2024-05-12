@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Shawan Mandal <hello@imshawan.dev>.
+ * Copyright (C) 2023 Shawan Mandal <github@imshawan.dev>.
  *
  * Licensed under the GNU General Public License v3, 29 June 2007
  *
@@ -87,7 +87,7 @@ export function paginate(items: Array<any>, perPage: number, page: number, baseU
 
 /**
  * @date 08-01-2024
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @function generatePaginationItems
  * @description Generates an array of pagination items based on the current page, total pages, and optional parameters.
  *

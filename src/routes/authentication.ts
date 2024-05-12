@@ -13,7 +13,7 @@ mountPageRoute(router, '/password/reset/:token', [], controllers.authentication.
 
 /**
  * @date 17-03-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @description All the authentication related API routes goes here and will be maintained along with the
  * page routes for better perfomance and redirections.
  * 

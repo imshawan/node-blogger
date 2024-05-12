@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Shawan Mandal <hello@imshawan.dev>.
+ * Copyright (C) 2023 Shawan Mandal <github@imshawan.dev>.
  *
  * Licensed under the GNU General Public License v3, 29 June 2007
  *
@@ -31,7 +31,7 @@ interface SessionObject {
 
 /**
  * @date 24-08-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @class PassportUserSessionStore
  * @description A Promisified version of SessionStore management with some extended functionalities
  */

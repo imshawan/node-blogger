@@ -4,7 +4,7 @@ export * from './cache';
 
 /**
  * @date 22-03-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @interface IParamOptions
  * @description Common types for options parameter of all database operation functions
  */
@@ -24,7 +24,7 @@ interface IOptions extends IParamOptions {
 
 /**
  * @date 22-03-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @interface IMongoOptions
  * @description Valid mongodb options that can be used with data insertion methods
  * 
@@ -39,7 +39,7 @@ interface IMongoInsertOptions {
 
 /**
  * @date 22-03-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @interface IMongoUpdateOptions
  * @description Valid mongodb options that can be used with data updation methods
  * @see {@link https://www.mongodb.com/docs/manual/reference/method/db.collection.update/}
@@ -58,7 +58,7 @@ interface IMongoUpdateOptions {
 
 /**
  * @date 22-03-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @interface IMongoDeleteOptions
  * @description Valid mongodb options that can be used with data deletion methods
  * @see {@link https://www.mongodb.com/docs/manual/reference/method/db.collection.remove/}
@@ -73,7 +73,7 @@ interface IMongoDeleteOptions {
 
 /**
  * @date 22-03-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @interface IMongoPaginateOptions
  * @description Valid mongodb options that can be used with data pagination methods
  * @see {@link https://www.mongodb.com/docs/manual/reference/method/cursor.skip/}

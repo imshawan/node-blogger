@@ -1,6 +1,6 @@
 /**
  * @date 10-09-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @description Clean Build Directory Script With Command Line Interface
  *
  * This script is designed to maintain a clean and organized project structure by

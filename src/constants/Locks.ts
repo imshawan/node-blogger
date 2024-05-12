@@ -1,6 +1,6 @@
 /**
  * @date 10-05-2024
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * 
  * @description Enum representing different types of locks for actions on a blogging platform.
  */

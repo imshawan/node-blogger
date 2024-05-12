@@ -54,7 +54,7 @@
     
     /**
      * @date 22-03-2023
-     * @author imshawan <hello@imshawan.dev>
+     * @author imshawan <github@imshawan.dev>
      * @function scrollToTop
      * @description Scrolls back to document's (DOM) begining position
      */

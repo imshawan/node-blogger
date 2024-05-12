@@ -1,6 +1,6 @@
 /**
  * @date 10=05-2024
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * 
  * @file Provides functions for locking and unlocking actions on the blogging platform.
  * @description This file contains functions to lock, unlock, and check if an action is locked using MongoDB.

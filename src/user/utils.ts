@@ -191,7 +191,7 @@ async function compareOldAndNewPasswords(user: IUser, newPassword: string) {
 /**
  * 
  * @date 28-04-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * 
  * @function sendPasswordResetEmail
  * @param req Incoming request

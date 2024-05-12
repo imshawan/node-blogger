@@ -30,7 +30,7 @@ export const paths = {
 /**
  * 
  * @date 09-10-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * @function getNodeEnv
  * @description Checks the command-line arguments passed to the Node.js process to find an environment variable specified.
  * Alternatively, checks the application configuration using nconf to see if an environment value is set there. 

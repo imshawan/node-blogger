@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Shawan Mandal <hello@imshawan.dev>.
+ * Copyright (C) 2024 Shawan Mandal <github@imshawan.dev>.
  *
  * Licensed under the GNU General Public License v3, 29 June 2007
  *
@@ -20,7 +20,7 @@
 
 /**
  * @date 30-04-2024
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * 
  * @description This file will contain utility functions for type checking and manipulation.
  */

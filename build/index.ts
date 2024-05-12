@@ -2,7 +2,7 @@
 
 /**
  * @date 15-08-2023
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * 
  * @description Production Build Script
  * This Node.js process is invoked automatically when the command `npm run build` is executed. 

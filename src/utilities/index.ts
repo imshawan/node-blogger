@@ -282,7 +282,7 @@ export const resolveFilename = (context: string, removeExt: boolean = true) => {
 
 /**
  * @date 28-04-2024
- * @author imshawan <hello@imshawan.dev>
+ * @author imshawan <github@imshawan.dev>
  * 
  * @function generateTOTP
  * @description Generates a time-based one-time password (TOTP) with an additional random alphabet inserted at a random position.
