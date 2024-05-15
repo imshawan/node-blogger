@@ -4,12 +4,14 @@
 
 import fs from 'fs-extra';
 import childProcess from 'child_process';
-import {Logger} from '../src/utilities/logger';
-import {minifyJavaScripts} from './minify';
+import { glob } from 'glob';
+import path from 'path';
+import { Logger } from '../src/utilities/logger';
+import { minifyJavaScripts } from './minify';
 import { capitalizeFirstLetter } from '@src/utilities';
 import '../src/helpers/logstream';
 
-const logger = new Logger({prefix: 'build'});
+const logger = new Logger({ prefix: 'build' });
 const requiredConfigFields = { host: String, mongodb: Object, secret: String, env: String };
 
 type KeysOfRequiredConfigFields = keyof typeof requiredConfigFields;
@@ -17,57 +19,57 @@ type KeysOfRequiredConfigFields = keyof typeof requiredConfigFields;
 /**
  * Start
  */
-module.exports = async function build () {
-  try {
-      let time = Date.now();
+module.exports = async function build() {
+    try {
+        let time = Date.now();
 
-      if (!fs.existsSync('config.json')) {
-          return logger.error('Could not find config file. Please re-setup the application.');
-      }
+        if (!fs.existsSync('config.json')) {
+            return logger.error('Could not find config file. Please re-setup the application.');
+        }
 
-      const configFileData = fs.readFileSync('config.json', {encoding: 'utf-8'});
-      const configuration = JSON.parse(configFileData);
-      const keysOfRequiredFields: KeysOfRequiredConfigFields[] = Object.keys(requiredConfigFields) as KeysOfRequiredConfigFields[];
+        const configFileData = fs.readFileSync('config.json', { encoding: 'utf-8' });
+        const configuration = JSON.parse(configFileData);
+        const keysOfRequiredFields: KeysOfRequiredConfigFields[] = Object.keys(requiredConfigFields) as KeysOfRequiredConfigFields[];
 
-      let errors = 0;
-      
-      keysOfRequiredFields.forEach((key: KeysOfRequiredConfigFields) => {
-          if (!Object.hasOwnProperty.bind(configuration)(key)) {
-              logger.error(generateMissingFieldErrorMsg(key));
-              errors++;
-          }
+        let errors = 0;
 
-          if (configuration[key] && typeof configuration[key] != requiredConfigFields[key].name.toLowerCase()) {
-              logger.error(key, 'must be of type', requiredConfigFields[key].name, 'but found', capitalizeFirstLetter(typeof configuration[key]));
-              errors++;
-          }
-      });
+        keysOfRequiredFields.forEach((key: KeysOfRequiredConfigFields) => {
+            if (!Object.hasOwnProperty.bind(configuration)(key)) {
+                logger.error(generateMissingFieldErrorMsg(key));
+                errors++;
+            }
 
-      if (errors) {
-          return logger.info('Found', errors, 'problem(s) with the configuration file. Have you setup the project properly?');
-      }
-      
-      logger.info('Removing current build');
-      await remove('./dist');
+            if (configuration[key] && typeof configuration[key] != requiredConfigFields[key].name.toLowerCase()) {
+                logger.error(key, 'must be of type', requiredConfigFields[key].name, 'but found', capitalizeFirstLetter(typeof configuration[key]));
+                errors++;
+            }
+        });
 
-      logger.info('Building client-side static and JavaScript files');
-      await buildClientSideFiles();
-      
-      await copy('./src/views', 'dist/views');
-      
-      logger.info('Building server-side files');
-      await exec('tsc --build tsconfig.prod.json', './');
+        if (errors) {
+            return logger.info('Found', errors, 'problem(s) with the configuration file. Have you setup the project properly?');
+        }
 
-      await copy('./dist/src', './dist/');
-      await remove('./dist/src');
+        logger.info('Removing current build');
+        await remove('./dist');
 
-      let timeDiff = parseFloat(String((Date.now() - time) / 1000)).toFixed(2);
+        logger.info('Building client-side static and JavaScript files');
+        await buildClientSideFiles();
 
-      logger.success(`Build process completed in ${timeDiff}s`);
-    
-  } catch (err) {
-      logger.error(err);
-  }
+        await copy('./src/views', 'dist/views');
+
+        logger.info('Building server-side files');
+        await exec('tsc --build tsconfig.prod.json', './');
+
+        await copy('./dist/src', './dist/');
+        await remove('./dist/src');
+
+        let timeDiff = parseFloat(String((Date.now() - time) / 1000)).toFixed(2);
+
+        logger.success(`Build process completed in ${timeDiff}s`);
+
+    } catch (err) {
+        logger.error(err);
+    }
 }
 
 async function buildClientSideFiles(): Promise<void> {
@@ -96,12 +98,9 @@ function remove(loc: string): Promise<void> {
 /**
  * Copy file.
  */
-function copy(src: string, dest: string): Promise<void> {
-    return new Promise((res, rej) => {
-        return fs.copy(src, dest, (err) => {
-            return (!!err ? rej(err) : res());
-        });
-    });
+async function copy(src: string, dest: string, type: "file" | "folder" = "folder"): Promise<void> {
+    const fn = type === 'file' ? fs.copyFileSync : fs.copy;
+    await fn(src, dest);
 }
 
 /**
@@ -109,7 +108,7 @@ function copy(src: string, dest: string): Promise<void> {
  */
 function exec(cmd: string, loc: string): Promise<void> {
     return new Promise((res, rej) => {
-        return childProcess.exec(cmd, {cwd: loc}, (err, stdout, stderr) => {
+        return childProcess.exec(cmd, { cwd: loc }, (err, stdout, stderr) => {
             if (!!stdout) {
                 logger.info(stdout);
             }

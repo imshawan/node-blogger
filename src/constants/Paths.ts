@@ -8,13 +8,17 @@ const basePaths = {
     production: path.join(__dirname, '../../dist'),
 }
 
-const envVar = getNodeEnv(process.argv);
-const env: ValueOf<NodeEnvs> = (envVar || 'development');
+export const NODE_ENV = getNodeEnv(process.argv);
+
+const env: ValueOf<NodeEnvs> = (NODE_ENV || 'development');
 const baseDir = env === 'production' ? basePaths.production : basePaths.development;
 const sourceDir = env === 'production' ? baseDir : path.join(baseDir, 'src');
 
+export const PROCESS_FILE = path.join(baseDir, 'process.pid');
+
 export const paths = {
     baseDir: baseDir,
+    execScripts: path.join(baseDir, 'scripts'),
     uploadsDir: path.join(baseDir, 'public', 'uploads'),
     uploadsDirString: ['uploads'].join('/'),
     buildDir: path.join(baseDir, 'dist'),
