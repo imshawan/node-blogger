@@ -6,7 +6,7 @@ import uglify from 'uglify-js';
 import ejs from 'ejs';
 
 import {Logger} from '../src/utilities';
-import {RouteError} from '../src/other/classes';
+import {RouteError} from '../src/helpers';
 import EnvVars from '../src/constants/EnvVars';
 import HttpStatusCodes from '../src/constants/HttpStatusCodes';
 import {NodeEnvs} from '../src/constants/misc';

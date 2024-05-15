@@ -2,7 +2,7 @@ import { Server } from 'http';
 import path from 'path';
 import fs from 'fs';
 import server from "./server";
-import { Logger, openWebUrl } from "../src/utilities";
+import { Logger, openWebUrl, _process } from "../src/utilities";
 import '../src/helpers/logstream';
 
 const logger = new Logger({prefix: 'setup'});
@@ -23,6 +23,8 @@ function onListening(httpServer: Server) {
     var bind = [host, port].join(':');
 
     logger.info('Web installer running on ' + bind);
+    
+    _process.writeToFile(process.pid);
     
     try {
         openWebUrl(bind);
