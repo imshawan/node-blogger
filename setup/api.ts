@@ -5,13 +5,14 @@ import fs from 'fs';
 import path from 'path';
 
 import {Logger, getISOTimestamp, generateUUID, slugify, 
-    url as urlUtils, password as Passwords, sanitizeString} from '../src/utilities';
+    url as urlUtils, password as Passwords, sanitizeString, _process} from '../src/utilities';
 import { IUser, MutableObject } from "../src/types";
-import { Collections } from "../src/constants";
+import { Collections, paths } from "../src/constants";
 import {utils} from '../src/user';
 import {utilities as dbUtils} from '../src/database/utils';
 import defults from './data/defaults.json'
 import * as Initializer from './initializer';
+import { execSync } from 'child_process';
 
 const router = express.Router();
 const logger = new Logger({prefix: 'setup'});
@@ -179,8 +180,11 @@ async function complete(req: Request, res: Response, next: NextFunction) {
     res.status(200).json({message: 'OK'});
 
     setTimeout(() => {
+        const pid = _process.getCurrent();
+
         logger.info('Stopping Web Installer');
-        process.exit(0);
+        execSync('ts-node cli.ts stop --pid ' + pid, {cwd: paths.execScripts});
+        
     }, 500);
 }
 

@@ -9,7 +9,7 @@
 */
 
 import path from "path";
-import yargs from "yargs";
+import yargs, { alias } from "yargs";
 import child_process from "child_process";
 import os from "os";
 import pkg from "../package.json";
@@ -65,6 +65,28 @@ yargs
 
             const child = child_process.spawn(terminalCommand, args, {cwd});
             child.unref()
+        },
+    })
+    .command({
+        command: 'stop',
+        describe: 'Stop the Node process with the given process ID',
+        builder: {
+            pid: {
+                alias: 'pid',
+                describe: 'Process id',
+                demandOption: true,
+                type: 'string',
+            },
+        },
+        handler: function handler(argv) {
+            const processId = argv.pid;
+
+            const platform = os.platform();
+            const taskkillExecScript = platform === 'win32' ? 'taskkill' : 'kill';
+            const taskkillArgs = platform === 'win32' ? ['/F', '/PID', processId] : ['-9', processId];
+
+            const killProcess = child_process.spawn(taskkillExecScript, taskkillArgs);
+            killProcess.unref();
         },
     })
     .version(pkg.version)
