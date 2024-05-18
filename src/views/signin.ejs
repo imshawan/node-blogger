@@ -3,8 +3,8 @@
         <div class="container">
             <section class="col-12 col-md-7 col-lg-5 mt-0 wrapper">
                 <div class="heading">
-                    <h1 class="text text-large">Sign In</h1>
-                    <p class="text text-normal">New user? <span><a href="/register" class="text text-links">Create an account</a></span>
+                    <h1 class="text text-large"><%= translate('common:sign_in') %></h1>
+                    <p class="text text-normal"><%= translate('common:new_user') %> <span><a href="/register" class="text text-links"><%= translate('common:create_account') %></a></span>
                     </p>
                 </div>
                 <div id="errors-area" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
@@ -13,13 +13,13 @@
                 </div>
                 <form id="signin-form" name="signin" class="form">
                     <div class="input-control">
-                        <label for="usernameOrEmail" class="input-label">Username or email address</label>
-                        <input name="username" id="usernameOrEmail" class="input-field" placeholder="Username or email address">
+                        <label for="usernameOrEmail" class="input-label"><%= translate('common:username_or_email') %></label>
+                        <input name="username" id="usernameOrEmail" class="input-field" placeholder="<%= translate('common:username_or_email') %>">
                     </div>
                     <div class="input-control position-relative">
-                        <label for="password-input" class="input-label">Password</label>
+                        <label for="password-input" class="input-label"><%= translate('common:password') %></label>
                         <div class="d-flex position-relative">
-                            <input type="password" name="password" id="password-input" class="input-field" placeholder="Password">
+                            <input type="password" name="password" id="password-input" class="input-field" placeholder="<%= translate('common:your_password') %>">
                             <div class="h-100 position-absolute d-flex password-show-toggle">
                                 <i class="fa fa-eye align-self-center" aria-hidden="true"></i>
                             </div>
@@ -27,14 +27,14 @@
                     </div>
                     <div class="input-control d-flex justify-content-start">
                         <input type="checkbox" name="rememberme" id="rememberme" class="">
-                        <label for="rememberme" class="input-label mx-2">Remember me for a longer duration</label>
+                        <label for="rememberme" class="input-label mx-2"><%= translate('common:remember_me') %></label>
                     </div>
                     <div class="input-control">
-                        <a href="/password/reset" class="text">Forgot Password</a>
+                        <a href="/password/reset" class="text"><%= translate('common:forgot_password') %></a>
                     </div>
                     <div class="input-control">
                     </div>
-                    <button type="submit" class="input-submit mt-0 w-100 button-black">Sign In</button>
+                    <button type="submit" class="input-submit mt-0 w-100 button-black"><%= translate('common:sign_in') %></button>
                 </form>
                 <!-- <div class="striped">
                     <span class="striped-line"></span>

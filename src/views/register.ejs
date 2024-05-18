@@ -3,9 +3,8 @@
         <div class="container">
             <section class="col-12 col-md-7 mt-0 col-lg-5 wrapper">
                 <div class="heading">
-                    <h1 class="text text-large">Create account</h1>
-                    <p class="text text-normal">Already registered? <span><a href="/signin" class="text text-links">Sign in</a></span>
-                    </p>
+                    <h1 class="text text-large"><%= translate('common:create_account') %></h1>
+                    <p class="text text-normal"><%= translate('common:already_registered') %> <span><a href="/signin" class="text text-links"><%= translate('common:sign_in') %></a></span></p>
                 </div>
 
                 <div id="errors-area" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
@@ -13,43 +12,43 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 
-                <form id="registeration-form" verified="false" action="/register" method="post" class="form needs-validation" novalidate>
+                <form id="registration-form" verified="false" action="/register" method="post" class="form needs-validation" novalidate>
                     <div class="input-control">
-                        <label for="usernameInput" class="input-label">Username</label>
-                        <input name="username" id="usernameInput" type="text" class="input-field form-control" placeholder="Create an username" required>
+                        <label for="usernameInput" class="input-label"><%= translate('common:username') %></label>
+                        <input name="username" id="usernameInput" type="text" class="input-field form-control" placeholder="<%= translate('common:create_username') %>" required>
                         <div class="invalid-feedback">
-                            Please enter a username
+                            <%= translate('common:enter_username') %>
                         </div>
                         <div id="username-status-text" class="show-input-status"></div>
                     </div>
                     <div class="input-control">
-                        <label for="emailInput" class="input-label">Email</label>
+                        <label for="emailInput" class="input-label"><%= translate('common:email') %></label>
                         <input name="email" type="email" id="emailInput" class="input-field form-control" placeholder="user@example.com" required>
                         <div class="invalid-feedback">
-                            Please enter your email id
+                            <%= translate('common:enter_email') %>
                         </div>
                         <div id="email-status-text" class="show-input-status"></div>
                     </div>
                     <div class="input-control position-relative">
-                        <label for="password-input" class="input-label">Password</label>
-                        <input type="password" name="password" id="password-input" class="input-field form-control" placeholder="Create a password" required>
+                        <label for="password-input" class="input-label"><%= translate('common:password') %></label>
+                        <input type="password" name="password" id="password-input" class="input-field form-control" placeholder="<%= translate('common:create_password') %>" required>
                         <div class="invalid-feedback">
-                            Please create a password
+                            <%= translate('common:create_password') %>
                         </div>
                         <div id="password-status-text" class="show-input-status color-red"></div>
                         <div id="password-strength-text" class="show-input-status" style="color: #626262; display: none;"></div>
                     </div>
                     <div class="input-control position-relative">
-                        <label for="confirm-password-input" class="input-label">Confirm password</label>
-                        <input required type="password" name="confirmpassword" id="confirm-password-input" class="input-field form-control" placeholder="Confirm password">
+                        <label for="confirm-password-input" class="input-label"><%= translate('common:confirm_password') %></label>
+                        <input required type="password" name="confirmpassword" id="confirm-password-input" class="input-field form-control" placeholder="<%= translate('common:confirm_password') %>">
                         <div class="invalid-feedback">
-                            Please confirm your password before submitting
+                            <%= translate('common:confirm_password_before_submit') %>
                         </div>
                         <div id="confirm-password-status-text" class="color-red show-input-status"></div>
                     </div>
                     <div class="input-control">
                     </div>
-                    <button type="submit" class="input-submit mt-2 w-100 button-black">Register now</button>
+                    <button type="submit" class="input-submit mt-2 w-100 button-black"><%= translate('common:register_now') %></button>
                 </form>
                 
             </section>

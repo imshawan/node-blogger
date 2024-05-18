@@ -3,20 +3,19 @@
         <div class="container">
             <section class="col-12 col-md-7 col-lg-5 mt-0 px-4 row wrapper" style="min-height: 400px;">
                 <div class="heading">
-                    <h1 class="text text-large">Email Sent</h1>
+                    <h1 class="text text-large"><%= translate('common:email_sent') %></h1>
                     <p class="text text-normal">
-                        If the provided email address exists in our system, we've sent you instructions to reset your password. 
-                        Please check your inbox (and spam/junk folder) and follow the instructions provided in the email.
+                        <%= translate('common:email_sent_description') %>
                     </p>
                     <p class="card-text text-normal mb-0">
-                        Didn't receive the email?
+                        <%= translate('common:did_not_receive_email') %>
                         <div class="text-normal">
-                            <a href="/password/reset">Retry</a> or <a href="/contact-us">contact us</a> for assistance.
+                            <a href="/password/reset"><%= translate('common:retry') %></a> <%= translate('common:or') %> <a href="/contact-us"><%= translate('common:contact_us') %></a>
                         </div>
                     </p>
                 </div>
                 <div class="row align-content-end">
-                    <p class="card-text text-normal text-center">Don't have an account yet? <a href="/register">Sign up now!</a></p>
+                    <p class="card-text text-normal text-center"><%= translate('common:dont_have_account_yet') %> <a href="/register"><%= translate('common:sign_up_now') %></a></p>
                 </div>
             </section>
         </div>

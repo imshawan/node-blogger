@@ -12,6 +12,7 @@ import useragent from 'express-useragent';
 import expressSession from 'express-session';
 import chalk from 'chalk';
 import ReadLine from 'readline';
+import i18nextMiddleware from 'i18next-http-middleware';
 
 import 'express-async-errors';
 
@@ -33,8 +34,9 @@ import flash from 'express-flash';
 import nconf from 'nconf';
 import { Logger, getISOTimestamp, isPortAvailable } from './utilities';
 import {paths} from './constants';
-import { log } from 'console';
+import Locales from '@src/locales';
 import { initializeEmailClient } from './email/emailer';
+import { TFunction } from 'i18next';
 
 const logger = new Logger();
 const app = express();
@@ -102,6 +104,8 @@ const initialize = async function () {
     await initializeApplicationStore();
     await initializeEmailClient();
     await setupExpressServer(app);
+    
+    enableAppLocalization(app);
 
     // Production morgan logging pattern
     morgan.token(NodeEnvs.Production, () => {
@@ -225,6 +229,20 @@ async function setupExpressServer(app: Application) {
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(addUserSessionAgent);
+}
+
+/**
+ * @description Internationalization of the application across various screens
+ * @param app 
+ */
+function enableAppLocalization(app: Application): void {
+    app.use(i18nextMiddleware.handle(Locales.i18nextInstance));
+    app.use(function (req: Request, res: Response, next: NextFunction) {
+        if (req.i18n && req.t) {
+            res.locals.t = req.t as TFunction;
+        }
+        next();
+    });
 }
 
 export default {

@@ -19,6 +19,7 @@ export const PROCESS_FILE = path.join(baseDir, 'process.pid');
 export const paths = {
     baseDir: baseDir,
     execScripts: path.join(baseDir, 'scripts'),
+    locales: path.join(sourceDir, 'locales'),
     uploadsDir: path.join(baseDir, 'public', 'uploads'),
     uploadsDirString: ['uploads'].join('/'),
     buildDir: path.join(baseDir, 'dist'),

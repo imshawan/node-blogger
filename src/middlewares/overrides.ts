@@ -18,13 +18,15 @@
  */
 
 import { Request, Response, NextFunction } from "express";
+import { TFunction } from "i18next";
+import _ from "lodash"
 import { baseScripts, vendorScripts, adminScripts } from "@src/application";
-import {siteName, paths} from '@src/constants';
-import fs from 'fs';
-import ejs from 'ejs';
+import {siteName, paths} from "@src/constants";
+import fs from "fs";
+import ejs from "ejs";
 import { application, styleSheets, getConfigurationStoreByScope } from "@src/application";
 import path from "path";
-import nconf from 'nconf';
+import nconf from "nconf";
 import { isAdministrator } from "@src/user";
 import { version } from "@src/constants";
 
@@ -37,6 +39,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         const req = this.req;
         const {isAdminRoute} = res.locals;
         const {user} = req;
+        const translator = res.locals.t as TFunction;
         const partialsDir = paths[isAdminRoute ? 'adminTemplatePartialsDir' : 'templatePartialsDir'];
         let footer = '';
 
@@ -76,12 +79,12 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
         }
 
         const [header, body] = await Promise.all([
-            renderTemplateTohtml(headerPath, pageOptions),
-            renderTemplateTohtml(templatePath, pageOptions),
+            renderTemplateTohtml(headerPath, translator, pageOptions),
+            renderTemplateTohtml(templatePath, translator, pageOptions),
         ]);
 
         if (!pageOptions._isError) {
-            footer = await renderTemplateTohtml(footerPath, pageOptions);
+            footer = await renderTemplateTohtml(footerPath, translator, pageOptions);
         }
 
         const pageData = generatePageDataScript(pageOptions);
@@ -105,7 +108,7 @@ export const overrideHeaders = async function (req: Request, res: Response, next
     next();
 }
 
-function renderTemplateTohtml(templatePath: string, payload?: object): Promise<string> {
+function renderTemplateTohtml(templatePath: string, translator: TFunction, payload?: object): Promise<string> {
     if (!payload) {
         payload = {}
     }
@@ -121,7 +124,7 @@ function renderTemplateTohtml(templatePath: string, payload?: object): Promise<s
             }
     
             const ejs_string = rawTemplate,
-            template = ejs.render(ejs_string, payload,
+            template = ejs.render(ejs_string, _.merge(payload, {translate: translator}),
                 {
                   root: paths.templatesDir,
                 });
