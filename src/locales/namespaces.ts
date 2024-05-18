@@ -6,7 +6,7 @@
  * Each namespace corresponds to a different section or module of the application.
  * For example: 'common' for common translations, 'consent' for consent related translations, etc.
  */
-const namespaces: string[] = ['common', 'consent', 'home', 'about'];
+const namespaces: string[] = ['common', 'consent', 'user', 'home', 'about'];
 
 /**
  * Default namespace used when a namespace is not specified explicitly.

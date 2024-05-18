@@ -10,7 +10,7 @@
                       </div>
                     </div>
     
-                    <div class="mt- px-3 text-center position-relative  ">
+                    <div class="mt- px-3 text-center position-relative">
                       <h6 class="mb-0 font-heading-5 user-name" style="text-transform: none;">
                         <%= element.fullname || element.username %>
                       </h6>
@@ -20,15 +20,15 @@
 
                       <div class="position-absolute w-100" style="top: 75px;left: 0;">
                         <div class="d-flex mt-2 justify-content-evenly">
-                          <a href="/users/<%= element.username %>" class="btn btn-primary button-outlined w-100 mx-4 btn-sm">Visit Profile</a>
+                          <a href="/users/<%= element.username %>" class="btn btn-primary button-outlined w-100 mx-4 btn-sm"><%= translate('user:visit_profile') %></a>
                         </div>
                         <div class="d-flex justify-content-between align-items-center my-2 px-4">
                           <div class="stats">
-                            <div class="mb-0 text-black-50 font-heading-6">Followers</div>
+                            <div class="mb-0 text-black-50 font-heading-6"><%= translate('user:followers') %></div>
                             <span class="font-small text-black-50"><%= element.followers %></span>
                           </div>
                           <div class="stats">
-                            <div class="mb-0 text-black-50 font-heading-6">Posts</div>
+                            <div class="mb-0 text-black-50 font-heading-6"><%= translate('user:posts') %></div>
                             <span class="font-small text-black-50"><%= element.posts %></span>
                           </div>
                         </div>

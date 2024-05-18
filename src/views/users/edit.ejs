@@ -17,7 +17,7 @@
 
                             <div id="change-cover-image" class="btn btn-sm cover-image-change-icon cursor-pointer">
                                 <span class="material-symbols-outlined"> add_a_photo </span>
-                                <span class="d-none d-md-block ms-1">Change picture</span>
+                                <span class="d-none d-md-block ms-1"><%= translate('user:change_picture') %></span>
                             </div>
                             
                         </div>
@@ -60,31 +60,31 @@
             <div class="tab-content">
                 <div class="tab-pane <% if (section==='profile') { %> active show <% } %>" id="profile">
 
-                    <div class="card-header">Your Profile Information</div>
+                    <div class="card-header"><%= translate('user:your_profile_information') %></div>
                     <%- include('/users/partials/profile'); -%>
 
                 </div>
                 <div class="tab-pane <% if (section==='account') { %> active show <% } %>" id="account">
 
-                    <div class="card-header">Account Settings</div>
+                    <div class="card-header"><%= translate('user:account_settings') %></div>
                     <%- include('/users/partials/account'); -%>
                     
                 </div>
                 <div class="tab-pane <% if (section==='passwords') { %> active show <% } %>" id="passwords">
 
-                    <div class="card-header">Password Settings</div>
+                    <div class="card-header"><%= translate('user:password_settings') %></div>
                     <%- include('/users/partials/passwords'); -%>
                     
                 </div>
                 <div class="tab-pane <% if (section==='security') { %> active show <% } %>" id="security">
 
-                    <div class="card-header">Security Settings</div>
+                    <div class="card-header"><%= translate('user:security_settings') %></div>
                     <%- include('/users/partials/security'); -%>
                     
                 </div>
                 <div class="tab-pane <% if (section==='notification') { %> active show <% } %>" id="notification">
 
-                    <div class="card-header">Notification Settings</div>
+                    <div class="card-header"><%= translate('user:notification_settings') %></div>
                     <%- include('/users/partials/notifications'); -%>
                     
                 </div>
