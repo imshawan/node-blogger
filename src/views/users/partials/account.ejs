@@ -1,30 +1,26 @@
 <div class="card-body px-4">
     <form id="change-username-form">
         <div class="form-group my-1">
-            <label for="current-username">Change Username</label>
+            <label for="current-username"><%= translate('user:change_username_label') %></label>
             <input type="text" class="form-control" id="current-username" value="<%= profile.username %>"
-                aria-describedby="usernameHelp" placeholder="Enter your username" name="username"
-                value="<%= profile.username %>">
-            <p id="usernameHelp" data-default="After changing your username, your old username becomes available for anyone else to claim." class="form-text text-muted">After changing your username,
-                your old username becomes available for anyone else to claim.</p>
+                aria-describedby="usernameHelp" placeholder="<%= translate('user:enter_username_placeholder') %>" name="username">
+            <p id="usernameHelp" data-default="<%= translate('user:username_help_text') %>" class="form-text text-muted"><%= translate('user:username_help_text') %></p>
         </div>
         <div class="form-group my-1">
-            <label for="current-password">Current Password</label>
-            <input required type="text" class="form-control" id="current-password" placeholder="Enter password for changing username" name="password">
+            <label for="current-password"><%= translate('user:current_password_label') %></label>
+            <input required type="password" class="form-control" id="current-password" placeholder="<%= translate('user:enter_password_placeholder') %>" name="password">
         </div>
 
-
         <div id="change-username" class="pt-3" style="display: none;">
-            <button class="btn btn-dark" type="submit">Change Username</button>
+            <button class="btn btn-dark" type="submit"><%= translate('user:change_username_button') %></button>
         </div>
     </form>
     <hr>
     <form>
         <div class="form-group my-1">
-            <label class="d-block text-danger">Delete Account</label>
-            <p class="text-muted font-size-sm">Once you delete your account, there is no going
-                back. Please be certain.</p>
+            <label class="d-block text-danger"><%= translate('user:delete_account_label') %></label>
+            <p class="text-muted font-size-sm"><%= translate('user:delete_account_warning') %></p>
         </div>
-        <button class="btn btn-danger" id="delete-account" type="button">Delete Account</button>
+        <button class="btn btn-danger" id="delete-account" type="button"><%= translate('user:delete_account_button') %></button>
     </form>
 </div>

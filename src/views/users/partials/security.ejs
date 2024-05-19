@@ -1,49 +1,50 @@
 <div class="card-body px-4">
     <form>
         <div class="form-group my-1">
-            <label class="d-block">Two Factor Authentication</label>
-            <button class="btn btn-info" type="button">Enable two-factor authentication</button>
-            <p class="small text-muted mt-2">Two-factor authentication adds an additional layer
-                of security to your account by requiring more than just a password to log in.
-            </p>
+            <label class="d-block"><%= translate('user:two_factor_authentication') %></label>
+            <button class="btn btn-info" type="button"><%= translate('user:enable_two_factor_authentication') %></button>
+            <p class="small text-muted mt-2"><%= translate('user:two_factor_authentication_note') %></p>
         </div>
     </form>
     <hr>
     <form>
         <div class="form-group my-1 mb-0">
-            <label class="d-block">Sessions</label>
-            <p class="font-size-sm text-secondary">This is a list of devices that have logged
-                into your account. Revoke any sessions that you do not recognize.</p>
+            <label class="d-block"><%= translate('user:sessions') %></label>
+            <p class="font-size-sm text-secondary"><%= translate('user:sessions_description') %></p>
             <ul class="list-group list-group-sm">
                 <% if (sessions && sessions.length) { %>
                     <% sessions.forEach((session, index) => { %>
                         <li class="list-group-item has-icon">
                             <div>
-                                <% if (session.geoLocation) { %> 
-                                    
-                                    <h6 class="mb-0"><% if (session.geoLocation.city) { %>
-                                        <%= session.geoLocation.city %> ,
-                                    <% } %> <%= session.geoLocation.countryCode %> <%= session.ip %></h6>
-                                    <small class="text-muted">Your current session seen in <%= session.geoLocation.country %></small>
+                                <% if (session.geoLocation) { %>
+                                    <h6 class="mb-0">
+                                        <% if (session.geoLocation.city) { %>
+                                            <%= session.geoLocation.city %> , 
+                                        <% } %>
+                                        <%= session.geoLocation.countryCode %> <%= session.ip %>
+                                    </h6>
+                                    <small class="text-muted"><%= translate('user:current_session_in') %> <%= session.geoLocation.country %></small>
                                 <% } %>
                             </div>
                             
                             <button class="btn btn-light btn-sm ms-auto my-2" type="button" 
                                 data-bs-toggle="collapse" data-bs-target="#<%= session.geoLocation.city %>-<%= index %>" aria-expanded="false" aria-controls="<%= session.geoLocation.city %>-<%= index %>">
-                                More info
+                                <%= translate('user:more_info') %>
                             </button>
 
                             <div class="collapse" id="<%= session.geoLocation.city %>-<%= index %>">
                                 <div class="shadow-none">
                                   <ul>
-                                    <li class="font-body">Browser: <%= session.browser %> (<%= session.version %>)</li>
-                                    <li class="font-body">OS: <%= session.os %></li>
-                                    <li class="font-body">Platform: <%= session.platform %></li>
+                                    <li class="font-body"><%= translate('user:browser') %>: <%= session.browser %> (<%= session.version %>)</li>
+                                    <li class="font-body"><%= translate('user:os') %>: <%= session.os %></li>
+                                    <li class="font-body"><%= translate('user:platform') %>: <%= session.platform %></li>
                                   </ul>
                                 </div>
                             </div>
                         </li>
                     <% }); %>
+                <% } else { %>
+                    <li class="list-group-item"><%= translate('user:no_sessions_found') %></li>
                 <% } %> 
                 
             </ul>

@@ -1,3 +1,8 @@
 {
-    "posted_by": "Posted by {{author}}"
+    "posted_by": "Posted by {{author}}",
+    "go_to_post": "Go to post",
+    "no_posts_found": "No Posts Found",
+    "no_post_message": "Oops! It seems like you haven't shared your thoughts yet.",
+    "create_your_first_post": "Create your first post",
+    "no_post_message_for_user": "Oops! Looks like {{author}} has not posted anything yet."
 }

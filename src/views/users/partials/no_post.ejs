@@ -1,27 +1,27 @@
 <div class="col-md-12 no-post mb-4">
     <div class="card rounded shadow-none border-0">
-    <div class="py-5">
-        <div class="row w-100 justify-content-center">
-            <img class="my-4" width="30%" src="/images/blog/void.svg">
-        </div>
-        <div class="col-12 text-center ">
-            <h3 class="text-normal">No Posts Found</h3>
-            <div>
-                <% if (user && profile.userid == user.userid) { %>
-                    <p class="">
-                        Oops! It seems like you haven't shared your thoughts yet.
-                    </p>
-                    <button class="btn button-outlined mt-2 btn-large">
-                        Create your first post
-                        <i class="fa ms-1 fa-arrow-right" aria-hidden="true"></i>
-                    </button>
-                <% } else { %>
-                    <p>
-                        Oops! Looks like <%= profile.fullname || profile.username %> as not posted anything yet.
-                    </p>
-                <% } %>
+        <div class="py-5">
+            <div class="row w-100 justify-content-center">
+                <img class="my-4" width="30%" src="/images/blog/void.svg">
+            </div>
+            <div class="col-12 text-center">
+                <h3 class="text-normal"><%= translate('post:no_posts_found') %></h3>
+                <div>
+                    <% if (user && profile.userid == user.userid) { %>
+                        <p class="">
+                            <%= translate('post:no_post_message') %>
+                        </p>
+                        <button class="btn button-outlined mt-2 btn-large">
+                            <%= translate('post:create_your_first_post') %>
+                            <i class="fa ms-1 fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+                    <% } else { %>
+                        <p>
+                            <%= translate('post:no_post_message_for_user', { fullname: profile.fullname || profile.username }) %>.
+                        </p>
+                    <% } %>
                 </div>
+            </div>
         </div>
     </div>
-</div>
 </div>
