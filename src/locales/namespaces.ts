@@ -6,12 +6,20 @@
  * Each namespace corresponds to a different section or module of the application.
  * For example: 'common' for common translations, 'consent' for consent related translations, etc.
  */
-const namespaces: string[] = ['common', 'consent', 'user', 'post', 'blog', 'admin.common'];
+const namespaces: string[] = [
+	'common',
+	'consent',
+	'user',
+	'post',
+	'blog',
+	'admin.common',
+	'admin.category',
+];
 
 /**
  * Default namespace used when a namespace is not specified explicitly.
  * Typically, this is the namespace for common translations.
  */
-const defaultNS: string = 'common'
+const defaultNS: string = 'common';
 
 export default { namespaces, defaultNS } as const;

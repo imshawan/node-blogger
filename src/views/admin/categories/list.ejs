@@ -11,7 +11,7 @@
        <div class="input-group justify-content-start">
          <input type="text" value="<% if (search && search.length) { %><%= search %><% } %>" name="search" class="form-control" placeholder="Search categories">
          <div class="input-group-append">
-           <button type="submit" class="btn btn-sm btn-primary" type="button">Search</button>
+           <button type="submit" class="btn btn-sm btn-primary" type="button"><%= translate('admin.common:search') %></button>
          </div>
        </div>
      </div>
@@ -20,15 +20,15 @@
        <div class="input-group h-100 justify-content-end">
          <div class="input-group-prepend">
            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="min-width: 140px;"
-             aria-haspopup="true" aria-expanded="false"><% if (sorting && sorting.id && sorting.id != 'default') { %> <%= sorting.label %> <% } else { %> Sort categories<% } %></button>
+             aria-haspopup="true" aria-expanded="false"><% if (sorting && sorting.id && sorting.id != 'default') { %> <%= sorting.label %> <% } else { %> <%= translate('admin.common:sort_item', {item: translate('admin.common:categories')}) %> <% } %></button>
            <div class="dropdown-menu" x-placement="top-start"
              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -2px, 0px);">
-             <a class="dropdown-item" href="?sortBy=recent<% if (search && search.length) { %>&search=<%= search %><% } %>">Most recent</a>
-             <a class="dropdown-item" href="?sortBy=oldest<% if (search && search.length) { %>&search=<%= search %><% } %>">Oldest</a>
-             <a class="dropdown-item" href="?sortBy=popular<% if (search && search.length) { %>&search=<%= search %><% } %>">Popularity</a>
-             <a class="dropdown-item" href="?sortBy=posts<% if (search && search.length) { %>&search=<%= search %><% } %>">More posts</a>
+             <a class="dropdown-item" href="?sortBy=recent<% if (search && search.length) { %>&search=<%= search %><% } %>"><%= translate('admin.common:recent') %></a>
+             <a class="dropdown-item" href="?sortBy=oldest<% if (search && search.length) { %>&search=<%= search %><% } %>"><%= translate('admin.common:oldest') %></a>
+             <a class="dropdown-item" href="?sortBy=popular<% if (search && search.length) { %>&search=<%= search %><% } %>"><%= translate('admin.common:popularity') %></a>
+             <a class="dropdown-item" href="?sortBy=posts<% if (search && search.length) { %>&search=<%= search %><% } %>"><%= translate('admin.common:more_posts') %></a>
              <div role="separator" class="dropdown-divider"></div>
-             <a class="dropdown-item" href="?sortBy=default<% if (search && search.length) { %>&search=<%= search %><% } %>">Default</a>
+             <a class="dropdown-item" href="?sortBy=default<% if (search && search.length) { %>&search=<%= search %><% } %>"><%= translate('admin.common:default') %></a>
            </div>
          </div>
        </div>

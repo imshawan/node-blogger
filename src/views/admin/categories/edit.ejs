@@ -1,61 +1,48 @@
 <div class="row gutters-sm">
     <div class="col-md-8 col-lg-8">
         <div class="card mb-3">
-            <h5 class="p-3 card-header">Category info</h5>
+            <h5 class="p-3 card-header"><%= translate('admin.category:category_info') %></h5>
             <div class="card-body">
 
                 <form class="" id="category-form">
                     <div class="mb-3 form-floating">
                         <input type="text" name="name" value="<%= category.name %>" class="form-control" id="nameInout"
-                            placeholder="Enter the name of the new category">
-                        <label for="nameInout" class="form-label">Category name</label>
-                        <div id="" class="form-text">You can choose a unique name for this category
-                        </div>
+                            placeholder="<%= translate('admin.category:enter_category_name') %>">
+                        <label for="nameInout" class="form-label"><%= translate('admin.category:category_name') %></label>
+                        <div id="" class="form-text"><%= translate('admin.category:category_name_help') %></div>
                     </div>
                     <div class="mb-3">
-                        <label for="decriptionTextarea" class="form-label">Category description</label>
+                        <label for="decriptionTextarea" class="form-label"><%= translate('admin.category:category_description') %></label>
                         <textarea class="form-control" name="description" rows="4" id="decriptionTextarea"><%= category.description %></textarea>
-                        <div id="" class="form-text">You can add a description of the category of about
-                            50
-                            words.
-                        </div>
+                        <div id="" class="form-text"><%= translate('admin.category:category_description_help') %></div>
                     </div>
 
                     <div class="row justify-content-between">
                         <div class="form-floating col-12 col-md-6 mb-3">
-                            <input type="text" name="tagsPerPost[min]" value="<%= category.tagsPerPost?.min %>" placeholder="Enter a number" class="form-control"
+                            <input type="text" name="tagsPerPost[min]" value="<%= category.tagsPerPost?.min %>" placeholder="<%= translate('admin.category:enter_number') %>" class="form-control"
                                 id="minTags">
-                            <label for="minTags" style="left: unset;" class="form-label">Minimum tags
-                                per
-                                post</label>
-                            <div id="" class="form-text">Minumum tags required to create a post
-                            </div>
+                            <label for="minTags" style="left: unset;" class="form-label"><%= translate('admin.category:minimum_tags_per_post') %></label>
+                            <div id="" class="form-text"><%= translate('admin.category:minimum_tags_help') %></div>
                         </div>
                         <div class="form-floating col-12 col-md-6 mb-3">
-                            <input type="text" name="tagsPerPost[max]" value="<%= category.tagsPerPost?.max %>" placeholder="Enter a number" class="form-control"
+                            <input type="text" name="tagsPerPost[max]" value="<%= category.tagsPerPost?.max %>" placeholder="<%= translate('admin.category:enter_number') %>" class="form-control"
                                 id="maxTags">
-                            <label for="maxTags" style="left: unset;" class="form-label">Maximum tags
-                                per
-                                post</label>
-                            <div id="" class="form-text">Limits a user to use only a limited number of
-                                tags
-                            </div>
+                            <label for="maxTags" style="left: unset;" class="form-label"><%= translate('admin.category:maximum_tags_per_post') %></label>
+                            <div id="" class="form-text"><%= translate('admin.category:maximum_tags_help') %></div>
                         </div>
                     </div>
 
                     <div class="form-group mb-3 mt-2">
-                        <label>Choose parent category (optional)</label>
+                        <label><%= translate('admin.category:choose_tags') %></label>
 
                         <select class="form-control" id="tagsInput" multiple="multiple"></select>
 
-                        <div id="" class="form-text">This tags will be visible to the users while they
-                            create post in this category
-                        </div>
+                        <div id="" class="form-text"><%= translate('admin.category:tags_help') %></div>
                         
                     </div>
 
                     <div class="form-group mt-2">
-                        <label>Choose parent category (optional)</label>
+                        <label><%= translate('admin.category:choose_parent_category') %></label>
                         <select id="parent-cid-selection" tabindex="-1" class="form-control">
                             
                         </select>
@@ -75,7 +62,7 @@
 
     <div class="col-md-4 col-lg-4 mb-3">
         <div class="card">
-            <h5 class="p-3 card-header">Category picture</h5>
+            <h5 class="p-3 card-header"><%= translate('admin.category:category_picture') %></h5>
             <div class="card-body">
                 <div class="d-flex flex-column align-items-center text-center">
                     <div class="category-image-area">
@@ -92,25 +79,23 @@
                         <div class="row px-2 justify-content-center">
                             <button id="upload-category-image" class="btn btn-inverse-dark col-auto m-1 px-4">
                                 <i class="fa fa-upload" aria-hidden="true"></i>
-                                Upload
+                                <%= translate('admin.common:upload') %>
                             </button>
 
                             <input type="file" class="d-none" id="category-image">
 
                             <button class="btn btn-danger col-auto m-1 px-4">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
-                                Remove
+                                <%= translate('admin.common:remove') %>
                             </button>
                         </div>
 
                         <form class="my-2 mt-3">
                             <div class="mb-3">
-                                <label for="nameInout" class="form-label w-100 text-start">Image
-                                    text</label>
+                                <label for="nameInout" class="form-label w-100 text-start"><%= translate('admin.category:image_text') %></label>
                                 <input type="text" name="altThumb" value="<%= category.altThumb %>" class="form-control" id="nameInout"
-                                    placeholder="Alt text for image">
-                                <div id="" class="form-text text-start">Displayed when the image fails
-                                    to load</div>
+                                    placeholder="<%= translate('admin.category:alt_text_placeholder') %>">
+                                <div id="" class="form-text text-start"><%= translate('admin.category:alt_text_help') %></div>
                             </div>
                         </form>
 
@@ -120,33 +105,33 @@
         </div>
 
         <div class="card mt-3">
-            <h5 class="p-3 card-header">Manage category</h5>
+            <h5 class="p-3 card-header"><%= translate('admin.category:manage_category') %></h5>
             <ul class="list-group-flush px-0">
                 <li class="list-group-item my-3 d-flex justify-content-center align-items-center flex-wrap">
                     <button class="btn btn-inverse-dark shadow-sm py-2 w-75">
                         <i class="fa fa-eye" aria-hidden="true"></i>
-                        View as visitor
+                        <%= translate('admin.category:view_as_visitor') %>
                     </button>
                 </li>
 
                 <li class="list-group-item my-3 d-flex justify-content-center align-items-center flex-wrap">
                     <button class="btn btn-inverse-dark shadow-sm py-2 w-75">
                         <i class="fa fa-cogs" aria-hidden="true"></i>
-                        Edit permissions
+                        <%= translate('admin.category:edit_permissions') %>
                     </button>
                 </li>
 
                 <li class="list-group-item my-3 d-flex justify-content-center align-items-center flex-wrap">
                     <button class="btn btn-inverse-dark shadow-sm py-2 w-75">
                         <i class="fa fa-lock" aria-hidden="true"></i>
-                        Lock category
+                        <%= translate('admin.category:lock_category') %>
                     </button>
                 </li>
 
                 <li class="list-group-item my-3 d-flex justify-content-center align-items-center flex-wrap">
                     <button id="delete-category" class="btn btn-danger shadow-sm py-2 w-75">
                         <i class="fa fa-trash" aria-hidden="true"></i>
-                        Delete category
+                        <%= translate('admin.category:delete_category') %>
                     </button>
                 </li>
 
