@@ -8,6 +8,7 @@ const baseScripts = [
     "/scripts/require.js",
     "/scripts/require.config.js",
     "/scripts/modules/jquery-addons.js",
+    "/scripts/modules/localize.js",
     "/scripts/modules/main.js",
     "/scripts/modules/utilities.js",
 ];

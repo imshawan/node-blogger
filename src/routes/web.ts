@@ -10,5 +10,6 @@ router.use('/worker.js', express.static(path.join(paths.assetsDir, 'scripts', 'w
 router.get('/manifest.json', controllers.web.manifest);
 router.get('/robots.txt', controllers.web.robots);
 router.get('/sitemap.xml', controllers.web.sitemap);
+router.get('/locales/:lang/:namespace.json', controllers.web.serveTranslationNamespace);
 
 export default router;

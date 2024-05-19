@@ -246,11 +246,14 @@
     }
 
 
-    $(document).ready(function () {
+    $(document).ready(async function () {
         const {modules, pageScript} = Application;
         core.loadScripts(modules);
         core.loadScripts(pageScript);
         core.bootstrapApp();
+        core.localize = await new Localization('en', ['common']);
+        core.localize.initialize();
+        core.translate = core.localize.translate || function (key) { return key; };
     });
 
     window.addEventListener('load', function() {

@@ -5,6 +5,7 @@ import { IManifestData } from '@src/types';
 import nconf from 'nconf';
 import { createGzip } from 'zlib';
 import { SitemapStream, streamToPromise } from 'sitemap';
+import locale from '@src/locales';
 
 var sitemapCache: Buffer;
 
@@ -63,6 +64,16 @@ const manifest = async function (req: Request, res: Response) {
     return res.status(200).json(manifest);
 }
 
+const serveTranslationNamespace = async function (req: Request, res: Response) {
+    const {lang, namespace} = req.params;
+    const translation = locale.i18nextInstance.getResourceBundle(lang, namespace);
+    if (!translation) {
+        return res.status(404).json({});
+    }
+
+    res.status(200).json(translation);
+}
+
 export default {
-    manifest, robots, sitemap
+    manifest, robots, sitemap, serveTranslationNamespace
 } as const
