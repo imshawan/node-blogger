@@ -65,7 +65,16 @@ const manifest = async function (req: Request, res: Response) {
 }
 
 const serveTranslationNamespace = async function (req: Request, res: Response) {
-    const {lang, namespace} = req.params;
+    const zones = ['admin'];
+    let {lang, namespace, zone} = req.params;
+
+    if (zone && !zones.includes(zone)) {
+        return res.status(400).json({});
+    }
+    if (zone) {
+        namespace = zone + '.' + namespace;
+    }
+
     const translation = locale.i18nextInstance.getResourceBundle(lang, namespace);
     if (!translation) {
         return res.status(404).json({});
