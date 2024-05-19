@@ -1,0 +1,8 @@
+{
+    "page_not_found_title": "Oops! Page Not Be Found",
+    "page_not_found_description": "Sorry but the page you are looking for does not exist, have been removed, name changed, or is temporarily unavailable",
+    "back_to_homepage": "Back to homepage",
+    "unauthorized_access_title": "Oops! Unauthorized access",
+    "unauthorized_access_description": "Sorry but the page you are looking for requires administrative permissions. Please ensure you have the necessary permissions to view this content or contact the administrator for access rights.",
+    "went_wrong": "Something went wrong!"
+}

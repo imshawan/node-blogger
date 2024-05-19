@@ -2,8 +2,8 @@
     <div class="notfound">
         <div class="notfound-404"></div>
         <h1 class="text-danger">401</h1>
-        <h2>Oops! Unauthorized access</h2>
-        <p class="mb-4">Sorry but the page you are looking requires administrative permissoons. Please ensure you have the necessary permissions to view this content or contact the administrator for access rights.</p>
-            <a href="/" class="main-button">Back to homepage</a>
-        </div>
+        <h2><%= translate('admin.common:unauthorized_access_title') %></h2>
+        <p class="mb-4"><%= translate('admin.common:unauthorized_access_description') %></p>
+        <a href="/" class="main-button"><%= translate('admin.common:back_to_homepage') %></a>
+    </div>
 </div>
