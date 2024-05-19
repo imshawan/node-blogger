@@ -4,21 +4,21 @@
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-capitalize" id="create-post-dialogLabel">New Post</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title text-capitalize" id="create-post-dialogLabel"><%= translate('post:new_post') %></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= translate('common:close') %>"></button>
         </div>
         <div class="modal-body">
             <form id="post-form" class="create-post-">
                 <div class="row">
                   <div class="mb-3 col-12 col-md-8 col-lg-9 form-floating">
-                      <input type="text" name="title" style="text-transform: none;" class="form-control form-control-lg border-0 border-bottom" id="post-title" placeholder="Enter your post's title here">
-                      <label for="post-title" id="post-title-label" style="left: unset;" class="form-label">Enter your post's title here</label>
+                      <input type="text" name="title" style="text-transform: none;" class="form-control form-control-lg border-0 border-bottom" id="post-title" placeholder="<%= translate('post:enter_post_title') %>">
+                      <label for="post-title" id="post-title-label" style="left: unset;" class="form-label"><%= translate('post:enter_post_title') %></label>
                   </div>
 
                   <div class="mb-3 col-12 col-md-4 col-lg-3 form-floating">
                     <div class="form-group category-selection-container h-100">
                       <select id="category-selection" tabindex="-1" class="uneditable-input h-100 form-select">
-
+                        <!-- This will be dynamically populated -->
                       </select>
                     </div>
                   </div>
@@ -32,15 +32,15 @@
         </div>
         <div class="modal-footer justify-content-between">
             <div class="mt-0 my-2 position-relative" id="action-container">
-              <button class="btn btn-sm button-outlined mt-0" data-bs-target="#add-tags-dialog" data-bs-toggle="modal">#Tags</button>
+              <button class="btn btn-sm button-outlined mt-0" data-bs-target="#add-tags-dialog" data-bs-toggle="modal"><%= translate('post:hash_tags') %></button>
               <button class="btn btn-sm button-outlined ms-1 mt-0" id="upload-cover">
-                <i class="fa fa-picture-o me-1" aria-hidden="true"></i><span id="cover">Cover Image</span>
+                <i class="fa fa-picture-o me-1" aria-hidden="true"></i><span id="cover"><%= translate('post:cover_image') %></span>
               </button>
               <form><input class="d-none" name="featuredImage" type="file"></form>
-              <i class="fa fa-close d-none border border-dark curser-pointer floating-badge" id="clear-cover" aria-hidden="true"></i>
+              <i class="fa fa-close d-none border border-dark cursor-pointer floating-badge" id="clear-cover" aria-hidden="true"></i>
             </div>
             <div class="mt-0 my-2">
-              <button id="create-post" style="width: 100px;" class="btn btn-sm btn-dark text-white border-4 button-primary py-2 mt-0 ms-1">Create</button>
+              <button id="create-post" style="width: 100px;" class="btn btn-sm btn-dark text-white border-4 button-primary py-2 mt-0 ms-1"><%= translate('common:create') %></button>
             </div>
         </div>
       </div>
@@ -51,8 +51,8 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-capitalize" id="add-tags-dialogLabel">Add Tags to your post</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#create-post-dialog" aria-label="Close"></button>
+          <h5 class="modal-title text-capitalize" id="add-tags-dialogLabel"><%= translate('post:add_tags') %></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#create-post-dialog" aria-label="<%= translate('common:close') %>"></button>
         </div>
         <div class="modal-body">
             <form id="tags-form" class="add-tags-">
@@ -63,8 +63,8 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-sm button-outlined mt-0" data-bs-target="#create-post-dialog" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
-            <button id="add-tags" data-bs-target="#create-post-dialog" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-sm text-white border-4 button-primary mt-0 ms-2">Save</button>
+            <button class="btn btn-sm button-outlined mt-0" data-bs-target="#create-post-dialog" data-bs-toggle="modal" data-bs-dismiss="modal"><%= translate('common:cancel') %></button>
+            <button id="add-tags" data-bs-target="#create-post-dialog" data-bs-toggle="modal" data-bs-dismiss="modal" class="btn btn-sm text-white border-4 button-primary mt-0 ms-2"><%= translate('common:save') %></button>
         </div>
       </div>
     </div>

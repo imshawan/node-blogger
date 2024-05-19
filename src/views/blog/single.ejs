@@ -10,7 +10,7 @@
                 <div class="">
                     <div class="post-author">by <span class="text-uppercase"><%= author.fullname || author.username %></span></div>
                     <div class="post-metadata d-flex">
-                        <%= post.createdAt %>&nbsp;<span class="dot-separator mx-2"></span><%= post.readTime %> read
+                        <%= post.createdAt %>&nbsp;<span class="dot-separator mx-2"></span><%= translate('blog:read_time', {count: post.readTime}) %>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
     <% if (tags && tags.length) { %>
         <div class="row justify-content-center">
             <div class="post-section">
-                <h5 class="text-capitalize">Tags</h5>
+                <h5 class="text-capitalize"><%= translate('common:tags') %></h5>
                 <div class="row px-2">
                     <% tags.forEach(tag => { %>
                         <a href="/tags/<%= tag.slug %>" class="col-auto badge badge-light text-black">#<%= tag.name %></a>
@@ -50,8 +50,8 @@
 
     <div class="row justify-content-center mt-5">
         <div class="post-section d-flex">
-            <div class="post-likes me-3"><%= post.likes %> likes</div>
-            <div class="post-comments"><%= post.comments %> comments</div>
+            <div class="post-likes me-3"><%= translate('blog:like_count', {count: post.likes}) %></div>
+            <div class="post-comments"><%= translate('blog:comment_count', {count: post.comments}) %></div>
         </div>
     </div>
 
@@ -60,15 +60,15 @@
             <img src="<%= author.picture %>" alt="" width="90" height="90" class="rounded-circle my-auto me-3">
             <div class="about-author">
                 <h4 class="author-name text-capitalize"><%= author.fullname || author.username %></h4>
-                <div class="my-3" style="font-size: var(--font-size-12);">About the author</div>
-                <a href="">View profile</a>
+                <div class="my-3" style="font-size: var(--font-size-12);"><%= translate('blog:about_author') %></div>
+                <a href=""><%= translate('user:visit_profile') %></a>
             </div>
         </div>
     </div>
 
     <div class="row justify-content-center">
         <div class="post-section">
-            <h5 class="text-capitalize">Comments</h5>
+            <h5 class="text-capitalize"><%= translate('blog:comments') %></h5>
         </div>
     </div>
 </div>

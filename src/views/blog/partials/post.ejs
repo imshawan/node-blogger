@@ -3,7 +3,7 @@
         <img src="<%= post.featuredImage %>" class="card-img" alt="...">
     <% } %>
     <div class="post-meta text-normal d-flex justify-content-between">
-        <span><i class="far fa-user"></i> Posted by <%= post?.author.fullname || post?.author.username %></span><span><i class="far fa-calendar"></i>
+        <span><i class="far fa-user"></i> <%= translate('post:posted_by', { author: post?.author.fullname || post?.author.username }) %></span><span><i class="far fa-calendar"></i>
             <%= post.createdAt %>
         </span>
     </div>
@@ -26,7 +26,7 @@
             </span>
         </div>
         <div>
-            <a href="/posts/<%= post.slug %>" class="read-more">Read more</a>
+            <a href="/posts/<%= post.slug %>" class="read-more"><%= translate('common:read_more') %></a>
         </div>
     </div>
 </div>

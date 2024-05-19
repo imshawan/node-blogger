@@ -1,0 +1,12 @@
+{
+    "explore_blog": "Explore Blogs & Articles",
+    "posts_you_may_like": "Posts you might like",
+    "likes": "likes",
+    "comment_count": "{{count}} comments",
+    "comments": "Comments",
+    "like_count": "{{count}} likes",
+    "read_time": "{{count}} read",
+    "categories": "categories",
+    "tag_clouds": "Tag clouds",
+    "about_author": "About the author"
+}

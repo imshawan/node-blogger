@@ -4,5 +4,10 @@
     "no_posts_found": "No Posts Found",
     "no_post_message": "Oops! It seems like you haven't shared your thoughts yet.",
     "create_your_first_post": "Create your first post",
-    "no_post_message_for_user": "Oops! Looks like {{author}} has not posted anything yet."
+    "no_post_message_for_user": "Oops! Looks like {{author}} has not posted anything yet.",
+    "new_post": "New Post",
+    "enter_post_title": "Enter your post's title here",
+    "hash_tags": "#Tags",
+    "cover_image": "Cover Image",
+    "add_tags": "Add Tags to your post"
 }
