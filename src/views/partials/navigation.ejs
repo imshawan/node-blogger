@@ -16,11 +16,11 @@
                     <% }) %>
 
                     <% if (_application && _application.isAdministrator ) { %>
-                        <a class="nav-link" href="/admin">Admin</a>
+                        <a class="nav-link" href="/admin"><%= translate('common:admin') %></a>
                     <% } %> 
 
                     <% if (!_application.authenticated) { %>
-                        <a class="ms-4 px-3 my-auto btn-secondary py-1 btn" href="/signin">Sign in<i class="fa fa-sign-in ms-2" aria-hidden="true"></i></a>
+                        <a class="ms-4 px-3 my-auto btn-secondary py-1 btn" href="/signin"><%= translate('common:sign_in') %><i class="fa fa-sign-in ms-2" aria-hidden="true"></i></a>
                     <% } else { %>
                         <%- include('/partials/loggedin_usernav'); -%>
                     <% } %>

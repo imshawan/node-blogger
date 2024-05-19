@@ -3,9 +3,8 @@
         <div>
             <img src="<%= post.featuredImage %>" onerror="core.imageOnError(this)" class="card-img" alt="...">
             <div class="post-meta text-normal d-flex justify-content-between">
-                <span><i class="far fa-user"></i> Posted by <%= post?.author.fullname || post?.author.username %></span><span><i class="far fa-calendar"></i>
-                    <%= post.createdAt %>
-                </span>
+                <span><i class="far fa-user"></i> <%= translate('post:posted_by', { author: post?.author.fullname || post?.author.username }) %></span>
+                <span><i class="far fa-calendar"></i> <%= post.createdAt %></span>
             </div>
             <a href="/posts/<%= post.slug %>" class="post-title text-normal"><%= post.title %></a>
             <p class="post-content text-ellipse-4"><%= post.blurb %></p>
@@ -14,20 +13,16 @@
             <div>
                 <% if (_application.authenticated) { %>
                     <span>
-                        <i data-post-id="<%= post.postId %>" data-post-action="<% if (post.hasLiked) { %>unlike<% } else { %>like<% } %>" 
-                            class="fa <% if (post.hasLiked) { %> fa-thumbs-up <% } else { %> fa-thumbs-o-up <% } %> cursor-pointer me-2"></i>
+                        <i data-post-id="<%= post.postId %>" data-post-action="<%= post.hasLiked ? 'unlike' : 'like' %>" 
+                            class="fa <%= post.hasLiked ? 'fa-thumbs-up' : 'fa-thumbs-o-up' %> cursor-pointer me-2"></i>
                         <span><%= post.likes %></span>
                     </span>
                 <% } %>
-                <span><i class="fa fa-comment-alt me-2"></i>
-                    <span><%= post.comments %></span>
-                </span>
-                <span><i class="fa fa-eye me-2"></i>
-                    <span><%= post.views %></span>
-                </span>
+                <span><i class="fa fa-comment-alt me-2"></i><span><%= post.comments %></span></span>
+                <span><i class="fa fa-eye me-2"></i><span><%= post.views %></span></span>
             </div>
             <div>
-                <a href="/posts/<%= post.slug %>" class="read-more">Read more</a>
+                <a href="/posts/<%= post.slug %>" class="read-more"><%= translate('common:read_more') %></a>
             </div>
         </div>
     </div>

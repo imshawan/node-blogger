@@ -38,5 +38,17 @@
     "oops_page_not_found": "Oops! Page Not Be Found",
     "page_not_exist": "Sorry but the page you are looking for does not exist, has been removed, name changed or is temporarily unavailable",
     "back_to_homepage": "Back to homepage",
-    "something_went_wrong": "Something went wrong!"
+    "something_went_wrong": "Something went wrong!",
+    "read_more": "Read more",
+    "no_content_found": "No {{contentType}} Found",
+    "no_content_message": "Oops! Looks like people have not posted anything yet in this {{section}}.",
+    "admin": "Admin",
+    "explore": "Explore more",
+    "followers": "Followers",
+    "follow": "Follow",
+    "following": "Following",
+    "posts": "Posts",
+    "tags": "Tags",
+    "category": "Category",
+    "about": "About"
 }

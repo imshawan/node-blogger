@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row py-5">
         <div class="col-12 d-flex mx-3 mb-3 justify-content-center">
-            <a href="/categories" class="badge text-black badge-light border-0 bg-light"><i class="fa fa-binoculars me-2" aria-hidden="true"></i>Explore more</a>
+            <a href="/categories" class="badge text-black badge-light border-0 bg-light"><i class="fa fa-binoculars me-2" aria-hidden="true"></i><%= translate('common:explore') %></a>
             <% if (categories.length) { %>
              <% categories.forEach(elem => { %>
                 <%- include('/categories/partials/category_badge', {category: elem, active: category.cid == elem.cid}); -%>
@@ -15,16 +15,16 @@
         </div>
 
         <div class="col-12 text-black justify-content-center d-flex my-3">
-            Category
+            <%= translate('common:category') %>
             <span class="dot-separator mx-2"></span>
-            <%= category.posts %> Posts
+            <%= category.posts %> <%= translate('common:posts') %>
             <span class="dot-separator mx-2"></span>
-            <%= category.tags ?? 0 %> Tags
+            <%= category.tags ?? 0 %> <%= translate('common:tags') %>
             <span class="dot-separator mx-2"></span>
-            <%= category.followers ?? 0 %> Followers
+            <%= category.followers ?? 0 %> <%= translate('common:followers') %>
         </div>
         <div class="col-12 d-flex justify-content-center text-black">
-            <button class="btn btn-primary button btn-sm follow">Follow</button>
+            <button class="btn btn-primary button btn-sm follow"><%= translate('common:follow') %></button>
         </div>
     </div>
     <div class="posts-wrapper row mt-4 pb-0 posts-container">
@@ -34,7 +34,7 @@
             <%- include('/partials/post', {post: post}); -%>
         <% }) %>
     <% } else { %>
-        <%- include('/partials/no_posts', {contentType: 'Post', section: 'category'}); -%>
+        <%- include('/partials/no_content', {contentType: 'Post', section: 'category'}); -%>
     <% } %>
 
     </div>
