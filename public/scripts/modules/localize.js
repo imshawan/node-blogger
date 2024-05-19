@@ -175,6 +175,7 @@
                 try {
                     await this.loadNamespace(namespace);
                 } catch (err) {
+                    console.error('Error occured:', err.message);
                     return '';
                 }
             }
