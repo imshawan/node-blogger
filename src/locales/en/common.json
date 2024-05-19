@@ -2,6 +2,7 @@
     "create_account": "Create an account",
     "new_user": "New user?",
     "sign_in": "Sign In",
+    "sign_out": "Sign Out",
     "password": "Password",
     "your_password": "Enter your password",
     "forgot_password": "Forgot Password",
@@ -50,5 +51,8 @@
     "posts": "Posts",
     "tags": "Tags",
     "category": "Category",
-    "about": "About"
+    "about": "About",
+    "settings": "Settings",
+    "copyright": "Copyright",
+    "powered_by": "Powered by"
 }

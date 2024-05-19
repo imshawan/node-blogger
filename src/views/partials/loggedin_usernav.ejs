@@ -6,17 +6,17 @@
     </a>
     <ul class="dropdown-menu user-dropdown dropdown-menu-dark text-small shadow" aria-labelledby="dropdown-user">
         <li>
-            <a class="dropdown-item" href="/users/<%= user.username %>">Profile</a>
+            <a class="dropdown-item" href="/users/<%= user.username %>"><%= translate('user:profile') %></a>
         </li>
         <li>
-            <a class="dropdown-item" href="/users/<%= user.username %>/edit">Settings</a>
+            <a class="dropdown-item" href="/users/<%= user.username %>/edit"><%= translate('common:settings') %></a>
         </li>
         <li>
             <hr class="dropdown-divider">
         </li>
         <li>
             <form id="signout-form">
-                <button type="submit" class="dropdown-item">Sign out</button>
+                <button type="submit" class="dropdown-item"><%= translate('common:sign_out') %></button>
             </form>
         </li>
     </ul>
