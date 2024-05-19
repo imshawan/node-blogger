@@ -1,4 +1,4 @@
-# NodeBlogger
+# NodeBlogger - Currently Under development 🔨
 
 NodeBlogger is a simple open-source blogging platform designed for content creators who value powerful administrative controls and effortless site management. Whether you're a hobbyist blogger or a professional content creator, NodeBlogger provides a user-friendly interface for publishing your thoughts and ideas online.   
 
