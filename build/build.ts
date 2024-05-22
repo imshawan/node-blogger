@@ -56,6 +56,7 @@ module.exports = async function build() {
         await buildClientSideFiles();
 
         await copy('./src/views', 'dist/views');
+        await copyLocales();
 
         logger.info('Building server-side files');
         await exec('tsc --build tsconfig.prod.json', './');
@@ -72,6 +73,10 @@ module.exports = async function build() {
     }
 }
 
+async function copyLocales() {
+    await copySubfolders('./src/locales', 'dist/locales');
+}
+
 async function buildClientSideFiles(): Promise<void> {
     const outputDir = './dist/public/';
     await copy('./public/css', outputDir + 'css');
@@ -82,6 +87,27 @@ async function buildClientSideFiles(): Promise<void> {
 
 function generateMissingFieldErrorMsg(field: string) {
     return 'Required property ' + field + ' missing from the config file.';
+}
+
+async function copySubfolders(srcDir: string, destDir: string): Promise<void> {
+    if (!fs.existsSync(srcDir)) {
+        return logger.error(`Copy failed as ${srcDir} does not exist.`);
+    }
+
+    const entries = await fs.readdir(srcDir, { withFileTypes: true });
+        
+    // Filter to get only directories
+    const folders = entries.filter(entry => entry.isDirectory()).map(entry => entry.name);
+    
+    // Ensure the destination directory exists
+    await fs.mkdir(destDir, { recursive: true });
+    
+    // Copy each folder to the destination directory
+    for (const folder of folders) {
+        const srcPath = path.join(srcDir, folder);
+        const destPath = path.join(destDir, folder);
+        await copy(srcPath, destPath, "folder");
+    }
 }
 
 /**
