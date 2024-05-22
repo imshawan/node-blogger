@@ -33,7 +33,7 @@ import {Strategy as LocalStrategy} from 'passport-local';
 import flash from 'express-flash';
 import nconf from 'nconf';
 import { Logger, getISOTimestamp, isPortAvailable } from './utilities';
-import {paths} from './constants';
+import {paths, NODE_ENV} from './constants';
 import Locales from '@src/locales';
 import { initializeEmailClient } from './email/emailer';
 import { TFunction } from 'i18next';
@@ -189,9 +189,10 @@ async function setupExpressServer(app: Application) {
 
     // Set static directory (js and css).
     var staticDir = path.join('public');
-    if (EnvVars.NodeEnv === NodeEnvs.Production) {
-        staticDir = path.join(paths.buildDir, 'public');
+    if (NODE_ENV === NodeEnvs.Production) {
+        staticDir = path.resolve(paths.assetsDir);
     }
+
     app.use(express.static(staticDir));
 
 
