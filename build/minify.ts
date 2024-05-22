@@ -6,15 +6,32 @@ import { Logger } from '@src/utilities';
 
 const logger = new Logger({prefix: 'build'});
 
-export async function minifyJavaScripts(): Promise<void> {
+export async function minifyJavaScripts(displayWarn: boolean = false): Promise<void> {
     const filesToMinify = prepareFilesArray(paths.javaScriptsDir);
-    const uglifyOptions = {
-      warnings: true,
-      compress: {assignments: true},
-      mangle: {toplevel: true},
-      output: {
-        beautify: false,
-      },
+    let totalFiles = filesToMinify.length, current = 1;
+
+    const uglifyOptions: uglify.MinifyOptions = {
+        warnings: true,
+        compress: {
+            assignments: true,
+            drop_console: true,
+            drop_debugger: true,
+            hoist_funs: true,
+            hoist_vars: true,
+            passes: 4,
+            toplevel: true,
+            dead_code: true,
+        },
+        mangle: {
+            toplevel: true,
+            reserved: ['$', 'exports', 'require']
+        },
+        output: {
+            beautify: false,
+            comments: false,
+            braces: true,
+            max_line_len: 120
+        },
     };
     
     filesToMinify.forEach((elem: string) => {
@@ -26,12 +43,14 @@ export async function minifyJavaScripts(): Promise<void> {
         const outputDir = path.dirname(output);
         const outputFilename = path.basename(output);
 
+        process.stdout.write(`Processing: ${current}/${totalFiles} modules\r`);
+
         if (error) {
             logger.error(`[${outputFilename}] ${error.message}`);
             process.exit(0);
         }
 
-        if (warnings && warnings.length) {
+        if (warnings && warnings.length && displayWarn) {
             warnings.forEach(warning => logger.warn(`[${outputFilename}] ${warning}`));
         }
 
@@ -40,7 +59,10 @@ export async function minifyJavaScripts(): Promise<void> {
         }
 
         fs.writeFileSync(output, code);
+        current++;
     });
+
+    logger.info(`Minified ${current-1}/${totalFiles} modules`);
 }
 
 
