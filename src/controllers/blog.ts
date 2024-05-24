@@ -145,7 +145,7 @@ const getPostBySlug = async function (req: Request, res: Response) {
         tags = await category.tags.getByKeys(post.tags, tagFields);
     }
 
-    post.createdAt = moment(post.createdAt).format(DATE_FORMAT);
+    post.createdAt = moment(new Date(String(post.createdAt))).format(DATE_FORMAT);
 
     const [author, ] = await Promise.all([
         User.getUserByUserId(post.userid),

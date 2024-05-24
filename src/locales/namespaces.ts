@@ -12,6 +12,7 @@ const namespaces: string[] = [
 	'user',
 	'post',
 	'blog',
+	'category',
 	'admin.common',
 	'admin.category',
 ];

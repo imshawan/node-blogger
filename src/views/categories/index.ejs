@@ -1,49 +1,48 @@
 <div class="container">
-    <row class="row pt-5">
-        <% if (_breadcrumb.length) { %>
-            <div class="col-12">
-                <h2 class="text-normal" style="font-size: var(--font-size-36);">
-                    <%= _breadcrumb[_breadcrumb.length - 1]['label'] %>
-                </h2>
+    <row class="row pt-5 justify-content-center">
+        <div class="text-center pt-5 col-12 col-md-9">
+            <h2 style="font-size: var(--font-size-36);"  class="text-normal font-bold">
+                <%= translate('category:explore') %>
+          </h2>
+          <p style="font-size: var(--font-size-16);" class="mt-3">
+            <%= translate('category:category_home_subheader') %>
+          </p>
+        </div>
+    </row>
+    <row>
+        <form class="input-group my-4 justify-content-center">
+            <div class="form-outline d-flex col-12 col-md-6">
+                <input id="search-input" type="search" value="" name="search" class="w-100 p-2" placeholder="<%= translate('category:search') %>">
+                <button id="search-button" type="submit" class="btn dark button-primary">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                </button>
             </div>
-            <div class="col-12">
-                <div class="breadcrumb pt-1">
-                    <% _breadcrumb.forEach((item, index) => { %>
-                        <a href="<%= !item.active ? item.url : '#' %>" style="font-size: var(--font-size-12);" class="breadcrumb-item <% if (item.active) { %> active <% } %>" rel="nofollow"><%= item.label %></a>
-                    <% }) %>
-                </div>
-                <div style="margin-bottom: 50px;margin-top: 30px;" class="border-top"></div>
-            </div>
-        <% } %>
+        </form>
     </row>
 
-    <div class="row">
-        <div class="categories-wrapper col-md-8">
+    <div class="row pt-2">
+        
             <% if (categories.length) { %>
              <% categories.forEach(category => { %>
-                <div class="card category-list border-0 mb-2">
-                    <div class="card-body row m-0">
-                        <div class="col-12 col-lg-4 align-self-center position-relative">
-                            <div class="" style="background-image: url('<%= category.thumb %>');background-size: cover;min-height: 150px; max-width: 220px; border-radius: 8px;background-position: center;"></div>
-                            <a style="height: 100%;width: 100%;display: block;position: absolute;top: 0;" href="/categories/<%= category.cid %>/posts"></a>
-                        </div>
-                        <div class="col-12 col-lg-8 ps-lg-3 py-3 column">
-                            <a class="card-title category-title text-normal" href="/categories/<%= category.cid %>/posts" style="line-height: 1.3;"><%= category.name %></a>
-                            <p class="card-text text-ellipse-2"><%= category.blurb %></p>
-
-                            <div class="d-flex">
-                                <span class=""><%= category.createdAt %></span>
-                                <span class="dot-separator mx-2"></span>
-                                <span class=""><%= category.posts %> <%= translate('common:posts') %></span>
-                                <span class="dot-separator mx-2"></span>
-                                <span class=""><%= category.tags %> <%= translate('common:tags') %></span>
-                            </div>
-                        </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card border-0 bg-light category-card curser-pointer" data-href="/categories/<%= category.cid %>/posts">
+                      <img src="<%= category.thumb %>" onerror="core.imageOnError(this)" class="card-img-top px-3 pt-3" alt="Category Image">
+                      <div class="card-body">
+                        <div class="category-title title mb-0 text-normal"><%= category.name %></div>
+                        <p class="category-blurb text-ellipse-2 my-2"><%= category.blurb %></p>
+                        <div class="text-muted pt-2 d-flex small">
+                            <i class="fa fa-file-text-o my-auto me-1" aria-hidden="true"></i>
+                            <span><%= category.posts %> <%= translate('common:posts') %></span>
+                            <i class="fa fa-thumbs-o-up my-auto ms-2 me-1" aria-hidden="true"></i>
+                            <span><%= category.tags %> <%= translate('common:likes') %></span>
+                            <i class="fa fa-hashtag my-auto ms-2 me-1" aria-hidden="true"></i>
+                            <span><%= category.tags %> <%= translate('common:tags') %></span>
+                          </div>
+                        
+                      </div>
                     </div>
-                </div>
+                    </div>
              <% }) %>
             <% } %>
-        </div>
-        <div class="col-md-4"></div>
     </div>
 </div>

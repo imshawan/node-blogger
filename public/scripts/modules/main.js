@@ -107,6 +107,10 @@
             const text = $(this).data('copy');
             utilities.copyToClipboard(text);
         })
+
+        $('body').on('click', '[data-href]', function() {
+            location.href = $(this).data('href');
+        })
     }
 
     core.generateAvatarFromName = function generateAvatarFromName(canvasId, name='Unknown name') {

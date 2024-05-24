@@ -715,6 +715,19 @@ nav .nav-link:hover {
   flex-direction: column;
   justify-content: space-around;
 }
+.category-card {
+  border-radius: .5rem;
+  height: 380px;
+  /* max-width: 290px; */
+}
+.category-card .title {
+  font-size: var(--font-size-18);
+}
+.category-card img {
+  aspect-ratio: 400 / 200;
+  height: 14rem;
+  object-fit: cover;
+}
 
 /* Pagination */
 
@@ -815,8 +828,8 @@ nav .nav-link:hover {
   white-space: nowrap;
 }
 
-.sidebar .recent-posts .post-item .post-content {
-  font-size: 0.9em;
+.sidebar .recent-posts .post-item .post-content, .category-blurb {
+  font-size: var(--font-size-14)!important;
 }
 
 .sidebar .popular .card {
@@ -1380,6 +1393,9 @@ a.badge-light:focus, a.badge-light:hover {
   }
   .card-body p {
     font-size: 12px;
+  }
+  .category-card {
+    max-width: 100%;
   }
 }
 
