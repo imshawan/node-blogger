@@ -31,7 +31,7 @@
             this.target = $(options.target);
             this.endpoint = options.endpoint || '';
             this.inputPlaceholder = options.inputPlaceholder || 'Add your comment...';
-            this.data = options.data || [];
+            this.http = options.http || {};
             this.user = options.user || {};
             this.post = options.post || {};
             this.notify = options.notify || this.notifyFn;
@@ -80,7 +80,7 @@
         }
 
         isHttpReady() {
-            return typeof http !== undefined && Object.keys(http).length;
+            return typeof this.http !== undefined && Object.keys(this.http).length;
         }
 
         notifyFn(message, type) {
@@ -90,10 +90,12 @@
         async hitApi(endpoint, method, data) {
             if (!this.isHttpReady()) { return; }
 
-            return await http[method](endpoint, data);
+            return await this.http[String(method).toUpperCase()](endpoint, data);
         }
 
-        async onCreate(data) {}
+        async onCreate(data) {
+            return await this.hitApi(this.endpoint, 'post', data);
+        }
 
         async onDelete(id) {}
 
@@ -301,7 +303,10 @@
             setTimeout(() => this.target.find('#' + commentComponent.attr('id')).css({opacity: 1}), 100);
 
             this.onCreate(data)
-                .then((res) => {})
+                .then((res) => {
+                    this.target.find('#textarea-' + data.id).val('');
+                    console.log(res)
+                })
                 .catch((err) => {
                     this.notify(err.message, 'error');
                     this.target.find('#comment-' + data.id).remove();
@@ -336,7 +341,7 @@
 
                 let data = {
                     id: $that.uuid(),
-                    postId: $that.post.id,
+                    postId: $that.post.postId,
                     content,
                     author: $that.user,
                     createdAt: new Date().toISOString(),
@@ -345,7 +350,6 @@
                 };
 
                 $that.createComment(data);
-                $that.target.find('#textarea-' + id).val('');
             });
         }
 

@@ -1,10 +1,10 @@
-import { readdirSync, lstatSync } from 'fs'
-import path from 'path'
-import i18next from 'i18next'
-import Backend from 'i18next-node-fs-backend'
-import i18nextMiddleware from 'i18next-http-middleware'
-import { paths } from '@src/constants'
-import NS from './namespaces'
+import { readdirSync, lstatSync } from 'fs';
+import path from 'path';
+import i18next, { TOptions } from 'i18next';
+import Backend from 'i18next-node-fs-backend';
+import i18nextMiddleware from 'i18next-http-middleware';
+import { paths } from '@src/constants';
+import NS from './namespaces';
 
 i18next
 	.use(i18nextMiddleware.LanguageDetector)
@@ -36,8 +36,25 @@ i18next
 		nsSeparator: ':',
 		ns: NS.namespaces,
 		defaultNS: NS.defaultNS,
-	})
+	});
+
+/**
+ * @description Translates a given key.
+ * @param {string} key - The translation key.
+ * @returns {string} - The translated string.
+ */
+function translate(key: string, options: TOptions = {}): string {
+	try {
+		if (Object.keys(options).length) {
+			return i18next.t(key, options);
+		}
+		return i18next.t(key);
+	} catch (error) {
+		return key; // Return the key itself in case of an error
+	}
+}
 
 export default {
 	i18nextInstance: i18next,
+	translate
 } as const

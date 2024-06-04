@@ -13,6 +13,8 @@ const namespaces: string[] = [
 	'post',
 	'blog',
 	'category',
+	'comment',
+	'api-errors',
 	'admin.common',
 	'admin.category',
 ];

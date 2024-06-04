@@ -1,0 +1,9 @@
+{
+    "invalid_type": "{{field}} must be a {{expected}} found {{got}} instead",
+    "userid_required": "userid is required",
+    "is_required": "{{field}} is required",
+    "chars_too_short": "{{field}} cannot be greater than {{size}} characters",
+    "chars_too_long": "{{field}} cannot be less than {{size}} characters",
+    "no_entity_with_id": "No such {{entity}} was found with {{entity}} id {{id}}",
+    "no_comment_with_parent": "No such comment was found with parent id {{id}}"
+}

@@ -4,6 +4,7 @@ import * as Utilities from "@src/utilities";
 import * as Helpers from "@src/helpers";
 import Comments from "@src/post/comments";
 import { IPost, MulterFilesArray, IComment } from "@src/types";
+import locale from '@src/locales';
 
 const create = async (req: Request) => {
     const userid = Helpers.parseUserId(req);
@@ -20,7 +21,11 @@ const create = async (req: Request) => {
 
     if (parent) {
         if (typeof parent !== 'number') {
-            throw new Error('Parent must be a number found ' + typeof parent);
+            throw new TypeError(locale.translate('api-errors:invalid_type', {
+                field: 'parent',
+                expected: 'number',
+                got: typeof parent,
+            }));
         }
 
         commentData.parent = Number(parent);
@@ -29,7 +34,7 @@ const create = async (req: Request) => {
     const comment = await Comments.create(commentData);
 
     return {
-        message: 'Created',
+        message: locale.translate('api-common:created'),
         data: comment,
     };
 }

@@ -3,6 +3,7 @@ import { database } from "@src/database";
 import * as Utilities from "@src/utilities";
 import { application } from "@src/application";
 import { IComment, IPost } from "@src/types";
+import locales from "@src/locales";
 import PostUtils from "./utils";
 
 const MIN_CONTENT_SIZE = 5,
@@ -14,37 +15,45 @@ const create = async function create(commentData: IComment): Promise<IComment> {
         minCommentSize = application.configurationStore?.minCommentSize || MIN_CONTENT_SIZE;
 
     if (!userid) {
-        throw new Error('userid is required');
+        throw new Error(locales.translate('api-errors:userid_requierd'));
     }
     if (userid && typeof userid != 'number') {
-        throw new TypeError(`userid must be a number, found ${typeof userid} instead`);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {
+            field: 'userid',
+            expected: 'number',
+            got: typeof userid,
+        }));
     }
     if (!content) {
-        throw new Error('Content is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'content'}));
     }
     if (content.length < minCommentSize) {
-        throw new Error(`Content cannot be less than ${minCommentSize} characters`);
+        throw new Error(locales.translate('api-errors:chars_too_short', {field: 'content', size: minCommentSize}));
     }
     if (content.length > maxCommentSize) {
-        throw new Error(`Content cannot be more than ${maxCommentSize} characters`);
+        throw new Error(locales.translate('api-errors:chars_too_long', {field: 'content', size: maxCommentSize}));
     }
     if (!postId) {
-        throw new Error('postid is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'postId'}));
     }
     if (parent && typeof parent != 'number') {
-        throw new TypeError(`parent must be a number, found ${typeof parent} instead`);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {
+            field: 'parent',
+            expected: 'number',
+            got: typeof parent,
+        }));
     }
 
     const postkey = 'post:' + postId;
     const post: IPost = await database.getObjects(postkey);
     if (!post) {
-        throw new Error('No such post was found with post id ' + postId);
+        throw new Error(locales.translate('api-errors:no_such_entity', {entity: 'post', id: postId}));
     }
     if (parent) {
         const parentCommentKey = 'comment:' + parent;
         const parentComment: IComment = await database.getObjects(parentCommentKey);
         if (!parentComment) {
-            throw new Error('No such comment was found with parent id ' + parent);
+            throw new Error(locales.translate('api-errors:no_comment_with_parent', {id: parent}));
         }
     }
 
