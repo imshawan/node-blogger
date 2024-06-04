@@ -30,6 +30,11 @@ const generateNextPostId = async function generateNextPostId(): Promise<number> 
     return Number(id);
 }
 
+const generateNextCommentId = async function generateNextCommentId(): Promise<number> {
+    const id = await database.incrementFieldCount('comment');
+    return Number(id);
+}
+
 const isValidStatus = function (status: string) {
     const validStatuses = ['draft', 'published', 'archived'];
     if (!status) {
@@ -155,5 +160,5 @@ async function reCalculatePostRank(postId: number) {
 
 export default {
     generatePostslug, generateNextPostId, isValidStatus, incrementCommentCount, incrementLikeCount,
-    incrementViewCount, getKey, populateUserData, preparePostBlurb, timeAgo, serializePost,
+    incrementViewCount, getKey, populateUserData, preparePostBlurb, timeAgo, serializePost, generateNextCommentId,
 } as const

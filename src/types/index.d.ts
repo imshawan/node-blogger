@@ -30,6 +30,7 @@ export * from './webmanifest';
 export * from './email';
 export * from './sidebar';
 export * from './post';
+export * from './comment';
 
 export interface MutableObject { [x: string]: any; }
 

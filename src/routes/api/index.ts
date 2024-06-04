@@ -5,6 +5,7 @@ import { mountApiRoute } from '@src/helpers';
 import blog from './blog';
 import user from './user';
 import admin from './admin';
+import comment from './comment';
 
 const router = Router();
 
@@ -13,6 +14,7 @@ mountApiRoute(router, 'get', '/categories/:cid?', [], controllers.api.category.g
 mountApiRoute(router, 'get', '/categories/:cid/tags/:name', [], controllers.api.category.tags.getByName);
 
 router.use('/blog', blog);
+router.use('/comment', comment);
 router.use('/user', user);
 router.use('/admin', requireAuthentication, verifyAdministrator, applyAdminFlag, admin);
 

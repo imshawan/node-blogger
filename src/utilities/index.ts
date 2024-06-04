@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import _ from 'lodash';
 import { MutableObject, TimeUnitSuffix } from '@src/types';
 import { execSync } from 'child_process';
-import {createCanvas, registerFont} from 'canvas';
+import { createCanvas, registerFont } from 'canvas';
 import path from 'path';
 
 export * from './password';
@@ -21,7 +21,7 @@ export const getISOTimestamp = () => new Date().toISOString();
 
 export const ipV4Regex = /^(?:(?:\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\.){3}(?:\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])$/;
 
-export const generateUUID = () => { 
+export const generateUUID = () => {
     return crypto.randomUUID();
 }
 
@@ -29,7 +29,7 @@ export const capitalizeFirstLetter = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export const parseBoolean = function(value: any) {
+export const parseBoolean = function (value: any) {
     if (!value) return false;
 
     if (Array.isArray(value)) {
@@ -50,7 +50,7 @@ export const parseBoolean = function(value: any) {
 
 export const isParsableJSON = function (jsonString?: string) {
     if (!jsonString) return false;
-    
+
     try {
         JSON.parse(jsonString);
         return true;
@@ -70,9 +70,9 @@ export const filterObjectByKeys = function (obj: MutableObject, keys: string[]) 
 export const getArgv = function (key: string): string | Number | Boolean {
     const args = process.argv;
     const parsedArgs: MutableObject = {};
-    
+
     // Start from index 2 to skip "node" and the script name
-    for (let i = 2; i < args.length; i++) { 
+    for (let i = 2; i < args.length; i++) {
         const arg = args[i];
 
         if (arg.startsWith('--')) {
@@ -93,25 +93,25 @@ export const sanitizeHtml = function (inputHtml: string, unsafeTags = ['script',
     const safeHtml = inputHtml.replace(tagRegex, '');
 
     const sanitizedHtml = safeHtml.replace(/on\w+="[^"]*"/gi, '');
-  
+
     // Remove attributes that may contain JavaScript code
     const attributeRegex = /(?:\s|^)(on\w+|href|src)\s*=\s*("[^"]*"|'[^']*'|[^>\s]+)/gi;
     const finalSanitizedHtml = sanitizedHtml.replace(
-      attributeRegex,
-      (match, attributeName, attributeValue) => {
-        if (
-          attributeName.toLowerCase() === "on" ||
-          attributeValue.toLowerCase().includes("javascript:")
-        ) {
-          return "";
-        } else {
-          return match;
+        attributeRegex,
+        (match, attributeName, attributeValue) => {
+            if (
+                attributeName.toLowerCase() === "on" ||
+                attributeValue.toLowerCase().includes("javascript:")
+            ) {
+                return "";
+            } else {
+                return match;
+            }
         }
-      }
     );
-  
+
     return finalSanitizedHtml;
-  }
+}
 
 export const isGraphicalEnvironmentAvailable = (): boolean => {
     return !!(process.env.DISPLAY && process.env.XDG_SESSION_TYPE);
@@ -122,7 +122,7 @@ export const openWebUrl = (url: string) => {
         return;
     }
 
-    const command = process.platform === 'darwin' ? `open ${url}` : 
+    const command = process.platform === 'darwin' ? `open ${url}` :
         process.platform === 'win32' ? `start ${url}` : `xdg-open ${url}`;
 
     execSync(command);
@@ -190,16 +190,16 @@ export const clipContent = function (content: string, wordLimit: number) {
 
 export const abbreviateNumber = function (num: number) {
     if (num < 1000) {
-		return num.toString();
-	} else if (num < 1000000) {
-		return (num / 1000).toFixed(1) + "K";
-	} else if (num < 1000000000) {
-		return (num / 1000000).toFixed(1) + "M";
-	} else if (num < 1000000000000) {
-		return (num / 1000000000).toFixed(1) + "B";
-	} else {
-		return (num / 1000000000000).toFixed(1) + "T";
-	}
+        return num.toString();
+    } else if (num < 1000000) {
+        return (num / 1000).toFixed(1) + "K";
+    } else if (num < 1000000000) {
+        return (num / 1000000).toFixed(1) + "M";
+    } else if (num < 1000000000000) {
+        return (num / 1000000000).toFixed(1) + "B";
+    } else {
+        return (num / 1000000000000).toFixed(1) + "T";
+    }
 }
 
 export const generateAvatarFromInitials = function (name: string, size: number = 200) {
@@ -223,19 +223,19 @@ export const generateAvatarFromInitials = function (name: string, size: number =
         "#c0392b",
         "#bdc3c7",
         "#7f8c8d",
-      ];
+    ];
 
     const canvas = createCanvas(size, size);
     const context = canvas.getContext('2d');
 
     const nameSplit = name.split(" ");
     let initials = nameSplit[0].charAt(0).toUpperCase();
-        if (nameSplit.length > 1) {
-            initials += nameSplit[1].charAt(0).toUpperCase();
-        }
+    if (nameSplit.length > 1) {
+        initials += nameSplit[1].charAt(0).toUpperCase();
+    }
 
-        const charIndex = initials.charCodeAt(0) - 65,
-            colourIndex = charIndex % 19;
+    const charIndex = initials.charCodeAt(0) - 65,
+        colourIndex = charIndex % 19;
 
     context.fillStyle = colours[colourIndex];;
     context.fillRect(0, 0, size, size);

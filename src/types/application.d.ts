@@ -283,6 +283,16 @@ export interface IApplication {
     maxPostThumbnailSize: number;
 
     /**
+     * Minimum characters required in a comment
+     */
+    minCommentSize: number
+
+    /**
+     * Maximum characters in a comment
+     */
+    maxCommentSize: number
+
+    /**
      * Array of allowed file types.
      */
     allowedFileTypes: string[];

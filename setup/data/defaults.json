@@ -64,6 +64,8 @@
     "maxTagsPerPost": 10,
     "maxPostBlurbSize": 30,
     "maxPostThumbnailSize": 5,
+    "minCommentSize": 10,
+    "maxCommentSize": 300,
     "allowedFileTypes": ["jpg", "png", "jpeg", "gif", "bmp", "txt"],
     "maxFileSize": 50,
     "maxFileSizeUnit": "mb",
