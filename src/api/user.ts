@@ -9,6 +9,7 @@ import { MutableObject, MulterFilesArray, ExpressUser, ISortedSetKey } from "@sr
 import { parseBoolean } from "@src/utilities";
 import { isAuthorizedToDelete } from "@src/permissions";
 import * as Helpers from "@src/helpers";
+import _ from "lodash";
 
 const checkUsername = async (req: Request) => {
     const {username} = req.params;
@@ -162,7 +163,7 @@ const resetPassword = async (req: Request) => {
     }
 
     const userid = decoded.userid;
-    const secretExists = await database.getSortedSetValue('user:' + userid + ':reset', new RegExp('^' + token + ':*')) as ISortedSetKey;
+    const secretExists = await database.getSortedSetValue('user:' + userid + ':reset', new RegExp('^' + _.escapeRegExp(token) + ':*')) as ISortedSetKey;
     if (!secretExists) {
         throw AuthorizationError;
     }

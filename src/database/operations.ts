@@ -354,7 +354,7 @@ const getSortedSetsSearch = async function (params: { withRanks?: boolean; match
     const match = params.match;
     let regex;
     try {
-        regex = new RegExp(match);
+        regex = new RegExp(_.escapeRegExp(match));
     } catch (err) {
         return [];
     }
@@ -384,7 +384,7 @@ const getSortedSetsSearchCount = async function (key: string, match: string, opt
 
     let regex;
     try {
-        regex = new RegExp(match);
+        regex = new RegExp(_.escapeRegExp(match));
     } catch (err) {
         return [];
     }

@@ -5,6 +5,7 @@ import { notFoundHandler } from '@src/middlewares';
 import { NavigationManager } from '@src/utilities/navigation';
 import { utils as UserUtilities } from '@src/user';
 import { ISortedSetKey } from '@src/types';
+import _ from 'lodash';
 
 const signIn = async function (req: Request, res: Response) {
     const {redirect} = req.query;
@@ -74,7 +75,7 @@ const validateTokenAndSecret = async function (req: Request, res: Response) {
     }
 
     const userid = decoded.userid;
-    const secretExists = await database.getSortedSetValue('user:' + userid + ':reset', new RegExp('^' + token + ':*')) as ISortedSetKey;
+    const secretExists = await database.getSortedSetValue('user:' + userid + ':reset', new RegExp('^' + _.escapeRegExp(token) + ':*')) as ISortedSetKey;
     if (!secretExists) {
         throw invalidLinkError;
     }
