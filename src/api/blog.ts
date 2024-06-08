@@ -96,7 +96,7 @@ const getLikes = async (req: Request) => {
 
     const data = await Posts.likes.get(postId, perPage, page);
 
-    return Helpers.paginate(data.users, perPage, page, url)
+    return Helpers.paginate(data.users, data.total, perPage, page, url)
 }
 
 

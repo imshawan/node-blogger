@@ -35,6 +35,8 @@
             this.user = options.user || {};
             this.post = options.post || {};
             this.notify = options.notify || this.notifyFn;
+            this.container = null;
+            this.repliesPerPage = 4;
 
             this.initialize();
         }
@@ -47,6 +49,8 @@
             reply: 'fa-reply',
             share: 'fa-share',
             dots: 'fa-ellipsis-h',
+            spinner: 'spinner-border',
+            up: 'fa-chevron-up'
         }
     
         initialize() {
@@ -57,8 +61,8 @@
                 throw new Error('Target element not specified.');
             }
 
-            this.target.append(this.render(this.data));
-            this.addEventListeners();
+            this.onLoad();
+            this.createLayout();
         }
 
         uuid () {
@@ -89,19 +93,57 @@
 
         async hitApi(endpoint, method, data) {
             if (!this.isHttpReady()) { return; }
+            if (!data || !Object.keys(data).length) {
+                data = {};
+            }
 
             return await this.http[String(method).toUpperCase()](endpoint, data);
+        }
+
+        async onLoad() {
+            const data = await this.hitApi(this.endpoint + `/${this.post.postId}`, 'get');
+            this.data = data.data;
+
+            this.hideLoader('loader-' + this.id);
+
+            this.render(this.data)
+            this.addEventListeners();
         }
 
         async onCreate(data) {
             return await this.hitApi(this.endpoint, 'post', data);
         }
 
-        async onDelete(id) {}
+        async onDelete(postId, id) {
+            return await this.hitApi(this.endpoint + `/${postId}/${id}`, 'delete');
+        }
 
         async onUpdate(id, data) {}
 
         async handleLike(id) {}
+
+        async loadReplies(postId, commentId) {
+            const params = new URLSearchParams({
+                id: commentId,
+                replies: true,
+                perPage: this.repliesPerPage
+            })
+            const data = await this.hitApi(this.endpoint + `/${postId}?${params.toString()}`, 'get');
+            this.render(data.data, this.target.find('.card-comment-' + commentId), true);
+        }
+
+        onCancel(id) {
+            let target = this.target.find('.input-' + id);
+                
+            target.css({opacity: 0});
+            setTimeout(() => {
+                target.remove()
+            }, 100);
+        }
+
+        setContainer(element) {
+            this.container = this.target.find(element);
+        }
 
         components() {
             const $that = this;
@@ -118,27 +160,59 @@
 
                     return element;
                 },
-                commentInput(data={}) {
-                    if (!data || typeof data !== 'object' || !Object.keys(data).length) {
-                        data = {id: $that.id}
-                    }
-                    
+                subHeader(text='') {
                     return this.create('div', {
-                        id: 'input-' + data.id,
+                        class: 'd-flex mb-2 mt-5',
                         children: [
-                            this.create('textarea', {rows: 3, id: 'textarea-' + data.id, class: 'p-3', placeholder: $that.inputPlaceholder}).css({width: '100%'}),
+                            this.create('h5', {text, class: 'text-capitalize'})
+                        ]
+                    })
+                },
+                loader(id='') {
+                    return this.create('div', {
+                        class: 'd-flex justify-content-center align-items-center',
+                        id: 'loader-' + (id || $that.id),
+                        children: [
+                            this.create('i', {class: $that.Icons.spinner})
+                        ]
+                    })
+                },
+                commentInput(data={}, css={}, allowCancellation=false, fadeIn=false) {
+                    if (!data || typeof data !== 'object' || !Object.keys(data).length) {
+                        data = {commentId: $that.id}
+                    }
+                    let transition = {
+                        opacity: 0,
+                        transition: 'opacity 0.2s ease-in-out',
+                    }
+                    return this.create('div', {
+                        class: 'input-' + data.commentId,
+                        css: $.extend(fadeIn ? transition : {}, (css || {})),
+                        children: [
+                            this.create('textarea', {rows: 3, id: 'textarea-' + data.commentId, class: 'p-3', placeholder: $that.inputPlaceholder}).css({width: '100%', fontSize: 'var(--font-size-14)'}),
                             this.create('div', {
-                                children: [this.commentButton().css({marginTop: '8px'})],
+                                children: [this.commentButton(data.commentId, allowCancellation).css({marginTop: '8px'})],
                                 class: 'd-flex justify-content-end'
                             })
                         ],
                     })
                 },
-                commentButton(id) {
+                commentButton(id, allowCancellation) {
                     if (!id) {
                         id = $that.id;
                     }
-                    return this.create('button', {text: 'Comment', class: 'button create-comment', 'data-id': id});
+
+                    const createBtn = this.create('button', {text: 'Comment', class: 'button create-comment', 'data-id': id});
+                    if (!allowCancellation) {
+                        return createBtn;
+                    }
+
+                    return this.create('div', {
+                        children: [
+                            this.create('button', {text: 'Cancel', class: 'button-outlined cancel-comment', 'data-id': id, css: {marginRight: '8px'}}),
+                            createBtn,
+                        ]
+                    });
                 },
                 author (data={}) {
                     return this.create('div', {
@@ -173,7 +247,7 @@
                                                 class: 'dropdown-item',
                                                 text: 'Edit',
                                                 'data-owner-action': 'edit',
-                                                'data-id': data.id
+                                                'data-id': data.commentId
                                             })
                                         ]
                                     }),
@@ -183,7 +257,7 @@
                                                 class: 'dropdown-item',
                                                 text: 'Delete',
                                                 'data-owner-action': 'delete',
-                                                'data-id': data.id
+                                                'data-id': data.commentId
                                             })
                                         ]
                                     })
@@ -192,7 +266,7 @@
                         ]
                     });
                 },
-                actionBar(data={}) {
+                actionBar(data={}, enableReply) {
                     return this.create('div', {
                         class: 'd-flex mt-3 justify-content-between',
                         children: [
@@ -202,21 +276,32 @@
                                     this.create('div', {
                                         css: {fontSize: 'var(--font-size-14)'},
                                         children: [
-                                            this.create('span', {text: data.likes + ' likes'})
+                                            this.create('span', {text: (data.likes || 0) + ' likes'})
                                         ]
                                     }),
-                                    this.create('div', {
-                                        class: 'mx-3',
+                                    enableReply && this.create('div', {
+                                        class: 'ms-3 me-2',
+                                        css: {fontSize: 'var(--font-size-14)'},
                                         children: [
                                             this.create('i', {
                                                 class: 'fa ' + $that.Icons.reply
                                             }),
                                             this.create('span', {
                                                 text: 'Reply',
-                                                css: {fontSize: 'var(--font-size-14)'},
+                                                
                                                 class: 'text-black-50 mx-2 cursor-pointer',
-                                                'data-reply-id': data.id,
-                                                'data-parent-id': data.parentId
+                                                'data-reply-id': data.commentId,
+                                                'data-parent': data.parent
+                                            })
+                                        ]
+                                    }),
+                                    data.replies > 0 && this.create('div', {
+                                        css: {fontSize: 'var(--font-size-14)'},
+                                        children: [
+                                            this.create('span', {
+                                                text: `Replies (${data.replies})`,
+                                                class: 'text-black-50 cursor-pointer view-replies',
+                                                'data-comment-id': data.commentId,
                                             })
                                         ]
                                     })
@@ -225,24 +310,51 @@
                             this.create('div', {
                                 children: [
                                     this.create('i', {
+                                        css: {fontSize: 'var(--font-size-14)'},
                                         class: 'cursor-pointer me-1 fa ' + $that.Icons.like,
-                                        'data-post-action': 'like', 'data-comment-id': data.id
+                                        'data-post-action': 'like', 'data-comment-id': data.commentId
                                     }),
                                 ]
                             })
                         ]
                     });
                 },
-                comment (data={}) {
+                hideReplies(id) {
                     return this.create('div', {
-                        id: 'comment-' + data.id,
+                        class: 'd-flex justify-content-center',
+                        children: [
+                            this.create('div', {
+                                css: {
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center'
+                                },
+                                class: 'cursor-pointer hide-replies',
+                                children: [
+                                    this.create('i', {
+                                        class: 'fa ' + $that.Icons.up
+                                    }),
+                                    this.create('span', {
+                                        text: 'Hide replies',
+                                        class: 'text-black-50 cursor-pointer',
+                                        css: {fontSize: 'var(--font-size-14)'}
+                                    })
+                                ],
+                                'data-comment-id': id,
+                            })
+                        ]
+                    })
+                },
+                comment (data={}, enableReply=true) {
+                    return this.create('div', {
+                        id: 'comment-' + data.commentId,
                         class: 'd-flex w-100 my-2',
                         children: [
                             this.create('div', {
                                 class: 'w-100 card border-0',
                                 children: [
                                     this.create('div', {
-                                        class: 'card-body',
+                                        class: 'card-body card-comment-' + data.commentId,
                                         children: [
                                             this.create('div', {
                                                 class: 'd-flex justify-content-between',
@@ -280,7 +392,7 @@
                                                     fontSize: 'var(--font-size-14)'
                                                 }
                                             }),
-                                            this.actionBar(data),
+                                            this.actionBar(data, enableReply),
                                         ]
                                     })
                                 ]
@@ -293,102 +405,223 @@
 
         createComment(data={}) {
             const components = this.components();
+            const isReply = Boolean(data.parent);
 
-            let commentComponent = components.comment(data).css({
+            // Creating an ease in transition
+            let commentComponent = components.comment({...data, ...(isReply ? {commentId: this.uuid()} : {})}, !isReply).css({
                     opacity: 0,
                     transition: 'opacity 0.5s ease-in-out',
+                    ...(isReply ? {paddingLeft: '1.5rem'} : {})
                 });
 
-            this.target.find('#comments-' + this.id).prepend(commentComponent);
+            if (!isReply) {
+                this.target.find('#comments-' + this.id).prepend(commentComponent);
+            } else {
+                let target = this.target.find('#comment-' + data.parent).find('.card-body');
+
+                // Remove the comment input text area
+                this.onCancel(data.parent);
+
+                // Remove the margins
+                commentComponent.removeClass('my-2');
+                commentComponent.find('.card-body').css({paddingRight: 0});
+
+                if (!target.find('.replies').length) {
+                    target.append(components.create('div', {
+                        class: 'replies my-2',
+                        children: [
+                            commentComponent
+                        ]
+                    }));
+                } else {
+                    target.find('.replies').append(commentComponent);
+                }
+            }
+
+            // Let the element get appended in the dom and than the opacity to complete the transition
             setTimeout(() => this.target.find('#' + commentComponent.attr('id')).css({opacity: 1}), 100);
 
             this.onCreate(data)
                 .then((res) => {
-                    this.target.find('#textarea-' + data.id).val('');
+                    !isReply && this.target.find('#textarea-' + data.commentId).val('');
                     console.log(res)
                 })
                 .catch((err) => {
                     this.notify(err.message, 'error');
-                    this.target.find('#comment-' + data.id).remove();
+                    this.target.find('#comment-' + data.commentId).remove();
                 });
         }
 
         addEventListeners() {
-            const $that = this;
+            const $that = this,
+                components = this.components();
 
             this.target.off('click').on('click', '[data-post-action]', function() {
                 console.log('Like button clicked', $(this));
             });
 
+            // Triggered when a user wants to reply to an existing comment
             this.target.on('click', '[data-reply-id]', function() {
-                const {replyId, parentId} = $(this).data();
+                const {replyId, parent} = $(this).data();
                 let $target = $that.target.find('#comment-' + replyId);
+                
+                $target.find('.card-comment-' + replyId).append(components.commentInput({commentId: replyId}, {marginTop: '.4rem'}, true, true));
+                setTimeout(() => {
+                    $that.target.find('.input-' + replyId).css({opacity: 1});
+                }, 100);
+            });
+
+            // triggered on view replies for a particular comment
+            this.target.on('click', '.view-replies', function() {
+                const {commentId} = $(this).data();
+                const loader = components.loader(commentId);
+                let target = $that.target.find('.card-comment-' + commentId);
+                
+                target.append(loader.css({height: '200px'}))
+
+                $that.loadReplies($that.post.postId, commentId).then(() => target.find($(loader)).remove())
             });
 
             this.target.on('click', '[data-owner-action]', function() {
                 const { ownerAction, id } = $(this).data();
+                let target = $that.target.find('#comment-' + id);
+                let postId = $that.post.postId;
                 
                 if (ownerAction == 'delete') {
-                    confirm('Are you sure to delete this comment?') && $that.target.find('#comment-' + id).remove();
+                    if (confirm('Are you sure to delete this comment?')) {
+                        target.css({opacity: 0});
+
+                        // If API call is success than delete it from DOM, or else bring it back if error
+                        $that.onDelete(postId, id).then(res => target.remove())
+                            .catch(err => {
+                                $that.notify(err.message, 'error');
+                                target.css({opacity: 1});
+                            });
+                    }
                 }
+            });
+
+            this.target.on('click', '.cancel-comment', function() {
+                const { id } = $(this).data();
+                $that.onCancel(id);
             });
 
             this.target.on('click', '.create-comment', function() {
                 const {id} = $(this).data();
                 let content = $that.target.find('#textarea-' + id).val();
 
+                /**
+                 * @var {boolean} isReply
+                 * @description If id is a number, means we are replying to an existing comment (as commentId is a number).
+                 * The master comment textbox has id which is alphanumeric.
+                 */
+                let isReply = !isNaN(id);
+
                 if (!content || content.length < 3) return $that.notify('Please write a comment first', 'error');
 
                 let data = {
-                    id: $that.uuid(),
                     postId: $that.post.postId,
                     content,
                     author: $that.user,
                     createdAt: new Date().toISOString(),
                     likes: 0,
-                    replies: []
+                    replies: 0
                 };
+
+                if (isReply) {
+                    data.parent = id;
+                    data.commentId = id;
+                }
 
                 $that.createComment(data);
             });
+
+            this.target.on('click', '.hide-replies', function() {
+                const {commentId} = $(this).data();
+                let target = $that.target.find('.card-comment-' + commentId).find('.replies')
+
+                target.css({opacity: 0});
+                setTimeout(() => {
+                    target.remove()
+                }, 350);
+            });
         }
 
-        render(data=[]) {
+        hideLoader(id) {
+            this.target.find('#' + id).removeClass('d-flex').hide();
+        }
+
+        createLayout() {
             const $that = this;
             const components = this.components();
+            const container = '#comments-' + $that.id;
 
-            return components.create('div', {
-                children: [
-                    components.commentInput(),
-                    components.create('div', {
-                        id: 'comments-' + $that.id,
-                        class: 'mt-3',
-                        children: data.map(c => components.create('div', {
-                            id: 'comment-' + c.id,
+            this.target.append(
+                components.create('div', {
+                    children: [
+                        components.create('div', {
+                            id: 'comments-' + $that.id,
+                            class: 'mt-3',
                             children: [
-                                components.comment(c),
-                                ...((c.replies && c.replies.length > 0) ? (
-                                    components.create('div', {
-                                        class: 'w-100 d-flex justify-content-end',
-                                        children: [
-                                            components.create('div', {
-                                                css: {width: '100%', borderLeft: '5px dashed #d1d1d1'},
-                                                class: 'ps-3 ms-3',
-                                                children: [
-                                                    c.replies.map(e => components.comment(e))
-                                                ]
-                                            })
-                                        ]
-                                })
-                                ) : '')
+                                components.loader()
                             ]
-                        }))
-                    }),
-                ],
-                css: {
-                    width: '100%'
+                        }),
+                        components.subHeader('Leave a Comment'),
+                        components.commentInput(),
+                    ],
+                    css: {
+                        width: '100%'
+                    }
+                })
+            );
+
+            this.setContainer(container);
+        }
+
+        render(data=[], target=this.container, replies=false) {
+            const components = this.components();
+            const css = {
+                opacity: 0,
+                transition: 'opacity 0.5s ease-in-out',
+                paddingLeft: '1.5rem'
+            };
+            let parent = 0;
+
+            const comments = data.map(c => {
+                let comment = components.comment(c);
+                
+                !parent && (parent = c.parent)
+
+                if (replies) {
+                    comment.find('.card-body').css({paddingRight: 0});
+                    comment.removeClass('my-2');
+                    
+                    return comment;
                 }
+
+                return components.create('div', {
+                    id: 'comment-' + c.commentId,
+                    children: [comment]
+                })
             });
+
+            if (replies) {
+                if (!target.find('.replies').length) {
+                    target.append(components.create('div', {
+                        class: 'replies my-2',
+                        css: css,
+                        children: comments.concat(components.hideReplies(parent))
+                    }));
+                } else {
+                    target.find('.replies').append(comments);
+                }
+
+                return setTimeout(() => {
+                    target.find('.replies').css({opacity: 1})
+                }, 100);
+            }
+
+            target.prepend(comments);
         }
     }
     

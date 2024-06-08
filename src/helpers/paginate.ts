@@ -33,7 +33,7 @@ import {url as Utilities} from "@src/utilities/url";
  * @description facilitates pagination for a given array of items, allowing users to navigate through the data in smaller, manageable chunks. 
  * It takes an array of items, the number of items to display per page (perPage), the current page number (page), and a base URL (baseUrl) as inputs.
  */
-export function paginate(items: Array<any>, perPage: number, page: number, baseUrl: string=''): IPagination {
+export function paginate(items: Array<any>, total: number, perPage: number, page: number, baseUrl: string=''): IPagination {
     if (!items) {
         items = [];
     }
@@ -54,6 +54,9 @@ export function paginate(items: Array<any>, perPage: number, page: number, baseU
     }
     if (typeof baseUrl != 'string') {
         throw new TypeError('baseUrl must be a string, found ' + typeof baseUrl);
+    }
+    if (!total) {
+        total = items.length;
     }
   
     perPage = Number(perPage);

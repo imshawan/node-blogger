@@ -43,16 +43,14 @@ categoryApi.get = async (req: Request) => {
         }
     } 
 
-    var categories = []
-
     if (search) {
         search = String(search).trim();
-        categories = await category.data.getCategoryByName(search, perPage, page, categoryFields, null, includeSubCategories);
+        let categories = await category.data.getCategoryByName(search, perPage, page, categoryFields, null, includeSubCategories);
+        return Helpers.paginate(categories, categories.length, perPage, page, url)
     } else {
-        categories = await category.data.getAllCategories(perPage, page, categoryFields, null, includeSubCategories);
+        let records = await category.data.getAllCategories(perPage, page, categoryFields, null, includeSubCategories);
+        return Helpers.paginate(records.categories, records.total, perPage, page, url)
     }
-
-    return Helpers.paginate(categories, perPage, page, url)
 }
 
 categoryApi.create = async (req: Request) => {

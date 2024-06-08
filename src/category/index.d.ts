@@ -27,7 +27,10 @@ declare namespace Category {
         /**
          * Retrieves all categories.
          */
-        getAllCategories(perPage?: number, page?: number, fields?: string[], sorting?: string | null, subCategories?: boolean): Promise<Array<ICategory>>
+        getAllCategories(perPage?: number, page?: number, fields?: string[], sorting?: string | null, subCategories?: boolean): Promise<{
+            categories: ICategory[];
+            total: any;
+        }>
         
          /**
          * Retrieves a category by its ID.

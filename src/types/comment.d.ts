@@ -8,7 +8,7 @@ export interface IComment {
     _key?: string
 
     /** The unique ID of the comment. */
-    id?: string;
+    commentId?: number;
 
     /** The ID of the post to which the comment belongs. */
     postId?: number;
@@ -32,13 +32,10 @@ export interface IComment {
     likes?: number;
 
     /** Indicates whether the comment is a reply to another comment. */
-    parent?: number;
+    parent?: number | null;
 
-    /** The list of replies to the comment. */
-    replies?: Comment[];
-
-     /** The number of replies to the comment. */
-    replyCount?: number;
+    /** The count of replies to the comment. */
+    replies?: number;
 
     /** The status of the comment (e.g., "published", "deleted", "pending"). */
     status?: 'published' | 'deleted' | 'pending';

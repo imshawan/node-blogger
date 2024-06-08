@@ -8,7 +8,8 @@ define('client/blog/single', ['modules/comments', 'modules/http'], function (c, 
                 user: Application.user ||  {},
                 endpoint: '/api/v1/comment',
                 post: Application.post,
-                http
+                notify: utilities.showToast,
+                http,
             });
         }
     }

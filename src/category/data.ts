@@ -109,20 +109,23 @@ const getAllCategories = async function getAllCategories(perPage: number=15, pag
         searchKeys = 'category:parent';
     }
 
-    const sets = await database.fetchSortedSetsRange(searchKeys, start, stop);
+    const [sets, total] = await Promise.all([
+        database.fetchSortedSetsRange(searchKeys, start, stop),
+        database.getObjectsCount(searchKeys),
+    ]);
     let data: ICategory[] = [];
     if (sets && sets.length) {
         data = await database.getObjectsBulk(sets, fields) as ICategory[];
     }
 
     if (fields.includes('blurb')) {
-        return data.map((category: ICategory) => {
+        data = data.map((category: ICategory) => {
             category.blurb = category.blurb = categoryUtils.prepareBlurb(category);
             return category;
         });
     }
     
-    return data;
+    return {categories: data, total: total ?? 0};
 }
 
 const getCategoryByCid = async function getCategoryByCid(id: any, fields: string[] = []) {

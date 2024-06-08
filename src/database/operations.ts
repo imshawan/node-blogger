@@ -9,7 +9,7 @@ import { IParamOptions, IMongoInsertOptions, IMongoDeleteOptions, IMongoUpdateOp
 import _ from "lodash";
 import { ObjectId } from "bson";
 import { utilities as dbUtils } from "./utils";
-import { Db } from "mongodb";
+import { Db, Document } from "mongodb";
 import lock from "./lock";
 
 const getFromDb = async function (key: object, fields?: Array<string>, options?: IParamOptions) {
@@ -98,6 +98,8 @@ const getObjectsBulk = async function (keysArray: string[], fields?: string[], o
         (fields ?? []).forEach(field => {
             if (item && item.hasOwnProperty(field)) {
                 obj[field] = item[field];
+            } else {
+                obj[field] = null;
             }
         });
 
@@ -109,6 +111,27 @@ const getObjectsCount = async function (key: string, options?: IParamOptions) {
     options = dbUtils.getObjectOptions(options || {});
     
     return await mongo.client.collection(options.collection).countDocuments({_key: key});
+}
+
+const getObjectsCounts = async function (keysArray: string[], options?: IParamOptions): Promise<{[x: string]: number;}> {
+    let opts = dbUtils.getObjectOptions(options || {}) as IOptions;
+
+    if (!keysArray || !Array.isArray(keysArray) || !keysArray.length) {
+        return {};
+    }
+
+    const counts = await (mongo.client as Db).collection(opts.collection).aggregate([
+        { $match: {_key: { $in: keysArray }} },
+        { $group: {_id: '$_key', count: { $sum: 1 }} }
+    ]).toArray();
+
+    let result: {[x: string]: number;} = {};
+
+    if (counts.length) {
+        counts.forEach((item:  Document) => result[item._id] = Number(item.count));
+    }
+
+    return result;
 }
 
 const setObjects = async function (key: string | null, data: any, options?: IParamOptions) {
@@ -674,6 +697,7 @@ const operations = {
 	getObjectsBulk,
 	setObjects,
 	getObjectsCount,
+    getObjectsCounts,
 	updateObjects,
 	deleteObjects,
 	paginateObjects,

@@ -12,7 +12,8 @@ import * as Helpers from "@src/helpers";
 const DATE_FORMAT = 'DD MMM, yyyy';
 
 const get = async function (req: Request, res: Response) {
-    let categories = await Category.data.getAllCategories(5, 1, );
+    let data = await Category.data.getAllCategories(5, 1, );
+    let {categories} = data;
 
     categories = categories.map((category: any) => {
         category.posts = Utilities.abbreviateNumber(category.posts);
@@ -49,7 +50,7 @@ const getPostsByCategory = async function (req: Request, res: Response) {
         throw new ValueError('Invalid category id');
     }
 
-    const [data, category, tags, categories] = await Promise.all([
+    const [data, category, tags, categorData] = await Promise.all([
         Category.post.getPosts(categoryId, {perPage, page}),
         Category.data.getCategoryByCid(categoryId),
         Category.tags.getByCategoryId(categoryId, ['name', 'posts', 'slug', 'tagId']),
@@ -72,7 +73,7 @@ const getPostsByCategory = async function (req: Request, res: Response) {
         posts: posts,
         tags: (tags || []).filter(t => t),
         category: category ?? {},
-        categories: categories ?? [],
+        categories: categorData.categories ?? [],
         pagination: Helpers.generatePaginationItems(req.url, page, totalPages),
     };
 

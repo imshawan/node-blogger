@@ -169,6 +169,10 @@ export async function getUsersById(userIdArray: number[], fields?: (keyof IUser)
         fields = validUserFields;
     }
 
+    if (!fields.includes('userid'))  {
+        fields.push('userid');
+    }
+
     let users = await database.getObjectsBulk(userIdArray.map(id => 'user:' + id), fields) as IUser[];
 
     if (withMetrics) {

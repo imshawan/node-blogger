@@ -46,7 +46,7 @@ const get = async function (req: Request, res: Response) {
         return post;
     }
 
-    const [recent, popular, categories] = await Promise.all([
+    const [recent, popular, data] = await Promise.all([
         Post.data.getPosts({page: 1, perPage: 6}),
         Post.data.getPosts({page: 1, perPage: 6, sorting: 'POPULAR'}),
         category.data.getAllCategories(5, 1, ),
@@ -58,7 +58,7 @@ const get = async function (req: Request, res: Response) {
     const page: MutableObject = {
         title: 'Home',
         navigation: new NavigationManager().get('home'),
-        categories,
+        categories: data.categories,
         recents: recentPosts, 
         popular: popularPosts,
     };
@@ -110,7 +110,7 @@ const renderPosts = async function (req: Request, res: Response) {
     }));
 
     const totalPages = Math.ceil(data.total / perPage);
-    const [categories, featured, popularTags] = await Promise.all([
+    const [records, featured, popularTags] = await Promise.all([
         category.data.getAllCategories(5, 1, ),
         Post.data.getFeaturedPosts(5),
         category.tags.getPopularTags(8, 0, ['tagId', 'name', 'slug'])
@@ -119,7 +119,7 @@ const renderPosts = async function (req: Request, res: Response) {
     const pageData = {
         title: 'Posts',
         navigation:  new NavigationManager().get('posts'),
-        categories,
+        categories: records.categories,
         featured: featured.posts.map((post: IPost) => ({...post, createdAt: moment(new Date(String(post.createdAt))).format(DATE_FORMAT)})),
         posts: postData || [],
         tags: (popularTags.tags ?? []).filter(e => e),

@@ -7,4 +7,12 @@ export default {
     create: async (req: Request, res: Response, next: NextFunction) => {
         handleApiResponse(HttpStatusCodes.OK, res, await api.comment.create(req));
     }, 
+
+    get: async (req: Request, res: Response, next: NextFunction) => {
+        handleApiResponse(HttpStatusCodes.OK, res, await api.comment.get(req));
+    }, 
+
+    remove: async (req: Request, res: Response, next: NextFunction) => {
+        handleApiResponse(HttpStatusCodes.OK, res, await api.comment.remove(req));
+    }, 
 }

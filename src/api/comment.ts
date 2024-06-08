@@ -4,7 +4,19 @@ import * as Utilities from "@src/utilities";
 import * as Helpers from "@src/helpers";
 import Comments from "@src/post/comments";
 import { IPost, MulterFilesArray, IComment } from "@src/types";
-import locale from '@src/locales';
+import locales from '@src/locales';
+
+const validCommentFields = [
+    'author',
+    'commentId',
+    'content',
+    'createdAt',
+    'edited',
+    'likes',
+    'postId',
+    'replies',
+    'parent',
+] as (keyof IComment)[];
 
 const create = async (req: Request) => {
     const userid = Helpers.parseUserId(req);
@@ -20,8 +32,8 @@ const create = async (req: Request) => {
     }
 
     if (parent) {
-        if (typeof parent !== 'number') {
-            throw new TypeError(locale.translate('api-errors:invalid_type', {
+        if (isNaN(parent)) {
+            throw new TypeError(locales.translate('api-errors:invalid_type', {
                 field: 'parent',
                 expected: 'number',
                 got: typeof parent,
@@ -34,12 +46,55 @@ const create = async (req: Request) => {
     const comment = await Comments.create(commentData);
 
     return {
-        message: locale.translate('api-common:created'),
+        message: locales.translate('api-common:created'),
         data: comment,
     };
 }
 
+const get = async (req: Request) => {
+    const {query, params} = req;
+    const postId = Number(params.postId);
+    const replies = Utilities.types.isBoolean(query.replies) ? Utilities.types.parseBoolean(String(query.replies).toLowerCase()) : undefined;
+    const commentId = Number(query.id);
+    const requireReplies = replies && commentId;
+
+    if (!postId) {
+        throw new Error(locales.translate('api-errors:is_required', {field: 'postId'}));
+    }
+
+    let perPage = Number(query.perPage),
+        page = Number(query.page), 
+        url = [req.baseUrl, req.url].join('');
+
+    if (!perPage) {
+        perPage = 15;
+    }
+    if (isNaN(page) || !page) {
+        page = 1;
+    }
+
+    const data = await Comments[requireReplies ? 'getReplies' : 'getWithPostId'](requireReplies ? commentId : postId, perPage, page, validCommentFields);
+    const comments = data.comments.map(e => ({...e, createdAt: Utilities.timeAgo(String(e.createdAt) || '')}));
+
+    return Helpers.paginate(comments, data.total, perPage, page, url);
+}
+
+const remove = async (req: Request) => {
+    const {params} = req;
+    const userid = Helpers.parseUserId(req);
+    const postId = Number(params.postId),
+        commentId = Number(params.id);
+
+    if (!postId) {
+        throw new Error(locales.translate('api-errors:is_required', {field: 'postId'}));
+    }
+    if (!commentId) {
+        throw new Error(locales.translate('api-errors:is_required', {field: 'commentId'}));
+    }
+
+    await Comments.remove(commentId, postId, userid);
+}
 
 export default {
-    create,
+    create, get, remove
   } as const;
