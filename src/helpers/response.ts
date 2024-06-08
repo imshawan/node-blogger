@@ -17,8 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Response } from "express";
+import { NextFunction, Response, Request } from "express";
 import { StatusCodesWithError, StatusCodesWithMessage } from "@src/constants";
+import { Options } from "express-rate-limit";
 
 const handleApiResponse = function (code: number, response: Response, data?: any) {
 	const {req} = response;
@@ -66,5 +67,9 @@ const handleApiResponse = function (code: number, response: Response, data?: any
 	response.setHeader('X-Powered-By', 'NodeBlogger');
 	response.status(code).json(payload);
 }
+
+const handleRateLimiting = function(req: Request, res: Response, next: NextFunction, options: Options) {
+	handleApiResponse(options.statusCode, res, options.message);
+}
  
-export {handleApiResponse};
+export {handleApiResponse, handleRateLimiting};

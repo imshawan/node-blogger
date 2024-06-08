@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { handleApiResponse } from '@src/helpers';
+import { rateLimit } from 'express-rate-limit';
+import { handleApiResponse, handleRateLimiting } from '@src/helpers';
 import { initializeCors, corsWithOptions, requireLogin, notFoundHandler } from '@src/middlewares';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { breadcrumbs } from '@src/middlewares';
@@ -11,6 +12,13 @@ import userRoutes from './user';
 import webAppConfiguration from './web';
 
 const router = Router();
+const limiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    limit: 60,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    handler: handleRateLimiting
+});
 
 router.options('/*', corsWithOptions, (req: Request, res: Response) => { res.sendStatus(HttpStatusCodes.OK); })
 
@@ -26,7 +34,8 @@ router.use('/admin', initializeCors, requireLogin.bind(null, '/admin'), breadcru
 
 router.use('/users', initializeCors, breadcrumbs.bind(null, '/users'), userRoutes);
 
-// Mounting the API router
+// Mounting the API router along with rate limiting
+router.use('/api/', limiter);
 router.use('/api/v1', initializeCors, apiRouter);
 
 // 404 handling for APIs
