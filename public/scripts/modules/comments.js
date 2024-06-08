@@ -97,11 +97,17 @@
                 data = {};
             }
 
-            return await this.http[String(method).toUpperCase()](endpoint, data);
+            try {
+                return await this.http[String(method).toUpperCase()](endpoint, data);
+            } catch (error) {
+                this.notify(error.message, 'error');
+            }
         }
 
         async onLoad() {
             const data = await this.hitApi(this.endpoint + `/${this.post.postId}`, 'get');
+            if (!data) return;
+            
             this.data = data.data;
 
             this.hideLoader('loader-' + this.id);

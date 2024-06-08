@@ -14,7 +14,7 @@ import webAppConfiguration from './web';
 const router = Router();
 const limiter = rateLimit({
     windowMs: 60 * 1000, // 1 minute
-    limit: 60,
+    limit: 30,
     standardHeaders: 'draft-7',
     legacyHeaders: false,
     handler: handleRateLimiting

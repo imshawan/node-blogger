@@ -69,7 +69,7 @@ const handleApiResponse = function (code: number, response: Response, data?: any
 }
 
 const handleRateLimiting = function(req: Request, res: Response, next: NextFunction, options: Options) {
-	handleApiResponse(options.statusCode, res, options.message);
+	handleApiResponse(options.statusCode, res, {message: options.message});
 }
  
 export {handleApiResponse, handleRateLimiting};
