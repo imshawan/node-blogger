@@ -154,7 +154,7 @@
         }
     }
 
-    utilities.timeAgo = function () {
+    utilities.timeAgo = function (date=new Date()) {
         const intervals = {
             year: 31536000,
             month: 2592000,
