@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import _ from 'lodash';
+import nconf from 'nconf';
 import { application } from './init';
 
 export const getTTLSessionSeconds = () => {
@@ -13,8 +14,11 @@ export const getTTLSessionSeconds = () => {
 
 export const cookies = {
     get: function (): object {
+        let domain = nconf.get('host');
+        let {host} = new URL(domain);
+
         const cookie = {
-            domain: 'localhost',
+            domain: host,
             secure: false,
             path: '/',
             sameSite: 'Lax'
