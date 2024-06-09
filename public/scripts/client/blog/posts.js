@@ -189,20 +189,25 @@ define('client/blog/posts', ['modules/http'], function (http) {
             const target = $(this);
             const postId = target.attr('data-post-id'),
                 postAction = target.attr('data-post-action');
-            
-            http.POST(`/api/v1/blog/posts/${postId}/${postAction}`).then(res => {
-                utilities.showToast(res.message, 'success');
-                target.parent().find('span').text(res.count);
-                target.attr('data-post-action', postAction == 'like' ? 'unlike' : 'like');
 
-                if (postAction == 'like') {
-                    target.removeClass('fa-thumbs-o-up').addClass('fa-thumbs-up');
+            target.attr('data-post-action', postAction == 'like' ? 'unlike' : 'like');
+            
+            let count = Number(target.parent().find('span').text()) || 0;
+            if (postAction == 'like') {
+                count++;
+                target.removeClass('fa-thumbs-o-up').addClass('fa-thumbs-up');
+            }
+            if (postAction == 'unlike') {
+                if (count > 0) {
+                    count--;
                 }
-                if (postAction == 'unlike') {
-                    target.removeClass('fa-thumbs-up').addClass('fa-thumbs-o-up');
-                }
-                
-            }).catch(err => utilities.showToast(err.message, 'error'));
+                target.removeClass('fa-thumbs-up').addClass('fa-thumbs-o-up');
+            }
+
+            target.parent().find('span').text(count);
+
+            http.POST(`/api/v1/blog/posts/${postId}/${postAction}`).then(res => {})
+                .catch(err => utilities.showToast(err.message, 'error'));
         });
     }
 
