@@ -154,5 +154,32 @@
         }
     }
 
+    utilities.timeAgo = function () {
+        const intervals = {
+            year: 31536000,
+            month: 2592000,
+            week: 604800,
+            day: 86400,
+            hour: 3600,
+            minute: 60,
+            second: 1
+        };
+        
+        if (typeof date === 'number' || typeof date === 'string') {
+            date = new Date(date);
+        }
+    
+        const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    
+        for (const interval in intervals) {
+            const timePeriod = Math.floor(seconds / intervals[interval]);
+            if (timePeriod >= 1) {
+                return `${timePeriod} ${interval}${timePeriod > 1 ? 's' : ''} ago`;
+            }
+        }
+    
+        return 'Just now';
+    }
+
     return utilities;
 }));

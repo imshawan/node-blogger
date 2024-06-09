@@ -74,9 +74,8 @@ const get = async (req: Request) => {
     }
 
     const data = await Comments[requireReplies ? 'getReplies' : 'getWithPostId'](requireReplies ? commentId : postId, perPage, page, validCommentFields);
-    const comments = data.comments.map(e => ({...e, createdAt: Utilities.timeAgo(String(e.createdAt) || '')}));
 
-    return Helpers.paginate(comments, data.total, perPage, page, url);
+    return Helpers.paginate(data.comments, data.total, perPage, page, url);
 }
 
 const remove = async (req: Request) => {

@@ -352,6 +352,8 @@
                     })
                 },
                 comment (data={}, enableReply=true) {
+                    const timeAgo = (typeof utilities !== 'undefined' && utilities.timeAgo) ? utilities.timeAgo : (str) => str;
+
                     return this.create('div', {
                         id: 'comment-' + data.commentId,
                         class: 'd-flex w-100 my-2',
@@ -378,7 +380,7 @@
                                                                             fontWeight: '500'
                                                                         }
                                                                     }),
-                                                                    this.create('div', {text: data.createdAt, class: 'mt-0', css: {
+                                                                    this.create('div', {text: timeAgo(data.createdAt), class: 'mt-0', css: {
                                                                         fontSize: 'var(--font-size-12)',
                                                                         color: 'var(--color-black-50)',
                                                                     }}),
