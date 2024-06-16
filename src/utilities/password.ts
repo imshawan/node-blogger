@@ -40,7 +40,7 @@ async function generateRandomHash() {
 	}
 	randomHashCache = await hash({
         rounds: 12,
-        password: Math.random().toString()
+        password: crypto.getRandomValues(new Uint32Array(1))[0].toString()
     });
 
 	return randomHashCache;

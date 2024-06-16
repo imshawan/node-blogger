@@ -293,7 +293,8 @@ export const resolveFilename = (context: string, removeExt: boolean = true) => {
 export const generateTOTP = function (length: number = 6): string {
     const timestamp = Date.now();
     const maxOTPValue = Math.pow(10, length - 1) - 1;
-    const randomOTP = Math.floor(Math.random() * maxOTPValue).toString().padStart(length - 1, '0');
+    const random = crypto.getRandomValues(new Uint32Array(1))[0];
+    const randomOTP = Math.floor(random * maxOTPValue).toString().padStart(length - 1, '0');
 
     // Convert timestamp to a string and extract last 'length' digits
     const timeComponent = (timestamp % Math.pow(10, length)).toString().padStart(length, '0');

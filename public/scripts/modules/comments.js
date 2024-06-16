@@ -65,11 +65,19 @@
             this.createLayout();
         }
 
+        random() {
+            if (window.crypto && window.crypto.getRandomValues) {
+                return window.crypto.getRandomValues(new Uint32Array(1))[0];
+            }
+
+            return Math.random();
+        }
+
         uuid () {
             var chars = '0123456789abcdefghijklmnopqrstuvwxyz';
             var uuid = '';
             for (var i = 0; i < 32; i++) {
-                var index = Math.floor(Math.random() * chars.length);
+                var index = Math.floor(this.random() * chars.length);
                 uuid += chars[index];
                 if (i === 7 || i === 11 || i === 15 || i === 19) {
                     uuid += '-';

@@ -29,11 +29,19 @@
         "important":  "text-bg-primary",
     }
 
+    utilities.randomInt = function () {
+        if (window.crypto && window.crypto.getRandomValues) {
+            return window.crypto.getRandomValues(new Uint32Array(1))[0];
+        }
+
+        return Math.random();
+    }
+
     utilities.generateUUID = function generateUUID() {
         const timestamp = new Date().getTime();
 
         var uuid = 'xxxxxxxx-6xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = Math.random() * 16 | 0,
+            var r = utilities.randomInt() * 16 | 0,
                 v = c === 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
