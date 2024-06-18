@@ -169,7 +169,7 @@ export const calculateReadTime = function (content: string, suffix: TimeUnitSuff
 
 export const textFromHTML = function (html: string) {
     if (!html) return '';
-    return html
+    html = html
         .replace(/\n/ig, '')
         .replace(/<style[^>]*>[\s\S]*?<\/style[^>]*>/ig, '')
         .replace(/<head[^>]*>[\s\S]*?<\/head[^>]*>/ig, '')
@@ -179,6 +179,27 @@ export const textFromHTML = function (html: string) {
         .replace(/<[^>]*>/ig, '')
         .replace('&nbsp;', ' ')
         .replace(/[^\S\r\n][^\S\r\n]+/ig, ' ');
+
+    return sanitizeMultiChars(html);
+}
+
+/**
+ * 
+ * @function sanitizeMultiChars
+ * @description Fixes Incomplete multi-character sanitization
+ * 
+ * Regular expression matches multiple consecutive characters, replacing it just once can result in the unsafe text reappearing 
+ * in the sanitized input. 
+ * If the input string is "<scrip<script>is removed</script>t>alert(123)</script>", the output will be "<script>alert(123)</script>", 
+ * which still contains a script tag.
+ * 
+ * @param html 
+ * @returns {string}
+ */
+
+export const sanitizeMultiChars = function (html: string) {
+    if (!html) return '';
+    return html.replace(/<!--[\s\S]*?-->/ig, '').replace(/<[^>]*>/ig, '');
 }
 
 export const clipContent = function (content: string, wordLimit: number) {
