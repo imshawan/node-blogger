@@ -1,0 +1,16 @@
+const interactiontypes = [
+	'user:follow',
+	'user:unfollow',
+	'category:follow',
+	'category:unfollow',
+	'post:like',
+	'post:unlike',
+	'post:comment',
+	'post:uncomment',
+	'post:share',
+	'tag:follow',
+	'tag:unfollow',
+	'post:view',
+	'category:view',
+	'tag:view',
+]
