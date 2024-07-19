@@ -63,5 +63,6 @@
     "like": "Like",
     "comment": "Comment",
     "share": "Share",
-    "copy_link": "Copy link"
+    "copy_link": "Copy link",
+    "signin_with_google": "Sign in with Google"
 }

@@ -1,14 +1,18 @@
 import { NextFunction, Response, Request } from 'express';
+import axios from 'axios';
 import { database } from "@src/database";
 import { utils as UserUtils, validUserFields } from '@src/user';
-import {user as UserMiddleware} from './user';
+import { user as UserMiddleware } from './user';
 import { IUser } from '@src/types/user';
 import { sanitizeString } from '@src/utilities';
-import { ISortedSetKey, MutableObject } from '@src/types';
+import { ISortedSetKey, MutableObject, IGoogleUser } from '@src/types';
+import { OAuth as OAuthHelpers, IOAuth } from '@src/helpers';
+import { notFoundHandler } from '.';
+import { OAuth as OAuthConst } from '@src/constants';
 
 
-const loginUser = async function loginUser (req: Request, u: string, e: string, done: Function) {
-    const {username, password} = req.body;
+const loginUser = async function loginUser(req: Request, u: string, e: string, done: Function) {
+    const { username, password } = req.body;
     if (!username) {
         throw new Error('username/email is required to validate a user');
     }
@@ -39,7 +43,7 @@ const loginUser = async function loginUser (req: Request, u: string, e: string, 
     if (user[authMethod] != username) {
         return done(new Error('Invalid credentials, please try again'));
     }
-    
+
     const isPasswordCorrect = await UserMiddleware.comparePassword(user.userid, password);
     if (!isPasswordCorrect) {
         return done(new Error('Invalid credentials, please try again'));
@@ -54,13 +58,53 @@ const loginUser = async function loginUser (req: Request, u: string, e: string, 
                 userObject[field] = null;
             }
         }
-    }); 
+    });
 
-    return done(null, userObject, {message: 'Authentication successful'});
+    return done(null, userObject, { message: 'Authentication successful' });
+}
+
+const validateOAuthRedirectionCallback = async function (req: Request, res: Response, next: NextFunction) {
+    const service = req.params.service as IOAuth['Providers'];
+
+    if (!service || !OAuthHelpers.getProviderNames().includes(service)) {
+        return notFoundHandler(req, res);
+    }
+
+    await OAuthVerifyCallbacks[service](service, req, res, next);
+}
+
+const OAuthVerifyCallbacks = {
+    async google(service: IOAuth['Providers'], req: Request, res: Response, next: NextFunction) {
+        const { code, scope, authuser, prompt } = req.query;
+        const { clientId, clientSecret, redirectUrl } = OAuthHelpers.getProviderConfig(service);
+        try {
+            const { data } = await axios.post(OAuthConst.Google.Token, {
+                client_id: clientId,
+                client_secret: clientSecret,
+                code,
+                scope,
+                grant_type: OAuthConst.Google.GrantType,
+                redirect_uri: redirectUrl
+            });
+
+            let { access_token, id_token } = data;
+
+            const { data: profile } = await axios.get<IGoogleUser>(OAuthConst.Google.UserInfo, {
+                headers: { Authorization: `Bearer ${access_token}` },
+            });
+
+            req.user = profile;
+
+            next();
+
+        } catch (err) {
+            return notFoundHandler(req, res);
+        }
+    }
 }
 
 const authentication = {
-    loginUser
+    loginUser, OAuthVerifyCallbacks, validateOAuthRedirectionCallback
 }
 
-export {authentication};
+export { authentication };

@@ -23,3 +23,24 @@ export interface IUserRegisteration {
     password: string,
     confirmpassword: string
 }
+
+export interface IGoogleProviderConfig {
+    clientId: string;
+    clientSecret: string;
+    authUrl: string;
+    redirectUrl: string;
+}
+
+/**
+ * @interface IGoogleUser
+ * @description IGoogleUser interface to match the structure of the Google user object
+ */
+export interface IGoogleUser {
+    id: string;
+    email: string;
+    verified_email: boolean;
+    name: string;
+    given_name: string;
+    family_name: string;
+    picture: string;
+}

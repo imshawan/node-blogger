@@ -36,19 +36,21 @@
                     </div>
                     <button type="submit" class="input-submit mt-0 w-100 button-black"><%= translate('common:sign_in') %></button>
                 </form>
-                <!-- <div class="striped">
+                <div class="striped">
                     <span class="striped-line"></span>
                     <span class="striped-text">Or</span>
                     <span class="striped-line"></span>
                 </div>
                 <div class="method">
                     <div class="method-control">
-                        <a href="#" class="method-action">
-                            <i class="ion ion-logo-google"></i>
-                            <span>Sign in with Google</span>
-                        </a>
+                        <% oauth.forEach(service => { %>
+                            <a href="<%= service.url %>" class="w-100 method-action input-submit button-outlined btn text-black">
+                                <img class="me-2" height="22px" src="<%= service.icon %>"></i>
+                                <span><%= service.label %></span>
+                            </a>
+                        <% }) %>
                     </div>
-                    <div class="method-control">
+                    <!-- <div class="method-control">
                         <a href="#" class="method-action">
                             <i class="ion ion-logo-facebook"></i>
                             <span>Sign in with Facebook</span>
@@ -59,8 +61,8 @@
                             <i class="ion ion-logo-apple"></i>
                             <span>Sign in with Apple</span>
                         </a>
-                    </div>
-                </div> -->
+                    </div> -->
+                </div>
             </section>
         </div>
     </main>

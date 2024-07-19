@@ -168,7 +168,7 @@ label {
   color: rgb(0, 0, 0);
   background-color: var(--color-white);
   border: 2px solid var(--color-black)!important;
-  padding: 8px 20px;
+  padding: 8px 20px!important;
   font-weight: 600;
   cursor: pointer;
   /* line-height: 1.2; */
@@ -1007,12 +1007,9 @@ a.badge-light:focus, a.badge-light:hover {
   font-size: inherit;
   line-height: inherit;
   cursor: pointer;
-  border: none;
-  outline: none;
   background: none;
   text-decoration: none;
 }
-
 .signin-page .container {
   display: flex;
   justify-content: center;
@@ -1022,24 +1019,6 @@ a.badge-light:focus, a.badge-light:hover {
   width: 100%;
   padding: 0 2rem;
   margin: 0 auto;
-}
-.signin-page .ion-logo-apple {
-  font-size: 1.65rem;
-  line-height: inherit;
-  margin-right: 0.5rem;
-  color: var(--color-black);
-}
-.signin-page .ion-logo-google {
-  font-size: 1.65rem;
-  line-height: inherit;
-  margin-right: 0.5rem;
-  color: var(--color-red);
-}
-.signin-page .ion-logo-facebook {
-  font-size: 1.65rem;
-  line-height: inherit;
-  margin-right: 0.5rem;
-  color: var(--color-blue);
 }
 .signin-page .text {
   font-family: inherit;
@@ -1133,25 +1112,10 @@ a.badge-light:focus, a.badge-light:hover {
 .signin-page .main .wrapper .method-control {
   margin-bottom: 1rem;
 }
-.signin-page .main .wrapper .method-action {
-  font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 500;
-  line-height: inherit;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: auto;
-  padding: 0.35rem 1.25rem;
-  outline: none;
-  border: 2px solid var(--color-grayish);
-  border-radius: 2rem;
-  color: var(--color-black);
-  background: var(--color-white);
-  text-transform: capitalize;
-  text-rendering: optimizeLegibility;
+.signin-page .method-action {
+  font-size: var(--font-size-12);
   transition: all 0.35s ease;
+  border-radius: 2rem!important;
 }
 .signin-page .main .wrapper .method-action:hover {
   background: var(--color-light);
@@ -1377,7 +1341,7 @@ a.badge-light:focus, a.badge-light:hover {
   }
   .button-outlined {
     font-size: 12px;
-    padding: 6px 14px;
+    padding: 6px 14px!important;
   }
   .profile-name, .font-heading-4 {
     font-size: 16px;

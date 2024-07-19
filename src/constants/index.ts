@@ -7,6 +7,7 @@ export * from './content';
 export * from './Paths';
 export * from './Ansi';
 export * from './Locks';
+export * from './OAuth';
 
 import pkg from '../../package.json';
 

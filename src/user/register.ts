@@ -4,6 +4,10 @@ import { password as Passwords, getISOTimestamp, generateUUID, sanitizeString } 
 import _ from "lodash";
 import { database } from "@src/database";
 
+interface IUserRegisteration extends IUser {
+    token: string;
+}
+
 const userFields = [
   "userid",
   "fullname",
@@ -23,7 +27,7 @@ export const register = async function register(userdata: IUser) {
     const now = Date.now();
     var {gdprConsent, acceptedTnC} = userdata;
 
-    Utils.validatePassword(password);
+    password && Utils.validatePassword(password);
     Utils.isValidEmail(email)
     await Promise.all([
         Utils.checkEmailAvailability(email),
@@ -32,17 +36,17 @@ export const register = async function register(userdata: IUser) {
 
     const user: IUser = {
         _scheme: 'user:userid'
-    };
+    }, promises = [Utils.generateUsernameOrSlug(username), Utils.generateNextUserId()];
 
-    const [passwordHash, slug, userid] = await Promise.all([
-        Passwords.hash({password, rounds: 12}),
-        Utils.generateUserslug(username),
-        Utils.generateNextUserId(),
-    ]);
+    if (password) {
+        promises.push(Passwords.hash({password, rounds: 12}));
+    }
+
+    const [slug, userid, passwordHash] = await Promise.all(promises);
     const key = 'user:' + userid;
 
     user._key = key;
-    user.userid = userid;
+    user.userid = Number(userid);
     userFields.forEach(field => {
         // @ts-ignore
         if (userdata[field]) {
@@ -51,8 +55,8 @@ export const register = async function register(userdata: IUser) {
         }
     });
 
-    user.slug = slug;
-    user.passwordHash = passwordHash;
+    user.slug = String(slug);
+    user.passwordHash = String(passwordHash || '');
     user.emailConfirmed = userid === 1;
 
     if (gdprConsent) {
@@ -91,7 +95,7 @@ export const register = async function register(userdata: IUser) {
 
     const bulkAddSets = [
         ['user:userid', key, now],
-        ['user:slug:' + sanitizeString(slug), key, now],
+        ['user:slug:' + sanitizeString(user.slug), key, now],
         ['user:userid:' + userid, key, now],
         ['user:username:' + sanitizeString(username), key, now],
         ['user:email:' + email, key, now],
@@ -107,5 +111,5 @@ export const register = async function register(userdata: IUser) {
     const filtered: MutableObject = {};
     Object.keys(data).forEach(elem => (filtered[elem] = data[elem]))
 
-    return _.merge(filtered, {token: uniqueUUID});
+    return _.merge(filtered, {token: uniqueUUID}) as IUserRegisteration;
 }

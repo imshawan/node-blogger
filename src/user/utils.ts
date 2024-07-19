@@ -91,7 +91,7 @@ async function checkEmailAvailability(email: string): Promise<void> {
     }
 }
 
-async function generateUserslug(username: string): Promise<string> {
+async function generateUsernameOrSlug(username: string): Promise<string> {
     let slug = slugify(username);
 
     const userFound = await database.getObjects('user:username:' + sanitizeString(slug), [], {multi: true});
@@ -309,7 +309,7 @@ function validatePasswordResetToken(token: string, secretKey: string) {
 
 const utils = {
     validatePassword, checkPasswordStrength, isValidEmail, validateUsername, checkEmailAvailability,
-    generateNextUserId, generateUserslug, hasCompletedConsent, getUserMetrics, createMetricsMap, serializeMetrics, isValidUserPassword,
+    generateNextUserId, generateUsernameOrSlug, hasCompletedConsent, getUserMetrics, createMetricsMap, serializeMetrics, isValidUserPassword,
     sendPasswordResetEmail, validatePasswordResetToken, decodeToken, compareOldAndNewPasswords,
 }
 

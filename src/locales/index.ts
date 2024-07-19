@@ -36,6 +36,7 @@ i18next
 		nsSeparator: ':',
 		ns: NS.namespaces,
 		defaultNS: NS.defaultNS,
+		// debug: true
 	});
 
 /**

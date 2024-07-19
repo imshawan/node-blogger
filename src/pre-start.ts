@@ -12,6 +12,7 @@ import { validateConfiguration } from './helpers';
 import { Logger } from './utilities';
 import * as Utilities from './utilities';
 import './helpers/logstream';
+import './prototypes';
 
 const logger = new Logger({prefix: Utilities.resolveFilename(__filename)});
 

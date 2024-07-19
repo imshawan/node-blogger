@@ -1,11 +1,13 @@
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { database } from '@src/database';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { notFoundHandler } from '@src/middlewares';
 import { NavigationManager } from '@src/utilities/navigation';
 import { utils as UserUtilities } from '@src/user';
-import { ISortedSetKey } from '@src/types';
+import { IGoogleUser, ISortedSetKey } from '@src/types';
 import _ from 'lodash';
+import { OAuth, IOAuth } from '@src/helpers';
+import * as User from '@src/user';;
 
 const signIn = async function (req: Request, res: Response) {
     const {redirect} = req.query;
@@ -15,9 +17,55 @@ const signIn = async function (req: Request, res: Response) {
         title: 'Sign in',
         redirect,
         navigation,
+        oauth: OAuth.getProviders(),
     };
 
     res.render('signin', page);
+}
+
+const oAuthSignin = async function (req: Request, res: Response) {
+    const service = req.params.service as IOAuth['Providers'];
+
+    if (!OAuth.getProviderNames().includes(service)) {
+        return notFoundHandler(req, res);
+    }
+
+    const url = await OAuth.getAuthUrl(service);
+
+    res.redirect(String(url));
+}
+
+const handleOAuthLogins = async function (req: Request, res: Response, next: NextFunction) {
+    const user = req.user as IGoogleUser;
+    let {email, name: fullname, picture} = user;
+
+    let userData = await User.getUserByEmail(email);
+    let username = userData?.username;
+
+    if (!userData) {
+        username = await User.utils.generateUsernameOrSlug(fullname);
+        let {token, ...usr} = await User.register({...user, fullname, username});
+
+        userData = usr;
+    }
+
+    // Also update the picture if it has changed
+    picture = picture ?? '';
+    if (picture != userData.picture) {
+        await User.updateUserData(Number(userData.userid), {picture});
+    }
+
+    req.logIn(userData, async function(err) {
+        if (err) { return next(err); }
+
+        const consent: any = await UserUtilities.hasCompletedConsent(Number(userData?.userid));
+        if (consent && !consent.consentCompleted) {
+            const {token} = consent;
+            return res.redirect(`/register/complete?token=${token}`);
+        }
+
+        return res.redirect('/');
+    });
 }
 
 const consent = async function (req: Request, res: Response) {
@@ -95,5 +143,5 @@ const validateTokenAndSecret = async function (req: Request, res: Response) {
 }
 
 export default {
-    signIn, register, consent, resetPassword, validateTokenAndSecret
+    signIn, register, consent, resetPassword, validateTokenAndSecret, oAuthSignin, handleOAuthLogins
   } as const;

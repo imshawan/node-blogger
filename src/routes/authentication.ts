@@ -1,15 +1,17 @@
 import { Router } from 'express';
 import controllers from '../controllers';
 import { mountPageRoute, mountApiRoute } from '@src/helpers';
-import { checkRequiredFields, requireLogin } from '@src/middlewares';
+import { checkRequiredFields, requireLogin, authentication } from '@src/middlewares';
 
 const router = Router();
 
 mountPageRoute(router, '/signin', [], controllers.authentication.signIn);
+mountPageRoute(router, '/signin/:service', [], controllers.authentication.oAuthSignin);
 mountPageRoute(router, '/register', [], controllers.authentication.register);
 mountPageRoute(router, '/register/complete', [requireLogin.bind(null, '/register/complete')], controllers.authentication.consent);
 mountPageRoute(router, '/password/reset', [], controllers.authentication.resetPassword);
 mountPageRoute(router, '/password/reset/:token', [], controllers.authentication.validateTokenAndSecret);
+mountPageRoute(router, '/auth/:service', [authentication.validateOAuthRedirectionCallback], controllers.authentication.handleOAuthLogins);
 
 /**
  * @date 17-03-2023
