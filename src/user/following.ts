@@ -1,15 +1,16 @@
 import { database } from '@src/database';
 import { getUserByUserId } from './data';
+import { IUser } from '@src/types';
 
 const validActions = ['follow', 'unfollow'];
 
-const follow = async function (userid: number, caller: number) {
-    await handleFollowing(userid, caller, 'follow');
+const follow = async function (userid: number, caller: number): Promise<IUser> {
+    return await handleFollowing(userid, caller, 'follow');
 
 }
 
-const unFollow = async function (userid: number, caller: number) {
-    await handleFollowing(userid, caller, 'unfollow');
+const unFollow = async function (userid: number, caller: number): Promise<IUser> {
+    return await handleFollowing(userid, caller, 'unfollow');
 
 }
 
@@ -27,7 +28,7 @@ const isFollowing = async function (userid: number, caller: number) {
     return Boolean(follow);
 }
 
-async function handleFollowing(userid: number, caller: number, action: 'follow' | 'unfollow') {
+async function handleFollowing(userid: number, caller: number, action: 'follow' | 'unfollow'): Promise<IUser> {
     if (isNaN(userid) || isNaN(caller)) {
         throw new Error('userid and caller must be both numbers.');
     }
@@ -60,10 +61,10 @@ async function handleFollowing(userid: number, caller: number, action: 'follow' 
         now = Date.now();
 
     if (action === 'follow' && alreadyFollowing) {
-        return;
+        return userExists;
     }
     if (action === 'unfollow' && !alreadyFollowing) {
-        return;
+        return userExists;
     }
 
     if (action === 'follow') {
@@ -85,6 +86,8 @@ async function handleFollowing(userid: number, caller: number, action: 'follow' 
             database.decrementFieldCount('following', callerKey + ':metrics'),
         ]);
     }
+
+    return userExists;
 }
 
 export const followers = {

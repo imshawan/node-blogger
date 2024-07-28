@@ -5,6 +5,7 @@ import _ from "lodash";
 import { application } from "@src/application";
 import { database } from "@src/database";
 import data from "./data";
+import locales from "@src/locales";
 
 const MAX_BLURB_SIZE = 250;
 
@@ -14,18 +15,18 @@ export default async function create(categoryData: ICategory): Promise<ICategory
     var maxCategoryBlurbLength = application.configurationStore?.maxCategoryBlurbLength || MAX_BLURB_SIZE;
 
     if (!userid) {
-        throw new Error('userid is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'userid'}));
     }
     if (userid && typeof userid != 'number') {
-        throw new TypeError(`userid must be a number, found ${typeof userid} instead`);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'userid', expected: 'number', got: typeof userid}));
     }
     if (!name) {
-        throw new Error('category name is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'name'}));
     }
 
     if (blurb) {
         if (blurb.length > maxCategoryBlurbLength) {
-            throw new Error(`blurb cannot be more than ${maxCategoryBlurbLength} characters`);
+            throw new Error(locales.translate('api-errors:chars_too_long', {field: 'blurb', size: maxCategoryBlurbLength}));
         }
     } else {
         if (description) {
@@ -49,11 +50,11 @@ export default async function create(categoryData: ICategory): Promise<ICategory
 
     if (parent) {
         if (typeof parent != 'number') {
-            throw new TypeError('parent must be a number, found ' + typeof parent);
+            throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'parent', expected: 'number', got: typeof parent}));
         }
 
         if (!await data.getCategoryByCid(parent)) {
-            throw new Error('No such category exists with the parent id: ' + parent);
+            throw new Error(locales.translate('api-errors:no_entity_with_id', {entity: 'category', id: parent}));
         }
     }
 

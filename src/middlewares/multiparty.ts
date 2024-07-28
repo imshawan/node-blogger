@@ -23,7 +23,7 @@
  */
 
 import httperrors from 'http-errors';
-import {Form} from 'multiparty';
+import { Form } from 'multiparty';
 import qs from 'qs';
 import onFinished from 'on-finished';
 import { Request, Response, NextFunction } from 'express';
@@ -31,9 +31,9 @@ import { Request, Response, NextFunction } from 'express';
 export class MultipartyForm {
     options: any;
     form: Form;
-    data: {[key: string]: any};
+    data: { [key: string]: any };
     done: boolean;
-  files: {};
+    files: {};
     constructor(options: any = {}) {
         this.options = options || {};
         this.form = new Form(options);
@@ -47,7 +47,7 @@ export class MultipartyForm {
     }
 
     private isMultipartForm(req: Request): boolean {
-        const {headers} = req;
+        const { headers } = req;
         const contentType = headers['content-type'];
 
         if (!contentType) return false;
@@ -57,15 +57,15 @@ export class MultipartyForm {
         else return true;
     }
 
-    private ondata(name: string | number, val: any, data: { [x: string]: any; }){
+    private ondata(name: string | number, val: any, data: { [x: string]: any; }) {
         if (Array.isArray(data[name])) {
-          data[name].push(val);
+            data[name].push(val);
         } else if (data[name]) {
-          data[name] = [data[name], val];
+            data[name] = [data[name], val];
         } else {
-          data[name] = val;
+            data[name] = val;
         }
-      }
+    }
 
     public parse(req: Request, res: Response, next: NextFunction) {
         // @ts-ignore
@@ -75,7 +75,7 @@ export class MultipartyForm {
             return next();
         }
 
-        if (!this.isMultipartForm(req)) { 
+        if (!this.isMultipartForm(req)) {
             return next();
         }
 
@@ -88,37 +88,37 @@ export class MultipartyForm {
         });
 
         this.form.on('file', (name, val) => {
-          val.name = val.originalFilename;
-          val.type = val.headers['content-type'] || null;
-          this.ondata(name, val, this.files);
+            val.name = val.originalFilename;
+            val.type = val.headers['content-type'] || null;
+            this.ondata(name, val, this.files);
         });
 
         this.form.on('error', (err) => {
             if (this.done) return;
-    
+
             this.done = true;
-      
+
             var error = httperrors(400, err)
-      
+
             if (!req.readable) return next(error)
-      
+
             req.resume();
-            onFinished(req, function(){
-              next(error)
+            onFinished(req, function () {
+                next(error)
             });
 
         });
 
         this.form.on('close', () => {
             if (this.done) return;
-      
+
             this.done = true;
 
             // expand names with qs & assign
             req.body = qs.parse(this.data, { allowDots: true });
             // @ts-ignore
             req.files = qs.parse(this.files, { allowDots: true });
-      
+
             next();
         });
 

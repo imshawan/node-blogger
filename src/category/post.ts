@@ -5,6 +5,7 @@ import { ValueError } from "@src/helpers";
 import PostUtils from '@src/post/utils';
 import PostData from '@src/post/data';
 import * as User from '@src/user';
+import locales from "@src/locales";
 
 const userFields = [
     "userid",
@@ -22,10 +23,10 @@ interface ICategoryPostOptions {
 
 const getPosts = async function (categoryId: number, options: ICategoryPostOptions) {
     if (!categoryId) {
-        throw new Error('categoryId is a required parameter');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'categoryId'}));
     }
     if (!Number(categoryId)) {
-        throw new ValueError('Invalid category id');
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'categoryId', expected: 'number', got: typeof categoryId}));
     }
 
     let {page, perPage, fields} = options ?? {};
@@ -36,7 +37,7 @@ const getPosts = async function (categoryId: number, options: ICategoryPostOptio
         page = 1;
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array, found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
     } else if (!fields) {
         fields = PostData.validPostFields;
     }

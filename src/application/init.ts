@@ -21,6 +21,7 @@ import _ from 'lodash';
 import { IApplication, AppKeysArray, MutableObject } from '@src/types';
 import { database } from '@src/database';
 import { Logger } from '@src/utilities';
+import locales from '@src/locales';
 
 const {info} = new Logger();
 const filterApplicationKeys: AppKeysArray = ['_id', '_key'];
@@ -81,7 +82,7 @@ export const getCommonFields = function (): Array<keyof IApplication> {
 
 export const set = function(key: keyof IApplication, value: any) {
     if (!key) {
-        throw new Error('key is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'key'}));
     }
 
     Object.assign(application.configurationStore || {}, {[key]: value});
@@ -94,12 +95,12 @@ export const setValuesBulk = function(applicationObject: MutableObject) {
 
     fieldsFromObj.forEach(field => !commonFields.includes(field) && invalid.push(field));
     if (invalid.length) {
-        throw new Error('Invalid store field(s) ' + invalid.join(', '));
+        throw new Error(locales.translate('api-errors:invalid_entity_fields', {fields: invalid.join(', '), entity: 'store'}));
     }
     fieldsFromObj.forEach(field => {
         const expectedType = getTypeofField(field)
         if (typeof applicationObject[field] != expectedType) {
-            throw new Error(`Invalid type for ${field}. Expected ${expectedType} and found ${typeof applicationObject[field]}`);
+            throw new Error(locales.translate('api-errors:invalid_type', {field, expected: expectedType, got: typeof applicationObject[field]}));
         }
     });
 
@@ -118,7 +119,7 @@ export const initialize = async function initialize() {
         application.configurationStore = applicationExists;
     }
 
-    info('Application configuration store loaded');
+    // info('Application configuration store loaded');
 }
 
 export const reInitialize = async function reInitialize() {

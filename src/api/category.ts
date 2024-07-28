@@ -4,6 +4,7 @@ import { ICategory, MutableObject } from "@src/types";
 import _ from 'lodash';
 import * as Helpers from "@src/helpers";
 import { isParsableJSON } from "@src/utilities";
+import locales from "@src/locales";
 
 const categoryApi: MutableObject = {
     tags: {}
@@ -18,7 +19,7 @@ categoryApi.get = async (req: Request) => {
 
     if (cid) {
         if (!Number(cid)) {
-            throw new Error('cid must be a number found ' + typeof cid);
+            throw new Error(locales.translate('api-errors:invalid_type', {field: 'cid', expected: 'number', got: typeof cid}));
         }
 
         return await category.data.getCategoryByCid(cid);
@@ -66,7 +67,7 @@ categoryApi.create = async (req: Request) => {
 
     if (categoryData.parent) {
         if (isNaN(categoryData.parent)) {
-            throw new TypeError('parent category id must be an integer found ' + typeof categoryData.parent);
+            throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'parent', expected: 'number', got: typeof categoryData.parent}));
         }
 
         categoryData.parent = Number(categoryData.parent);
@@ -93,7 +94,7 @@ categoryApi.edit = async (req: Request) => {
 
     if (categoryData.parent) {
         if (isNaN(categoryData.parent)) {
-            throw new TypeError('parent category id must be an integer found ' + typeof categoryData.parent);
+            throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'parent', expected: 'number', got: typeof categoryData.parent}));
         }
 
         categoryData.parent = Number(categoryData.parent);
@@ -129,7 +130,7 @@ categoryApi.tags.create = async (req: Request) => {
     const userid = Number(user.userid);
 
     if (_.isNaN(id)) {
-        throw new Error('category id must be a number, found ' + typeof id);
+        throw new Error(locales.translate('api-errors:invalid_type', {field: 'id', expected: 'number', got: typeof id}));
     }
 
     const tag = {
@@ -150,10 +151,10 @@ categoryApi.tags.remove = async (req: Request) => {
     const userid = Number(user.userid);
 
     if (_.isNaN(id)) {
-        throw new Error('category id must be a number, found ' + typeof id);
+        throw new Error(locales.translate('api-errors:invalid_type', {field: 'id', expected: 'number', got: typeof id}));
     }
     if (_.isNaN(tagId)) {
-        throw new Error('tagId id must be a number, found ' + typeof tagId);
+        throw new Error(locales.translate('api-errors:invalid_type', {field: 'tagId', expected: 'number', got: typeof tagId}));
     }
 
     const tag = {cid: Number(id), tagId: Number(tagId)}
@@ -166,7 +167,7 @@ categoryApi.tags.getByName = async (req: Request) => {
     const userid = Helpers.parseUserId(req);
 
     if (_.isNaN(cid)) {
-        throw new Error('category id must be a number, found ' + typeof cid);
+        throw new Error(locales.translate('api-errors:invalid_type', {field: 'cid', expected: 'number', got: typeof cid}));
     }
 
     return await category.tags.getByCategoryIdAndName(Number(cid), name);

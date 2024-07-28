@@ -7,6 +7,7 @@ import { ICategoryTag, ICategory } from "@src/types";
 import { validAccessUserRoles, getUserRoles } from "@src/user";
 import Tags from './tags';
 import { CATEGORY_TAG_WEIGHTS } from '@src/constants';
+import locales from "@src/locales";
 
 const MAX_TAG_SIZE = 25;
 
@@ -15,25 +16,25 @@ const create = async function create(tagData: ICategoryTag): Promise<ICategoryTa
     var maxTagLength = application.configurationStore?.maxCategoryBlurbLength || MAX_TAG_SIZE;
 
     if (!userid) {
-        throw new Error('userid is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'userid'}));
     }
     if (userid && typeof userid != 'number') {
-        throw new TypeError(`userid must be a number, found ${typeof userid} instead`);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'userid', expected: 'number', got: typeof userid}));
     }
     if (!name) {
-        throw new Error('category name is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'name'}));
     }
     if (name.length > maxTagLength) {
-        throw new Error(`tag name cannot be more than ${maxTagLength} characters`);
+        throw new Error(locales.translate('api-errors:chars_too_long', {field: 'name', size: maxTagLength}));
     }
     if (typeof cid != 'number') {
-        throw new Error('cid must be a number, found ' + typeof cid)
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'cid', expected: 'number', got: typeof cid}));
     }
 
     const categorySearchKeys = 'category:' + cid;
     const category: ICategory = await database.getObjects(categorySearchKeys);
     if (!category) {
-        throw new Error('No such category was found with category id ' + cid);
+        throw new Error(locales.translate('api-errors:entity_not_found', {entity: 'category'}));
     }
 
     const tag: ICategoryTag = {};
@@ -69,10 +70,10 @@ const create = async function create(tagData: ICategoryTag): Promise<ICategoryTa
 
 const getById = async function getById(tagId: number, fields?: Array<string>) {
     if (!tagId) {
-        throw new Error('A valid tag id is required')
+        throw new Error(locales.translate('api-errors:is_required', {field: 'tagId'}));
     }
     if (typeof tagId != 'number') {
-        throw new Error('tagId must be a number, found ' + typeof tagId)
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'tagId', expected: 'number', got: typeof tagId}));
     }
     if (!fields) {
         fields = [];
@@ -95,7 +96,7 @@ const getByKeys = async function getByIds(keys: Array<string>, fields?: Array<st
     keys.forEach(key => !isValidTagKey(key) && tagKeyErrors++);
 
     if (tagKeyErrors) {
-        throw new Error(tagKeyErrors + ' invalid tag(s) found, please re-try.');
+        throw new Error(locales.translate('api-errors:invalid_entity_fields', {entity: 'tag', fields: tagKeyErrors}));
     }
     if (!fields) {
         fields = [];
@@ -114,10 +115,10 @@ const exists = async function (tagId: number) {
 
 const getByCategoryId = async function getByCategoryId(cid: number, fields?: (keyof ICategoryTag)[]) {
     if (!cid) {
-        throw new Error('A valid category id is required')
+        throw new Error(locales.translate('api-errors:is_required', {field: 'cid'}));
     }
     if (_.isNaN(cid)) {
-        throw new Error('cid must be a number, found ' + typeof cid)
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'cid', expected: 'number', got: typeof cid}));
     }
     if (!fields) {
         fields = [];
@@ -135,10 +136,10 @@ const getByCategoryId = async function getByCategoryId(cid: number, fields?: (ke
 
 const getByCategoryIdAndName = async function getByCategoryIdAndName(cid: number, name: string, fields?: Array<string>) {
     if (!cid) {
-        throw new Error('A valid category is required first')
+        throw new Error(locales.translate('api-errors:is_required', {field: 'cid'}));
     }
     if (_.isNaN(cid)) {
-        throw new Error('cid must be a number, found ' + typeof cid)
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'cid', expected: 'number', got: typeof cid}));
     }
     if (!fields || !Array.isArray(fields) || !fields.length) {
         fields = ['name', 'tagId', 'cid'];
@@ -167,10 +168,10 @@ const getPopularTags = async function (perPage: number=15, page: number=1, field
         page = 1;
     }
     if (isNaN(perPage) || isNaN(page)) {
-        throw new TypeError('perPage and page must be a number (int)');
+        throw new TypeError(locales.translate('api-errors:invalid_types', {fields: 'page, perPage', expected: 'number'}));
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array, found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
     } else if (!fields) {
         fields = [];
     }
@@ -191,13 +192,13 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
     const {cid, tagId} = tagData;
 
     if (!callerId) {
-        throw new Error('callerId is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'callerId'}));
     }
     if (callerId && typeof callerId != 'number') {
-        throw new TypeError(`callerId must be a number, found ${typeof callerId} instead`);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'callerId', expected: 'number', got: typeof callerId}));
     }
     if (typeof tagId != 'number') {
-        throw new Error('tagId must be a number, found ' + typeof tagId)
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'tagId', expected: 'number', got: typeof tagId}));
     }
 
     const categorySearchKey = 'category:' + cid;
@@ -205,12 +206,12 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
 
     const category: ICategory = await database.getObjects(categorySearchKey);
     if (!category) {
-        throw new Error('No such category was found with category id ' + cid);
+        throw new Error(locales.translate('api-errors:entity_not_found', {entity: 'category'}));
     }
 
     const tag: ICategoryTag = await database.getObjects(tagSearchKey);
     if (!tag) {
-        throw new Error('No such tag was found with tag id ' + tagId);
+        throw new Error(locales.translate('api-errors:entity_not_found', {entity: 'tag'}));
     }
 
     let permissions = 0;
@@ -223,7 +224,7 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
     });
 
     if (!Boolean(permissions)) {
-        throw new Error('callerId requires elevated permissions for performing this operation');
+        throw new Error(locales.translate('api-errors:entity_requires_admin_privilege', {entity: 'caller'}));
     }
 
     const bulkRemoveSets = [
@@ -241,7 +242,7 @@ const remove = async function remove(tagData: ICategoryTag, callerId: number) {
 
 const onNewPostWithTags = async function onNewPostWithTag(postId: number, tagIds: Array<number>) {
     if (!postId || !Number(postId)) {
-        throw new Error('post id is a required parameter and must be a number');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'postId'}));
     }
 
     const promises: Promise<any>[] = [], 
@@ -263,7 +264,7 @@ const onNewPostWithTags = async function onNewPostWithTag(postId: number, tagIds
 
 const onTagRemove = async function onTagRemove(postId: number, tagId: number) {
     if (!postId || !Number(postId)) {
-        throw new Error('post id is a required parameter and must be a number');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'postId'}));
     }
     if (!tagId) return;
 

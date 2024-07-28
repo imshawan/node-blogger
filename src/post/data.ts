@@ -6,6 +6,7 @@ import { application } from "@src/application";
 import { clipContent, textFromHTML } from '@src/utilities';
 import _ from "lodash";
 import PostUtils from './utils'
+import locales from "@src/locales";
 
 interface IPostOptions {
     perPage?: number; 
@@ -35,14 +36,14 @@ const validPostFields = [
 
 const getPostById = async function (id: number, fields: string[] = []): Promise<IPost> {
     if (!id) {
-        throw new Error('id is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'id'}));
     }
 
     if (isNaN(id)) {
-        throw new Error('id must be a number, found ' + typeof id)
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'id', expected: 'number', got: typeof id}))
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array but found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
         
     } else if (!fields) {
         fields = []
@@ -65,13 +66,13 @@ const getPosts = async function (options?: IPostOptions) {
         page = 1;
     }
     if (isNaN(perPage)) {
-        throw new TypeError('perPage must be a number (int) found ' + typeof perPage);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'perPage', expected: 'number', got: typeof perPage}));
     }
     if (isNaN(page)) {
-        throw new TypeError('page must be a number (int) found ' + typeof page);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'page', expected: 'number', got: typeof page}));
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array, found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
     } else if (!fields) {
         fields = [];
     }
@@ -104,7 +105,7 @@ const getPosts = async function (options?: IPostOptions) {
 
 const search = async function (title: string, perPage: number=15, page: number=1, fields: string[]=[]) {
     if (!title) {
-        throw new Error('title is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'title'}));
     }
     if (!perPage) {
         perPage=15;
@@ -113,13 +114,13 @@ const search = async function (title: string, perPage: number=15, page: number=1
         page = 1;
     }
     if (isNaN(perPage)) {
-        throw new TypeError('perPage must be a number (int) found ' + typeof perPage);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'perPage', expected: 'number', got: typeof perPage}));
     }
     if (isNaN(page)) {
-        throw new TypeError('page must be a number (int) found ' + typeof page);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'page', expected: 'number', got: typeof page}));
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array, found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
     } else if (!fields) {
         fields = [];
     }
@@ -145,10 +146,10 @@ const getFeaturedPosts = async function (perPage: number=15, page: number=1, fie
         page = 1;
     }
     if (isNaN(perPage) || isNaN(page)) {
-        throw new TypeError('perPage and page must be a number (int)');
+        throw new TypeError(locales.translate('api-errors:invalid_types', {fields: 'perPage, page', expected: 'number'}));
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array, found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
     } else if (!fields) {
         fields = [];
     }
@@ -179,10 +180,10 @@ const getPostsByTag = async function (tagId: number, perPage: number=15, page: n
         page = 1;
     }
     if (isNaN(perPage) || isNaN(page)) {
-        throw new TypeError('perPage and page must be a number (int)');
+        throw new TypeError(locales.translate('api-errors:invalid_types', {fields: 'perPage, page', expected: 'number'}));
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array, found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
     } else if (!fields) {
         fields = [];
     }

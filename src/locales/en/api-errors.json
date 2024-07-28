@@ -1,5 +1,6 @@
 {
     "invalid_type": "{{field}} must be a {{expected}} found {{got}} instead",
+    "invalid_types": "{{fields}} must be {{expected}}",
     "userid_required": "userid is required",
     "is_required": "{{field}} is required",
     "are_required": "{{fields}} are required paremeters",
@@ -8,5 +9,23 @@
     "no_such_entity": "No such {{entity}} was found",
     "no_entity_with_id": "No such {{entity}} was found with {{entity}} id {{id}}",
     "no_comment_with_parent": "No such comment was found with parent id {{id}}",
-    "unauthorized": "You are unauthorized to perform this action"
+    "unauthorized": "You are unauthorized to perform this action",
+    "missing_required_fields": "Required fields were missing from the request body, {{fields}}",
+    "missing_required_file_fields": "Required file fields were missing from the request body, {{fields}}",
+    "session_not_found": "A valid session or token was not found with this request",
+    "admin_route_error": "Unauthorized! Protected administrator route",
+    "invalid_csrf": "Invalid CSRF token",
+    "invalid_token": "Invalid token! Please retry this process once again.",
+    "invalid_field": "Invalid {{field}}",
+    "invalid_entity_fields": "Invalid {{entity}} fields {{fields}}",
+    "n_invalid_entity_found": "{{n}} invalid {{entity}}(s) found, please re-try.",
+    "entity_not_found": "{{entity}} was not found.",
+    "require_admin_privilege": "You must have admin privileges to perform this action",
+    "entity_requires_admin_privilege": "{{entity}} requires elevated permissions for performing this operation",
+    "error_email_send_template": "Error while sending email, please verify the template once before trying again.",
+    "app_email_not_configured": "Application email is not configured yet. Please enter an sender email id first for sending emails.",
+    "bad_email_template": "Sending failed. Found some issues with the template.",
+    "empty_email_template": "The template is empty, nothing to send",
+    "invalid_image_types": "Invalid image type. Valid image types are {{types}}",
+    "passwords_same_error": "New password must be different from the old one"
 }

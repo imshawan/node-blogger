@@ -5,6 +5,7 @@ import { ValueError } from "@src/helpers";
 import { application } from "@src/application";
 import * as Utilities from "@src/utilities";
 import categoryUtils from "./utils";
+import locales from "@src/locales";
 
 const MAX_CATEGORY_BLURB_LENGTH = 30;
 export const categoryFields = [
@@ -29,13 +30,13 @@ const getCategoriesWithData = async function getCategoriesWithData(perPage: numb
         page = 1;
     }
     if (isNaN(perPage)) {
-        throw new TypeError('perPage must be a number (int) found ' + typeof perPage);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'perPage', expected: 'number', got: typeof perPage}));
     }
     if (isNaN(page)) {
-        throw new TypeError('perPage must be a number (int) found ' + typeof page);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'page', expected: 'number', got: typeof page}));
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array, found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
     } else if (!fields) {
         fields = [];
     }
@@ -54,7 +55,7 @@ const getCategoriesWithData = async function getCategoriesWithData(perPage: numb
         sorting = sorting.trim();
         
         if (!ValidSortingTechniques.hasOwnProperty(sorting.toUpperCase())) {
-          throw new ValueError('Invalid sorting type: ' + sorting);
+          throw new ValueError(locales.translate('api-errors:invalid_field', {field: 'sort type'}) + ' ' + sorting);
         }
 
         let sort = applySort(sorting);
@@ -87,13 +88,13 @@ const getAllCategories = async function getAllCategories(perPage: number=15, pag
         page = 1;
     }
     if (isNaN(perPage)) {
-        throw new TypeError('perPage must be a number (int) found ' + typeof perPage);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'perPage', expected: 'number', got: typeof perPage}));
     }
     if (isNaN(page)) {
-        throw new TypeError('page must be a number (int) found ' + typeof page);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'page', expected: 'number', got: typeof page}));
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array, found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
     } else if (!fields) {
         fields = [];
     }
@@ -130,14 +131,14 @@ const getAllCategories = async function getAllCategories(perPage: number=15, pag
 
 const getCategoryByCid = async function getCategoryByCid(id: any, fields: string[] = []) {
     if (!id) {
-        throw new Error('id is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'id'}));
     }
 
     if (isNaN(id)) {
-        throw new Error('id must be a number, found ' + typeof id)
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'id', expected: 'number', got: typeof id}));
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array but found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
         
     } else if (!fields) {
         fields = []
@@ -154,7 +155,7 @@ const getCategoryByCid = async function getCategoryByCid(id: any, fields: string
 
 const getCategoryByName = async function getCategoryByName(name: string, perPage: number=15, page: number=1, fields: string[]=[], sorting: string | null='default', subCategories=true) {
     if (!name) {
-        throw new Error('name is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'name'}));
     }
     if (!perPage) {
         perPage=15;
@@ -163,13 +164,13 @@ const getCategoryByName = async function getCategoryByName(name: string, perPage
         page = 1;
     }
     if (isNaN(perPage)) {
-        throw new TypeError('perPage must be a number (int) found ' + typeof perPage);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'perPage', expected: 'number', got: typeof perPage}));
     }
     if (isNaN(page)) {
-        throw new TypeError('page must be a number (int) found ' + typeof page);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'page', expected: 'number', got: typeof page}));
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array, found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
     } else if (!fields) {
         fields = [];
     }
@@ -220,10 +221,10 @@ async function searchKeysByTitle(key: string, query: string, start: number, perP
 
 function createAggregationPipeline (query: MutableObject, pagination: Array<MutableObject>) {
     if (!query) {
-        throw new ValueError('query is required for $match to function');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'query'}));
     }
     if (typeof query !== 'object') {
-        throw new TypeError('query must be an object, found ' + typeof query);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'query', expected: 'object', got: typeof query}));
     }
 
     const pipeline: Array<any> = [

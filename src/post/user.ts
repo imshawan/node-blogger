@@ -1,10 +1,10 @@
 import { database } from "@src/database";
 import { IUser, IPost, MutableObject } from "@src/types";
-import { ValueError } from "@src/helpers";
 import PostUtils from './utils';
 import { getUsersById, getUserByUserId } from "@src/user";
 import _ from "lodash";
 import postUtils from './utils';
+import locales from "@src/locales";
 
 interface IUserPostOptions {
     perPage?: number; 
@@ -28,16 +28,16 @@ const getUserPosts = async function (userid: number, options?: IUserPostOptions)
         page = 1;
     }
     if (!userid) {
-        throw new Error('userid is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'userid'}));
     }
     if (isNaN(perPage)) {
-        throw new TypeError('perPage must be a number (int) found ' + typeof perPage);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'perPage', expected: 'number', got: typeof perPage}));
     }
     if (isNaN(page)) {
-        throw new TypeError('page must be a number (int) found ' + typeof page);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'page', expected: 'number', got: typeof page}));
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array, found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
     } else if (!fields) {
         fields = [];
     }

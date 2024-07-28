@@ -2,6 +2,8 @@ import { NextFunction, Response, Request } from 'express';
 import { database } from "@src/database";
 import { password as Passwords } from "@src/utilities";
 import { getUserByUserId } from '@src/user';
+import locales from '@src/locales';
+import { ValidationError, ValueError } from '@src/helpers/errors';
 
 const serializeUser = async function serializeUser(user: any, done: Function) {    
     done(null, user.userid);
@@ -12,7 +14,7 @@ const deserializeUser = async function deserializeUser(id: any, done: Function) 
         const user = await getUserByUserId(id);
         if (user) {
             done(null, user)
-        } else done(new Error('Count not find user'), {})
+        } else done(new Error(locales.translate('user:no_user_found')), {})
     } catch (err) {
         done(err, {});
     }
@@ -20,16 +22,16 @@ const deserializeUser = async function deserializeUser(id: any, done: Function) 
 
 const comparePassword = async function comparePassword(userid: number, password: string) {
     if (userid < 1) {
-        throw new Error('Invalid user id');
+        throw new ValueError(locales.translate('api-errors:invalid_field', {field: 'userid'}));
     }
 
     if (!password) {
-        throw new Error('A valid password is required to validate against');
+        throw new ValidationError(locales.translate('api-errors:is_required', {field: 'password'}));
     }
 
     const user = await database.getObjects('user:' + userid, ['passwordHash']);
     if (!user) {
-        throw new Error('No user found with the supplied id');
+        throw new Error(locales.translate('user:no_user_found'));
     }
 
     const {passwordHash} = user;

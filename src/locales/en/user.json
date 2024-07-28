@@ -28,6 +28,7 @@
     "current_password_label": "Current Password",
     "enter_password_placeholder": "Enter password for changing username",
     "change_username_button": "Change Username",
+    "username_taken": "Username is already taken",
     "delete_account_label": "Delete Account",
     "delete_account_warning": "Once you delete your account, there is no going back. Please be certain.",
     "delete_account_button": "Delete Account",
@@ -60,5 +61,15 @@
     "browser": "Browser",
     "os": "OS",
     "platform": "Platform",
-    "no_sessions_found": "No sessions found."
+    "no_sessions_found": "No sessions found.",
+    "no_user_found": "No user was found",
+    "no_user_with_credentials": "Could not find any user associated with such credentials",
+    "invalid_credentials": "Invalid credentials, please try again",
+    "account_creation_failed": "Something went wrong while you were creating your account, please re-try registering.",
+    "auth_success": "Authentication successful!",
+    "follow_successful": "You are now following {{fullname}}",
+    "unfollow_successful": "You have unfollowed {{fullname}}",
+    "username_changed": "Username changed to {{username}}",
+    "password_reset_success": "Your password has been reset successfully",
+    "password_change_success": "Your password has been changed successfully"
 }

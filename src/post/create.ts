@@ -4,6 +4,7 @@ import { database } from "@src/database";
 import { getISOTimestamp, calculateReadTime, textFromHTML, sanitizeString } from "@src/utilities";
 import utilities from './utils';
 import Category from '@src/category';
+import locales from "@src/locales";
 
 const MIN_POST_SIZE = 20;
 const MAX_POST_SIZE = 2550;
@@ -24,33 +25,33 @@ export const create = async function create(data: IPost): Promise<IPost> {
     }
 
     if (!userid) {
-        throw new Error('userid is required.');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'userid'}));
     }
     if (userid && typeof userid != 'number') {
-        throw new TypeError(`userid must be a number, found ${typeof userid} instead.`);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'userid', expected: 'number', got: typeof userid}));
     }
     if (!title) {
-        throw new Error('Post title is required.');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'title'}));
     }
     if (title.length < minPostTitleLength) {
-        throw new Error('Title too short.');
+        throw new Error(locales.translate('api-errors:chars_too_short', {field: 'title', size: minPostTitleLength}));
     }
     if (title.length > maxPostTitleLength) {
-        throw new Error('Title too long.');
+        throw new Error(locales.translate('api-errors:chars_too_long', {field: 'title', size: maxPostTitleLength}));
     }
     if (!content) {
-        throw new Error('Content is missing.');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'content'}));
     }
     
     const contentSizeInWords = String(textFromHTML(content)).split(' ').length;
     if (contentSizeInWords < minPostLength) {
-        throw new Error('Post too short.');
+        throw new Error(locales.translate('api-errors:chars_too_short', {field: 'Post', size: minPostLength}));
     }
     if (contentSizeInWords > maxPostLength) {
-        throw new Error('Post too long.');
+        throw new Error(locales.translate('api-errors:chars_too_long', {field: 'Post', size: maxPostLength}));
     }
     if (!utilities.isValidStatus(status)) {
-        throw new Error('Invalid post status: ' + status);
+        throw new Error(locales.translate('api-errors:invalid_field', {field: 'status'}) + ' ' + status);
     }
 
     if (!categories || !Array.isArray(categories) || !categories.length) {
@@ -66,10 +67,10 @@ export const create = async function create(data: IPost): Promise<IPost> {
     categories.forEach(category => !isValidCategoryKey(category) && categoryKeyErrors++);
 
     if (tagKeyErrors) {
-        throw new Error(tagKeyErrors + ' invalid tag(s) found, please re-try.');
+        throw new Error(locales.translate('api-errors:n_invalid_entity_found', {n: tagKeyErrors, entity: 'tag'}));
     }
     if (categoryKeyErrors) {
-        throw new Error(categoryKeyErrors + ' invalid category(s) found, please re-try.');
+        throw new Error(locales.translate('api-errors:n_invalid_entity_found', {n: categoryKeyErrors, entity: 'category'}));
     }
 
     const postData:IPost = { _scheme: 'post:postId'};

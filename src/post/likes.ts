@@ -3,6 +3,7 @@ import * as User from '@src/user';
 import PostData from './data';
 import _ from "lodash";
 import { IUser } from '@src/types';
+import locales from '@src/locales';
 
 const validActions = ['like', 'unlike'];
 const userFields = ['userid', 'username', 'fullname', 'picture', 'slug'] as (keyof IUser)[];
@@ -17,7 +18,7 @@ const unlike = async function (postId: number, caller: number) {
 
 const get = async function (postId: number, page: number = 1, perPage: number = 10, fields?: (keyof IUser)[]) {
     if (isNaN(postId)) {
-        throw new TypeError('postId must be a number.');
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'postId', expected: 'number', got: typeof postId}));
     }
     if (postId < 1) {
         return {users: [], total: 0};
@@ -29,10 +30,10 @@ const get = async function (postId: number, page: number = 1, perPage: number = 
         page = 1;
     }
     if (isNaN(perPage) || isNaN(page)) {
-        throw new TypeError('perPage and page must be a numbers');
+        throw new TypeError(locales.translate('api-errors:invalid_types', {fields: 'perPage, page', expected: 'number'}));
     }
     if (fields && !Array.isArray(fields)) {
-        throw new TypeError('fields must be an array, found ' + typeof fields);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'fields', expected: 'array', got: typeof fields}));
     } else if (!fields || !fields.length) {
         fields = userFields;
     }
@@ -54,7 +55,7 @@ const get = async function (postId: number, page: number = 1, perPage: number = 
 
 const getCount = async function (postId: number): Promise<number> {
     if (isNaN(postId)) {
-        throw new Error('postId must be a number.');
+        throw new Error(locales.translate('api-errors:invalid_type', {field: 'postId', expected: 'number', got: typeof postId}));
     }
     if (postId < 1) {
         return 0;
@@ -68,7 +69,7 @@ const getCount = async function (postId: number): Promise<number> {
 
 export const hasLiked = async function (postId: number, caller: number) {
     if (isNaN(postId) || isNaN(caller)) {
-        throw new Error('postId and caller must be both numbers.');
+        throw new Error(locales.translate('api-errors:invalid_types', {fields: 'postId, caller', expected: 'number'}));
     }
     if (postId < 1 || caller < 1) {
         return false;
@@ -82,10 +83,10 @@ export const hasLiked = async function (postId: number, caller: number) {
 
 async function handleLikes(postId: number, caller: number, action: 'like' | 'unlike') {
     if (isNaN(postId) || isNaN(caller)) {
-        throw new Error('postId and caller must be both numbers.');
+        throw new Error(locales.translate('api-errors:invalid_types', {fields: 'postId, caller', expected: 'number'}));
     }
     if (!validActions.includes(action)) {
-        throw new Error('Invalid action ' + action);
+        throw new Error(locales.translate('api-errors:invalid_field', {field: 'action'}) + ' ' + action);
     }
 
     postId = Number(postId);
@@ -97,10 +98,10 @@ async function handleLikes(postId: number, caller: number, action: 'like' | 'unl
     ]);
 
     if (!post) {
-        throw new Error('Post does not exists');
+        throw new Error(locales.translate('api-errors:entity_not_found', {entity: 'post'}));
     }
     if (!callerExists) {
-        throw new Error('Caller does not exists');
+        throw new Error(locales.translate('api-errors:entity_not_found', {entity: 'caller'}));
     }
 
     const alreadyLiked = await hasLiked(postId, caller),

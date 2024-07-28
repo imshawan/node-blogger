@@ -4,14 +4,15 @@ import { database } from "@src/database";
 import nconf from 'nconf';
 import { ICategory } from "@src/types";
 import { sanitizeString } from "@src/utilities";
+import locales from "@src/locales";
 
 export default async function deleteCategory(id: any, callerId: number) {
     if (isNaN(id)) {
-        throw new Error(`id must be a number, found ${typeof id} instead`);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'id', expected: 'number', got: typeof id}));
     }
 
     if (isNaN(callerId)) {
-        throw new Error(`callerId must be a number, found ${typeof callerId} instead`);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'callerId', expected: 'number', got: typeof callerId}));
     }
 
     let permissions = 0;
@@ -25,7 +26,7 @@ export default async function deleteCategory(id: any, callerId: number) {
 
     // If in testing mode, a person need not be an admin
     if (!Boolean(permissions) && nconf.get('env') != 'test') {
-        throw new Error('caller requires elevated permissions for performing this operation');
+        throw new Error(locales.translate('api-errors:entity_requires_admin_privilege', {entity: 'caller'}));
     }
 
     const [category, subCategoriesSet] = await Promise.all([
@@ -34,7 +35,7 @@ export default async function deleteCategory(id: any, callerId: number) {
     ]);
 
     if (!category) {
-        throw new Error('No such category was found with id ' + id);
+        throw new Error(locales.translate('api-errors:entity_not_found', {entity: 'category'}));
     }
 
     const subCategories = await database.getObjectsBulk(subCategoriesSet);

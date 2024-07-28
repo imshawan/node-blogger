@@ -3,6 +3,7 @@ import { sanitizeString, slugify } from '@src/utilities';
 import { application } from '@src/application';
 import { ICategory } from '@src/types';
 import * as Utilities from "@src/utilities";
+import locales from '@src/locales';
 
 const MAX_CATEGORY_BLURB_LENGTH = 30;
 
@@ -30,7 +31,7 @@ const generateNextTagId = async function generateNextTagId(): Promise<number> {
 
 const onNewPostWithCategory = async function onNewPostWithCategory(postId: number, categoryId: number) {
     if (!postId || !categoryId || !Number(postId) || !Number(categoryId)) {
-        throw new Error('postId and categoryId are required parameters and must be numbers');
+        throw new TypeError(locales.translate('api-errors:invalid_types', {fields: 'postId, categoryId', expected: 'number'}));
     }
 
     const now = Date.now();
@@ -48,7 +49,7 @@ const onNewPostWithCategory = async function onNewPostWithCategory(postId: numbe
 
 const onRemovePostWithCategory = async function onRemovePostWithCategory(postId: number, categoryId: number) {
     if (!postId || !categoryId || !Number(postId) || !Number(categoryId)) {
-        throw new Error('postId and categoryId are required parameters and must be numbers');
+        throw new TypeError(locales.translate('api-errors:invalid_types', {fields: 'postId, categoryId', expected: 'number'}));
     }
 
     const postKey = 'post:' + postId, 

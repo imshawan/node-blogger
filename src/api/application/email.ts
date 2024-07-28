@@ -7,6 +7,8 @@ import { isAdministrator } from "@src/user";
 import { initializeEmailClient, emailer, compileAndBindTemplate } from "@src/email/emailer";
 import Mail from "nodemailer/lib/mailer";
 import { get as getValueByField } from "@src/application";
+import locales from "@src/locales";
+import { PermissionError } from "@src/helpers/errors";
 
 const getTemplates = async (req: Request) => {
     const {query} = req;
@@ -57,7 +59,7 @@ const updateTemplate = async (req: Request) => {
     const {name, html} = req.body;
     
     if (isNaN(id)) {
-        throw new Error('Invalid template id');
+        throw new Error(locales.translate('api-errors:invalid_type', {field: 'id', expected: 'number', got: typeof id}));
     }
 
     const writeData: IEmailTemplate = {};
@@ -81,7 +83,7 @@ const deleteTemplate = async (req: Request) => {
     const userid = Helpers.parseUserId(req);
 
     if (isNaN(id)) {
-        throw new Error('Invalid is supplied.');
+        throw new Error(locales.translate('api-errors:invalid_type', {field: 'id', expected: 'number', got: typeof id}));
     }
 
     await Template.removeById(id, userid);
@@ -95,37 +97,37 @@ const pushEmailByTemplateId = async (req: Request) => {
     const fromName = String(getValueByField('applicationEmailFromName'));
 
     if (!await isAdministrator(userid)) {
-        throw new Error('This operation requires admin privilages.');
+        throw new PermissionError(locales.translate('api-errors:require_admin_privilege'));
     }
 
     const templateData = await Template.getById(id);
     if (!templateData) {
-        throw new Error('No such template with the supplied id');
+        throw new Error(locales.translate('api-errors:entity_not_found', {entity: 'template'}));
     }
 
     const {html, name} = templateData;
     if (!html || !html.length) {
-        throw new Error('The template is empty, nothing to send');
+        throw new Error(locales.translate('api-errors:empty_email_template'));
     }
 
     const isHtmlValid = Helpers.isValidHtml(html);
     if (!isHtmlValid) {
-        throw new Error('Sending failed. Found some issues with the template.');
+        throw new Error(locales.translate('api-errors:bad_email_template'));
     }
 
     if (!from) {
-        throw new Error('Application email is not configured yet. Please enter an sender email id first for sending emails.');
+        throw new Error(locales.translate('api-errors:app_email_not_configured'));
     }
 
     const compiledHtml = compileAndBindTemplate(html);
     if (!compiledHtml) {
-        throw new Error('Error while sending email, please verify the temlate once before trying again.');
+        throw new Error(locales.translate('api-errors:error_email_send_template'));
     }
 
     const emailMessage: Mail.Options = {
         from,
         to: String(user.email),
-        subject: name + ' - Testing',
+        subject: name + ' - ' + locales.translate('api-common:testing'),
         html: compiledHtml,
     };
 
@@ -136,7 +138,7 @@ const setupSMTPService = async (req: Request) => {
     const userid = Helpers.parseUserId(req);
 
     if (!await isAdministrator(userid)) {
-        throw new Error('This operation requires admin privilages.');
+        throw new PermissionError(locales.translate('api-errors:require_admin_privilege'));
     }
 
     const service = await setupCustomSMTPService(req.body, userid);

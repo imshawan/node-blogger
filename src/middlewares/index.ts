@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
-import { handleApiResponse, extractRemoteAddrFromRequest } from '@src/helpers';
+import { handleApiResponse, extractRemoteAddrFromRequest, ValidationError, AuthenticationError, PermissionError } from '@src/helpers';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import csurf from 'csurf';
 import { isAdministrator } from '@src/user';
@@ -8,6 +8,7 @@ import EnvVars from '@src/constants/EnvVars';
 import { MulterFilesArray } from '@src/types';
 import nconf from 'nconf';
 import { NavigationManager } from '@src/utilities/navigation';
+import locales from '@src/locales';
 
 export * from './cors';
 export * from './overrides';
@@ -20,7 +21,11 @@ export * from './routes';
 
 export const checkRequiredFields = function (fields: Array<string>, req: Request, res: Response, next: NextFunction) {
     if (fields && !Array.isArray(fields)) {
-        throw new Error('fields required to be checked must be in an array');
+        if (typeof fields === 'string') {
+            fields = [fields];
+        } else {
+            fields = [];
+        }
     }
     
     let missingFields: Array<string> = [];
@@ -33,13 +38,20 @@ export const checkRequiredFields = function (fields: Array<string>, req: Request
     }
 
     if (missingFields.length) {
-        return handleApiResponse(HttpStatusCodes.BAD_REQUEST, res, new Error('Required fields were missing from the API call: ' + missingFields.join(', ')));
+        return handleApiResponse(
+            HttpStatusCodes.BAD_REQUEST, res, 
+            new ValidationError(locales.translate('api-errors:missing_required_fields', {fields:  missingFields.join(', ')}))
+        );
     } else next();
 }
 
 export const checkRequiredFileFields = function (fields: Array<string>, req: Request, res: Response, next: NextFunction) {
     if (fields && !Array.isArray(fields)) {
-        throw new Error('fields required to be checked must be in an array');
+        if (typeof fields === 'string') {
+            fields = [fields];
+        } else {
+            fields = [];
+        }
     }
     let missingFileFields: Array<string> = [];
     if (fields.length) {
@@ -58,7 +70,10 @@ export const checkRequiredFileFields = function (fields: Array<string>, req: Req
     }
 
     if (missingFileFields.length) {
-        return handleApiResponse(HttpStatusCodes.BAD_REQUEST, res, new Error('Required file fields were missing from the API call: ' + missingFileFields.join(', ')));
+        return handleApiResponse(
+            HttpStatusCodes.BAD_REQUEST, res, 
+            new ValidationError(locales.translate('api-errors:missing_required_file_fields', {fields: missingFileFields.join(', ')}))
+        );
     } else next();
 }
 
@@ -93,7 +108,7 @@ export const hasAdministratorAccess = async function (req: Request, res: Respons
 
 export const requireAuthentication = async function (req: Request, res: Response, next: NextFunction) {
     if (!req.isAuthenticated() || !req.user) {
-        return handleApiResponse(HttpStatusCodes.UNAUTHORIZED, res, new Error('A valid session key or token was not found with this API call'));
+        return handleApiResponse(HttpStatusCodes.UNAUTHORIZED, res, new AuthenticationError(locales.translate('api-errors:session_not_found')));
     }
 
     next();
@@ -112,7 +127,7 @@ export const verifyAdministrator = async function (req: Request, res: Response, 
 
     // @ts-ignore
     if (user && user.userid && !await isAdministrator(user.userid)) {
-        return handleApiResponse(HttpStatusCodes.UNAUTHORIZED, res, new Error('Unauthorized! Protected administrator route'));
+        return handleApiResponse(HttpStatusCodes.UNAUTHORIZED, res, new PermissionError(locales.translate('api-errors:admin_route_error')));
     }
 
     next();
@@ -138,7 +153,7 @@ export const applyCSRFMiddleware = async function (req: Request, res: Response, 
                         return handleApiResponse(HttpStatusCodes.FORBIDDEN, res);
                     
                     default:
-                        return handleApiResponse(HttpStatusCodes.FORBIDDEN, res, new Error('Invalid csrf token'));
+                        return handleApiResponse(HttpStatusCodes.FORBIDDEN, res, new ValidationError(locales.translate('api-errors:invalid_csrf')));
                 }
             } else {
                 return next();
@@ -182,7 +197,7 @@ export const notFoundHandler = async function (req: Request, res: Response) {
 export const renderError = async function (req: Request, res: Response, error: Error) {
     const navigation = new NavigationManager().get();
     const pageData = {
-        title: 'Error',
+        title: locales.translate('api-common:error'),
         path: req.url,
         navigation,
         error: {

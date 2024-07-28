@@ -10,13 +10,15 @@ import { parseBoolean } from "@src/utilities";
 import { isAuthorizedToDelete } from "@src/permissions";
 import * as Helpers from "@src/helpers";
 import _ from "lodash";
+import locales from "@src/locales";
+import { PermissionError } from "@src/helpers/errors";
 
 const checkUsername = async (req: Request) => {
     const {username} = req.params;
     const user = await getUserByUsername(username);    
 
     if (user) {
-        throw new Error('Username is already taken');
+        throw new Error(locales.translate('user:username_taken'));
     }
 }
 
@@ -35,13 +37,13 @@ const updateUser = async (req: Request) => {
     const user = req.user as ExpressUser;
     const {body} = req;
 
-    if (typeof userid !== 'number') {
-        throw new Error('userid supplied must be a number');
+    if (isNaN(userid)) {
+        throw new Error(locales.translate('api-errors:invalid_type', {field: 'userid', expected: 'number', got: typeof userid}));
     }
 
     if (user.userid != userid) {
         if (!await isAdministrator(userid)) {
-            throw new Error('You are not authorized to perform this action');
+            throw new PermissionError(locales.translate('api-errors:require_admin_privilege'));
         }
 
         // TODO: Need to put an event logger if admin updates a profile
@@ -57,13 +59,13 @@ const updatePicture = async (req: Request) => {
     const files = req.files as MulterFilesArray[];
     const userData: MutableObject = {};
 
-    if (typeof userid !== 'number') {
-        throw new Error('userid supplied must be a number');
+    if (isNaN(userid)) {
+        throw new Error(locales.translate('api-errors:invalid_type', {field: 'userid', expected: 'number', got: typeof userid}));
     }
 
     if (user.userid != userid) {
         if (!await isAdministrator(userid)) {
-            throw new Error('You are not authorized to perform this action');
+            throw new PermissionError(locales.translate('api-errors:require_admin_privilege'));
         }
 
         // TODO: Need to put an event logger if admin updates a profile
@@ -85,7 +87,7 @@ const deleteUser = async (req: Request) => {
 
     const loggedinUser = req.user as ExpressUser;
     if (userid != loggedinUser.userid && !await isAuthorizedToDelete('user', loggedinUser.userid)) {
-        throw new Error('caller requires elevated permissions for performing this operation');
+        throw new Error(locales.translate('api-errors:entity_requires_admin_privilege', {entity: 'caller'}));
     }
     
     return await deleteUserWithData(userid, loggedinUser.userid);
@@ -113,13 +115,13 @@ const followUser = async (req: Request) => {
     const toFollow = Number(req.params.userid);
 
     if (!toFollow) {
-        throw new Error('Invalid userid to follow');
+        throw new Error(locales.translate('api-errors:invalid_type', {field: 'toFollow', expected: 'number', got: typeof toFollow}));
     }
 
-    await Followers.follow(toFollow, loggedInUser)
+    let _user = await Followers.follow(toFollow, loggedInUser);
 
     return {
-        message: 'Follow successful.'
+        message: locales.translate('user:follow_successful', {fullname: _user.fullname || _user.username}),
     }
 }
 
@@ -128,13 +130,13 @@ const unFollowUser = async (req: Request) => {
     const toFollow = Number(req.params.userid);
 
     if (!toFollow) {
-        throw new Error('Invalid userid to unfollow');
+        throw new Error(locales.translate('api-errors:invalid_type', {field: 'toFollow', expected: 'number', got: typeof toFollow}));
     }
 
-    await Followers.unFollow(toFollow, loggedInUser);
+    let _user = await Followers.unFollow(toFollow, loggedInUser);
 
     return {
-        message: 'Unfollow successful.'
+        message: locales.translate('user:unfollow_successful', {fullname: _user.fullname || _user.username}),
     }
 }
 
@@ -145,16 +147,16 @@ const changeUsername = async (req: Request) => {
     await updateExistingUserUsername({userid, username, password}, userid);
 
     return {
-        message: 'Username change successful'
+        message: locales.translate('user:username_changed', {username}),
     }
 }
 
 const resetPassword = async (req: Request) => {
     const {password, token} = req.body;
-    const AuthorizationError = new Error('Invalid token! Please retry this process once again.');
+    const AuthorizationError = new Error(locales.translate('api-errors:invalid_token'));
 
     if (typeof password !== 'string' ||  typeof token !== 'string') {
-        throw new Error(`Password and token must be a string`);
+        throw new Error(locales.translate('api-errors:invalid_types', {fields: 'password, token', expected: 'string'}));
     }
 
     const decoded = UserUtilities.decodeToken(token);
@@ -177,7 +179,7 @@ const resetPassword = async (req: Request) => {
     await resetUserPassword(userid, password, userid);
 
     return {
-        message: 'Password reset successful'
+        message: locales.translate('user:password_reset_success'),
     };
 }
 
@@ -186,16 +188,16 @@ const changePassword = async (req: Request) => {
     const {password, oldPassword} = req.body;
 
     if (typeof oldPassword != 'string' || typeof password != 'string') {
-        throw new Error(`Password and old password must be a string`);
+        throw new Error(locales.translate('api-errors:invalid_types', {fields: 'password, oldPassword', expected: 'string'}));
     }
     if (password == oldPassword) {
-        throw new Error(`New password must be different from old password`);
+        throw new Error(locales.translate('api-errors:passwords_same_error'));
     }
 
     await changeExistingUserPassword(userid, oldPassword, password, userid);
 
     return {
-        message: 'Password change successful'
+        message: locales.translate('user:password_change_success')
     }
 }
 

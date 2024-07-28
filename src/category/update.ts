@@ -5,6 +5,7 @@ import _ from "lodash";
 import { application } from "@src/application";
 import { database } from "@src/database";
 import _data from "./data";
+import locales from "@src/locales";
 
 
 const MAX_BLURB_SIZE = 250;
@@ -22,21 +23,21 @@ export default async function update(data: ICategory) {
     const bulkRemoveSets = [];
 
     if (!userid) {
-        throw new Error('userid is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'userid'}));
     }
     if (userid && typeof userid != 'number') {
-        throw new TypeError(`userid must be a number, found ${typeof userid} instead`);
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'userid', expected: 'number', got: typeof userid}));
     }
     if (!cid) {
-        throw new Error('id is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'id'}));
     }
     if (isNaN(cid)) {
-        throw new Error('id must be a number, found ' + typeof cid)
+        throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'cid', expected: 'number', got: typeof cid}));
     }
 
     const category: ICategory = await database.getObjects(searchKeys);
     if (!category) {
-        throw new Error('No such category was found with category id ' + cid);
+        throw new Error(locales.translate('api-errors:entity_not_found', {entity: 'category'}));
     }
 
     if (Object.hasOwnProperty.bind(data)('description')) {
@@ -82,11 +83,11 @@ export default async function update(data: ICategory) {
 
     if (parent) {
         if (typeof parent != 'number') {
-            throw new TypeError('parent must be a number, found ' + typeof parent);
+            throw new TypeError(locales.translate('api-errors:invalid_type', {field: 'parent', expected: 'number', got: typeof parent}));
         }
 
         if (!await _data.getCategoryByCid(parent)) {
-            throw new Error('No such category exists with the parent id: ' + parent);
+            throw new Error(locales.translate('api-errors:entity_not_found', {entity: 'parent category'}));
         }
 
         categoryData.parent = Number(parent);

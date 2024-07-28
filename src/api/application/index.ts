@@ -5,6 +5,7 @@ import { application, getCommonFields,
     set as updateConfigurationStore, setValuesBulk, getTypeofField } from "@src/application";
 import email from "./email";
 import { initializeEmailClient } from "@src/email/emailer";
+import locales from "@src/locales";
 
 const validSiteImagesArray = ['logo', 'favicon'] as const;
 
@@ -20,13 +21,13 @@ const updateCommonStore = async (req: Request) => {
 
     fieldsFromRequest.forEach(field => !commonApplicationFields.includes(field) && invalidFields.push(field));
     if (invalidFields.length) {
-        throw new Error('Invalid store field(s) were found in the request: ' + invalidFields.join(', '));
+        throw new Error(locales.translate('api-errors:invalid_entity_fields', {entity: 'store', fields: invalidFields.join(', ')}));
     }
 
     fieldsFromRequest.forEach(field => {
         const expectedType = getTypeofField(field)
         if (expectedType !== 'undefined' && typeof body[field] != expectedType) {
-            throw new Error(`Invalid type supplied for ${field}. Expected ${expectedType} but found ${typeof req.body[field]}`);
+            throw new Error(locales.translate('api-errors:invalid_type', {field, expected: expectedType, got: typeof req.body[field]}));
         }
     });
 
@@ -43,10 +44,10 @@ const updateCommonStore = async (req: Request) => {
 
 const updateSiteImages = async (req: Request, imageType: ValidSiteImageTypes) => {
     if (!imageType) {
-        throw new Error('Image type is required.');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'imageType'}));
     }
     if (!validSiteImagesArray.includes(imageType)) {
-        throw new Error('Invalid image type. Valid image types are: ' + validSiteImagesArray.join(', '))
+        throw new Error(locales.translate('api-errors:invalid_image_types', {types: validSiteImagesArray.join(', ')}))
     }
 
     const _key = 'global:application';

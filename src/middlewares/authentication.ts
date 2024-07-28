@@ -7,17 +7,19 @@ import { IUser } from '@src/types/user';
 import { sanitizeString } from '@src/utilities';
 import { ISortedSetKey, MutableObject, IGoogleUser } from '@src/types';
 import { OAuth as OAuthHelpers, IOAuth } from '@src/helpers';
+import {ValueError, ValidationError, NotFoundError} from '@src/helpers/errors';
 import { notFoundHandler } from '.';
 import { OAuth as OAuthConst } from '@src/constants';
+import locales from '@src/locales';
 
 
 const loginUser = async function loginUser(req: Request, u: string, e: string, done: Function) {
     const { username, password } = req.body;
     if (!username) {
-        throw new Error('username/email is required to validate a user');
+        throw new ValidationError(locales.translate('api-errors:is_required', {field: 'username/email'}));
     }
     if (!password || !password.length) {
-        throw new Error('Password is required to login');
+        throw new ValidationError(locales.translate('api-errors:is_required', {field: 'password'}));
     }
 
     // TODO: Need to validate for max password length in future
@@ -28,25 +30,25 @@ const loginUser = async function loginUser(req: Request, u: string, e: string, d
     const set: ISortedSetKey = await database.getObjects(key);
 
     if (!set) {
-        return done(new Error('Could not find any user associated with such credentials'));
+        return done(new NotFoundError(locales.translate('user:no_user_with_credentials')));
     }
 
     const user: IUser = await database.getObjects(String(set.value));
     if (!user || !Object.keys(user).length) {
-        return done(new Error('Could not find any user associated with such credentials'));
+        return done(new NotFoundError(locales.translate('user:no_user_with_credentials')));
     }
 
     if (!user.userid || !user.passwordHash) {
-        return done(new Error('Something went wrong while you were creating your account, please re-try registering.'));
+        return done(new Error(locales.translate('user:account_creation_failed')));
     }
 
     if (user[authMethod] != username) {
-        return done(new Error('Invalid credentials, please try again'));
+        return done(new ValueError(locales.translate('user:invalid_credentials')));
     }
 
     const isPasswordCorrect = await UserMiddleware.comparePassword(user.userid, password);
     if (!isPasswordCorrect) {
-        return done(new Error('Invalid credentials, please try again'));
+        return done(new ValueError(locales.translate('user:invalid_credentials')));
     }
 
     const userObject: MutableObject = {};
@@ -60,7 +62,7 @@ const loginUser = async function loginUser(req: Request, u: string, e: string, d
         }
     });
 
-    return done(null, userObject, { message: 'Authentication successful' });
+    return done(null, userObject, { message: locales.translate('user:auth_success') });
 }
 
 const validateOAuthRedirectionCallback = async function (req: Request, res: Response, next: NextFunction) {

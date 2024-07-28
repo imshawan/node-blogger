@@ -10,6 +10,7 @@ import Posts from './data';
 import { POST_WEIGHTS } from '@src/constants';
 import { application } from '@src/application';
 import _ from 'lodash';
+import locales from '@src/locales';
 
 const MAX_BLURB_SIZE = 35;
 
@@ -38,7 +39,7 @@ const generateNextCommentId = async function generateNextCommentId(): Promise<nu
 const isValidStatus = function (status: string) {
     const validStatuses = ['draft', 'published', 'archived'];
     if (!status) {
-        throw new Error('Status is required.');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'status'}));
     }
 
     return validStatuses.includes(String(status).toLowerCase().trim());
@@ -46,10 +47,10 @@ const isValidStatus = function (status: string) {
 
 const getKey = function (postId: number): string {
     if (!postId) {
-        throw new Error('A valid post id is required');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'postId'}));
     }
     if (isNaN(postId)) {
-        throw new Error('Post id must be a number, found ' + typeof postId);
+        throw new Error(locales.translate('api-errors:invalid_type', {field: 'postId', expected: 'number', got: typeof postId}));
     }
 
     return 'post:' + postId;

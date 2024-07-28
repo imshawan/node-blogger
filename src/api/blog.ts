@@ -4,6 +4,7 @@ import * as Utilities from "@src/utilities";
 import * as Helpers from "@src/helpers";
 import Posts from "@src/post";
 import { IPost, MulterFilesArray } from "@src/types";
+import locales from "@src/locales";
 
 const get = async (req: Request) => {
     return {message: 'Ok, working fine.'};
@@ -24,7 +25,7 @@ const create = async (req: Request) => {
         tags = [tags];
     }
     if (!categories || !Array.isArray(categories) || !categories.length) {
-        throw new Error('A valid category is required for creating a post.');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'categories'}));
     }
     
     const writeData: IPost = {};
@@ -56,11 +57,11 @@ const handleLikes = async (req: Request, action: 'like' | 'unlike') => {
     let count = 0;
 
     if (!postId) {
-        throw new Error('postId is invalid/required.');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'postId'}));
     }
 
     if (!['like', 'unlike'].includes(action)) {
-        throw new Error('Invalid action.');
+        throw new Error(locales.translate('api-errors:invalid_field', {field: 'action'}));
     }
 
     if (action == 'unlike') {
@@ -80,7 +81,7 @@ const getLikes = async (req: Request) => {
     const postId = Number(req.params.postId);
 
     if (!postId) {
-        throw new Error('postId is invalid/required.');
+        throw new Error(locales.translate('api-errors:is_required', {field: 'postId'}));
     }
 
     let perPage = Number(query.perPage),
