@@ -562,7 +562,10 @@
     border-radius: 50%;
     margin-top: auto; margin-bottom: auto;
 }
-
+.profile-timeline {
+  position: sticky;
+  top: 12px;
+}
 @media (max-width: 767px) {
     .profile-page .profile-header .cover figure {
         height: 160px;
@@ -801,7 +804,9 @@
         height: min-content; }
     .modal-sm {
       max-width: 300px; } }
-  
+@media (min-width: 768px) {
+  .right-wrapper-inner, .left-wrapper-inner {position: sticky!important; top: 70px;}
+}
   @media (min-width: 992px) {
     .modal-md {
       max-width: 60%;
@@ -809,6 +814,9 @@
     .modal-lg,
     .modal-xl {
       max-width: 90%; } }
+  @media (min-width: 1024px) {
+    
+  }
   
   @media (min-width: 1200px) {
     .modal-xl {

@@ -1,4 +1,4 @@
-<div class="profile-page">
+<div class="profile-page overflow-auto" style="height: calc(100vh - 66px);">
     <div class="row g-0">
         <div class="col-12">
             <div class="profile-header">
@@ -63,8 +63,7 @@
 
     </div>
     <div class="row profile-body g-0 px-md-4 px-lg-5" style="padding-top: 6rem;">
-
-        <div class="header-links mb-2">
+        <div class="header-links mb-2 position-sticky top-0" style="z-index: 99;">
             <ul class="links d-flex align-items-center mt-3 mt-md-0">
                 <li class="header-link-item d-flex align-items-center active">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"
@@ -106,7 +105,7 @@
         </div>
 
         <div class="col-md-4 col-xl-3 left-wrapper">
-            <div class="card rounded">
+            <div class="card left-wrapper-inner rounded">
                 <div class="card-body">
                     <% if (profile.about) { %>
                         <div class="d-flex align-items-center justify-content-between mb-2">
@@ -161,13 +160,15 @@
                  
                 <% } else { %>
                     <%- include('/users/partials/no_post'); -%>
+                    <%- include('/users/partials/no_post'); -%>
+                    <%- include('/users/partials/no_post'); -%>
                 <% } %>
             </div>
         </div>
 
 
         <div class="d-none d-xl-block col-xl-3 right-wrapper">
-            <div class="row">
+            <div class="row right-wrapper-inner">
                 <div class="col-md-12 grid-margin">
                     <div class="card rounded">
                         <div class="card-body">

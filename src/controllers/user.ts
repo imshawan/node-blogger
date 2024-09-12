@@ -90,6 +90,7 @@ users.getByUsername = async function (req: Request, res: Response) {
     page.categories = mostContributed.categories;
     page.navigation =  new NavigationManager().get('users');
     page.isFollowing = isFollowing;
+    page.ignoreFooter = true;
 
     res.render('users/profile', page);
 }

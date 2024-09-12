@@ -83,7 +83,7 @@ export const overrideRender = (req: Request, res: Response, next: NextFunction) 
             renderTemplateTohtml(templatePath, translator, pageOptions),
         ]);
 
-        if (!pageOptions._isError) {
+        if (!pageOptions._isError && !pageOptions.ignoreFooter) {
             footer = await renderTemplateTohtml(footerPath, translator, pageOptions);
         }
 

@@ -17,7 +17,7 @@
                         </button>
                     <% } else { %>
                         <p>
-                            <%= translate('post:no_post_message_for_user', { fullname: profile.fullname || profile.username }) %>.
+                            <%= translate('post:no_post_message_for_user', { author: String(profile.fullname || profile.username).split(' ')[0] }) %>.
                         </p>
                     <% } %>
                 </div>
