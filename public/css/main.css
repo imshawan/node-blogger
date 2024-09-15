@@ -1468,6 +1468,7 @@ a.badge-light:focus, a.badge-light:hover {
   .post-section{max-width: 800px;}
   .post-container{max-width: 960px;}
   .post-header{line-height: 3.8rem;}
+  .user-listing-container .card {height: 290px;}
 }
 @media (min-width: 1200px) {
   .main-slider .hero-img {
