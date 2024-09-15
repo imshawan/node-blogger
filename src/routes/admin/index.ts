@@ -4,6 +4,7 @@ import manage from './manage';
 import categories from './categories';
 import users from './users';
 import settings from './settings';
+import advancedAdminSettings from './advanced';
 import controllers from '@src/controllers';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
@@ -18,6 +19,7 @@ router.use('/manage/categories', hasAdministratorAccess, categories);
 router.use('/manage', hasAdministratorAccess, manage);
 router.use('/dashboard', hasAdministratorAccess, controllers.administrator.admin.get);
 router.use('/settings', hasAdministratorAccess, settings);
+router.use('/advanced', hasAdministratorAccess, advancedAdminSettings);
 
 router.use('/', async function (req: Request, res: Response) {
     if (req.path == '/') {

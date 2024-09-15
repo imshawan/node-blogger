@@ -2,10 +2,10 @@ import menus from "./menus"
 
 export default [
     {
-      url: "/admin/advanced/databasse",
-      id: "advanced:databasse",
+      url: "/admin/advanced/database",
+      id: "advanced:database",
       icon: "bi bi-database",
-      title: "Databasse",
+      title: "Database",
       classes: "",
       menu: menus.ADVANCED,
       child: [],

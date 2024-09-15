@@ -139,7 +139,7 @@ const parseBytes = function (bytes: number): number {
 	}
 
 	let value = Number(bytes) / (1024 * 1024 * 1024);
-	return parseFloat(value.toFixed(4));
+	return parseFloat(value.toFixed(5));
 }
 
 const validateCollection =  function(name: string) {

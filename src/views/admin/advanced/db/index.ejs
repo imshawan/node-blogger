@@ -1,0 +1,144 @@
+<section class="section"></section>
+    <div class="row">
+        <div class="col-12">
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Connection Details</h5>
+                            <div class="mb-3">
+                                <div class="stat-label">Host</div>
+                                <div class="stat-value"><%= dbInfo.host %></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="stat-label">Version</div>
+                                <div class="stat-value"><%= dbInfo.version %></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="stat-label">Uptime</div>
+                                <div class="stat-value"><%= dbInfo.uptimeInSeconds %> seconds</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="stat-label">Storage Engine</div>
+                                <div class="stat-value"><%= dbInfo.storageEngine %></div>
+                            </div>
+                            <div>
+                                <div class="stat-label">Database</div>
+                                <div class="stat-value"><%= dbInfo.databaseName %></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Collections & Objects</h5>
+                            <div class="mb-3">
+                                <div class="stat-label">Total Collections</div>
+                                <div class="stat-value"><%= dbInfo.collectionsCount %></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="stat-label">Collections</div>
+                                <div class="stat-value"><%= dbInfo.collections.join(', ') %></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="stat-label">Views</div>
+                                <div class="stat-value"><%= dbInfo.views %></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="stat-label">Total Objects</div>
+                                <div class="stat-value"><%= dbInfo.objects %></div>
+                            </div>
+                            <div>
+                                <div class="stat-label">Avg Object Size</div>
+                                <div class="stat-value"><%= dbInfo.averageObjectSize.toFixed(2) %> bytes</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Storage Statistics</h5>
+                            <div class="mb-3">
+                                <div class="stat-label">Data Size</div>
+                                <div class="stat-value"><%= (dbInfo.dataSizeGB * 1024).toFixed(2) %> MB</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="stat-label">Storage Size</div>
+                                <div class="stat-value"><%= (dbInfo.storageSizeGB * 1024).toFixed(2) %> MB</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="stat-label">Storage Usage</div>
+                                <div class="progress mt-2">
+                                    <div class="progress-bar" role="progressbar" style="width: <%= (dbInfo.dataSizeGB / dbInfo.storageSizeGB * 100).toFixed(2) %>%" aria-valuenow="<%= (dbInfo.dataSizeGB / dbInfo.storageSizeGB * 100).toFixed(2) %>" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="stat-label">Free Storage</div>
+                                <div class="stat-value"><%= dbInfo.totalFreeStorageSize %> bytes</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Index Information</h5>
+                            <div class="mb-3">
+                                <div class="stat-label">Total Indexes</div>
+                                <div class="stat-value"><%= dbInfo.indexes %></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="stat-label">Index Size</div>
+                                <div class="stat-value"><%= (dbInfo.indexSizeGB * 1024).toFixed(2) %> MB</div>
+                            </div>
+                            <div>
+                                <div class="stat-label">Index Free Storage</div>
+                                <div class="stat-value"><%= dbInfo.indexFreeStorageSize %> bytes</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="card-title">Memory Usage</div>
+                            <div class="mb-3">
+                                <div class="stat-label">Resident Memory</div>
+                                <div class="stat-value"><%= (dbInfo.residentMemoryGB * 1024).toFixed(2) %> MB</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="stat-label">Virtual Memory</div>
+                                <div class="stat-value"><%= (dbInfo.virtualMemoryGB * 1024).toFixed(2) %> MB</div>
+                            </div>
+                            <div>
+                                <div class="stat-label">Mapped Memory</div>
+                                <div class="stat-value"><%= (dbInfo.mappedMemoryGB * 1024).toFixed(2) %> MB</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Network Statistics</h5>
+                            <div class="mb-3">
+                                <div class="stat-label">Bytes In</div>
+                                <div class="stat-value"><%= (dbInfo.bytesInGB * 1024).toFixed(2) %> MB</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="stat-label">Bytes Out</div>
+                                <div class="stat-value"><%= (dbInfo.bytesOutGB * 1024).toFixed(2) %> MB</div>
+                            </div>
+                            <div>
+                                <div class="stat-label">Number of Requests</div>
+                                <div class="stat-value"><%= dbInfo.numberOfRequests %></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
