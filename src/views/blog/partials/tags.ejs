@@ -1,0 +1,6 @@
+<div class="tags pt-5">
+    <h4 class="mb-4 border-bottom pb-3"><%= translate('blog:tag_clouds') %></h4>
+    <% tags.forEach(tag => { %>
+        <a href="/tags/<%= tag.slug %>" class="badge text-black badge-light"><%= tag.name %></a>
+    <% }) %>
+</div>

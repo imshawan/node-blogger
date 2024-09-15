@@ -1,0 +1,11 @@
+<div class="categories pt-5">
+    <h4 class="mb-4 border-bottom pb-3"><%= translate('blog:categories') %></h4>
+    <ul class="list-group">
+        <% categories.forEach(category => { %>
+            <li class="d-flex align-items-center">
+                <a href="/categories/<%= category.slug %>" class="category-item"><%= category.name %></a>
+                <span class="badge mx-3 bg-dark badge-primary badge-pill"><%= category.posts %></span>
+            </li>
+        <% }) %>
+    </ul>
+</div>

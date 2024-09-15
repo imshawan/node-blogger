@@ -1336,13 +1336,15 @@ a.badge-light:focus, a.badge-light:hover {
   /* Global classes (responsive) */
 
   .button {
-    font-size: 12px;
+    font-size: var(--font-size-12);
     padding: 6px 14px;
   }
-  .button-outlined {
-    font-size: 12px;
+  .button-outlined, .button-primary {
+    font-size: var(--font-size-12);
     padding: 6px 14px!important;
+    line-height: normal;
   }
+
   .profile-name, .font-heading-4 {
     font-size: 16px;
   }

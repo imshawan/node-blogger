@@ -1,0 +1,9 @@
+<div class="post-item">
+    <a href="/posts/<%= featured.slug %>" class="post-title text-capitalize"><%= featured.title %></a>
+    <div class="post-meta">
+        <span><i class="far fa-user"></i> <%= translate('post:posted_by', {author: featured.author?.fullname || featured.author?.username}) %></span><span><i class="far fa-calendar"></i>
+            <%= featured.createdAt %>
+        </span><span><i class="far fa-comment-alt"></i> <%= translate('blog:comment_count', {count: featured.comments}) %></span>
+    </div>
+    <p class="post-content"><%= featured.blurb %></p>
+</div>

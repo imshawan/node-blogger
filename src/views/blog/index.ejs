@@ -5,153 +5,118 @@
       <div class="container">
         <div class="hero-text">
           <div class="welcome-text">
-            <span class="small-text <% if (_config.capitalizeHeroSection) { %> text-uppercase <% } %>"><%= _config.heroSection %></span>
+            <span class="small-text <% if (_config.capitalizeHeroSection) { %> text-uppercase <% } %>">
+              <%= _config.heroSection %>
+            </span>
           </div>
-          <p><%= _config.description %></p>
+          <p>
+            <%= _config.description %>
+          </p>
         </div>
       </div>
-      <a href="<% if (_application.authenticated) { %>#contact<% } else { %>#cta-section-home<% } %>"><i class="fas fa-chevron-down"></i></a>
+      <a href="<% if (_application.authenticated) { %>#contact<% } else { %>#cta-section-home<% } %>"><i
+          class="fas fa-chevron-down"></i></a>
     </div>
   </section>
 
   <% if (!_application.authenticated) { %>
     <%- include('/blog/partials/cta_section'); -%>
-  <% } %>
-  
-  <section id="contact" class="social-media">
-    <div class="container">
-      <h2 class="underscore">Popular and Trending blogs</h2>
-    </div>
-  </section>
-  <section class="new-articles posts owl-main-content mt-5">
-    <div class="d-flex w-100 owl-carousel owl-theme justify-content-around">
+      <% } %>
 
-      <% popular.forEach(post => { %>
-        <div class="card col-12 col-md-6 col-lg-4 overflow-hidden mx-auto bg-dark text-white">
-          <% if (post.featuredImage) { %>
-            <img src="<%= post.featuredImage %>" class="card-img" alt="...">
-          <% } %>
-          <div class="card-img-overlay p-3">
-            <div class="text-overlay">
-              <h5 class="card-title text-uppercase"><%= post.title %></h5>
-              <div class="line"></div>
-              <div class="card-text autor-data d-flex pb-3">
-                <p class="post-author text-uppercase">Posted by <%= post?.author.fullname || post?.author.username %>&nbsp;</p>
-                <p class="post-data post-author text-uppercase">| <%= post.createdAt %></p>
-              </div>
-              <a href="/posts/<%= post.slug %>" class="card-button">Read article</a>
-            </div>
+        <section id="contact" class="social-media">
+          <div class="container">
+            <h2 class="underscore">Popular and Trending blogs</h2>
           </div>
-        </div>
-      <% }) %>
+        </section>
+        <section class="new-articles posts owl-main-content mt-5">
+          <div class="d-flex w-100 owl-carousel owl-theme justify-content-around">
 
-    </div>
-    <div class="owl-theme">
-      <div class="owl-controls">
-        <div class="custom-nav owl-nav"></div>
-      </div>
-    </div>
-  </section>
-  <section id="posts" class="recent-posts">
-    <div class="container">
-      <div class="row">
-        <div class="col-12 col-md-8">
-          <h2 class="underscore">RECENT POSTS</h2>
-          <p class="sup-header">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex
-            ipsam
-            similique blanditiis. Culpa hic quia, repellendus corrupti </p>
-          <div class="posts-wrapper posts-container">
-
-            <% recents.forEach(post => { %>
-              <%- include('/blog/partials/post', {post: post}); -%>
-            <% }) %>
-            
-            <div class="d-flex justify-content-center">
-              <a href="/posts" class="main-button">View all posts</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="sidebar col-md-4">
-
-          <div class="recent-posts pt-5">
-            <h4 class="mb-4 border-bottom pb-3">Posts you might like</h4>
-            <div class="post-item">
-              <a href="simple-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                elit.</a>
-              <div class="post-meta">
-                <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
-                  2021</span><span><i class="far fa-comment-alt"></i> 0 comments</span>
+            <% popular.forEach(post=> { %>
+              <div class="card col-12 col-md-6 col-lg-4 overflow-hidden mx-auto bg-dark text-white">
+                <% if (post.featuredImage) { %>
+                  <img src="<%= post.featuredImage %>" class="card-img" alt="...">
+                  <% } %>
+                    <div class="card-img-overlay p-3">
+                      <div class="text-overlay">
+                        <h5 class="card-title text-uppercase">
+                          <%= post.title %>
+                        </h5>
+                        <div class="line"></div>
+                        <div class="card-text autor-data d-flex pb-3">
+                          <p class="post-author text-uppercase">Posted by <%= post?.author.fullname ||
+                              post?.author.username %>&nbsp;</p>
+                          <p class="post-data post-author text-uppercase">| <%= post.createdAt %>
+                          </p>
+                        </div>
+                        <a href="/posts/<%= post.slug %>" class="card-button">Read article</a>
+                      </div>
+                    </div>
               </div>
-              <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
-                ex ipsam similique blanditiis. Culpa hic quia...</p>
-            </div>
-            <div class="post-item">
-              <a href="simple-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                elit.</a>
-              <div class="post-meta">
-                <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
-                  2021</span><span><i class="far fa-comment-alt"></i> 0 comments</span>
-              </div>
-              <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
-                ex ipsam similique blanditiis. Culpa hic quia...</p>
-            </div>
-            <div class="post-item">
-              <a href="simple-post.html" class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing
-                elit.</a>
-              <div class="post-meta">
-                <span><i class="far fa-user"></i> Posted by someone</span><span><i class="far fa-calendar"></i> 30 07
-                  2021</span><span><i class="far fa-comment-alt"></i> 0 comments</span>
-              </div>
-              <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis
-                ex ipsam similique blanditiis. Culpa hic quia...</p>
-            </div>
-
-            <div class="categories pt-5">
-              <h4 class="mb-4 border-bottom pb-3">Categories</h4>
-              <ul class="list-group">
-                <li class="d-flex align-items-center">
-                  <a href="" class="category-item">Awesome Layouts</a>
-                  <span class="badge mx-3 bg-dark badge-primary badge-pill">14</span>
-                </li>
-                <li class="d-flex align-items-center">
-                  <a href="" class="category-item">HTML5 / CSS3 Templates</a>
-                  <span class="badge mx-3 bg-dark badge-primary badge-pill">2</span>
-                </li>
-                <li class="d-flex align-items-center">
-                  <a href="" class="category-item">Creative & Unique</a>
-                  <span class="badge mx-3 bg-dark badge-primary badge-pill">1</span>
-                </li>
-              </ul>
-            </div>
-
-            <div class="tags pt-5">
-              <h4 class="mb-4 border-bottom pb-3">Tag clouds</h4>
-              <a href="#" class="badge text-black badge-light">Primary</a>
-              <a href="#" class="badge text-black badge-light">Secondary</a>
-              <a href="#" class="badge text-black badge-light">Success</a>
-              <a href="#" class="badge text-black badge-light">Danger</a>
-              <a href="#" class="badge text-black badge-light">Warning</a>
-              <a href="#" class="badge text-black badge-light">Info</a>
-              <a href="#" class="badge text-black badge-light">Light</a>
-            </div>
+              <% }) %>
 
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section id="subscribe" class="subscribe">
-    <div class="container">
-      <h2>Subscribe & Don’t Miss Out</h2>
-      <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam similique
-        blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
-      </p>
-      <form>
-        <input type="email" class="email text-uppercase" id="exampleInputEmail1" aria-describedby="emailHelp"
-          placeholder="Enter your email"><button type="submit"
-          class="button-subscribe text-uppercase">subscribe</button>
-      </form>
-    </div>
-  </section>
+          <div class="owl-theme">
+            <div class="owl-controls">
+              <div class="custom-nav owl-nav"></div>
+            </div>
+          </div>
+        </section>
+        <section id="posts" class="recent-posts">
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-8">
+                <h2 class="underscore">RECENT POSTS</h2>
+                <p class="sup-header">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex
+                  ipsam
+                  similique blanditiis. Culpa hic quia, repellendus corrupti </p>
+                <div class="posts-wrapper posts-container">
+
+                  <% recents.forEach(post=> { %>
+                    <%- include('/blog/partials/post', {post: post}); -%>
+                      <% }) %>
+
+                        <div class="d-flex justify-content-center">
+                          <a href="/posts" class="main-button">View all posts</a>
+                        </div>
+                </div>
+              </div>
+
+              <div class="sidebar col-md-4">
+
+                <div class="recent-posts pt-5">
+                  <% if (featured.length) { %>
+                    <h4 class="mb-4 border-bottom pb-3"><%= translate('blog:posts_you_may_like') %></h4>
+                    <% featured.forEach(featured => { %>
+                        <%- include('/blog/partials/featured', {featured}); -%>
+                    <% }) %>
+                <% } %>
+
+                  <% if (categories.length) { %>
+                    <%- include('/blog/partials/categories', {categories}); -%>
+                      <% } %>
+
+
+                        <% if (tags.length) { %>
+                          <%- include('/blog/partials/tags', {tags}); -%>
+                            <% } %>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="subscribe" class="subscribe">
+          <div class="container">
+            <h2>Subscribe & Don’t Miss Out</h2>
+            <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt perspiciatis ex ipsam
+              similique
+              blanditiis. Culpa hic quia, repellendus corrupti perspiciatis praesentium
+            </p>
+            <form>
+              <input type="email" class="email text-uppercase" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Enter your email"><button type="submit"
+                class="button-subscribe text-uppercase">subscribe</button>
+            </form>
+          </div>
+        </section>
 </main>

@@ -46,10 +46,12 @@ const get = async function (req: Request, res: Response) {
         return post;
     }
 
-    const [recent, popular, data] = await Promise.all([
+    const [recent, popular, data, featured, popularTags] = await Promise.all([
         Post.data.getPosts({page: 1, perPage: 6}),
         Post.data.getPosts({page: 1, perPage: 6, sorting: 'POPULAR'}),
         category.data.getAllCategories(5, 1, ),
+        Post.data.getFeaturedPosts(5),
+        category.tags.getPopularTags(8, 0, ['tagId', 'name', 'slug'])
     ]);
 
     const recentPosts = await Promise.all(recent.posts.map(resolve));
@@ -61,6 +63,8 @@ const get = async function (req: Request, res: Response) {
         categories: data.categories,
         recents: recentPosts, 
         popular: popularPosts,
+        tags: (popularTags.tags ?? []).filter(e => e),
+        featured: featured.posts.map((post: IPost) => ({...post, createdAt: moment(new Date(String(post.createdAt))).format(DATE_FORMAT)})),
     };
 
     const appKeys = ["ctaSectionLeftHeader",
