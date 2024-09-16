@@ -4,6 +4,8 @@ import fs from 'fs';
 import express, {Request, Response, NextFunction, Application} from 'express';
 import uglify from 'uglify-js';
 import ejs from 'ejs';
+import { rateLimit } from 'express-rate-limit';
+import { handleRateLimiting } from '../src/helpers';
 
 import {Logger} from '../src/utilities';
 import {RouteError} from '../src/helpers';
@@ -19,11 +21,20 @@ const logger = new Logger({prefix: 'setup'});
 const app = express();
 const httpServer = http.createServer(app);
 const partialsDir = path.join(__dirname, 'views', 'partials');
+const limiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    limit: 30,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    handler: handleRateLimiting
+});
 
 const start = async function (port: Number, callback: Function) {
 
     await buildAssets();
     await setupExpressServer(app);
+
+    app.use('/*', limiter);
 
     app.get('/', setup);
     app.use('/setup/api', apiHandler);
