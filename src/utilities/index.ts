@@ -314,8 +314,8 @@ export const resolveFilename = (context: string, removeExt: boolean = true) => {
 export const generateTOTP = function (length: number = 6): string {
     const timestamp = Date.now();
     const maxOTPValue = Math.pow(10, length - 1) - 1;
-    const random = crypto.getRandomValues(new Uint32Array(1))[0];
-    const randomOTP = Math.floor(random * maxOTPValue).toString().padStart(length - 1, '0');
+    const randInt = randomInt();
+    const randomOTP = Math.floor(randInt * maxOTPValue).toString().padStart(length - 1, '0');
 
     // Convert timestamp to a string and extract last 'length' digits
     const timeComponent = (timestamp % Math.pow(10, length)).toString().padStart(length, '0');
@@ -332,11 +332,11 @@ export const generateTOTP = function (length: number = 6): string {
     // Generate alphabets with the determined frequency
     let alphabets = '';
     for (let i = 0; i < frequency; i++) {
-        alphabets += String.fromCharCode(Math.floor(Math.random() * 26) + 65);
+        alphabets += String.fromCharCode(Math.floor(random() * 26) + 65);
     }
 
     // Generate a random position to insert the alphabets
-    const position = Math.floor(Math.random() * length);
+    const position = Math.floor(random() * length);
     const otpWithAlphabets = otp.slice(0, position) + alphabets + otp.slice(position);
 
     return String(otpWithAlphabets).substring(0, length);
@@ -371,3 +371,7 @@ export const timeAgo = function (date: Date | number | string) {
     }
     return 'Just now';
 }
+
+export const random = () => crypto.getRandomValues(new Uint32Array(1))[0] * Math.pow(2,-32);
+
+export const randomInt = () => crypto.getRandomValues(new Uint32Array(1))[0];
