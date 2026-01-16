@@ -47,8 +47,8 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
-    "bcrypt": "^5.1.0",
-    "canvas": "^2.11.2",
+    "bcrypt": "^6.0.0",
+    "canvas": "^3.2.1",
     "chai": "^4.3.8",
     "chai-http": "^4.4.0",
     "chalk": "4.1",
